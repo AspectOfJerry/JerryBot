@@ -3,7 +3,7 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('0000ff')
+                .setColor('#0000ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('%ping command help')
                 .setDescription("This command displays the bot's latency and the websocket server's latency in milliseconds.")
@@ -21,11 +21,11 @@ module.exports = {
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('sending ping...');
         //Code
-        message.channel.send({embeds: [ping]}).then(resultMessage => {
+        message.channel.send({embeds: [ping]}).then(pingMessage => {
             pong = new Discord.MessageEmbed()
-                .setColor('#7dc8cd')
+                .setColor('#80e0e0')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .addField(`Bot latency`, `~${resultMessage.createdTimestamp - message.createdTimestamp}ms`, true)
+                .addField(`Bot latency`, `~${pingMessage.createdTimestamp - message.createdTimestamp}ms`, true)
                 .addField(`DiscordJS API latency`, `~${client.ws.ping}ms`, true);
 
             message.channel.bulkDelete(1).catch(console.error)
