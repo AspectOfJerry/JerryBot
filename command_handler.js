@@ -3,6 +3,7 @@ const GetFiles = require('./get_files')
 const Discord = require('discord.js')
 
 module.exports = (client) => {
+    const command_prefix = "%"
     const commands = {}
     const file_suffix = '.js'
     const command_files = GetFiles('./commands', file_suffix)
@@ -25,7 +26,7 @@ module.exports = (client) => {
 
     client.on('messageCreate', (message) => {
 
-        if(message.author.bot || !message.content.startsWith('%')) {
+        if(message.author.bot || !message.content.startsWith(command_prefix)) {
             return;
         }
 
