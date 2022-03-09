@@ -23,4 +23,4 @@ client.on('ready', () => {
     handler(client)
 })
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
