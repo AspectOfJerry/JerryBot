@@ -58,8 +58,7 @@ module.exports = {
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('Error: Excpected [INT] arguments but only provided [INT].')
-        
+
         message.channel.send({embeds: [expected_n_arguments]})
-        
     }
 }
