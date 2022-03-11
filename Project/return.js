@@ -1,0 +1,1 @@
+//%return (<int>) (<user/all>)

@@ -6,10 +6,11 @@ module.exports = {
                 .setColor('#0000ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('%ping command help')
-                .setDescription("This command displays the bot's latency and the websocket server's latency in milliseconds.")
+                .setDescription("This command displays the bot's latency and the websocket server's latency in milliseconds.", false)
                 .addField(`Usage`, "`%ping`", true)
                 .addField(`Aliases`, "`latency`", true)
-                .addField("Stats for nerds", "Lines: `36`; File size: `~1.65` KB", false)
+                .addField(`Excpected arguments`, "0", false)
+                .setFooter("ping.js; Lines: 37; File size: ~1.7 KB")
 
             message.channel.send({embeds: [help_command]})
             return;

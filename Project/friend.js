@@ -1,0 +1,1 @@
+//%friend <add/remove> <user>
