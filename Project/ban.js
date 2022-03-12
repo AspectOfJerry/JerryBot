@@ -12,7 +12,7 @@ module.exports = {
                 .addField(`Excpected arguments`, "1", true)
                 .addField(`Optional arguments`, "2", true)
                 .addField('Related commands', "`kick`", false)
-                .setFooter("ban.js; Lines: [LINES]; File size: [FILE_SIZE] KB")
+                .setFooter({text: "ban.js; Lines: [LINES]; File size: [FILE_SIZE] KB"})
 
             message.channel.send({embeds: [help_command]})
             return;

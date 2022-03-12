@@ -10,7 +10,7 @@ module.exports = {
                 .addField(`Usage`, "`%ping`", true)
                 .addField(`Aliases`, "`latency`", true)
                 .addField(`Excpected arguments`, "0", false)
-                .setFooter("ping.js; Lines: 37; File size: ~1.7 KB")
+                .setFooter({text: "ping.js; Lines: 37; File size: ~1.7 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
