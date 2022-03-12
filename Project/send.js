@@ -1,0 +1,1 @@
+//%send <channel> <string>

@@ -1,1 +1,2 @@
-//Aliases: avatar, av, a
+//%profile (<user>)
+//Aliases: ["avatar", "av"]
