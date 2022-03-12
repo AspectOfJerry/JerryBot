@@ -25,7 +25,7 @@ module.exports = {
         message.channel.send({embeds: [ping]}).then(pingMessage => {
             pong = new Discord.MessageEmbed()
                 .setColor('#80e0e0')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .addField(`Bot latency`, `~${pingMessage.createdTimestamp - message.createdTimestamp}ms`, true)
                 .addField(`DiscordJS API latency`, `~${client.ws.ping}ms`, true);
 

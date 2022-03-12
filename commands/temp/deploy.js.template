@@ -1,0 +1,9 @@
+module.exports = {
+    callback: (message, Discord, client, ...args) => {
+        //Code
+
+        //Logging
+        message.channel.send('`[CODE]`')
+        console.log('[CODE]')
+    }
+}

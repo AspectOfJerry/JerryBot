@@ -8,7 +8,7 @@ module.exports = {
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('%ban command help (BotPL1)')
                 .setDescription('This command bans a user from the guild.')
-                .addField(`Usage`, "`%ban` `<user>` (`<days>`) (`reason`)", false)
+                .addField(`Usage`, "`%ban <user> (<days>) (reason)`", false)
                 .addField(`Excpected arguments`, "1", true)
                 .addField(`Optional arguments`, "2", true)
                 .addField('Related commands', "`kick`", false)
