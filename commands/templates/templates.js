@@ -1,13 +1,14 @@
 module.exports = {
     callback: (message, Discord, client, ...args) => {
-        message.channel.send('//Help command layout')
+        message.channel.send('//Help command template')
 
         const help_command = new Discord.MessageEmbed()
             .setColor('#0000ff')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('%[STRING] command help ([STRING])')
             .setDescription('This command [STRING].')
-            .addField(`Usage`, "`%[STRING] <[PARAMETERS?]>`", false)
+            .addField(`Usage`, "`%[STRING] <[PARAMETERS?]>`", true)
+            .addField(`Aliases`, "`[STRING]`", false)
             .addField(`Excpected arguments`, "[INT]", true)
             .addField(`Optional arguments`, "[INT]", true)
             .addField('Related commands', "`[STRING]`", false)
@@ -15,7 +16,7 @@ module.exports = {
 
         message.channel.send({embeds: [help_command]})
 
-        message.channel.send('//Error messages layout')
+        message.channel.send('//Error messages template')
 
         const type_error = new Discord.MessageEmbed()
             .setColor('ff0000')
