@@ -7,7 +7,7 @@ module.exports = {
                 .setColor('0000ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('%ban command help (BotPL1)')
-                .setDescription('This command bans a user from the guild.')
+                .setDescription('This command bans a guild member.')
                 .addField(`Usage`, "`%ban <user> (reason)`", false)
                 .addField(`Excpected arguments`, "1", true)
                 .addField(`Optional arguments`, "1", true)
@@ -17,5 +17,6 @@ module.exports = {
             message.channel.send({embeds: [help_command]})
             return;
         }
+        
     }
 }
