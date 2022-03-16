@@ -1,26 +1,35 @@
 module.exports = {
     callback: (message, Discord, client, ...args) => {
+        //Command information
+        const COMMAND_NAME = "ping";
+        const ROLE_REQUIRED = "everyone";
+        const EXCPECTED_ARGUMENTS = 0;
+        const OPTIONAL_ARGUMENTS = 0;
+
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#0000ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('%ping command help')
-                .setDescription("This command displays the bot's latency and the websocket server's latency in milliseconds.", false)
-                .addField(`Usage`, "`%ping`", true)
-                .addField(`Aliases`, "`latency`", true)
-                .addField(`Excpected arguments`, "0", false)
-                .setFooter({text: "ping.js; Lines: 37; File size: ~1.7 KB"})
+                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
+                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
+                .addField(`Excpected arguments`, `**${EXCPECTED_ARGUMENTS}**`, true)
+                .addField(`Optional arguments`, `**${OPTIONAL_ARGUMENTS}**`, true)
+                .addField('Related commands', "`info`", false)
+                .setFooter({text: "./commands/ping.js; Lines: 46; File size: ~2.05 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
         }
+
         //Declaring variables
-        let pong
+        let pong;
         const ping = new Discord.MessageEmbed()
             .setColor('#ffff00')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('sending ping...');
+
         //Code
         message.channel.send({embeds: [ping]}).then(pingMessage => {
             pong = new Discord.MessageEmbed()
