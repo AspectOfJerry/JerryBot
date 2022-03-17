@@ -3,7 +3,7 @@ module.exports = {
         //Command information
         const COMMAND_NAME = "timeout";
         const ROLE_REQUIRED = "PL3";
-        const EXCPECTED_ARGUMENTS = 1;
+        const EXCPECTED_ARGUMENTS = 2;
         const OPTIONAL_ARGUMENTS = 1;
 
         //Help command
@@ -13,9 +13,9 @@ module.exports = {
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command times a guild member out.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `**${EXCPECTED_ARGUMENTS}**`, true)
-                .addField(`Optional arguments`, `**${OPTIONAL_ARGUMENTS}**`, true)
+                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time (seconds)> (<reason>)" + "`", false)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`mute`", false)
                 .setFooter({text: "./commands/testing/timeout.js; Lines: [INT]; File size: [NUMBER] KB"})
 
@@ -25,6 +25,7 @@ module.exports = {
 
         //Declaring variables
         let verdict;
+        let timeoutDuration;
         let messageMemberHighestRole;
         let memberTargetHighestRole;
 
@@ -64,7 +65,7 @@ module.exports = {
                 return "no";
             }
         }
-        function Verdict(verdict, messageMemberHighestRole, memberTargetHigestRole, message) {
+        function Verdict(verdict, messageMemberHighestRole, memberTargetHigestRole, timeoutDuration, message) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff0000')
@@ -75,18 +76,20 @@ module.exports = {
                 message.channel.send({embeds: error_equal_roles})
                 return;
             } else if(verdict == "yes") {
-                memberTarget.ban()
-                    .then(banInfo => {
-                        const success_ban = new Discord.MessageEmbed()
+                memberTarget.timeout(timeoutDuration * 1000)
+                    .then(() => {
+                        const success_timeout = new Discord.MessageEmbed()
                             .setColor('00ff00')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setTitle("User ban")
-                            .setDescription(`<@${message.member.user.id}> banned <@${memberTarget.user.id}> from the guild.`)
+                            .setTitle("User Timeout")
+                            .setDescription(`<@${message.member.user.id}> timed out <@${memberTarget.user.id}> for ${timeoutDuration} seconds.`)
 
-                        message.channel.send({embeds: success_ban})
+                        message.channel.send({embeds: [success_timeout]})
                         return;
                     })
-                    .cactch()
+                    .catch(() => {
+                        //Error code thing here
+                    })
 
             } else {
                 const error_role_too_low = new Discord.MessageEmbed()
@@ -101,23 +104,23 @@ module.exports = {
         }
 
         //Checks
-        if(message.member.roles.cache.find(role => role.name == "PL3")) {
+        if(!message.member.roles.cache.find(role => role.name == "PL3")) {
             const error_premissions = new Discord.MessageEmbed()
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
 
-            message.channel.send({embeds: error_premissions})
+            message.channel.send({embeds: [error_premissions]})
             return;
         }
         if(!args[0]) {
-            const error_require_more_arguments = new Discord.MessageEmbed()
+            const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Error: Excpected ${EXCPECTED_ARGUMENTS} arguments but only provided 0.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a member to ban."})
+                .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setFooter({text: "Please provide a member to timeout."})
 
-            message.channel.send({embeds: [error_require_more_arguments]})
+            message.channel.send({embeds: [error_missing_arguments]})
             return;
         }
         const target = message.mentions.users.first();
@@ -126,27 +129,39 @@ module.exports = {
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('ReferenceError: Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "You must provide a Snowflake."})
+                .setFooter({text: "You must provide a Snowflake representing a user."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
         }
         const memberTarget = message.guild.members.cache.get(target.id);
         if(memberTarget == message.member) {
-            const error_cannot_use_on_self = new Disocrd.MessageEmbed()
+            const error_cannot_use_on_self = new Discord.MessageEmbed()
                 .setColor('ff0000')
-                .setDescription('Error: You cannot use this command on yourself')
+                .setDescription('Error: You cannot use this command on yourself.')
                 .setFooter({text: "Select a different memberTarget."})
 
-            message.channel.send({embeds: error_cannot_use_on_self})
+            message.channel.send({embeds: [error_cannot_use_on_self]})
             return;
         }
-        //Code 
-        GetMessageMemberHighestRole(message)
-        GetMemberTargetHighestRole(message, memberTarget)
-        
-        CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
+        if(!args[1]) {
+            const error_missing_arguments = new Discord.MessageEmbed()
+                .setColor('ff0000')
+                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setFooter({text: "Please provide a duration in seconds for the timeout."})
 
-        Verdict(verdict, messageMemberHighestRole, memberTargetHighestRole, message)
+            message.channel.send({embeds: [error_missing_arguments]})
+            return;
+        }
+        timeoutDuration = args[1];
+
+        //Code 
+        messageMemberHighestRole = GetMessageMemberHighestRole(message)
+        memberTargetHighestRole = GetMemberTargetHighestRole(message, memberTarget)
+        
+        verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
+
+        Verdict(verdict, messageMemberHighestRole, memberTargetHighestRole, timeoutDuration, message)
     }
 }

@@ -14,8 +14,8 @@ module.exports = {
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command bans a user from the guild.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `**${EXCPECTED_ARGUMENTS}**`, true)
-                .addField(`Optional arguments`, `**${OPTIONAL_ARGUMENTS}**`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`kick`", false)
                 .setFooter({text: "./commands/testing/ban.js; Lines: [INT]; File size: [NUMBER] KB"})
 

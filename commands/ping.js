@@ -14,8 +14,8 @@ module.exports = {
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
-                .addField(`Excpected arguments`, `**${EXCPECTED_ARGUMENTS}**`, true)
-                .addField(`Optional arguments`, `**${OPTIONAL_ARGUMENTS}**`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`info`", false)
                 .setFooter({text: "./commands/ping.js; Lines: 46; File size: ~2.05 KB"})
 
@@ -43,3 +43,4 @@ module.exports = {
         })
     }
 }
+//Tomassy#1435 best!

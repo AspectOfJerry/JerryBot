@@ -14,8 +14,8 @@ module.exports = {
             .setDescription('This command [STRING].')
             .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <[ARGUMENTS?]>" + "`", false)
             .addField(`Aliases`, "`[STRING]`", false)
-            .addField(`Excpected arguments`, `**${EXCPECTED_ARGUMENTS}**`, true)
-            .addField(`Optional arguments`, `**${OPTIONAL_ARGUMENTS}**`, true)
+            .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+            .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
             .addField('Related commands', "`[STRING]`", false)
             .setFooter({text: "./[STRING].js; Lines: [INT]; File size: [NUMBER] KB"})
 
@@ -56,7 +56,7 @@ module.exports = {
         const expected_n_arguments = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription(`Error: Excpected ${EXCPECTED_ARGUMENTS} arguments but only provided [INT].` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **[INT]**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [expected_n_arguments]})
     }
