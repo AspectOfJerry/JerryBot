@@ -9,15 +9,16 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#4040ff')
+                .setColor('#2020ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command times a guild member out.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time (seconds)> (<reason>)" + "`", false)
+                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+                .addField(`Note`, "The timeout duration must be within the range **1** - **3600** seconds.")
                 .addField('Related commands', "`mute`", false)
-                .setFooter({text: "./commands/testing/timeout.js; Lines: [INT]; File size: [NUMBER] KB"})
+                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.1 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -68,7 +69,7 @@ module.exports = {
         function Verdict(verdict, messageMemberHighestRole, memberTargetHigestRole, timeoutDuration, message) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
-                    .setColor('ff40400')
+                    .setColor('ff2020')
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`**Error:** Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
@@ -79,7 +80,7 @@ module.exports = {
                 memberTarget.timeout(timeoutDuration * 1000)
                     .then(() => {
                         const success_timeout = new Discord.MessageEmbed()
-                            .setColor('40ff40')
+                            .setColor('20ff20')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setTitle("User timeout")
                             .setDescription(`<@${message.member.user.id}> timed out <@${memberTarget.user.id}> for ${timeoutDuration} seconds.`)
@@ -90,7 +91,7 @@ module.exports = {
                     .catch((error) => {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
-                            .setColor('#ff40ff')
+                            .setColor('#ff20ff')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `90`.")
@@ -102,7 +103,7 @@ module.exports = {
                     })
             } else {
                 const error_role_too_low = new Discord.MessageEmbed()
-                    .setColor('ff40400')
+                    .setColor('ff2020')
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`**Error:** Your role is lower then <@${memberTarget.user.id}>'s role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
@@ -115,7 +116,7 @@ module.exports = {
         //Checks
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
             const error_premissions = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
 
@@ -124,7 +125,7 @@ module.exports = {
         }
         if(!args[0]) {
             const error_missing_arguments = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a member to timeout."})
@@ -135,7 +136,7 @@ module.exports = {
         const target = message.mentions.users.first();
         if(!target) {
             const reference_error_target = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a valid member (Snowflake, mention) to timeout."})
@@ -146,7 +147,7 @@ module.exports = {
         const memberTarget = message.guild.members.cache.get(target.id);
         if(memberTarget == message.member) {
             const error_cannot_use_on_self = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**Error:** You cannot use this command on yourself.')
                 .setFooter({text: "Timeout someone else!"})
@@ -156,7 +157,7 @@ module.exports = {
         }
         if(!args[1]) {
             const error_missing_arguments = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a timeout duration in seconds."})
@@ -166,12 +167,21 @@ module.exports = {
         }
         if(isNaN(args[1]) == true) {
             const type_error_argument_isNaN = new Discord.MessageEmbed()
-                .setColor('ff40400')
+                .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription("**TypeError**: Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int` (integer).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription("**TypeError:** Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int` (integer).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a valid timeout duration in seconds."})
 
             message.channel.send({embeds: [type_error_argument_isNaN]})
+            return;
+        }
+        if(args[1] < 1 || args[1] > 3600) {
+            const range_error = new Discord.MessageEmbed()
+                .setColor('#ff2020')
+                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription("**RangeError:** Timeout duration must be within the range **1** - **3600** seconds." + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+
+            message.channel.send({embeds: [range_error]})
             return;
         }
         timeoutDuration = args[1];

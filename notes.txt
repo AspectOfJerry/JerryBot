@@ -1,6 +1,14 @@
-Main color: #80e0e0
+Main color: #80e0e0 (RGB: 128, 224, 224 / CMYK: 43%, 0%, 0%, 12% / HSV: 180°, 43%, 88% / HSL: 180°, 61%, 69%)
 
------HTTP return codes-----
+Red: #ff2020 (RGB: 255, 32, 32)
+Green: #20ff20 (RGB: 32, 255, 32)
+Dark green: #20b020 (RGB: 32, 176, 32)
+Blue: #2020ff (RGB: 32, 32, 255)
+Pink: #ff20ff (RGB: 255, 32, 255)
+Yellow: #ffff20 (RGB: 255, 255, 32)
+Blue: #2020ff (RGB: 32, 32, 255)
+
+-----HTTP status codes-----
 Code                                            Meaning
 200 OK                                          Standard response for successful HTTP requests.
 
