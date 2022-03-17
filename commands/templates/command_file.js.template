@@ -9,7 +9,7 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#0000ff')
+                .setColor('#4040ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command [STRING].')
@@ -25,10 +25,15 @@ module.exports = {
         }
 
         //Declaring variables
-        const target = message.mentions.users.first();
-        const memberTarget = message.guild.members.cache.get(target.id);
+        let verdict;
+        let messageMemberHighestRole;
+        let memberTargetHighestRole;
+
+        //Declaring functions
 
         //Checks
+        const target = message.mentions.users.first();
+        const memberTarget = message.guild.members.cache.get(target.id);
 
         //Code
 

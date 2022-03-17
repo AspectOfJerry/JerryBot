@@ -26,7 +26,7 @@ module.exports = {
         const type_error = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('**TypeError**: Unexpected argument type. Argument [INT] (`[ARGUMENT]`) must be a [TYPE].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription("**TypeError**: Unexpected argument type. Argument [INT] (`" + `[ARGUMENT]` + '`) must be a [TYPE].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [type_error]})
         const type_error_nan = new Discord.MessageEmbed()
@@ -53,6 +53,13 @@ module.exports = {
             .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [reference_error]})
+        const reference_error_target = new Discord.MessageEmbed()
+            .setColor('ff40400')
+            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setFooter({text: "Please provide a valid member (Snowflake, mention) to [STRING]."})
+
+        message.channel.send({embeds: [reference_error_target]})
         const expected_n_arguments = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
