@@ -26,37 +26,37 @@ module.exports = {
         const type_error = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('TypeError: Unexpected argument type. Argument [INT] (`[ARGUMENT]`) must be a [TYPE].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription('**TypeError**: Unexpected argument type. Argument [INT] (`[ARGUMENT]`) must be a [TYPE].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [type_error]})
         const type_error_nan = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('TypeError: Unexpected argument type. Argument [INT] (`[ARGUMENT]`) is NAN. It must be an `int`.' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription('**TypeError:** Unexpected argument type. Argument [INT] (`[ARGUMENT]`) is NAN. It must be an `int`.' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [type_error_nan]})
         const range_error = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('RangeError: Invalid [STRING]. It must be [STRING (RANGE)].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription('**RangeError:** Invalid [STRING]. It must be [STRING (RANGE)].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [range_error]})
         const syntax_error = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('SyntaxError: Invalid argument. "[ARGUMENT]" must be [STRING].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription('**SyntaxError:** Invalid argument. "[ARGUMENT]" must be [STRING].' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [syntax_error]})
         const reference_error = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('ReferenceError: Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [reference_error]})
         const expected_n_arguments = new Discord.MessageEmbed()
             .setColor('ff0000')
             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **[INT]**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+            .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **[INT]**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
 
         message.channel.send({embeds: [expected_n_arguments]})
     }

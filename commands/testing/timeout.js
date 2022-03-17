@@ -32,13 +32,13 @@ module.exports = {
         //Declaring functions
         function GetMessageMemberHighestRole(message) {
             if(message.member.roles.cache.find(role => role.name == "PL0")) {
-                return 0
+                return 0;
             } else if(message.member.roles.cache.find(role => role.name == "PL1")) {
-                return 1
+                return 1;
             } else if(message.member.roles.cache.find(role => role.name == "PL2")) {
-                return 2
+                return 2;
             } else if(message.member.roles.cache.find(role => role.name == "PL3")) {
-                return 3
+                return 3;
             } else {
                 return null;
             }
@@ -70,10 +70,10 @@ module.exports = {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff0000')
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Error: <@${memberTarget.user.id}>'s highest role is equal to <@${message.member.user.id}>'s highest role.`)
+                    .setDescription(`**Error:** Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
 
-                message.channel.send({embeds: error_equal_roles})
+                message.channel.send({embeds: [error_equal_roles]})
                 return;
             } else if(verdict == "yes") {
                 memberTarget.timeout(timeoutDuration * 1000)
@@ -87,18 +87,27 @@ module.exports = {
                         message.channel.send({embeds: [success_timeout]})
                         return;
                     })
-                    .catch(() => {
-                        //Error code thing here
-                    })
+                    .catch((error) => {
+                        console.log(error)
+                        const error_catch = new Discord.MessageEmbed()
+                            .setColor('#ff40ff')
+                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setTitle("Critical error catch")
+                            .setDescription("An error was caught at line `90`.")
+                            .addField("code", `${error.code}`, true)
+                            .addField("httpsStatus", `${error.httpStatus}`, true)
+                            .addField("path", `${error.path}`, false)
 
+                        message.channel.send({embeds: [error_catch]})
+                    })
             } else {
                 const error_role_too_low = new Discord.MessageEmbed()
                     .setColor('ff0000')
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Error: <@${message.member.user.id}>'s role is lower then <@${memberTarget.uesr.id}>'s role.`)
+                    .setDescription(`**Error:** Your role is lower then <@${memberTarget.user.id}>'s role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
 
-                message.channel.send({embeds: error_role_too_low})
+                message.channel.send({embeds: [error_role_too_low]})
                 return;
             }
         }
@@ -117,7 +126,7 @@ module.exports = {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a member to timeout."})
 
             message.channel.send({embeds: [error_missing_arguments]})
@@ -128,7 +137,7 @@ module.exports = {
             const reference_error_target = new Discord.MessageEmbed()
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription('ReferenceError: Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "You must provide a Snowflake representing a user."})
 
             message.channel.send({embeds: [reference_error_target]})
@@ -138,7 +147,7 @@ module.exports = {
         if(memberTarget == message.member) {
             const error_cannot_use_on_self = new Discord.MessageEmbed()
                 .setColor('ff0000')
-                .setDescription('Error: You cannot use this command on yourself.')
+                .setDescription('**Error:** You cannot use this command on yourself.')
                 .setFooter({text: "Select a different memberTarget."})
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
@@ -148,7 +157,7 @@ module.exports = {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('ff0000')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Error: Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
+                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a duration in seconds for the timeout."})
 
             message.channel.send({embeds: [error_missing_arguments]})
@@ -159,7 +168,7 @@ module.exports = {
         //Code 
         messageMemberHighestRole = GetMessageMemberHighestRole(message)
         memberTargetHighestRole = GetMemberTargetHighestRole(message, memberTarget)
-        
+
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
         Verdict(verdict, messageMemberHighestRole, memberTargetHighestRole, timeoutDuration, message)
