@@ -15,9 +15,12 @@ Code                                            Meaning
 400 Bad Request                                 The server cannot or will not process the request due to an apparent client error.
 403 Forbidden                                   The request contained valid data and was understood by the server, but the server is refusing action.
 404 Not Found                                   The requested resource could not be found but may be available in the future.
+408 Request Timeout                             The server timed out waiting for the request.
+415 Unsupported Media Type (RFC 7231)           The request entity has a media type which the server or resource does not support.
 422 Unprocessable Entity (WebDAV; RFC 4918)     The request was well-formed but was unable to be followed due to semantic errors.
 429 Too Many Requests (RFC 6585)                The user has sent too many requests in a given amount of time.
 
+500 Internal Server Error                       A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
 503 Service Unavailable                         The server cannot handle the request (because it is overloaded or down for maintenance).
 
 -----Hypixel API info-----
