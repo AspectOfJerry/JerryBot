@@ -139,7 +139,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a valid member (Snowflake, mention) to timeout."})
+                .setFooter({text: "Please provide a valid member to timeout."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
