@@ -1,8 +1,8 @@
 module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
-        const COMMAND_NAME = "kick";
-        const ROLE_REQUIRED = "PL2";
+        const COMMAND_NAME = "ban";
+        const ROLE_REQUIRED = "PL1";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -12,12 +12,12 @@ module.exports = {
                 .setColor('#2020ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
-                .setDescription('This command kicks a user from the guild.')
+                .setDescription('This command bans a user from the guild.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
-                .addField('Related commands', "`ban`", false)
-                .setFooter({text: "./commands/kick.js; Lines: 167; File size: ~8.15 KB"})
+                .addField('Related commands', "`kick`", false)
+                .setFooter({text: "./commands/ban.js; Lines: [INT]; File size: ~[NUMBER] KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -75,15 +75,15 @@ module.exports = {
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
             } else if(verdict == "yes") {
-                memberTarget.kick()
-                    .then((kickResult) => {
-                        const success_kick = new Discord.MessageEmbed()
+                memberTarget.ban()
+                    .then((banResult) => {
+                        const success_ban = new Discord.MessageEmbed()
                             .setColor('20ff20')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                            .setTitle("User kick")
-                            .setDescription(`<@${message.member.user.id}> kicked <@${memberTarget.user.id}>.`)
+                            .setTitle("User ban")
+                            .setDescription(`<@${message.member.user.id}> banned <@${memberTarget.user.id}>.`)
 
-                        message.channel.send({embeds: [success_kick]})
+                        message.channel.send({embeds: [success_ban]})
                         return;
                     })
                     .catch((error) => {
@@ -110,6 +110,9 @@ module.exports = {
                 return;
             }
         }
+        function confirmBanFriend(message, memberTarget) {
+
+        }
 
         //Checks
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
@@ -126,7 +129,7 @@ module.exports = {
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a member to kick."})
+                .setFooter({text: "Please provide a member to ban."})
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -137,7 +140,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a valid member to kick."})
+                .setFooter({text: "Please provide a valid member to ban."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -148,7 +151,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**Error:** You cannot use this command on yourself.')
-                .setFooter({text: "Kick someone else!"})
+                .setFooter({text: "Ban someone else!"})
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;

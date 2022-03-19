@@ -44,7 +44,7 @@ module.exports = {
                 return null;
             }
         }
-        function GetMemberTargetHighestRole(message, memberTarget) {
+        function GetMemberTargetHighestRole(memberTarget) {
             if(memberTarget.roles.cache.find(role => role.name == "PL0")) {
                 return 0;
             } else if(memberTarget.roles.cache.find(role => role.name == "PL1")) {
@@ -66,7 +66,7 @@ module.exports = {
                 return "no";
             }
         }
-        function Verdict(verdict, messageMemberHighestRole, memberTargetHigestRole, timeoutDuration, message) {
+        function Verdict(message, verdict, timeoutDuration) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff2020')
@@ -81,7 +81,7 @@ module.exports = {
                     .then(() => {
                         const success_timeout = new Discord.MessageEmbed()
                             .setColor('20ff20')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("User timeout")
                             .setDescription(`<@${message.member.user.id}> timed out <@${memberTarget.user.id}> for ${timeoutDuration} seconds.`)
 
@@ -92,7 +92,7 @@ module.exports = {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
                             .setColor('#ff20ff')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `90`.")
                             .addField("code", `${error.code}`, true)
@@ -188,10 +188,10 @@ module.exports = {
 
         //Code 
         messageMemberHighestRole = GetMessageMemberHighestRole(message)
-        memberTargetHighestRole = GetMemberTargetHighestRole(message, memberTarget)
+        memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget)
 
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
-        Verdict(verdict, messageMemberHighestRole, memberTargetHighestRole, timeoutDuration, message)
+        Verdict(message, verdict, timeoutDuration)
     }
 }
