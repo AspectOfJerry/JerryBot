@@ -18,7 +18,7 @@ module.exports = {
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField(`Note`, "The timeout duration must be within the range **1** - **3600** seconds.")
                 .addField('Related commands', "`mute`", false)
-                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.1 KB"})
+                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.0 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;

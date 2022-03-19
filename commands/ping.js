@@ -17,7 +17,7 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`info`", false)
-                .setFooter({text: "./commands/ping.js; Lines: 46; File size: ~2.05 KB"})
+                .setFooter({text: "./commands/ping.js; Lines: 46; File size: ~2.07 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;

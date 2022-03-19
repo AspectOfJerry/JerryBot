@@ -17,7 +17,7 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`ban`", false)
-                .setFooter({text: "./commands/kick.js; Lines: 167; File size: ~8.15 KB"})
+                .setFooter({text: "./commands/kick.js; Lines: 173; File size: ~8.22 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -110,6 +110,11 @@ module.exports = {
                 return;
             }
         }
+        function ConfirmBanFriend(message, memberTarget) {
+            if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
+
+            }
+        }
 
         //Checks
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
@@ -160,7 +165,8 @@ module.exports = {
 
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
+        ConfirmBanFriend(message, memberTarget)
+
         Verdict(message, verdict)
     }
 }
-
