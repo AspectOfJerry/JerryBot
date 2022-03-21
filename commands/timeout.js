@@ -16,7 +16,7 @@ module.exports = {
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
-                .addField(`Note`, "The timeout duration must be within the range **1** - **3600** seconds.")
+                .addField(`Notes`, "The timeout duration must be within the range **1** - **3600** seconds.")
                 .addField('Related commands', "`mute`", false)
                 .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.1 KB"})
 
