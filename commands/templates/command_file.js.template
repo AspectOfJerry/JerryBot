@@ -17,6 +17,7 @@ module.exports = {
                 .addField(`Aliases`, "`[STRING]`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+                .addField(`Notes`, "[STRING]")
                 .addField('Related commands', "`[STRING]`", false)
                 .setFooter({text: "./[STRING].js; Lines: [INT]; File size: ~[NUMBER] KB"})
 
