@@ -17,7 +17,7 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`ban`", false)
-                .setFooter({text: "./commands/kick.js; Lines: 167; File size: [NUMBER] KB"})
+                .setFooter({text: "./commands/kick.js; Lines: 173; File size: ~8.22 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -42,7 +42,7 @@ module.exports = {
                 return null;
             }
         }
-        function GetMemberTargetHighestRole(message, memberTarget) {
+        function GetMemberTargetHighestRole(memberTarget) {
             if(memberTarget.roles.cache.find(role => role.name == "PL0")) {
                 return 0;
             } else if(memberTarget.roles.cache.find(role => role.name == "PL1")) {
@@ -64,7 +64,7 @@ module.exports = {
                 return "no";
             }
         }
-        function Verdict(verdict, messageMemberHighestRole, memberTargetHigestRole, message) {
+        function Verdict(message, verdict) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff2020')
@@ -79,7 +79,7 @@ module.exports = {
                     .then((kickResult) => {
                         const success_kick = new Discord.MessageEmbed()
                             .setColor('20ff20')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("User kick")
                             .setDescription(`<@${message.member.user.id}> kicked <@${memberTarget.user.id}>.`)
 
@@ -90,7 +90,7 @@ module.exports = {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
                             .setColor('#ff20ff')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `89`.")
                             .addField("code", `${error.code}`, true)
@@ -110,6 +110,11 @@ module.exports = {
                 return;
             }
         }
+        function ConfirmBanFriend(message, memberTarget) {
+            if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
+
+            }
+        }
 
         //Checks
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
@@ -126,7 +131,7 @@ module.exports = {
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a member to timeout."})
+                .setFooter({text: "Please provide a member to kick."})
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -156,11 +161,12 @@ module.exports = {
 
         //Code
         messageMemberHighestRole = GetMessageMemberHighestRole(message)
-        memberTargetHighestRole = GetMemberTargetHighestRole(message, memberTarget)
+        memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget)
 
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
-        Verdict(verdict, messageMemberHighestRole, memberTargetHighestRole, message)
+        ConfirmBanFriend(message, memberTarget)
+
+        Verdict(message, verdict)
     }
 }
-

@@ -17,7 +17,7 @@ module.exports = {
             .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
             .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
             .addField('Related commands', "`[STRING]`", false)
-            .setFooter({text: "./[STRING].js; Lines: [INT]; File size: [NUMBER] KB"})
+            .setFooter({text: "./[STRING].js; Lines: [INT]; File size: ~[NUMBER] KB"})
 
         message.channel.send({embeds: [help_command]})
 

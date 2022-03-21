@@ -1,9 +1,9 @@
 module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
-        const COMMAND_NAME = "timeout";
-        const ROLE_REQUIRED = "PL3";
-        const EXCPECTED_ARGUMENTS = 2;
+        const COMMAND_NAME = "ban";
+        const ROLE_REQUIRED = "PL1";
+        const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 1;
 
         //Help command
@@ -12,13 +12,12 @@ module.exports = {
                 .setColor('#2020ff')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
-                .setDescription('This command times a guild member out.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
+                .setDescription('This command bans a user from the guild.')
+                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
-                .addField(`Notes`, "The timeout duration must be within the range **1** - **3600** seconds.")
-                .addField('Related commands', "`mute`", false)
-                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.0 KB"})
+                .addField('Related commands', "`kick`", false)
+                .setFooter({text: "./commands/ban.js; Lines: 173; File size: ~8.21 KB"})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -26,7 +25,6 @@ module.exports = {
 
         //Declaring variables
         let verdict;
-        let timeoutDuration;
         let messageMemberHighestRole;
         let memberTargetHighestRole;
 
@@ -66,7 +64,7 @@ module.exports = {
                 return "no";
             }
         }
-        function Verdict(message, verdict, timeoutDuration) {
+        function Verdict(message, verdict) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff2020')
@@ -77,15 +75,15 @@ module.exports = {
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
             } else if(verdict == "yes") {
-                memberTarget.timeout(timeoutDuration * 1000)
-                    .then(() => {
-                        const success_timeout = new Discord.MessageEmbed()
+                memberTarget.ban()
+                    .then((banResult) => {
+                        const success_ban = new Discord.MessageEmbed()
                             .setColor('20ff20')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                            .setTitle("User timeout")
-                            .setDescription(`<@${message.member.user.id}> timed out <@${memberTarget.user.id}> for ${timeoutDuration} seconds.`)
+                            .setTitle("User ban")
+                            .setDescription(`<@${message.member.user.id}> banned <@${memberTarget.user.id}>.`)
 
-                        message.channel.send({embeds: [success_timeout]})
+                        message.channel.send({embeds: [success_ban]})
                         return;
                     })
                     .catch((error) => {
@@ -94,7 +92,7 @@ module.exports = {
                             .setColor('#ff20ff')
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Critical error catch")
-                            .setDescription("An error was caught at line `90`.")
+                            .setDescription("An error was caught at line `89`.")
                             .addField("code", `${error.code}`, true)
                             .addField("httpsStatus", `${error.httpStatus}`, true)
                             .addField("path", `${error.path}`, false)
@@ -112,23 +110,28 @@ module.exports = {
                 return;
             }
         }
+        function ConfirmBanFriend(message, memberTarget) {
+            if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
+
+            }
+        }
 
         //Checks
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
-            const error_premissions = new Discord.MessageEmbed()
-                .setColor('ff2020')
+            const error_permissions = new Discord.MessageEmbed()
+                .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
 
-            message.channel.send({embeds: [error_premissions]})
+            message.channel.send({embeds: [error_permissions]})
             return;
         }
         if(!args[0]) {
             const error_missing_arguments = new Discord.MessageEmbed()
-                .setColor('ff2020')
+                .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a member to timeout."})
+                .setFooter({text: "Please provide a member to ban."})
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -139,7 +142,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a valid member to timeout."})
+                .setFooter({text: "Please provide a valid member to ban."})
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -150,48 +153,20 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**Error:** You cannot use this command on yourself.')
-                .setFooter({text: "Timeout someone else!"})
+                .setFooter({text: "Ban someone else!"})
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;
         }
-        if(!args[1]) {
-            const error_missing_arguments = new Discord.MessageEmbed()
-                .setColor('ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **1**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a timeout duration in seconds."})
 
-            message.channel.send({embeds: [error_missing_arguments]})
-            return;
-        }
-        if(isNaN(args[1]) == true) {
-            const type_error_argument_isNaN = new Discord.MessageEmbed()
-                .setColor('ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription("**TypeError:** Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int` (integer).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a valid timeout duration in seconds."})
-
-            message.channel.send({embeds: [type_error_argument_isNaN]})
-            return;
-        }
-        if(args[1] < 1 || args[1] > 3600) {
-            const range_error = new Discord.MessageEmbed()
-                .setColor('#ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription("**RangeError:** Timeout duration must be within the range **1** - **3600** seconds." + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-
-            message.channel.send({embeds: [range_error]})
-            return;
-        }
-        timeoutDuration = args[1];
-
-        //Code 
+        //Code
         messageMemberHighestRole = GetMessageMemberHighestRole(message)
         memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget)
 
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
-        Verdict(message, verdict, timeoutDuration)
+        ConfirmBanFriend(message, memberTarget)
+
+        Verdict(message, verdict)
     }
 }

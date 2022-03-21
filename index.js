@@ -22,5 +22,8 @@ client.on('ready', () => {
 
     handler(client)
 })
+client.on('guildMemberAdd', (guildMember) => {
+    guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Members"))
+})
 
 client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
