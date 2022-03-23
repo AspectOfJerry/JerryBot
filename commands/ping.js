@@ -9,15 +9,16 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#0000ff')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setColor('#2020ff')
+                .setAuthor({name: "./commands/ping.js; Lines: 47; File size: ~2.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`info`", false)
-                .setFooter({text: "./commands/ping.js; Lines: 46; File size: ~2.07 KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.send({embeds: [help_command]})
             return;

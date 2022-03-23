@@ -12,15 +12,16 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#4040ff')
+                .setColor('#2020ff')
+                .setAuthor({name: "./commands/ip_location.js; Lines: 107; File size: ~5.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command shows location information about an IP adress.')
-                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <[ARGUMENTS?]>" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <IP adress>" + "`", false)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`ping`", false)
-                .setFooter({text: "./[STRING].js; Lines: [INT]; File size: ~[NUMBER] KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -40,9 +41,6 @@ module.exports = {
         let ipAdressLatitude;
         let ipAdressLongitude;
         let ipAdressCapital;
-        let ipAdressLanguageName;
-        let ipAdressLanguageNative;
-        let ipAdressCountryFlagURL;
 
         //Declaring functions
 
@@ -67,6 +65,7 @@ module.exports = {
             return;
         }
         ipAdress = args[0];
+
         //Code
         await fetch(`http://api.ipstack.com/${ipAdress}?access_key=${process.env.IPSTACK_API_KEY_JERRY}`)
             .then(response => response.json())
@@ -84,23 +83,23 @@ module.exports = {
                 ipAdressLatitude = data.latitude;
                 ipAdressLongitude = data.longitude;
                 ipAdressCapital = data.location.capital;
-                ipAdressCountryFlagURL = data.country_flag;
 
-                    const ipAdressInfo = new Discord.MessageEmbed()
-                        .setColor('#20ff20')
-                        .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setTitle('IP adress info')
-                        .setDescription(`IP adress: ${ipAdress} (${ipAdressType})`)
-                        .addField('IP Adress type', `${ipAdressType}`, true)
-                        .addField('IP Adress continent', `${ipAdressContinentName} (${ipAdressContinentCode})`, true)
-                        .addField('IP Adress country', `${ipAdressCountryName} (${ipAdressCountryCode})`, true)
-                        .addField('IP Adress region', `${ipAdressRegionName} (${ipAdressRegionCode})`, true)
-                        .addField('IP Adress capital', `${ipAdressCapital}`, true)
-                        .addField('IP Adress city', `${ipAdressCity}`, true)
-                        .addField('IP Adress longitude', `${ipAdressLongitude}`, false)
-                        .addField('IP Adress latitude', `${ipAdressLatitude}`, false)
+                const ipAdressInfo = new Discord.MessageEmbed()
+                    .setColor('#20ff20')
+                    .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setTitle('IP adress info')
+                    .setDescription(`IP adress: ${ipAdress} (${ipAdressType})`)
+                    .addField('IP Adress type', `${ipAdressType}`, true)
+                    .addField('IP Adress continent', `${ipAdressContinentName} (${ipAdressContinentCode})`, true)
+                    .addField('IP Adress country', `${ipAdressCountryName} (${ipAdressCountryCode})`, true)
+                    .addField('IP Adress region', `${ipAdressRegionName} (${ipAdressRegionCode})`, true)
+                    .addField('IP Adress capital', `${ipAdressCapital}`, true)
+                    .addField('IP Adress city', `${ipAdressCity}`, true)
+                    .addField('IP Adress longitude', `${ipAdressLongitude}`, false)
+                    .addField('IP Adress latitude', `${ipAdressLatitude}`, false)
+                    .addField('IP Adress zip', `${ipAdressZipCode}`)
 
-                    message.channel.send({embeds: [ipAdressInfo]})
+                message.channel.send({embeds: [ipAdressInfo]})
 
             }).catch(console.error)
     }

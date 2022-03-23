@@ -10,15 +10,16 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setAuthor({name: "./commands/timeout.js; Lines: 199; File size: ~10.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command times a guild member out.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+                .addField(`Aliases`, "`freeze`", false)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
                 .addField(`Notes`, "The timeout duration must be within the range **1** - **3600** seconds.")
                 .addField('Related commands', "`mute`", false)
-                .setFooter({text: "./commands/timeout.js; Lines: 198; File size: ~10.0 KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
             message.channel.send({embeds: [help_command]})
             return;

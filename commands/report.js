@@ -9,15 +9,15 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#4040ff')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setColor('#2020ff')
+                .setAuthor({name: "./commands/report.js; Lines: 87; File size: ~4.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
                 .setDescription('This command reports a user to the staff.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive, case-insensitive`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`[STRING]`", false)
-                .setFooter({text: "./commands/testing/report.js; Lines: [INT]; File size: [NUMBER] KB"})
+                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
             message.channel.send({embeds: [help_command]})
             return;

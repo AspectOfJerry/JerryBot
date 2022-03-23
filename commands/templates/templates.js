@@ -8,16 +8,17 @@ module.exports = {
         const OPTIONAL_ARGUMENTS = "[OPTIONAL_ARGUMENTS]";
 
         const help_command = new Discord.MessageEmbed()
-            .setColor('#0000ff')
-            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setColor('#4040ff')
+            .setAuthor({name: "./commands/[STRING].js; Lines: [INT]; File size: ~[INT] KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
             .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
             .setDescription('This command [STRING].')
             .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <[ARGUMENTS?]>" + "`", false)
             .addField(`Aliases`, "`[STRING]`", false)
-            .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-            .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+            .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-in/sensitive`, true)
+            .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-in/sensitive`, true)
+            .addField(`Notes`, "[STRING]", false)
             .addField('Related commands', "`[STRING]`", false)
-            .setFooter({text: "./[STRING].js; Lines: [INT]; File size: ~[NUMBER] KB"})
+            .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
 
         message.channel.send({embeds: [help_command]})
 

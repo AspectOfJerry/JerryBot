@@ -6,7 +6,6 @@ Dark green: #20b020 (RGB: 32, 176, 32)
 Blue: #2020ff (RGB: 32, 32, 255)
 Pink: #ff20ff (RGB: 255, 32, 255)
 Yellow: #ffff20 (RGB: 255, 255, 32)
-Blue: #2020ff (RGB: 32, 32, 255)
 
 -----HTTP status codes-----
 Code                                            Meaning
