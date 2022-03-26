@@ -5,14 +5,16 @@ module.exports = {
         // const memberTarget = message.guild.members.cache.get(target.id);
 
         //Code
-        const test = new Discord.MessageEmbed()
-            .setColor('ffffff')
-            .setAuthor({name: ""})
-            .setTitle('Title')
-            .setDescription('Description :information_source: ')
+        const error_catch = new Discord.MessageEmbed()
+            .setColor('#ff20ff')
+            .setAuthor({name: "Critical Error"})
+            .setTitle("Critical error catch")
+            .setDescription("An error was caught at line `[LINE]`.")
+            .addField("code", "${error.code}", true)
+            .addField("httpsStatus", "${error.httpStatus}", true)
+            .addField("path", "${error.path}", false)
             .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-            .setTimestamp()
-
-        message.channel.send({embeds: [test]})
+        
+        message.channel.send({embeds: [error_catch]})
     }
 }

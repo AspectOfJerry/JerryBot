@@ -18,7 +18,8 @@ module.exports = {
             .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-in/sensitive`, true)
             .addField(`Notes`, "[STRING]", false)
             .addField('Related commands', "`[STRING]`", false)
-            .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setTimestamp();
 
         message.channel.send({embeds: [help_command]})
 

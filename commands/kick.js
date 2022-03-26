@@ -17,7 +17,8 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
                 .addField('Related commands', "`ban`", false)
-                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -68,9 +69,11 @@ module.exports = {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff2020')
-                    .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`**Error:** Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
+                    .setAuthor({name: "Error"})
+                    .setDescription(`Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
+                    .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp()
 
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
@@ -79,9 +82,11 @@ module.exports = {
                     .then((kickResult) => {
                         const success_kick = new Discord.MessageEmbed()
                             .setColor('20ff20')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                            .setAuthor({name: "Error"})
                             .setTitle("User kick")
                             .setDescription(`<@${message.member.user.id}> kicked <@${memberTarget.user.id}>.`)
+                            .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp()
 
                         message.channel.send({embeds: [success_kick]})
                         return;
@@ -90,21 +95,24 @@ module.exports = {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
                             .setColor('#ff20ff')
-                            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                            .setAuthor({name: "Critical Error"})
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `89`.")
                             .addField("code", `${error.code}`, true)
                             .addField("httpsStatus", `${error.httpStatus}`, true)
                             .addField("path", `${error.path}`, false)
+                            .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp()
 
                         message.channel.send({embeds: [error_catch]})
                     })
             } else {
                 const error_role_too_low = new Discord.MessageEmbed()
                     .setColor('ff2020')
-                    .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setAuthor({name: "Error"})
                     .setDescription(`**Error:** Your role is lower then <@${memberTarget.user.id}>'s role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
+                    .setTimestamp()
 
                 message.channel.send({embeds: [error_role_too_low]})
                 return;
@@ -120,8 +128,10 @@ module.exports = {
         if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setAuthor({name: "Error"})
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.send({embeds: [error_permissions]})
             return;
@@ -129,9 +139,11 @@ module.exports = {
         if(!args[0]) {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('#ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setAuthor({name: "Error"})
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a member to kick."})
+                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -140,9 +152,11 @@ module.exports = {
         if(!target) {
             const reference_error_target = new Discord.MessageEmbed()
                 .setColor('ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setAuthor({name: "Error"})
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a valid member to kick."})
+                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -151,9 +165,10 @@ module.exports = {
         if(memberTarget == message.member) {
             const error_cannot_use_on_self = new Discord.MessageEmbed()
                 .setColor('ff2020')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setAuthor({name: "Error"})
                 .setDescription('**Error:** You cannot use this command on yourself.')
-                .setFooter({text: "Kick someone else!"})
+                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;

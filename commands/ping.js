@@ -17,8 +17,8 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`info`", false)
-                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -37,7 +37,9 @@ module.exports = {
                 .setColor('#80e0e0')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .addField(`Bot latency`, `~${pingMessage.createdTimestamp - message.createdTimestamp}ms`, true)
-                .addField(`DiscordJS API latency`, `~${client.ws.ping}ms`, true);
+                .addField(`DiscordJS API latency`, `~${client.ws.ping}ms`, true)
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp()
 
             message.channel.bulkDelete(1).catch(console.error)
             message.channel.send({embeds: [pong]})

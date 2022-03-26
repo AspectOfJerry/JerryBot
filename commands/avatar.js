@@ -17,7 +17,8 @@ module.exports = {
                 .addField(`New command`, "`profile`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-in/sensitive`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-in/sensitive`, true)
-                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -31,6 +32,15 @@ module.exports = {
 
 
         //Code
+        const deprecation_warning = new Discord.MessageEmbed()
+            .setColor('#ff2020')
+            .setAuthor({name: "DeprecationWarning"})
+            .setDescription('This command is deprecated, and it is replaced by `%profile`.')
+            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setTimestamp();
+
+        message.channel.send({embeds: [deprecation_warning]})
+
         if(!args[0]) {
             const own_avatar = new Discord.MessageEmbed()
         }
@@ -42,6 +52,8 @@ module.exports = {
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                     .setFooter({text: "Please provide a valid member to show their avatar."})
+                    .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
 
                 message.channel.send({embeds: [reference_error_target]})
                 return;

@@ -7,6 +7,17 @@ Blue: #2020ff (RGB: 32, 32, 255)
 Pink: #ff20ff (RGB: 255, 32, 255)
 Yellow: #ffff20 (RGB: 255, 255, 32)
 
+
+Convention:
+
+-Use when error or warning
+.setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+.setTimestamp();
+
+-Use when success
+.setFooter({text: `${message.author.tag} • ${COMMAND_NAME}, iconURL: message.author.displayAvatarURL({dynamic: true})})
+.setTimestamp();
+
 -----HTTP status codes-----
 Code                                            Meaning
 200 OK                                          Standard response for successful HTTP requests.

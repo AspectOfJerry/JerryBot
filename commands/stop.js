@@ -18,16 +18,14 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} (case-insensitive)`, true)
                 .addField(`Notes`, "If no reason is provided, the bot will stop after 10 seconds. The user will be able to cancel the request within these 10 seconds.", false)
-                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [help_command]})
             return;
         }
 
         //Declaring variables
-        let verdict;
-        let messageMemberHighestRole;
-        let memberTargetHighestRole;
 
         //Declaring functions
 

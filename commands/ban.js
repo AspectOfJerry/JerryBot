@@ -17,7 +17,8 @@ module.exports = {
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
                 .addField('Related commands', "`kick`", false)
-                .setFooter({text: `Executed by: ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [help_command]})
             return;
@@ -71,6 +72,8 @@ module.exports = {
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`**Error:** Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
+                    .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
 
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
@@ -82,6 +85,8 @@ module.exports = {
                             .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("User ban")
                             .setDescription(`<@${message.member.user.id}> banned <@${memberTarget.user.id}>.`)
+                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
 
                         message.channel.send({embeds: [success_ban]})
                         return;
@@ -96,6 +101,8 @@ module.exports = {
                             .addField("code", `${error.code}`, true)
                             .addField("httpsStatus", `${error.httpStatus}`, true)
                             .addField("path", `${error.path}`, false)
+                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
 
                         message.channel.send({embeds: [error_catch]})
                     })
@@ -105,6 +112,8 @@ module.exports = {
                     .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`**Error:** Your role is lower then <@${memberTarget.user.id}>'s role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
+                    .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
 
                 message.channel.send({embeds: [error_role_too_low]})
                 return;
@@ -122,6 +131,8 @@ module.exports = {
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_permissions]})
             return;
@@ -132,6 +143,8 @@ module.exports = {
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a member to ban."})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -143,6 +156,8 @@ module.exports = {
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
                 .setFooter({text: "Please provide a valid member to ban."})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -154,6 +169,8 @@ module.exports = {
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription('**Error:** You cannot use this command on yourself.')
                 .setFooter({text: "Ban someone else!"})
+                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;
