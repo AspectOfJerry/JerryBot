@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "report";
-        const ROLE_REQUIRED = "everyone";
+        const REQUIRED_ROLE = "everyone";
         const EXCPECTED_ARGUMENTS = 2;
         const OPTIONAL_ARGUMENTS = 0;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
                 .setAuthor({name: "./commands/report.js; Lines: 87; File size: ~4.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command reports a user to the staff.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive, case-insensitive`, true)

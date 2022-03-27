@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = undefined;
-        const ROLE_REQUIRED = undefined;
+        const REQUIRED_ROLE = undefined;
         const EXCPECTED_ARGUMENTS = undefined;
         const OPTIONAL_ARGUMENTS = undefined;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#4040ff')
                 .setAuthor({name: "./commands/[STRING].js; Lines: [INT]; File size: ~[INT] KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command [STRING].')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <[ARGUMENTS?]>" + "`", false)
                 .addField(`Aliases`, "`[STRING]`", false)

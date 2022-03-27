@@ -5,7 +5,7 @@ module.exports = {
     callback: async (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "ip_location";
-        const ROLE_REQUIRED = "PL0";
+        const REQUIRED_ROLE = "PL0";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 0;
 
@@ -15,7 +15,7 @@ module.exports = {
                 .setColor('#2020ff')
                 .setAuthor({name: "./commands/ip_location.js; Lines: 107; File size: ~5.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command shows location information about an IP adress.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <IP adress>" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
@@ -46,7 +46,7 @@ module.exports = {
         //Declaring functions
 
         //Checks
-        if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
+        if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)

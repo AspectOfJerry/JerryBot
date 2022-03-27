@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "kick";
-        const ROLE_REQUIRED = "PL2";
+        const REQUIRED_ROLE = "PL2";
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
                 .setAuthor({name: "./commands/kick.js; Lines: 173; File size: ~8.4 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command kicks a user from the guild.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
@@ -65,15 +65,65 @@ module.exports = {
                 return "no";
             }
         }
-        function Verdict(message, verdict) {
+        function FriendProtection(message, memberTarget, verdict) {
+            if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
+                let filter = m => m.author.id === message.author.id;
+                const confirm_ban_friend = new Discord.MessageEmbed()
+                    .setColor('ffff20')
+                    .setAuthor({name: "Warning"})
+                    .setTitle("FriendProtection")
+                    .setDescription(`Are you sure you want to kick <@${memberTarget.user.id}>. They are your friend.\n` +
+                        "You have 10 seconds to send `yes` to confirm or `no` to cancel. (default: `no`)")
+                    .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
+
+                message.channel.send({embeds: [confirm_ban_friend]})
+                const collector = message.channel.createMessageCollector({
+                    filter,
+                    max: 1,
+                    time: 10000,
+                })
+                collector.on('collect', message => {
+                    if(message.content.toUpperCase() == "YES") {
+                        Verdict(message, memberTarget, verdict);
+                    } else if(message.content.toUpperCase() == "NO") {
+                        const request_canceled = new Discord.MessageEmbed()
+                            .setColor('#20ff20')
+                            .setAuthor({name: "Rejected"})
+                            .setDescription("The request was canceled.")
+                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
+
+                        message.channel.send({embeds: [request_canceled]})
+                        return;
+                    }
+                })
+                collector.on('end', collected => {
+                    if(collected.size === 0) {
+                        const request_timeout = new Discord.MessageEmbed()
+                            .setColor('#bb20ff')
+                            .setAuthor({name: "Timeout"})
+                            .setDescription("The request was canceled.")
+                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
+
+                        message.channel.send({embeds: [request_timeout]})
+                        return;
+                    }
+                })
+            } else {
+                Verdict(message, memberTarget, verdict)
+            }
+        }
+        function Verdict(message, memberTarget, verdict) {
             if(verdict == "equal") {
                 const error_equal_roles = new Discord.MessageEmbed()
                     .setColor('ff2020')
-                    .setAuthor({name: "Error"})
+                    .setAuthor({name: "PermissionError"})
                     .setDescription(`Your highest role is equal to <@${message.member.user.id}>'s highest role.`)
                     .setFooter({text: "Your role must be higher than the targeted member's role."})
-                    .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setTimestamp()
+                    .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
 
                 message.channel.send({embeds: [error_equal_roles]})
                 return;
@@ -82,11 +132,11 @@ module.exports = {
                     .then((kickResult) => {
                         const success_kick = new Discord.MessageEmbed()
                             .setColor('20ff20')
-                            .setAuthor({name: "Error"})
+                            .setAuthor({name: "Success"})
                             .setTitle("User kick")
                             .setDescription(`<@${message.member.user.id}> kicked <@${memberTarget.user.id}>.`)
-                            .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                            .setTimestamp()
+                            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
 
                         message.channel.send({embeds: [success_kick]})
                         return;
@@ -95,43 +145,38 @@ module.exports = {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
                             .setColor('#ff20ff')
-                            .setAuthor({name: "Critical Error"})
+                            .setAuthor({name: "CriticalError"})
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `89`.")
                             .addField("code", `${error.code}`, true)
                             .addField("httpsStatus", `${error.httpStatus}`, true)
                             .addField("path", `${error.path}`, false)
-                            .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                            .setTimestamp()
+                            .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            .setTimestamp();
 
                         message.channel.send({embeds: [error_catch]})
                     })
             } else {
                 const error_role_too_low = new Discord.MessageEmbed()
                     .setColor('ff2020')
-                    .setAuthor({name: "Error"})
-                    .setDescription(`**Error:** Your role is lower then <@${memberTarget.user.id}>'s role.`)
-                    .setFooter({text: "Your role must be higher than the targeted member's role."})
-                    .setTimestamp()
+                    .setAuthor({name: "PermissionError"})
+                    .setDescription(`Your role is lower then <@${memberTarget.user.id}>'s role.`)
+                    .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setTimestamp();
 
                 message.channel.send({embeds: [error_role_too_low]})
                 return;
             }
         }
-        function ConfirmBanFriend(message, memberTarget) {
-            if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
-
-            }
-        }
 
         //Checks
-        if(!message.member.roles.cache.find(role => role.name == ROLE_REQUIRED)) {
+        if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('#ff2020')
-                .setAuthor({name: "Error"})
+                .setAuthor({name: "PermissionError"})
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_permissions]})
             return;
@@ -140,10 +185,10 @@ module.exports = {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('#ff2020')
                 .setAuthor({name: "Error"})
-                .setDescription(`**Error:** Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.` + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a member to kick."})
-                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setDescription(`Excpected **${EXCPECTED_ARGUMENTS}** arguments but only provided **0**.\n` +
+                    "Please provide a member to kick.")
+                .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_missing_arguments]})
             return;
@@ -152,11 +197,11 @@ module.exports = {
         if(!target) {
             const reference_error_target = new Discord.MessageEmbed()
                 .setColor('ff2020')
-                .setAuthor({name: "Error"})
-                .setDescription('**ReferenceError:** Invalid user (not found).' + " Use " + "`" + `%${COMMAND_NAME} ?` + "`" + " for help.")
-                .setFooter({text: "Please provide a valid member to kick."})
-                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setAuthor({name: "ReferenceError"})
+                .setDescription('Invalid user (not found).\n' +
+                    "Please provide a vavlid member to kick.")
+                .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [reference_error_target]})
             return;
@@ -166,9 +211,9 @@ module.exports = {
             const error_cannot_use_on_self = new Discord.MessageEmbed()
                 .setColor('ff2020')
                 .setAuthor({name: "Error"})
-                .setDescription('**Error:** You cannot use this command on yourself.')
-                .setFooter({text: `${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setDescription('You cannot use this command on yourself.')
+                .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                .setTimestamp();
 
             message.channel.send({embeds: [error_cannot_use_on_self]})
             return;
@@ -180,8 +225,8 @@ module.exports = {
 
         verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
 
-        ConfirmBanFriend(message, memberTarget)
+        FriendProtection(message, memberTarget, verdict)
 
-        Verdict(message, verdict)
+        //Verdict(message, memberTarget, verdict)
     }
 }

@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "ping";
-        const ROLE_REQUIRED = "everyone";
+        const REQUIRED_ROLE = "everyone";
         const EXCPECTED_ARGUMENTS = 0;
         const OPTIONAL_ARGUMENTS = 0;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
                 .setAuthor({name: "./commands/ping.js; Lines: 47; File size: ~2.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)

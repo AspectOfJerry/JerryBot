@@ -2,7 +2,7 @@ module.exports = {
     callback: (message, Discord, client, ...args) => {
         //Command information
         const COMMAND_NAME = "avatar";
-        const ROLE_REQUIRED = "everyone";
+        const REQUIRED_ROLE = "everyone";
         const EXCPECTED_ARGUMENTS = 0;
         const OPTIONAL_ARGUMENTS = 1;
 
@@ -11,7 +11,7 @@ module.exports = {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#4040ff')
                 .setAuthor({name: "./commands/avatar.js; Lines: [INT]; File size: ~[INT] KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
-                .setTitle(`%${COMMAND_NAME} command help (${ROLE_REQUIRED})`)
+                .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription("**[DEPRECATED]** This command shows your user avatar or the targeted user's avatar if included.")
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user>" + "`", false)
                 .addField(`New command`, "`profile`", false)
