@@ -22,6 +22,7 @@ client.on('ready', () => {
     }
 
     handler(client)
+    require('./ready')(client)
 })
 client.on('guildMemberAdd', (guildMember) => {
     guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Members"))
