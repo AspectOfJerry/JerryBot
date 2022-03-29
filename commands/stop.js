@@ -103,7 +103,7 @@ module.exports = {
                 }
             })
         } else if(args[0]) {
-            let stopReason = args[0];
+            let stopReason = args.join(" ");
             let filter = m => m.author.id === message.author.id;
             const warning_stopping_bot = new Discord.MessageEmbed()
                 .setColor('ffff20')
@@ -150,10 +150,10 @@ module.exports = {
                         .then(() => {
                             const destroying_client = new Discord.MessageEmbed()
                                 .setColor('ff20ff')
-                                .setAuthor({name: "Client"})
+                                // .setAuthor({name: "Client"})
                                 .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                                .setTimestamp();
+                                // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                                // .setTimestamp();
 
                             message.channel.send({embeds: [destroying_client]})
                                 .then(() => {

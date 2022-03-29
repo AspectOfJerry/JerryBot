@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/timeout.js; Lines: 199; File size: ~10.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "./commands/timeout.js; Lines: 219; File size: ~11.1 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command times a guild member out.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> <time> (<reason>)" + "`", false)
@@ -27,10 +27,10 @@ module.exports = {
         }
 
         //Declaring variables
-        let verdict;
-        let timeoutDuration;
-        let messageMemberHighestRole;
         let memberTargetHighestRole;
+        let messageMemberHighestRole;
+        let timeoutDuration;
+        let verdict;
 
         //Declaring functions
         function GetMessageMemberHighestRole(message) {
@@ -97,7 +97,7 @@ module.exports = {
                         console.log(error)
                         const error_catch = new Discord.MessageEmbed()
                             .setColor('#ff20ff')
-                            .setAuthor({name: "CriticalError"})
+                            .setAuthor({name: "PromiseRejected"})
                             .setTitle("Critical error catch")
                             .setDescription("An error was caught at line `96`.")
                             .addField("code", `${error.code}`, true)
@@ -186,8 +186,8 @@ module.exports = {
             const type_error_argument_isNaN = new Discord.MessageEmbed()
                 .setColor('ff2020')
                 .setAuthor({name: "TypeError"})
-                .setDescription("Unexpected argument type. Argument 1 (`" + `${args[1]}` + '`) must be an `int`.\n' +
-                    "Please provide a valid timeout duration in seconds.")
+                .setDescription("Unexpected argument type. `" + `${args[1]}` + '` is NaN.\n' +
+                    "Please provide a timeout duration in seconds using an integer.")
                 .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
 
@@ -208,11 +208,11 @@ module.exports = {
         timeoutDuration = args[1];
 
         //Code 
-        messageMemberHighestRole = GetMessageMemberHighestRole(message)
-        memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget)
+        messageMemberHighestRole = GetMessageMemberHighestRole(message);
+        memberTargetHighestRole = GetMemberTargetHighestRole(memberTarget);
 
-        verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole)
+        verdict = CanMessageMemberExecute(messageMemberHighestRole, memberTargetHighestRole);
 
-        Verdict(message, verdict, timeoutDuration)
+        Verdict(message, verdict, timeoutDuration);
     }
 }

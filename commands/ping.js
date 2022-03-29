@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/ping.js; Lines: 47; File size: ~2.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "./commands/ping.js; Lines: 51; File size: ~2.5 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription("This command displays the client's latency as well as the websocket server's latency in milliseconds.")
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
@@ -28,18 +28,20 @@ module.exports = {
         let pong;
         const ping = new Discord.MessageEmbed()
             .setColor('#ffff00')
-            .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('sending ping...');
+            .setAuthor({name: "Waiting"})
+            .setDescription('sending ping...')
+            .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setTimestamp();
 
         //Code
         message.channel.send({embeds: [ping]}).then(pingMessage => {
             pong = new Discord.MessageEmbed()
                 .setColor('#80e0e0')
-                .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("Pong!")
                 .addField(`Bot latency`, `~${pingMessage.createdTimestamp - message.createdTimestamp}ms`, true)
                 .addField(`DiscordJS API latency`, `~${client.ws.ping}ms`, true)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                .setTimestamp()
+                .setTimestamp();
 
             message.channel.bulkDelete(1).catch(console.error)
             message.channel.send({embeds: [pong]})
