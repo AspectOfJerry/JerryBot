@@ -24,6 +24,7 @@
     "discord-buttons": "^4.0.0-deprecated",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "window-fetch": "^0.0.13"
+    "window-fetch": "^0.0.13",
+    "ytdl-core": "^4.11.0"
   }
 }
