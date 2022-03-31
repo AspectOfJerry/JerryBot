@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/stop.js; Lines: 169; File size: ~9.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "./commands/stop.js; Lines: 145; File size: ~8.0 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command stops the bot.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " (<reason>)" + "`", false)
@@ -75,10 +75,10 @@ module.exports = {
                         .setColor('#ff20ff')
                         .setAuthor({name: "Client"})
                         .setTitle("Bot shutdown")
-                        .setDescription("A user requested a bot shutdown.")
-                        .addField("Name", `${message.author.username}`, true)
-                        .addField("Discriminator", `${message.author.discriminator}`, true)
-                        .addField("User ID", `${message.author.id}`, false)
+                        .setDescription(`<@${message.member.user.id}> requested a bot shutdown.`)
+                        // .addField("Name", `${message.author.username}`, true)
+                        // .addField("Discriminator", `${message.author.discriminator}`, true)
+                        // .addField("User ID", `${message.author.id}`, true)
                         .addField("Channel ID", `${message.channel.id}`, false)
                         .addField("Timestamp (message.createdAt)", `${message.createdAt}`, false)
                         .addField("Reason", 'No reason was provided.', false)
@@ -89,13 +89,16 @@ module.exports = {
                         .then(() => {
                             const destroying_client = new Discord.MessageEmbed()
                                 .setColor('ff20ff')
-                                .setAuthor({name: "Client"})
+                                // .setAuthor({name: "Client"})
                                 .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                                .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                                .setTimestamp();
+                            // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                            // .setTimestamp();
 
                             message.channel.send({embeds: [destroying_client]})
                                 .then(() => {
+                                    console.log(`Stopping the bot\n` +
+                                        `Reason: No reason was provided.\n` +
+                                        `Timestamp: ${message.createdAt}`);
                                     client.destroy()
                                     process.exit();
                                 })
@@ -104,65 +107,38 @@ module.exports = {
             })
         } else if(args[0]) {
             let stopReason = args.join(" ");
-            let filter = m => m.author.id === message.author.id;
-            const warning_stopping_bot = new Discord.MessageEmbed()
-                .setColor('ffff20')
-                .setAuthor({name: "Warning"})
-                .setDescription("__The bot will stop in **3** seconds__. You can cancel the request within these 3 seconds by sending any message.")
+            const request_resolve_stop = new Discord.MessageEmbed()
+                .setColor('#ff20ff')
+                .setAuthor({name: "Client"})
+                .setTitle("Bot shutdown")
+                .setDescription(`<@${message.member.user.id}> requested a bot shutdown.`)
+                // .addField("Name", `${message.author.username}`, true)
+                // .addField("Discriminator", `${message.author.discriminator}`, true)
+                // .addField("User ID", `${message.author.id}`, true)
+                .addField("Channel ID", `${message.channel.id}`, false)
+                .addField("Timestamp (message.createdAt)", `${message.createdAt}`, false)
                 .addField("Reason", `${stopReason}`, false)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
 
-            message.channel.send({embeds: [warning_stopping_bot]})
-            const collector = message.channel.createMessageCollector({
-                filter,
-                max: 1,
-                time: 3000,
-            })
-            collector.on('collect', message => {
-                const request_canceled = new Discord.MessageEmbed()
-                    .setColor('#20ff20')
-                    .setAuthor({name: "Rejected"})
-                    .setDescription("The request was canceled.")
-                    .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setTimestamp();
+            message.channel.send({embeds: [request_resolve_stop]})
+                .then(() => {
+                    const destroying_client = new Discord.MessageEmbed()
+                        .setColor('ff20ff')
+                        // .setAuthor({name: "Client"})
+                        .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
+                    // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    // .setTimestamp();
 
-                message.channel.send({embeds: [request_canceled]})
-                return;
-            })
-            collector.on('end', collected => {
-                if(collected.size === 0) {
-                    const request_resolve_stop = new Discord.MessageEmbed()
-                        .setColor('#ff20ff')
-                        .setAuthor({name: "Client"})
-                        .setTitle("Bot shutdown")
-                        .setDescription("A user requested a bot shutdown.")
-                        .addField("Name", `${message.author.username}`, true)
-                        .addField("Discriminator", `${message.author.discriminator}`, true)
-                        .addField("User ID", `${message.author.id}`, false)
-                        .addField("Channel ID", `${message.channel.id}`, false)
-                        .addField("Timestamp (message.createdAt)", `${message.createdAt}`, false)
-                        .addField("Reason", `${stopReason}`, false)
-                        .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                        .setTimestamp();
-
-                    message.channel.send({embeds: [request_resolve_stop]})
+                    message.channel.send({embeds: [destroying_client]})
                         .then(() => {
-                            const destroying_client = new Discord.MessageEmbed()
-                                .setColor('ff20ff')
-                                // .setAuthor({name: "Client"})
-                                .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                                // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                                // .setTimestamp();
-
-                            message.channel.send({embeds: [destroying_client]})
-                                .then(() => {
-                                    client.destroy()
-                                    process.exit();
-                                })
+                            console.log(`Stopping the bot\n` +
+                                `Reason: ${stopReason}\n` +
+                                `Timestamp: ${message.createdAt}`);
+                            client.destroy()
+                            process.exit();
                         })
-                }
-            })
+                })
         }
     }
 }
