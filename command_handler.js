@@ -25,6 +25,14 @@ module.exports = (client) => {
     console.log(commands)
 
     client.on('messageCreate', (message) => {
+        if(message.author.bot) {
+            return;
+        }
+        //JerryBot Video Detection Module
+        if(message.content.includes("https://www.youtube.com/watch") || message.content.includes("https://youtu.be")) {
+            const args = message.content.split(/ +/)
+            require('./events/rickroll_detection_module')(message, Discord, client, ...args)
+        }
 
         if(message.author.bot || !message.content.startsWith(command_prefix)) {
             return;

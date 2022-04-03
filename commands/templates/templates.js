@@ -24,6 +24,14 @@ module.exports = {
         message.channel.send({embeds: [help_command]})
 
         //Error messages
+        const error_permissions = new Discord.MessageEmbed()
+            .setColor('#ff2020')
+            .setAuthor({name: "PermissionError"})
+            .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+            .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+            .setTimestamp();
+
+        message.channel.send({embeds: [error_permissions]})
         const error_missing_arguments = new Discord.MessageEmbed()
             .setColor('#ff2020')
             .setAuthor({name: "Error"})
