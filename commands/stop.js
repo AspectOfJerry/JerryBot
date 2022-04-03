@@ -10,7 +10,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "dir: ./commands/stop.js; Lines: 145; File size: ~7.9 KB"})
+                .setAuthor({name: "dir: ./commands/stop.js; Lines: 139; File size: ~7.4 KB"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command stops the bot.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " (<reason>)" + "`", false)
@@ -89,10 +89,7 @@ module.exports = {
                         .then(() => {
                             const destroying_client = new Discord.MessageEmbed()
                                 .setColor('ff20ff')
-                                // .setAuthor({name: "Client"})
                                 .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                                // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                                // .setTimestamp();
 
                             message.channel.send({embeds: [destroying_client]})
                                 .then(() => {
@@ -125,10 +122,7 @@ module.exports = {
                 .then(() => {
                     const destroying_client = new Discord.MessageEmbed()
                         .setColor('ff20ff')
-                        // .setAuthor({name: "Client"})
                         .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                        // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                        // .setTimestamp();
 
                     message.channel.send({embeds: [destroying_client]})
                         .then(() => {

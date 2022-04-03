@@ -13,7 +13,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#4040ff')
-                .setAuthor({name: "./commands/api/hypixel/hypixel_api.js; Lines: 107; File size: ~5.7 KB"})
+                .setAuthor({name: "dir: ./commands/api/hypixel/hypixel_api.js; Lines: 107; File size: ~5.6 KB"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command makes an API call to `https://api.hypixel.net/key`.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + "`", false)
