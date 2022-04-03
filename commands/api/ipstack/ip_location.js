@@ -1,5 +1,5 @@
+require('dotenv').config();
 const fetch = require('window-fetch');
-require('dotenv').config()
 
 module.exports = {
     callback: async (message, Discord, client, ...args) => {
@@ -13,7 +13,7 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/ip_location.js; Lines: 107; File size: ~5.2 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "dir: ./commands/api/ipstack/ip_location.js; Lines: 127; File size: ~6.5 KB"})
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command shows location information about an IP adress.')
@@ -70,20 +70,40 @@ module.exports = {
         //Code
         await fetch(`http://api.ipstack.com/${ipAdress}?access_key=${process.env.IPSTACK_API_KEY_JERRY}`)
             .then(response => response.json())
-            .then(data => {
-                ipAdress = data.ip
-                ipAdressType = data.type
-                ipAdressContinentCode = data.continent_code;
-                ipAdressContinentName = data.continent_name;
-                ipAdressCountryCode = data.country_code;
-                ipAdressCountryName = data.country_name;
-                ipAdressRegionCode = data.region_code;
-                ipAdressRegionName = data.region_name;
-                ipAdressCity = data.city;
-                ipAdressZipCode = data.zip;
-                ipAdressLatitude = data.latitude;
-                ipAdressLongitude = data.longitude;
-                ipAdressCapital = data.location.capital;
+            .then(response => {
+                if(String(response.success) == "false") {
+                    let error_response_success = response.success;
+                    let error_response_code = response.error.code;
+                    let error_response_type = response.error.type;
+                    let error_response_info = response.error.info;
+                    const error_response = new Discord.MessageEmbed()
+                        .setColor('ff2020')
+                        .setAuthor({name: "Error"})
+                        .setTitle("Response")
+                        .setDescription("An error was returned from the API.")
+                        .addField("Success", `${error_response_success}`, true)
+                        .addField("Code", `${error_response_code}`, true)
+                        .addField("Type", `${error_response_type}`, true)
+                        .addField("Info", `${error_response_info}`, false)
+                        .setFooter({text: `${message.author.tag} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                        .setTimestamp();
+
+                    message.channel.send({embeds: [error_response]})
+                    return;
+                }
+                ipAdress = response.ip
+                ipAdressType = response.type
+                ipAdressContinentCode = response.continent_code;
+                ipAdressContinentName = response.continent_name;
+                ipAdressCountryCode = response.country_code;
+                ipAdressCountryName = response.country_name;
+                ipAdressRegionCode = response.region_code;
+                ipAdressRegionName = response.region_name;
+                ipAdressCity = response.city;
+                ipAdressZipCode = response.zip;
+                ipAdressLatitude = response.latitude;
+                ipAdressLongitude = response.longitude;
+                ipAdressCapital = response.location.capital;
 
                 const ipAdressInfo = new Discord.MessageEmbed()
                     .setColor('#20ff20')
@@ -101,7 +121,6 @@ module.exports = {
                     .addField('IP Adress zip', `${ipAdressZipCode}`)
 
                 message.channel.send({embeds: [ipAdressInfo]})
-
             }).catch(console.error)
     }
 }

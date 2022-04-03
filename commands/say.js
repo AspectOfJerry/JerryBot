@@ -9,13 +9,13 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#4040ff')
-                .setAuthor({name: "./commands/say.js; Lines: 55; File size: ~2.4 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setColor('#2020ff')
+                .setAuthor({name: "dir: ./commands/say.js; Lines: 55; File size: ~2.3 KB"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command sends a message in the current channel.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <string>" + "`", false)
                 .addField(`Aliases`, "`write`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
                 .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`send`", false)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})

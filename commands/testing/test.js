@@ -12,6 +12,5 @@ module.exports = {
 
         //Code
 
-        console.log(message.client)
     }
 }

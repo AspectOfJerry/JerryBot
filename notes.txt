@@ -9,15 +9,8 @@ Yellow: #ffff20 (RGB: 255, 255, 32)
 Purple: #bb20ff (RGB: 187, 32, 255)
 
 
-Convention:
-
--Use when error or warning
-.setFooter({text: `${message.author.tag} • ${COMMAND_NAME} • Use '%${COMMAND_NAME} ?' for help`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-.setTimestamp();
-
--Use when success
-.setFooter({text: `${message.author.tag} • ${COMMAND_NAME}, iconURL: message.author.displayAvatarURL({dynamic: true})})
-.setTimestamp();
+Useful links:
+Hypixel Network levels: https://github.com/HypixelDev/PublicAPI/wiki/Common-Questions#how-do-i-find-a-players-network-level
 
 -----HTTP status codes-----
 Code                                            Meaning

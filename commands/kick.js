@@ -10,12 +10,12 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/kick.js; Lines: 173; File size: ~8.4 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "dir: ./commands/kick.js; Lines: 233; File size: ~11.7 KB"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command kicks a user from the guild.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " <user> (<reason>)" + "`", false)
-                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS} case-sensitive`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} case-insensitive`, true)
+                .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
                 .addField('Related commands', "`ban`", false)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();

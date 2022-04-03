@@ -22,7 +22,7 @@ client.on('ready', () => {
     }
 
     handler(client)
-    require('./events/ready')(client)
+    require('./events/ready_event')(Discord, client)
 })
 client.on('guildMemberAdd', (guildMember) => {
     guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Members"))

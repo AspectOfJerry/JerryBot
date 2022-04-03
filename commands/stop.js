@@ -10,14 +10,14 @@ module.exports = {
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
                 .setColor('#2020ff')
-                .setAuthor({name: "./commands/stop.js; Lines: 145; File size: ~8.0 KB", iconURL: "https://winaero.com/blog/wp-content/uploads/2018/12/file-explorer-folder-libraries-icon-18298.png"})
+                .setAuthor({name: "dir: ./commands/stop.js; Lines: 145; File size: ~7.9 KB"})
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
                 .setDescription('This command stops the bot.')
                 .addField(`Usage`, "`" + `%${COMMAND_NAME}` + " (<reason>)" + "`", false)
                 .addField(`Aliases`, "`end`, `kill`, `shutdown`, `terminate`", false)
                 .addField(`Excpected arguments`, `${EXCPECTED_ARGUMENTS}`, true)
-                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS} (case-insensitive)`, true)
-                .addField(`Notes`, "If no reason is provided, the bot will stop after 15 seconds. The user will be able to cancel the request within these 15 seconds.", false)
+                .addField(`Optional arguments`, `${OPTIONAL_ARGUMENTS}`, true)
+                .addField(`Notes`, "If no reason is provided, the bot will stop after 10 seconds. The user will be able to cancel the request within these 10 seconds.", false)
                 .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                 .setTimestamp();
 
@@ -56,7 +56,7 @@ module.exports = {
             const collector = message.channel.createMessageCollector({
                 filter,
                 max: 1,
-                time: 15000,
+                time: 10000,
             })
             collector.on('collect', message => {
                 const request_canceled = new Discord.MessageEmbed()
@@ -91,8 +91,8 @@ module.exports = {
                                 .setColor('ff20ff')
                                 // .setAuthor({name: "Client"})
                                 .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                            // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                            // .setTimestamp();
+                                // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                                // .setTimestamp();
 
                             message.channel.send({embeds: [destroying_client]})
                                 .then(() => {
@@ -127,8 +127,8 @@ module.exports = {
                         .setColor('ff20ff')
                         // .setAuthor({name: "Client"})
                         .setDescription("Destroying the client and terminating the NodeJS process with code 0...")
-                    // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    // .setTimestamp();
+                        // .setFooter({text: `${message.author.tag} • ${COMMAND_NAME}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                        // .setTimestamp();
 
                     message.channel.send({embeds: [destroying_client]})
                         .then(() => {
