@@ -1,6 +1,10 @@
 const fs = require('fs');
 const GetFiles = require('./get_files')
 const Discord = require('discord.js')
+const {Collection} = require('discocrd.js')
+const {Intents} = Discord
+const {REST} = require('@discordjs/rest')
+const {Routes} = require('@discordjs/-api-types/v9')
 
 module.exports = (client) => {
     const command_prefix = "%"
@@ -10,6 +14,7 @@ module.exports = (client) => {
 
     console.log(`Command files: ${command_files}`)
 
+    client.commands = new Collection();
     for(const command of command_files) {
         let command_file = require(command)
         if(command_file.default) {
@@ -31,7 +36,7 @@ module.exports = (client) => {
         //JerryBot Video Detection Module
         if(message.content.includes("https://www.youtube.com/watch") || message.content.includes("https://youtu.be")) {
             const args = message.content.split(/ +/)
-            require('./events/rickroll_detection_module')(message, Discord, client, ...args)
+            require('../../events/rickroll_detection_module')(message, Discord, client, ...args)
         }
 
         if(message.author.bot || !message.content.startsWith(command_prefix)) {
