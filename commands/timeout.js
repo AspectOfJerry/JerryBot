@@ -25,6 +25,9 @@ module.exports = {
                 .setRequired(false)
         ),
     async execute(client, interaction) {
+        //Command information
+        const REQUIRED_ROLE = "PL3";
+        
         //Declaring variables
         const target = interaction.options.getUser('user')
         const duration = interaction.options.getString('duration')
@@ -34,7 +37,16 @@ module.exports = {
         const durationInMs = ms(duration)
 
         //Check
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+            const error_permissions = new MessageEmbed()
+                .setColor('#ff2020')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
+            interaction.reply({embeds: [error_permissions]})
+            return;
+        }
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('ff2020')
@@ -57,6 +69,28 @@ module.exports = {
             interaction.reply({embeds: [error_duration], ephemeral: false});
             return;
         }
+        //Role position check---
+        if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
+            const error_role_too_low = new MessageEmbed()
+                .setColor('ff2020')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
+
+            interaction.reply({embeds: [error_role_too_low]})
+            return;
+        }
+        if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
+            const error_equal_roles = new MessageEmbed()
+                .setColor('ff2020')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
+
+            interaction.reply({embeds: [error_equal_roles]})
+            return;
+        }
+        //---Role position check
 
         //Code
         memberTarget.timeout(durationInMs, reason)
