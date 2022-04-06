@@ -12,8 +12,13 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(client, interaction) {
+        //Command information
+        const REQUIRED_ROLE = "everyone";
+        
         //Declaring variables
         let message = interaction.options.getString("string")
+
+        //Checks
 
         //Code
         interaction.reply({content: `Input message: ${message}`, ephemeral: true})

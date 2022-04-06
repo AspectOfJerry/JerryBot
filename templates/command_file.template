@@ -1,0 +1,27 @@
+const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {SlashCommandBuilder} = require("@discordjs/builders");
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName("NAME")
+        .setDescription("DESCRIPTION")
+        .addStringOption((options) =>
+            options
+                .setName("NAME")
+                .setDescription("DESCRIPTION")
+                .setRequired(true / false)
+        ),
+    async execute(client, interaction) {
+        //Command information
+        const REQUIRED_ROLE = "";
+
+        //Declaring variables
+        // const target = interaction.options.getUser('user');
+        // const memberTarget = interaction.guild.members.cache.get(target.id);
+
+        //Checks
+
+        //Code
+
+    }
+}

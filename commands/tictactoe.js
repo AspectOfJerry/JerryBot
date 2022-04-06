@@ -14,7 +14,12 @@ module.exports = {
                 .setRequired(false)
         ),
     async execute(client, interaction) {
+        //Command information
+        const REQUIRED_ROLE = "everyone";
+        
         //Declaring variables
+
+        //Checks
 
         //Code
         game.handleInteraction(interaction);

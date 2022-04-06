@@ -1,42 +1,47 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const ms = require('ms')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("timeout")
-        .setDescription("Times out a member for a specified amount of time.")
+        .setName("ban")
+        .setDescription("Bans a user from the guild.")
         .addUserOption((options) =>
             options
                 .setName("user")
-                .setDescription("The user to timeout.")
+                .setDescription("The user to ban.")
                 .setRequired(true)
         )
-        .addStringOption((options) =>
+        .addIntegerOption((options) =>
             options
                 .setName("duration")
-                .setDescription("The amount of time to timeout the member for.")
-                .setRequired(true)
+                .setDescription("The duration of the ban in days (0 to 7). Defaults to 0 (no duration).")
+                .addChoice("No duration", 0)
+                .addChoice("1 day", 1)
+                .addChoice("2 days", 2)
+                .addChoice("3 days", 3)
+                .addChoice("4 days", 4)
+                .addChoice("5 days", 5)
+                .addChoice("6 days", 6)
+                .addChoice("7 days", 7)
+                .setRequired(false)
         )
         .addStringOption((options) =>
             options
                 .setName("reason")
-                .setDescription("The reason for the timeout.")
+                .setDescription("The reason for the ban.")
                 .setRequired(false)
         ),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "PL3";
+        const REQUIRED_ROLE = "PL1";
 
         //Declaring variables
-        const target = interaction.options.getUser('user')
-        const duration = interaction.options.getString('duration')
-        let reason = interaction.options.getString('reason') 
-        const memberTarget = interaction.guild.members.cache.get(target.id)
+        const target = interaction.options.getUser('user');
+        let reason = interaction.options.getString('reason');
+        let banDuration = interaction.options.getInteger('duration')
+        const memberTarget = interaction.guild.members.cache.get(target.id);
 
-        const durationInMs = ms(duration)
-
-        //Checks
+        //Check
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('#ff2020')
@@ -44,7 +49,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            interaction.reply({embeds: [error_permissions]})
+            interaction.reply({embeds: [error_permissions], ephemeral: false});
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -52,20 +57,9 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription('You cannot timeout yourself.')
+                .setDescription('You cannot ban yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
-            return;
-        }
-        if(!durationInMs) {
-            const error_duration = new MessageEmbed()
-                .setColor('#ff2020')
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('Error')
-                .setDescription('Invalid duration. Please use a valid duration.')
-                .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*")
-
-            interaction.reply({embeds: [error_duration], ephemeral: false});
             return;
         }
         //Role position check---
@@ -76,7 +70,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]})
+            interaction.reply({embeds: [error_role_too_low], ephemeral: false});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -84,24 +78,30 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("PermissionError")
-                .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
+                .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]})
+            interaction.reply({embeds: [error_equal_roles], ephemeral: false});
             return;
         }
         //---Role position check
 
         //Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
-        memberTarget.timeout(durationInMs, reason)
-            .then(timeoutResult => {
-                const success_timeout = new MessageEmbed()
+        banDuration = banDuration ? banDuration : 0;
+        memberTarget.ban(banDuration, reason)
+            .then(banResult => {
+                if(banDuration == 0) {
+                    banDuration == "";
+                } else {
+                    banDuration = ` for ${banDuration} days`;
+                }
+                const success_ban = new MessageEmbed()
                     .setColor('20ff20')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle("User timeout")
-                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
+                    .setTitle("GuildMember ban")
+                    .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
 
-                interaction.reply({embeds: [success_timeout], ephemeral: false});
+                interaction.reply({embeds: [success_ban], ephemeral: false});
             })
     }
 }

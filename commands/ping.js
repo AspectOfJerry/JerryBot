@@ -8,7 +8,8 @@ module.exports = {
 
     async execute(client, interaction) {
         //Command information
-
+        const REQUIRED_ROLE = "everyone";
+        
         //Code
         let pong;
         const ping = new MessageEmbed()
@@ -16,10 +17,9 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('sending ping...')
 
-        //Code
         interaction.channel.send({embeds: [ping]}).then(pingMessage => {
             pong = new MessageEmbed()
-                .setColor('#80e0e0')
+                .setColor('#20ff20')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
                 .addField(`Bot latency`, `~${pingMessage.createdTimestamp - interaction.createdTimestamp}ms`, true)
