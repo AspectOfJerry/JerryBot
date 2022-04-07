@@ -1,1 +1,0 @@
-//%goto <channelID> (<user/all>)

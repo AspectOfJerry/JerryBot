@@ -13,6 +13,7 @@ const client = new Client({
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_VOICE_STATES,
     ]
 })
 
@@ -88,7 +89,9 @@ client.on('interactionCreate', async interaction => {
 
 client.on('guildMemberAdd', (guildMember) => {
     if(guildMember.guild.id == process.env.DISCORD_JERRY_GUILD_ID) {
-        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Members"))
+        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "GuildMember"))
+    } else if(guildMember.guild.id == process.env.DISCORD_CRA_GUILD_ID) {
+        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Person"))
     }
 })
 
