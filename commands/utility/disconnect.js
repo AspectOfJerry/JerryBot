@@ -3,29 +3,34 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("disconnect")
+        .setName('disconnect')
         .setDescription("Disconnect a user from their voice channel.")
         .addUserOption((options) =>
             options
-                .setName("user")
+                .setName('user')
                 .setDescription("The user to disconnect.")
-                .setRequired(false)
-        )
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
-                .setName("all")
+                .setName('all')
                 .setDescription("If you want to disconnect everyone in the targted user's voice channel.")
-                .setRequired(false)
-        ),
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
+
         const isAll = interaction.options.getBoolean('all') || false;
-        
+
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -34,7 +39,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            interaction.reply({embeds: [error_permissions], ephemeral: false});
+            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
 
@@ -45,7 +50,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`)
 
-            interaction.reply({embeds: [user_not_in_vc], ephemeral: false});
+            interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
             return;
         }
         if(!isAll) {
@@ -57,7 +62,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${voice_channel}.`)
 
-                    interaction.reply({embeds: [disconnect_success], ephemeral: false});
+                    interaction.reply({embeds: [disconnect_success], ephemeral: is_ephemeral});
                 })
         } else {
             const voice_channel = memberTarget.voice.channel;
@@ -67,7 +72,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting all ${member_count} members from ${voice_channel}...`)
 
-            interaction.reply({embeds: [disconnecting_members], ephemeral: false});
+            interaction.reply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
 
             memberTarget.voice.channel.members.forEach(member => {
                 let voice_channel = member.voice.channel
@@ -78,7 +83,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully disconnected <@${member.id}> from ${voice_channel}.`)
 
-                        interaction.channel.send({embeds: [disconnect_success], ephemeral: false});
+                        interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
                     })
             })
         }

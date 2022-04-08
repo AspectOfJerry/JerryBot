@@ -3,28 +3,33 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("kick")
+        .setName('kick')
         .setDescription("Kicks a user from the guild.")
         .addUserOption((options) =>
             options
-                .setName("user")
+                .setName('user')
                 .setDescription("The user to kick.")
-                .setRequired(true)
-        )
+                .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName("reason")
+                .setName('reason')
                 .setDescription("The reason for the kick.")
-                .setRequired(false)
-        ),
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "PL2";
 
         //Declaring variables
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
         const target = interaction.options.getUser('user');
-        let reason = interaction.options.getString('reason');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+
+        let reason = interaction.options.getString('reason');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -34,7 +39,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            interaction.reply({embeds: [error_permissions], ephemeral: false});
+            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -44,7 +49,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot kick yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
+            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
         }
         //Role position check---
@@ -55,7 +60,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low], ephemeral: false});
+            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -65,7 +70,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles], ephemeral: false});
+            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
         //---Role position check
@@ -80,7 +85,7 @@ module.exports = {
                     .setTitle("GuildMember kick")
                     .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
 
-                interaction.reply({embeds: [success_kick], ephemeral: false});
+                interaction.reply({embeds: [success_kick], ephemeral: is_ephemeral});
             })
     }
 }

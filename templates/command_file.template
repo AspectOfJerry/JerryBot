@@ -3,23 +3,38 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("NAME")
+        .setName('NAME')
         .setDescription("DESCRIPTION")
         .addStringOption((options) =>
             options
-                .setName("NAME")
+                .setName('NAME')
                 .setDescription("DESCRIPTION")
-                .setRequired(true / false)
-        ),
+                .setRequired(true / false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "";
 
         //Declaring variables
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
         // const target = interaction.options.getUser('user');
         // const memberTarget = interaction.guild.members.cache.get(target.id);
 
         //Checks
+        /*if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+            const error_permissions = new MessageEmbed()
+                .setColor('#ff2020')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle("PermissionError")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
+
+            interaction.reply({embeds: [error_permissions], ephemeral: false});
+            return;
+        }*/
 
         //Code
 

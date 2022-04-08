@@ -3,29 +3,33 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("untimeout")
+        .setName('untimeout')
         .setDescription("Untimes out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
-                .setName("user")
+                .setName('user')
                 .setDescription("The user to untimeout.")
-                .setRequired(true)
-        )
+                .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName("reason")
+                .setName('reason')
                 .setDescription("The reason for the untimeout.")
-                .setRequired(false)
-        ),
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
-        const target = interaction.options.getUser('user')
-        let reason = interaction.options.getString('reason')
-        const memberTarget = interaction.guild.members.cache.get(target.id)
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const target = interaction.options.getUser('user');
+        const memberTarget = interaction.guild.members.cache.get(target.id);
 
+        let reason = interaction.options.getString('reason');
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -34,7 +38,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            interaction.reply({embeds: [error_permissions]})
+            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral})
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -55,7 +59,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]})
+            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral})
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -65,7 +69,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]})
+            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral})
             return;
         }
         //---Role position check
@@ -80,7 +84,7 @@ module.exports = {
                     .setTitle("User untimeout")
                     .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
 
-                interaction.reply({embeds: [success_untimeout], ephemeral: false});
+                interaction.reply({embeds: [success_untimeout], ephemeral: is_ephemeral});
             })
     }
 }

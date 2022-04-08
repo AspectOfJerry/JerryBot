@@ -4,26 +4,32 @@ const weather = require('weather-js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("weather")
+        .setName('weather')
         .setDescription("Send the weather for a given location.")
         .addStringOption((options) =>
             options
-                .setName("location")
+                .setName('location')
                 .setDescription("City or ZIP code.")
-                .setRequired(true)
-        ).addStringOption((options) =>
+                .setRequired(true))
+        .addStringOption((options) =>
             options
-                .setName("unit")
+                .setName('unit')
                 .setDescription("The unit of measurement for temperatures (C or F). Defaults to 'C'")
-                .addChoice("C", "C")
-                .addChoice("F", "F")
-                .setRequired(false)
-        ),
+                .addChoice('C', "C")
+                .addChoice('F', "F")
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
 

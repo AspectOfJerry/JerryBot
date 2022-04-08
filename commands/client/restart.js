@@ -3,13 +3,13 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription("Sends a message to the current channel.")
+        .setName('restart')
+        .setDescription("Restarts the bot.")
         .addStringOption((options) =>
             options
-                .setName('message')
-                .setDescription("The message to send.")
-                .setRequired(true))
+                .setName('reason')
+                .setDescription("The reason for the restart request.")
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -17,17 +17,14 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "everyone";
+        const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        
-        let message = interaction.options.getString("string");
 
         //Checks
 
         //Code
-        interaction.reply({content: `Input message: ${message}`, ephemeral: true})
-        interaction.channel.send({content: `${message}`, ephemeral: false})
+
     }
 }

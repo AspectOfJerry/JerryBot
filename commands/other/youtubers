@@ -3,13 +3,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription("Sends a message to the current channel.")
-        .addStringOption((options) =>
-            options
-                .setName('message')
-                .setDescription("The message to send.")
-                .setRequired(true))
+        .setName('youtubers')
+        .setDescription("Sends the list of verified users in the guild that own a YouTube channel.")
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -22,12 +17,9 @@ module.exports = {
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
         
-        let message = interaction.options.getString("string");
-
         //Checks
 
         //Code
-        interaction.reply({content: `Input message: ${message}`, ephemeral: true})
-        interaction.channel.send({content: `${message}`, ephemeral: false})
+
     }
 }

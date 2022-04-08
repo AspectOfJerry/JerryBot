@@ -3,12 +3,12 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription("Sends a message to the current channel.")
-        .addStringOption((options) =>
+        .setName('purge')
+        .setDescription("Purges a certain amount of messages in this channel.")
+        .addIntegerOption((options) =>
             options
-                .setName('message')
-                .setDescription("The message to send.")
+                .setName('amount')
+                .setDescription("The amount of messages to delete.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
@@ -17,17 +17,17 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "everyone";
+        const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        
-        let message = interaction.options.getString("string");
+
+        const amount = interaction.options.getInteger('amount');
+        const channel = interaction.channel;
 
         //Checks
 
         //Code
-        interaction.reply({content: `Input message: ${message}`, ephemeral: true})
-        interaction.channel.send({content: `${message}`, ephemeral: false})
+
     }
 }

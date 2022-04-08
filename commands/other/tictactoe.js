@@ -5,18 +5,17 @@ const game = new TicTacToe({language: 'en'});
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("tictactoe")
+        .setName('tictactoe')
         .setDescription("Game of Tic Tac Toe with buttons.")
         .addUserOption((options) =>
             options
-                .setName("opponent")
+                .setName('opponent')
                 .setDescription("Who you want to play against.")
-                .setRequired(false)
-        ),
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
-        
+
         //Declaring variables
 
         //Checks

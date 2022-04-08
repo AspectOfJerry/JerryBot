@@ -4,35 +4,40 @@ const ms = require('ms')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("timeout")
+        .setName('timeout')
         .setDescription("Times out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
-                .setName("user")
+                .setName('user')
                 .setDescription("The user to timeout.")
-                .setRequired(true)
-        )
+                .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName("duration")
+                .setName('duration')
                 .setDescription("The amount of time to timeout the member for.")
-                .setRequired(true)
-        )
+                .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName("reason")
+                .setName('reason')
                 .setDescription("The reason for the timeout.")
-                .setRequired(false)
-        ),
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
+                .setName('ephemeral')
+                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
-        const target = interaction.options.getUser('user')
-        const duration = interaction.options.getString('duration')
-        let reason = interaction.options.getString('reason') 
-        const memberTarget = interaction.guild.members.cache.get(target.id)
+        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const target = interaction.options.getUser('user');
+        const memberTarget = interaction.guild.members.cache.get(target.id);
+
+        const duration = interaction.options.getString('duration');
+        let reason = interaction.options.getString('reason');
+
 
         const durationInMs = ms(duration)
 
@@ -54,7 +59,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.')
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
+            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
         }
         if(!durationInMs) {
@@ -65,7 +70,7 @@ module.exports = {
                 .setDescription('Invalid duration. Please use a valid duration.')
                 .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*")
 
-            interaction.reply({embeds: [error_duration], ephemeral: false});
+            interaction.reply({embeds: [error_duration], ephemeral: is_ephemeral});
             return;
         }
         //Role position check---
@@ -76,7 +81,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]})
+            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral})
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -86,7 +91,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]})
+            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral})
             return;
         }
         //---Role position check
@@ -101,7 +106,7 @@ module.exports = {
                     .setTitle("User timeout")
                     .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
 
-                interaction.reply({embeds: [success_timeout], ephemeral: false});
+                interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
             })
     }
 }
