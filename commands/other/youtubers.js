@@ -16,10 +16,10 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        
+
         //Checks
 
         //Code
-
+        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }

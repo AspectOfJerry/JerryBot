@@ -1,20 +1,16 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const Docs = require('discord.js-docs');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('unban')
-        .setDescription("Unbans a user form the guild.")
-        .addUserOption((options) =>
-            options
-                .setName('user')
-                .setDescription("The user to unban.")
-                .setRequired(true))
+        .setName('documentation')
+        .setDescription("Discord.js documentation search tool.")
         .addStringOption((options) =>
             options
-                .setName('reason')
-                .setDescription("The reason for the unban.")
-                .setRequired(false))
+                .setName('search')
+                .setDescription("The search term to search for.")
+                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -22,14 +18,10 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "PL1";
+        const REQUIRED_ROLE = "eveyrone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        const target = interaction.options.getUser('user');
-        const memberTarget = interaction.guild.members.cache.get(target.id);
-
-        const reason = interaction.options.getString('reason');
 
         //Checks
 

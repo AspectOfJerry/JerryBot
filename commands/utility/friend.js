@@ -5,6 +5,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('friend')
         .setDescription("Adds or removes a friend (adds or removes the friend role from a user).")
+        .addUserOption((options) =>
+            options
+                .setName('user')
+                .setDescription("The user to friend.")
+                .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('action')
@@ -12,11 +17,6 @@ module.exports = {
                 .addChoice('Add', "add")
                 .addChoice('Remove', "remove")
                 .setRequired(false))
-        .addUserOption((options) =>
-            options
-                .setName('user')
-                .setDescription("The user to friend.")
-                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -30,7 +30,7 @@ module.exports = {
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        
+
         const action = interaction.options.getString('action') || "add";
         const friend_role = interaction.guild.roles.cache.find(role => role.name == "Friend");
 
@@ -48,6 +48,6 @@ module.exports = {
         }
 
         //Code
-
+        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }

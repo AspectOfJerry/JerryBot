@@ -28,6 +28,6 @@ module.exports = {
         //Checks
 
         //Code
-
+        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }
