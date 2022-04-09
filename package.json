@@ -28,6 +28,7 @@
     "discord.js-docs": "^0.2.5",
     "dotenv": "^16.0.0",
     "ms": "^2.1.3",
+    "portfinder": "^1.0.28",
     "weather-js": "^2.0.0",
     "window-fetch": "^0.0.13",
     "ytdl-core": "^4.11.0"
