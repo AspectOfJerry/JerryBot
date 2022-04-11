@@ -41,6 +41,7 @@ client.on('ready', () => {
     const rest = new REST({
         version: "9"
     }).setToken(process.env.DISCORD_BOT_TOKEN_JERRY);
+
     (async () => {
         try {
             await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id)
@@ -59,6 +60,10 @@ client.on('ready', () => {
             }
         }
     })();
+    
+    //Deleting a command
+    // const jerry_guild = client.guilds.cache.get(jerry_guild_id);
+    // jerry_guild.commands.delete('');
 })
 
 client.on('interactionCreate', async interaction => {

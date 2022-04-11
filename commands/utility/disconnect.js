@@ -25,7 +25,7 @@ module.exports = {
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
 
@@ -42,46 +42,46 @@ module.exports = {
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
-
-        //Code
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
                 .setColor('#ff2020')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`)
+                .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
             return;
         }
+
+        //Code
         if(!isAll) {
-            const voice_channel = memberTarget.voice.channel;
+            const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(null)
                 .then(() => {
                     const disconnect_success = new MessageEmbed()
                         .setColor('#20ff20')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${voice_channel}.`)
+                        .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${current_voice_channel}.`);
 
                     interaction.reply({embeds: [disconnect_success], ephemeral: is_ephemeral});
                 })
         } else {
-            const voice_channel = memberTarget.voice.channel;
+            const current_voice_channel = memberTarget.voice.channel;
             const member_count = memberTarget.voice.channel.members.size;
             const disconnecting_members = new MessageEmbed()
                 .setColor('#ffff20')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Disconnecting all ${member_count} members from ${voice_channel}...`)
+                .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
             interaction.reply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
 
             memberTarget.voice.channel.members.forEach(member => {
-                let voice_channel = member.voice.channel
+                let current_voice_channel = member.voice.channel
                 member.voice.setChannel(null)
                     .then(() => {
                         const disconnect_success = new MessageEmbed()
                             .setColor('#20ff20')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Successfully disconnected <@${member.id}> from ${voice_channel}.`)
+                            .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
 
                         interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
                     })

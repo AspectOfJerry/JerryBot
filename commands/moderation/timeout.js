@@ -57,7 +57,7 @@ module.exports = {
                 .setColor('ff2020')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription('You cannot timeout yourself.')
+                .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
@@ -68,7 +68,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('Invalid duration. Please use a valid duration.')
-                .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*")
+                .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*");
 
             interaction.reply({embeds: [error_duration], ephemeral: is_ephemeral});
             return;
@@ -81,7 +81,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral})
+            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -91,7 +91,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral})
+            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
         //---Role position check
@@ -104,7 +104,7 @@ module.exports = {
                     .setColor('20ff20')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User timeout")
-                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
+                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);
 
                 interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
             })
