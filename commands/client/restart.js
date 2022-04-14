@@ -59,7 +59,7 @@ module.exports = {
 
                 interaction.reply({embeds: [soft_restart], ephemeral: false})
                 await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
-                    .then(returnMessage => {
+                    .then(messageResult => {
                         const channel = client.channels.cache.get(interaction.channel.id);
                         client.destroy();
                         setTimeout(async () => {
@@ -74,7 +74,16 @@ module.exports = {
                     })
                 break;
             case "hard":
+                const hard_restart = new MessageEmbed()
+                    .setColor('#ffff20')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription("Initiating a hard restart...")
 
+                interaction.reply({embeds: [hard_restart], ephemeral: false})
+                await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
+                    .then(messageResult => {
+                        //STOP HERE
+                    })
                 break;
         }
     }

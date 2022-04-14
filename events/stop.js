@@ -1,0 +1,13 @@
+module.exports = {
+    async execute() {
+        const guild = client.guilds.cache.get(process.env.DISCORD_JERRY_GUILD_ID)
+        const channel = "";
+
+        const stopping_bot = new MessageEmbed()
+            .setColor('#ff20ff')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("Stopping the NodeJS process (terminal)...");
+
+        //.send({embeds: [stopping_bot], ephemeral: false})
+    }
+}

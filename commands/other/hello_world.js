@@ -1,6 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('hello_world')
@@ -20,6 +22,8 @@ module.exports = {
         //Checks
 
         //Code
-        interaction.reply({content: "Hello World!", ephemeral: is_ephemeral})
+        interaction.channel.sendTyping();
+        await Sleep(1000)
+        interaction.reply({content: "Hello World!", ephemeral: is_ephemeral});
     }
 }

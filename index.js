@@ -3,9 +3,11 @@ const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js')
 const {REST} = require('@discordjs/rest')
 const {Routes} = require('discord-api-types/v9')
-const GetFiles = require('./get_files')
+const GetFiles = require('./modules/get_files')
 
 require('dotenv').config()
+
+const process = require('process')
 
 const client = new Client({
     intents: [
@@ -60,10 +62,14 @@ client.on('ready', () => {
             }
         }
     })();
-    
+
     //Deleting a command
     // const jerry_guild = client.guilds.cache.get(jerry_guild_id);
     // jerry_guild.commands.delete('');
+
+    process.on('beforeExit', () => {
+        require('./events/stop')
+    })
 })
 
 client.on('interactionCreate', async interaction => {
