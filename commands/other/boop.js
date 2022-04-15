@@ -3,13 +3,13 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('profile')
-        .setDescription("Sends information about a user.")
+        .setName('boop')
+        .setDescription("Same as Hypixel's '/boop' command.")
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to search for. Defaults to yourself.")
-                .setRequired(false))
+                .setDescription("The user to 'boop'.")
+                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -27,6 +27,13 @@ module.exports = {
         //Checks
 
         //Code
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        interaction.channel.send({content: "<@611633988515266562>, This command requires verification."});
+
+        const boop = new MessageEmbed()
+            //.setColor('#') - VERIFY
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("Boop!")
+
+        interaction.reply({content: `<@${memberTarget.id}>`, embeds: [boop], ephemeral: is_ephemeral}); //VERIFY
     }
 }

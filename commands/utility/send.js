@@ -34,6 +34,7 @@ module.exports = {
         if(!channel.isText()) {
             const error_require_text_based_channel = new MessageEmbed()
                 .setColor('#ff2020')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setURL("https://discord.js.org/#/docs/discord.js/stable/typedef/TextBasedChannels")
                 .setDescription("You need to mention a text-based channel.")

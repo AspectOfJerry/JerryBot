@@ -3,13 +3,13 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('profile')
-        .setDescription("Sends information about a user.")
+        .setName('avatar')
+        .setDescription("[DEPRECATED] Sends a user's avatar. Please use the '/profile' command instead.")
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to search for. Defaults to yourself.")
-                .setRequired(false))
+                .setDescription("The user's avatar to send. Defaults to yourself.")
+                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -27,6 +27,12 @@ module.exports = {
         //Checks
 
         //Code
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        const deprecation_warning = new MessageEmbed()
+            .setColor('#ff2020')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('DeprecationWarning')
+            .setDescription("This command is deprecated. Please use the `/profile` command instead.")
+
+        interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
     }
 }

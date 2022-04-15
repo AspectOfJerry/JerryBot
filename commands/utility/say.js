@@ -4,7 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('say')
-        .setDescription("Sends a message to the current channel.")
+        .setDescription("[DEPRECATED] Sends a message to the current channel. Please use '/send' instead.")
         .addStringOption((options) =>
             options
                 .setName('message')
@@ -21,13 +21,18 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        
+
         let message = interaction.options.getString("string");
 
         //Checks
 
         //Code
-        interaction.reply({content: `Input message: ${message}`, ephemeral: true})
-        interaction.channel.send({content: `${message}`, ephemeral: false})
+        const deprecation_warning = new MessageEmbed()
+            .setColor('#ff2020')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('DeprecationWarning')
+            .setDescription("This command is deprecated. Please use the `/send` command instead.")
+
+        interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
     }
 }
