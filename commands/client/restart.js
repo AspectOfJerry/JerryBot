@@ -1,5 +1,6 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const Sleep = require('../../modules/sleep');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -62,15 +63,15 @@ module.exports = {
                     .then(messageResult => {
                         const channel = client.channels.cache.get(interaction.channel.id);
                         client.destroy();
-                        setTimeout(async () => {
-                            await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
-                            const online = new MessageEmbed()
-                                .setColor('#20ff20')
-                                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                                .setDescription("The bot has restarted!");
+                        
+                        await Sleep(1000)
+                        await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
+                        const online = new MessageEmbed()
+                            .setColor('#20ff20')
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setDescription("The bot has restarted!");
 
-                            channel.send({embeds: [online], ephemeral: false});
-                        }, 2000);
+                        channel.send({embeds: [online], ephemeral: false});
                     })
                 break;
             case "hard":

@@ -4,7 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('say')
-        .setDescription("[DEPRECATED] Sends a message to the current channel. Please use '/send' instead.")
+        .setDescription("[DEPRECATED] Please use '/send' instead. Sends a message to the current channel.")
         .addStringOption((options) =>
             options
                 .setName('message')

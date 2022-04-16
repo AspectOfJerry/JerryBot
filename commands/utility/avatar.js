@@ -4,7 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
-        .setDescription("[DEPRECATED] Sends a user's avatar. Please use the '/profile' command instead.")
+        .setDescription("[DEPRECATED] Please use the '/profile' command instead. Sends a user's avatar.")
         .addUserOption((options) =>
             options
                 .setName('user')
