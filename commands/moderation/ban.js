@@ -96,7 +96,7 @@ module.exports = {
         memberTarget.ban(banDuration, reason)
             .then(banResult => {
                 if(banDuration == 0) {
-                    banDuration == "";
+                    banDuration = "";
                 } else {
                     banDuration = ` for ${banDuration} days`;
                 }
