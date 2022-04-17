@@ -21,7 +21,7 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        const reason = interaction.options.getString('reason');
+        const reason = interaction.options.getString('reason') || "No reason was provided.";
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name = REQUIRED_ROLE)) {
@@ -37,11 +37,9 @@ module.exports = {
         }
 
         //Code
-        interaction.reply({content: "This command is under developpement. The bot will stop after this message.", ephemeral: false})
-            .then((messageResult) => {
-                console.log("stop");
-                client.destroy();
-            })
+        await interaction.reply({content: "This command is under developpement. The bot will stop after this message.", ephemeral: false})
+        console.log("stop");
+        client.destroy();
 
         /*Add buttons and ask for a confirmation.*/
     }

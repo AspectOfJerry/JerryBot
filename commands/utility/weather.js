@@ -15,8 +15,8 @@ module.exports = {
             options
                 .setName('unit')
                 .setDescription("The unit of measurement for temperatures (C or F). Defaults to 'C'")
-                .addChoice('C', "C")
-                .addChoice('F', "F")
+                .addChoice("C", 'C')
+                .addChoice("F", 'F')
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -29,7 +29,7 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
-        
+
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
 

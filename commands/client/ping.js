@@ -21,7 +21,7 @@ module.exports = {
         const ping = new MessageEmbed()
             .setColor('#ffff00')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('sending ping...')
+            .setDescription('ping...')
 
         interaction.channel.send({embeds: [ping]}).then(pingMessage => {
             const pong = new MessageEmbed()

@@ -8,15 +8,15 @@ module.exports = {
         .setDescription("Restarts the bot.")
         .addStringOption((options) =>
             options
-                .setName('reason')
-                .setDescription("The reason for the restart request.")
-                .setRequired(false))
-        .addStringOption((options) =>
-            options
                 .setName('type')
                 .setDescription("The type of restart (soft or hard). Defaults to soft.")
                 .addChoice("Soft", 'soft')
                 .addChoice("Hard", 'hard')
+                .setRequired(false))
+        .addStringOption((options) =>
+            options
+                .setName('reason')
+                .setDescription("The reason for the restart request.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -30,7 +30,8 @@ module.exports = {
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
 
-        const restart_type = interaction.options.getString('restart_type') || "soft";
+        const restart_type = interaction.options.getString('type') || "soft";
+        const reason = interaction.options.getString('reason');
 
         const destroying_client = new MessageEmbed()
             .setColor('#ff20ff')
@@ -51,6 +52,9 @@ module.exports = {
         }
 
         //Code
+        interaction.reply({content: "This command is currently under development.", ephemeral: is_ephemeral});
+        return;
+
         switch(restart_type) {
             case "soft":
                 const soft_restart = new MessageEmbed()
@@ -60,19 +64,17 @@ module.exports = {
 
                 interaction.reply({embeds: [soft_restart], ephemeral: false})
                 await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
-                    .then(messageResult => {
-                        const channel = client.channels.cache.get(interaction.channel.id);
-                        client.destroy();
-                        
-                        await Sleep(1000)
-                        await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
-                        const online = new MessageEmbed()
-                            .setColor('#20ff20')
-                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription("The bot has restarted!");
+                const channel = client.channels.cache.get(interaction.channel.id);
+                client.destroy();
 
-                        channel.send({embeds: [online], ephemeral: false});
-                    })
+                await Sleep(1000)
+                await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
+                const online = new MessageEmbed()
+                    .setColor('#20ff20')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription("The bot has restarted!");
+
+                channel.send({embeds: [online], ephemeral: false});
                 break;
             case "hard":
                 const hard_restart = new MessageEmbed()
@@ -82,9 +84,9 @@ module.exports = {
 
                 interaction.reply({embeds: [hard_restart], ephemeral: false})
                 await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
-                    .then(messageResult => {
-                        //STOP HERE
-                    })
+
+                //STOP HERE
+
                 break;
         }
     }

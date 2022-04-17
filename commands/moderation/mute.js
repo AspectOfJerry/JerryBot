@@ -14,7 +14,7 @@ module.exports = {
             options
                 .setName('duration')
                 .setDescription("The duration in minutes for the mute. Defualts to 0 (no duration).")
-                .setRequired('false'))
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
