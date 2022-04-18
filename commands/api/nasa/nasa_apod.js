@@ -35,7 +35,7 @@ module.exports = {
             .then(data => {
                 if(data.error) {
                     const request_error = new MessageEmbed()
-                        .setColor('#ff2020')
+                        .setColor('RED')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("Error")
                         .setDescription("An error occured while trying to fetch the APOD from NASA. Please try again later.")

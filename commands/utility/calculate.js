@@ -50,7 +50,7 @@ module.exports = {
             case 'add':
                 const add_result = operand1 + operand2;
                 const add_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Addition")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2B${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -62,7 +62,7 @@ module.exports = {
             case 'subtract':
                 const subtract_result = operand1 - operand2;
                 const subtract_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Subtraction")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2D${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -74,7 +74,7 @@ module.exports = {
             case 'multiply':
                 const multiply_result = operand1 * operand2;
                 const multiply_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Multiplication")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2A${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -86,7 +86,7 @@ module.exports = {
             case 'divide':
                 const divide_result = operand1 / operand2;
                 const divide_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Division")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2F${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -98,7 +98,7 @@ module.exports = {
             case 'modulus':
                 const modulus_result = operand1 % operand2;
                 const modulus_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Modulus")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}mod${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -110,7 +110,7 @@ module.exports = {
             case 'exponent':
                 const exponent_result = Math.pow(operand1, operand2);
                 const exponent_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Exponent")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%5E${operand2}`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -122,7 +122,7 @@ module.exports = {
             case 'increment':
                 const increment_result = operand1 + 1;
                 const increment_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Increment")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2B1`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -134,7 +134,7 @@ module.exports = {
             case 'decrement':
                 const decrement_result = operand1 - 1;
                 const decrement_embed = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setTitle("Decrement")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2D1`)
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

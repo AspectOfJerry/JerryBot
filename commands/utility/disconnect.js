@@ -34,7 +34,7 @@ module.exports = {
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
@@ -45,7 +45,7 @@ module.exports = {
         }
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
@@ -59,7 +59,7 @@ module.exports = {
             memberTarget.voice.setChannel(null)
                 .then(() => {
                     const disconnect_success = new MessageEmbed()
-                        .setColor('#20ff20')
+                        .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${current_voice_channel}.`);
 
@@ -80,7 +80,7 @@ module.exports = {
                 member.voice.setChannel(null)
                     .then(() => {
                         const disconnect_success = new MessageEmbed()
-                            .setColor('#20ff20')
+                            .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
 

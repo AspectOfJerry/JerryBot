@@ -36,7 +36,7 @@ module.exports = {
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
@@ -48,7 +48,7 @@ module.exports = {
         //Code
         portfinder.basePort = start_port;
         // const available_ports = new MessageEmbed()
-        //     .setColor('#20ff20')
+        //     .setColor('GREEN')
         //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         //     .setTitle(`Available ports starting from ${start_port}`)
         //     .setDescription(`Searched for ${search_amount} ports:\n` +

@@ -24,7 +24,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "";
+        const REQUIRED_ROLE = "PL0";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
@@ -36,13 +36,13 @@ module.exports = {
         let DMChannel;
 
         //Checks
-        if(interaction.member.user.id != "611633988515266562") {
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `You cannot use this command. Only Jerry#3756 can!`});
+                .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;

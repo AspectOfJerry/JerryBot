@@ -25,7 +25,7 @@ module.exports = {
 
         interaction.channel.send({embeds: [ping]}).then(pingMessage => {
             const pong = new MessageEmbed()
-                .setColor('#20ff20')
+                .setColor('GREEN')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
                 .addField(`Bot latency`, `~${pingMessage.createdTimestamp - interaction.createdTimestamp}ms`, true)

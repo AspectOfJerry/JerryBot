@@ -44,7 +44,7 @@ module.exports = {
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
@@ -65,7 +65,7 @@ module.exports = {
         }
         if(!durationInMs) {
             const error_duration = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('Invalid duration. Please use a valid duration.')

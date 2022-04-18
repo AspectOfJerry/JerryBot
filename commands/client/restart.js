@@ -34,14 +34,14 @@ module.exports = {
         const reason = interaction.options.getString('reason');
 
         const destroying_client = new MessageEmbed()
-            .setColor('#ff20ff')
+            .setColor('FUCHSIA')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription("Destroying the client...");
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
-                .setColor('#ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
@@ -70,7 +70,7 @@ module.exports = {
                 await Sleep(1000)
                 await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
                 const online = new MessageEmbed()
-                    .setColor('#20ff20')
+                    .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription("The bot has restarted!");
 

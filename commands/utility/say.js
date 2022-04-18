@@ -28,7 +28,7 @@ module.exports = {
 
         //Code
         const deprecation_warning = new MessageEmbed()
-            .setColor('#ff2020')
+            .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
             .setDescription("This command is deprecated. Please use the `/send` command instead.")

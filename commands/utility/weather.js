@@ -42,7 +42,7 @@ module.exports = {
             }
             if(result.length === 0) {
                 const search_error = new MessageEmbed()
-                    .setColor('#ff2020')
+                    .setColor('RED')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('Error')
                     .setDescription(`Could not find weather for "${search_location}".`)
@@ -101,7 +101,7 @@ module.exports = {
             const day5_precipitations = result[0].forecast[4].precip || "0";
 
             const weather = new MessageEmbed()
-                .setColor('#20ff20')
+                .setColor('GREEN')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Weather search results for ${search_location}`)
                 .setDescription(`Location: ${location}${zip_code}\n` +

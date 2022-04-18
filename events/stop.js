@@ -6,7 +6,7 @@ module.exports = {
         const channel = "";
 
         const stopping_bot = new MessageEmbed()
-            .setColor('#ff20ff')
+            .setColor('FUCHSIA')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription("Stopping the NodeJS process (terminal)...");
 
