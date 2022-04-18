@@ -1,12 +1,13 @@
 Main color: #80e0e0 (RGB: 128, 224, 224 / CMYK: 43%, 0%, 0%, 12% / HSV: 180°, 43%, 88% / HSL: 180°, 61%, 69%)
 
-Red: #ff2020 (RGB: 255, 32, 32)
-Green: #20ff20 (RGB: 32, 255, 32)
-Dark green: #20b020 (RGB: 32, 176, 32)
-Blue: #2020ff (RGB: 32, 32, 255)
-Pink: #ff20ff (RGB: 255, 32, 255)
-Yellow: #ffff20 (RGB: 255, 255, 32)
-Purple: #bb20ff (RGB: 187, 32, 255)
+---Discord Color Palette (https://discord.com/branding)---
+Blurple: #5865F2 (RGB: 88, 101, 242)
+Green: #57F287 (RGB: 87, 242, 135)
+Yellow: #FEE75C (RGB: 254, 231, 92)
+Fuchsia: #EB459E (RGB: 235, 69, 158)
+Red: #ED4245 (RGB: 237, 66, 69)
+White: #FFFFFF (RGB: 255, 255, 255)
+Black: #000000 (RGB: 0, 0, 0)
 
 
 Useful links:
