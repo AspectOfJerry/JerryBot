@@ -67,7 +67,7 @@ module.exports = {
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
         }
-        //Role position check---
+        //---Role position check
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('ff2020')
@@ -88,7 +88,7 @@ module.exports = {
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
-        //---Role position check
+        //Role position check---
 
         //Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
