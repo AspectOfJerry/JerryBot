@@ -93,7 +93,7 @@ module.exports = {
         } else if(memberTarget.roles.cache.find(role => role.name == "Staff")) {
             kickAnyway = " anyway";
             isRoleTitle = " Staff";
-            isRole = " They have the 'Helper' role.";
+            isRole = " They have the 'Staff' role.";
         } else if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
             kickAnyway = " anyway";
             isRoleTitle = " Friend";
