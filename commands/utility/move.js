@@ -90,7 +90,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                        interaction.channel.send({embeds: [move_success], ephemeral: is_ephemeral});
+                        interaction.followUp({embeds: [move_success], ephemeral: is_ephemeral});
                     })
             })
         }

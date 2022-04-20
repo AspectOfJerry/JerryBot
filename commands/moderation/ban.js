@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+
+const Sleep = require('../../modules/sleep');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,6 +47,10 @@ module.exports = {
         let banDuration = interaction.options.getInteger('duration');
         let reason = interaction.options.getString('reason');
 
+        let isRole = "";
+        let isRoleTitle = "";
+        let banAnyway = "";
+
         //Check
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -89,24 +95,96 @@ module.exports = {
             return;
         }
         //Role position check---
+        if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
+            banAnyway = " anyway";
+            isRoleTitle = " Owner";
+            isRole = " They have the 'Owner' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Administrator")) {
+            banAnyway = " anyway";
+            isRoleTitle = " Administrator";
+            isRole = " They have the 'Administrator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Moderator")) {
+            banAnyway = " anyway";
+            isRoleTitle = " Moderator";
+            isRole = " They have the 'Moderator' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Staff")) {
+            banAnyway = " anyway";
+            isRoleTitle = " Staff";
+            isRole = " They have the 'Staff' role.";
+        } else if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
+            banAnyway = " anyway";
+            isRoleTitle = " Friend";
+            isRole = " They are your friend.";
+        }
 
         //Code
-        reason = reason ? ` \n**Reason:** ${reason}` : "";
-        banDuration = banDuration ? banDuration : 0;
-        memberTarget.ban(banDuration, reason)
-            .then(banResult => {
-                if(banDuration == 0) {
-                    banDuration = "";
-                } else {
-                    banDuration = ` for ${banDuration} days`;
-                }
-                const success_ban = new MessageEmbed()
-                    .setColor('20ff20')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle("GuildMember ban")
-                    .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
+        let row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('ban_confirm_button')
+                    .setLabel(`Ban${banAnyway}`)
+                    .setStyle('DANGER')
+                    .setDisabled(false),
+                new MessageButton()
+                    .setCustomId('ban_cancel_button')
+                    .setLabel('Cancel')
+                    .setStyle('PRIMARY')
+                    .setDisabled(false)
+            )
 
-                interaction.reply({embeds: [success_ban], ephemeral: is_ephemeral});
-            })
+        const confirm_ban = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle(`Confirm Ban${isRoleTitle}`)
+            .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?${isRole}`)
+
+        interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
+
+        const filter = (buttonInteraction) => {
+            if(buttonInteraction.user.id == interaction.user.id) {
+                return true;
+            } else {
+                return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+            }
+        }
+        const ban_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+
+        ban_collector.on('collect', async buttonInteraction => {
+            //Disabling buttons
+            row.components[0]
+                .setDisabled(true);
+            row.components[1]
+                .setDisabled(true);
+            interaction.editReply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral});
+
+            if(buttonInteraction.customId == 'ban_confirm_button') {
+                reason = reason ? ` \n**Reason:** ${reason}` : "";
+                banDuration = banDuration ? banDuration : 0;
+                memberTarget.ban(banDuration, reason)
+                    .then(banResult => {
+                        if(banDuration == 0) {
+                            banDuration = "";
+                        } else {
+                            banDuration = ` for ${banDuration} days`;
+                        }
+                        const success_ban = new MessageEmbed()
+                            .setColor('20ff20')
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                            .setTitle("GuildMember ban")
+                            .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
+
+                        interaction.reply({embeds: [success_ban], ephemeral: is_ephemeral});
+                    })
+                ban_collector.stop();
+            } else {
+                const cancel_ban = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`<@${interaction.user.id}> cancelled the ban.`);
+
+                buttonInteraction.reply({embeds: [cancel_ban], ephemeral: is_ephemeral});
+            }
+            ban_collector.stop();
+        })
     }
 }

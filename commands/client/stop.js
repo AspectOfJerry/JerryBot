@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+
+const Sleep = require('../../modules/sleep');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -37,10 +39,67 @@ module.exports = {
         }
 
         //Code
-        await interaction.reply({content: "This command is under developpement. The bot will stop after this message.", ephemeral: false})
-        await client.destroy();
-        process.exit(0);
+        let row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('stop_confirm_button')
+                    .setLabel(`Stop`)
+                    .setStyle('DANGER')
+                    .setDisabled(false),
+                new MessageButton()
+                    .setCustomId('stop_cancel_button')
+                    .setLabel('Cancel')
+                    .setStyle('PRIMARY')
+                    .setDisabled(false)
+            )
 
-        /*Add buttons and ask for a confirmation.*/
+        const confirm_stop = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('Confirm Stop')
+            .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
+
+        interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral})
+
+        const filter = (buttonInteraction) => {
+            if(buttonInteraction.user.id = interaction.user.id) {
+                return true;
+            } else {
+                return buttonInteraction.reply({content: "You cannot use this button", ephemeral: true});
+            }
+        }
+        const stop_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+        stop_collector.on('collect', async buttonInteraction => {
+            //Disabling buttons
+            row.components[0]
+                .setDisabled(true);
+            row.components[1]
+                .setDisabled(true);
+            interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
+
+            if(buttonInteraction.customId == 'stop_confirm_button') {
+                const stopping_bot = new MessageEmbed()
+                    .setColor('FUCHSIA')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setTitle('Stopping the bot')
+                    .setDescription(`<@${interaction.user.id}> requested the bot to stop.`)
+                    .addField('Reason', `${reason}`, false)
+                    .addField('Requested at', `${interaction.createdAt}`, false)
+                    .setFooter({text: "The NodeJS process will exit after this message."});
+
+                await buttonInteraction.reply({embeds: [stopping_bot], ephemeral: is_ephemeral})
+                await stop_collector.stop()
+                await client.destroy(); //Logging off from Discord
+                process.exit(0);    //Exiting here
+            } else {
+                const cancel_stop = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`<@${interaction.user.id}> cancelled the stop request.`)
+
+                buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
+            }
+            stop_collector.stop();
+        })
     }
 }

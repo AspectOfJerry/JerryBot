@@ -1,6 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
@@ -78,6 +80,7 @@ module.exports = {
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
+        //---Role position check
         if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
             kickAnyway = " anyway";
             isRoleTitle = " Owner";
@@ -99,8 +102,6 @@ module.exports = {
             isRoleTitle = " Friend";
             isRole = " They are your friend.";
         }
-
-        //---Role position check
 
         //Code
         let row = new MessageActionRow()
