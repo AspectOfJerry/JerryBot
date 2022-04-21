@@ -95,7 +95,7 @@ module.exports = {
                 const cancel_stop = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the stop request.`)
+                    .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
 
                 buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
             }

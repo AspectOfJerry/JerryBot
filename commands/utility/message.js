@@ -72,7 +72,8 @@ module.exports = {
                     .setColor('20ff20')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("Message sent!")
-                    .setDescription("This command creates a message collector in the DM channel. That is to say, you will be able to see what the targeted member sends to the bot.")
+                    .setDescription(`This command creates a message collector in the DM channel. That is to say, you will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
+                        "You will also be able to chat with this person. Just send a message in this channel it they will receive it!")
                     .addField('Important', "Send '**bot.stop**' in this channel to stop the collector.")
 
                 interaction.followUp({embeds: [message_sent], ephemeral: is_ephemeral});
@@ -82,13 +83,25 @@ module.exports = {
                 const receive_collector = DMChannel.createMessageCollector({idle: 300000});
                 const send_collector = interaction.channel.createMessageCollector({filter, idle: 300000});
 
+                receive_collector.on('collect', message => {
+                    if(message.author.id != client.user.id) {
+                        const message_embed = new MessageEmbed()
+                            .setColor('BLURPLE')
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setAuthor({name: `${message.author.tag}`, iconURL: `${message.author.displayAvatarURL({dynamic: true})}`})
+                            .setDescription(`*Receive:* ${message.content}`)
+
+                        interaction.followUp({embeds: [message_embed], ephemeral: is_ephemeral});
+                    }
+                })
+
                 send_collector.on('collect', message => {
                     if(message.content.toUpperCase() == 'BOT.STOP') {
                         const stopping_collector = new MessageEmbed()
                             .setColor('RED')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle('Stopping Collector')
-                            .setDescription("Stopping the message collector. That is it say, you will no longer be able to see what the targeted member sends to the bot.\n" +
+                            .setDescription(`Stopping the message collector. That is it say, you will no longer be able to see what <@${memberTarget.id}> sends to the bot.\n` +
                                 "You can use `/message` to start this again.")
 
                         message.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});
@@ -109,23 +122,11 @@ module.exports = {
                                             .setColor('GREEN')
                                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                                             .setAuthor({name: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL({dynamic: true})}`})
-                                            .setDescription(`*Send:* "${message.content}" to <@${memberTarget.id}>!`)
+                                            .setDescription(`*Send:* ${message.content}`)
 
                                         embed.edit({embeds: [message_sent]})
                                     })
                             })
-                    }
-                })
-
-                receive_collector.on('collect', message => {
-                    if(message.author.id != client.user.id) {
-                        const message_embed = new MessageEmbed()
-                            .setColor('BLURPLE')
-                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setAuthor({name: `${message.author.tag}`, iconURL: `${message.author.displayAvatarURL({dynamic: true})}`})
-                            .setDescription(`*Receive:* ${message.content}`)
-
-                        interaction.followUp({embeds: [message_embed], ephemeral: is_ephemeral});
                     }
                 })
             })

@@ -33,6 +33,6 @@ module.exports = {
             .setTitle('DeprecationWarning')
             .setDescription("This command is deprecated. Please use the `/profile` command instead.")
 
-        interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
+        interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
     }
 }
