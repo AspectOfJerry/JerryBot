@@ -14,14 +14,14 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 
         const reason = interaction.options.getString('reason');
 
@@ -44,8 +44,7 @@ module.exports = {
         }
 
         //Code
-        interaction.reply({content: "This command is currently under development.", ephemeral: is_ephemeral});
-        return;
+        // interaction.reply({content: "This command is currently under development.", ephemeral: is_ephemeral});
 
                 const soft_restart = new MessageEmbed()
                     .setColor('#ffff20')

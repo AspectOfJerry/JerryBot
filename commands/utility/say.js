@@ -8,19 +8,19 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('message')
-                .setDescription("The message to send.")
+                .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 
         let message = interaction.options.getString("string");
 

@@ -8,24 +8,24 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to disconnect.")
+                .setDescription("[OPTIONAL] The user to disconnect. Defaults to yourself.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('all')
-                .setDescription("If you want to disconnect everyone in the targted user's voice channel.")
+                .setDescription("[OPTIONAL] If you want to disconnect everyone in the targted user's voice channel. Defaults to false")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
 

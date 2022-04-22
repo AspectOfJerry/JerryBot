@@ -8,26 +8,26 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('message')
-                .setDescription("The message to send.")
+                .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true))
         .addChannelOption((options) =>
             options
                 .setName('channel')
-                .setDescription("The channel to send the message to. Defaults to the current channel.")
+                .setDescription("[OPTIONAL] The channel to send the message to. Defaults to the current channel.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
 
-        const channel = interaction.options.getChannel('channel') || interaction.channel;
+        const channel = interaction.options.gteChannel('channel') || interaction.channel;
         const message = interaction.options.getString('message');
 
         //Checks
@@ -44,6 +44,9 @@ module.exports = {
         }
 
         //Code
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        // interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        await interaction.reply({content: `Sending "${message}" to #${channel}`, ephemeral: true})
+
+        await channel.send({content: `${message}`});
     }
 }

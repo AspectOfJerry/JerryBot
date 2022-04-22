@@ -9,26 +9,26 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('location')
-                .setDescription("City or ZIP code.")
+                .setDescription("[REQUIRED] City or ZIP code.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('unit')
-                .setDescription("The unit of measurement for temperatures (C or F). Defaults to 'C'")
+                .setDescription("[OPTIONAL] The unit of measurement for temperatures (C or F). Defaults to 'C'")
                 .addChoice("C", 'C')
                 .addChoice("F", 'F')
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
@@ -138,7 +138,7 @@ module.exports = {
                     `• Precipitation: ${day5_precipitations}%`, false)
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"})
 
-            interaction.reply({embeds: [weather], ephemeral: false});
+            interaction.reply({embeds: [weather], ephemeral: is_ephemeral});
         });
     }
 }

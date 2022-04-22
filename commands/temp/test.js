@@ -13,12 +13,12 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false))
     ,
     async execute(client, interaction) {
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 
         let target = interaction.options.getUser('user') || interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
