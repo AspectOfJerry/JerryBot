@@ -97,7 +97,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
 
-                buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
+                await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
             }
             stop_collector.stop();
         })

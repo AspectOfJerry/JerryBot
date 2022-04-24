@@ -1,6 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('test')
@@ -26,7 +28,7 @@ module.exports = {
         //Checks
 
         //Code
-        interaction.defer() //MAKE THE INTERACTION WAIT LONGER HERE
+        interaction.deferReply() //MAKE THE INTERACTION WAIT LONGER HERE
         await Sleep(1000)
         await interaction.channel.sendTyping()
         await Sleep(750)
@@ -35,14 +37,6 @@ module.exports = {
         await interaction.channel.sendTyping()
         await Sleep(1500)
         await interaction.channel.send({content: `Did you just try to kick <@${memberTarget.id}>?`})
-        await Sleep(250)
-        await interaction.channel.sendTyping()
-        await Sleep(2000)
-        await interaction.channel.send({content: "You know he's the developer of this bot, right?."})
-        await Sleep(250)
-        await interaction.channel.sendTyping()
-        await Sleep(2000)
-        await interaction.channel.send({content: "You know that your actions are completely intolerable and very rude, right?"})
         await Sleep(2000)
         const dev_immunity = new MessageEmbed()
             .setColor('RED')
@@ -50,11 +44,11 @@ module.exports = {
             .setDescription(`<@${memberTarget.id}> is immune to this command because they are bot developer (and because they are cool).`)
             .setFooter({text: "You can still manually ban him via his Discord profile but don't tell Jerry I told you this or else he be mad at me!"})
 
-        await interaction.reply({embeds: [dev_immunity], ephemeral: false});
+        await interaction.followUp({embeds: [dev_immunity], ephemeral: false});
         await Sleep(250)
         await interaction.channel.sendTyping()
         await Sleep(500)
-        await interaction.followUp({content: "Nice try though."})
+        await interaction.followUp({content: "Nice try though. :)))"})
         return;
     }
 }

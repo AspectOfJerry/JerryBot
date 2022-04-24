@@ -87,13 +87,13 @@ client.on('interactionCreate', async interaction => {
     } catch(error) {
         if(error) {
             console.error(error);
-            const execute_error = new MessageEmbed()
-                .setColor('#bb20ff')
-                .setTitle('Error')
-                .setDescription("An error occured while executing the command. No further information is available.")
-                .setTimestamp();
+            // const execute_error = new MessageEmbed()
+            //     .setColor('#bb20ff')
+            //     .setTitle('Error')
+            //     .setDescription("An error occured while executing the command. No further information is available.")
+            //     .setTimestamp();
 
-            await interaction.reply({embeds: [execute_error], ephemeral: false});
+            // await interaction.reply({embeds: [execute_error], ephemeral: false});
         }
     }
 })

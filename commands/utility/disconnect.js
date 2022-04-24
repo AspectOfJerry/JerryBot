@@ -25,7 +25,7 @@ module.exports = {
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
 
