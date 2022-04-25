@@ -10,7 +10,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the stop request.")
+                .setDescription("[OPTIONAL] The reason for the stop request.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

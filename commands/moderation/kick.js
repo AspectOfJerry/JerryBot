@@ -127,7 +127,10 @@ module.exports = {
         interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral})
 
         const filter = (buttonInteraction) => {
-            if(buttonInteraction.user.id == interaction.user.id) {
+            if(buttonInteraction.memebr.roles.highest.position > interaction.member.roles.highest.position) {
+                return true;
+            }
+            else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
@@ -144,23 +147,31 @@ module.exports = {
             interaction.editReply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
+                const kicking = new MessageEmbed()
+                    .setColor('YELLOW')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`Kicking <@${memberTarget.id}>...`)
+                    .setTimestamp()
+
+                await buttonInteraction.reply({embeds: [kicking], ephemeral: is_ephemeral});
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 memberTarget.kick(reason)
                     .then(kickResult => {
+                        
                         const success_kick = new MessageEmbed()
                             .setColor('20ff20')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
 
-                        buttonInteraction.reply({embeds: [success_kick], ephemeral: is_ephemeral});
+                        buttonInteraction.editReply({embeds: [success_kick], ephemeral: is_ephemeral});
                     })
                 kick_collector.stop();
             } else {
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the kick.`);
+                    .setDescription(`<@${interaction.user.id}> cancelled the kick.`)
 
                 buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
             }

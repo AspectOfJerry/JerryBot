@@ -17,6 +17,11 @@ module.exports = {
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
+                .setName('type')
+                .setDescription("[OPTIONAL] Whether you want the bot to type for 1 seconds before the message is sent.")
+                .setRequired(false))
+        .addBooleanOption((options) =>
+            options
                 .setName('ephemeral')
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to true.")
                 .setRequired(false)),
@@ -29,6 +34,7 @@ module.exports = {
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         const message = interaction.options.getString('message') || true;
+        const isTyping = interaction.options.getBoolean('doTyping') || false;
 
         //Checks
         if(!channel.isText()) {
@@ -44,9 +50,20 @@ module.exports = {
         }
 
         //Code
-        // interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
-        await interaction.reply({content: `Sending "${message}" to #${channel}`, ephemeral: is_ephemeral})
+        switch(isTyping) {
+            case true:
+                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: is_ephemeral})
 
-        await channel.send({content: `${message}`});
+                await channel.sendTyping()
+                await Sleep(1000)
+
+                await channel.send({content: `${message}`});
+                break;  //
+            case false:
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: is_ephemeral})
+
+                await channel.send({content: `${message}`});
+                break;  //
+        }
     }
 }

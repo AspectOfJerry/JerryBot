@@ -1,0 +1,14 @@
+//File name template: yyyy-mm-dd_DiscordBot-Jerry-Bot.log
+--- DiscordBot-Jerry-Bot Logs ---
+Time: ${TIME}
+Discord guilds: 
+    guild0
+    guild1
+
+[hh:mm:ss] [DiscordBot-Jerry-Bot/INFO]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/DEBUG]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/WARN]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/ERROR]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/EXECUTE]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/EVENT]: 
+[hh:mm:ss] [DiscordBot-Jerry-Bot/CHAT]: 
