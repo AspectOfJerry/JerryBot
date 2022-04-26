@@ -3,6 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const ms = require('ms')
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,17 +12,17 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to timeout.")
+                .setDescription("[REQUIRED] The user to timeout.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('duration')
-                .setDescription("The amount of time to timeout the member for.")
+                .setDescription("[REQUIRED] The duration of the timeout.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the timeout.")
+                .setDescription("[OPTIONAL] The reason for the timeout.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()

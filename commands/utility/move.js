@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('move')
@@ -8,17 +11,17 @@ module.exports = {
         .addChannelOption((options) =>
             options
                 .setName('channel')
-                .setDescription("The targeted channel to move to.")
+                .setDescription("[REQUIRED] The targeted channel to move to.")
                 .setRequired(true))
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to move. Defaults to yourself.")
+                .setDescription("[OPTIONAL] The user to move. Defaults to yourself.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('all')
-                .setDescription("If you want to move everyone in their current channel to the targeted channel.")
+                .setDescription("[OPTIONAL] If you want to move everyone in their current channel to the targeted channel. Defaults to false.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

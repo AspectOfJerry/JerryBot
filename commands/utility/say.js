@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('say')
@@ -13,7 +16,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to true.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information

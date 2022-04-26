@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to ban.")
+                .setDescription("[REQUIRED] The user to ban.")
                 .setRequired(true))
         .addIntegerOption((options) =>
             options
                 .setName('duration')
-                .setDescription("The duration of the ban in days (0 to 7). Defaults to 0 (no duration).")
+                .setDescription("[OPTIONAL] The duration of the ban in days (0 to 7). Defaults to 0 (no duration).")
                 .addChoice("No duration", 0)
                 .addChoice("1 day", 1)
                 .addChoice("2 days", 2)
@@ -28,7 +29,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the ban.")
+                .setDescription("[OPTIONAL] The reason for the ban.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

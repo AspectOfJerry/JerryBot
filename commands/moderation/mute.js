@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to mute.")
+                .setDescription("[REQUIRED] The user to mute.")
                 .setRequired(true))
         .addIntegerOption((options) =>
             options
                 .setName('duration')
-                .setDescription("The duration in minutes for the mute. Defualts to 0 (no duration).")
+                .setDescription("[OPTIONAL] The duration in minutes for the mute. Defualts to 0 (no duration).")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

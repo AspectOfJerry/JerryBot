@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('friend')
@@ -8,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to friend.")
+                .setDescription("[REQUIRED] The user to friend.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('action')
-                .setDescription("Add or remove a friend. Defaults to add")
+                .setDescription("[OPTIONAL] Add or remove a friend. Defaults to add")
                 .addChoice('Add', "add")
                 .addChoice('Remove', "remove")
                 .setRequired(false))

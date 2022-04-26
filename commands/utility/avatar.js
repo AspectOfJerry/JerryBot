@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
@@ -8,8 +11,8 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user's avatar to send. Defaults to yourself.")
-                .setRequired(true))
+                .setDescription("[OPTIONAL] The user's avatar to send. Defaults to yourself.")
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')

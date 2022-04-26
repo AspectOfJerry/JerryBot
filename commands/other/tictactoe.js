@@ -3,6 +3,9 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const TicTacToe = require('discord-tictactoe');
 const game = new TicTacToe({language: 'en'});
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('tictactoe')
@@ -10,7 +13,7 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('opponent')
-                .setDescription("Who you want to play against.")
+                .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information

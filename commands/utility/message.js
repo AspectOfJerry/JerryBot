@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed, DMChannel} = require('discord.
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,12 +11,12 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user to send the message to.")
+                .setDescription("[REQUIRED] The user to send the message to.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('message')
-                .setDescription("The message to send.")
+                .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options

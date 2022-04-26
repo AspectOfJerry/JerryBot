@@ -2,6 +2,9 @@ const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const portfinder = require('portfinder');
 
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('portfinder')
@@ -9,12 +12,12 @@ module.exports = {
         .addIntegerOption((options) =>
             options
                 .setName('amount')
-                .setDescription("The amount of available ports to search for. Defaults to 10.")
+                .setDescription("[OPTIONAL] The amount of available ports to search for. Defaults to 10.")
                 .setRequired(false))
         .addIntegerOption((options) =>
             options
                 .setName('start')
-                .setDescription("The start port value to search from. Defaults to 8000.")
+                .setDescription("[OPTIONAL] The start port value to search from. Defaults to 8000.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options

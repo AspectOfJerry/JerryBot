@@ -2,6 +2,7 @@ const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('reason')
-                .setDescription("The reason for the restart request.")
+                .setDescription("[OPTIONAL] The reason for the restart request.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
