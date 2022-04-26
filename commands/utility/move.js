@@ -21,7 +21,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('all')
-                .setDescription("[OPTIONAL] If you want to move everyone in their current channel to the targeted channel. Defaults to false.")
+                .setDescription("[OPTIONAL] If you want to move everyone in their channel with them. Defaults to false.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
