@@ -5,5 +5,9 @@ Discord guilds:
     guild0
     guild1
 
-//Types: INFO/GUILD, INFO/CHAT, INFO/LOG (commanded log), DEBUG, WARN, ERROR, FATAL
+//Types: INFO, LOG (commanded log), DEBUG (events), WARN, ERROR, FATAL
 [YYYY-mm-DD] [HH:mm:ss.SSS] [APP/TYPE]: STRING
+
+│
+├─
+└─

@@ -30,17 +30,19 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /timeout`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG'); //Logs
 
         const duration = interaction.options.getString('duration');
         let reason = interaction.options.getString('reason');
-
 
         const durationInMs = ms(duration)
 
@@ -54,6 +56,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions]})
+            await Log(`└─'${interaction.user.id}' did not have the required role to user /timeout.`, 'WARN');   //Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -86,6 +89,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');    //Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -96,6 +100,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');  //Logs
             return;
         }
         //---Role position check
@@ -112,5 +117,6 @@ module.exports = {
 
                 interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
             })
+        await Log(`└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN');  //Logs
     }
 }

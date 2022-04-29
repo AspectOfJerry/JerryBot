@@ -28,10 +28,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(`'${interaction.user.tag}' executed /weather`, 'INFO')
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";

@@ -16,6 +16,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /tictactoe`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "everyone";
 
@@ -25,5 +26,6 @@ module.exports = {
 
         //Code
         game.handleInteraction(interaction);
+        await Log(`└─A game was started and it is fully handeled by the 'discord-tictactoe' package`, 'DEBUG')
     }
 }

@@ -11,7 +11,7 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("[REQUIRED] The user to unban.")
+                .setDescription("[REQUIRED] The user to unban (user ID).")
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
@@ -19,13 +19,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /unban`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL1";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {

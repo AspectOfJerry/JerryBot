@@ -15,10 +15,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(`'${interaction.user.tag}' executed /nasa_apod`, 'INFO');
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const nasa_logo_red_hex = '#0b3d91'
         let apod_date;
         let apod_explanation;

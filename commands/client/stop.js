@@ -19,15 +19,18 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /stop`, 'INFO');
+        await Log(`'${interaction.user.tag}' executed '/stop'.`)
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const reason = interaction.options.getString('reason') || "No reason provided";
 
         //Checks
-        if(!interaction.member.roles.cache.find(role => role.name = REQUIRED_ROLE)) {
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -61,6 +64,7 @@ module.exports = {
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
 
         interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral})
+        await Log(`├─Execution authotized. Waiting for the stop confirmation...`, 'DEBUG')
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id = interaction.user.id) {
@@ -79,6 +83,7 @@ module.exports = {
             interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
+                await stop_collector.stop()
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -89,8 +94,10 @@ module.exports = {
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
                 await buttonInteraction.reply({embeds: [stopping_bot], ephemeral: is_ephemeral})
-                await stop_collector.stop()
-                await client.destroy(); //Logging off from Discord
+                await Log(`└─'${interaction.user.tag}' authorized the stop request.`, 'DEBUG'); //Logs
+                await client.destroy(); //Destroying the Discord client
+                await Log(`  ├─The client was destroyed.`, 'FATAL');    //Logs
+                await Log(`  └─The process will be terminated after this message.`, 'FATAL');   //Logs
                 process.exit(0);    //Exiting here
             } else {
                 const cancel_stop = new MessageEmbed()
@@ -99,6 +106,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
 
                 await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
+                await Log(`└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO')
             }
             stop_collector.stop();
         })

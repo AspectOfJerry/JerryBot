@@ -14,11 +14,13 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /hello_world`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         //Checks
 

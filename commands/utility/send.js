@@ -30,14 +30,17 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(`'${interaction.user.tag}' executed /send`, 'INFO')
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         const message = interaction.options.getString('message') || true;
-        const isTyping = interaction.options.getBoolean('doTyping') || false;
+        const is_typing = interaction.options.getBoolean('doTyping') || false;
+        await Log(`├─is_typing: ${is_typing}`, 'DEBUG');
 
         //Checks
         if(!channel.isText()) {
@@ -53,7 +56,7 @@ module.exports = {
         }
 
         //Code
-        switch(isTyping) {
+        switch(is_typing) {
             case true:
                 await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: is_ephemeral})
 

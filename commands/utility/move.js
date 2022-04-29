@@ -29,15 +29,19 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /move`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
-        const isAll = interaction.options.getBoolean('all') || false;
+        const is_all = interaction.options.getBoolean('all') || false;
+        await Log(`├─is_all: ${is_all}`, 'DEBUG');
         const new_voice_channel = interaction.options.getChannel('channel');
 
         //Checks
@@ -63,7 +67,7 @@ module.exports = {
         }
 
         //Code
-        if(!isAll) {
+        if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(new_voice_channel)
                 .then(() => {

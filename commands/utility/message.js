@@ -25,12 +25,15 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(`'${interaction.user.tag}' executed /message`, 'INFO')
         const REQUIRED_ROLE = "PL0";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         const message = interaction.options.getString('message');
 

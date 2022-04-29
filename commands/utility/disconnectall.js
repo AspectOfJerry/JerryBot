@@ -6,19 +6,12 @@ const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('friend')
-        .setDescription("Adds or removes a friend (adds or removes the friend role from a user).")
+        .setName('disconnectall')
+        .setDescription("Disconnects everyone in a user's channel.")
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("[REQUIRED] The user to friend.")
-                .setRequired(true))
-        .addStringOption((options) =>
-            options
-                .setName('action')
-                .setDescription("[OPTIONAL] Add or remove a friend. Defaults to add")
-                .addChoice('Add', "add")
-                .addChoice('Remove', "remove")
+                .setDescription("The user's channel to disconnect everyone from. Defaults to yourself")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -27,30 +20,27 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "PL0";
+        const REQUIRED_ROLE = "";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        const target = interaction.options.getUser('user');
-        const memberTarget = interaction.guild.members.cache.get(target.id);
-
-        const action = interaction.options.getString('action') || "add";
-        const friend_role = interaction.guild.roles.cache.find(role => role.name == "Friend");
+        // const target = interaction.options.getUser('user');
+        // const memberTarget = interaction.guild.members.cache.get(target.id);
 
         //Checks
-        if(interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+        /*if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: "The friend command is only available for the server owner."});
+                .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions]})
+            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
-        }
+        }*/
 
         //Code
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+
     }
 }

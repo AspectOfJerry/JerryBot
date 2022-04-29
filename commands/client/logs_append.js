@@ -20,10 +20,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "PL3";
+        await Log(`'${interaction.user.tag}' executed /logs_append`, 'INFO');
+        const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const string = interaction.options.getString('string');
 
@@ -41,7 +43,7 @@ module.exports = {
         }
 
         //Code
-        const object = Log(string, "INFO/LOG", true);
+        const object = Log(string, "LOG", true);
 
         const writing_to_logs = new MessageEmbed()
             .setColor('YELLOW')
@@ -57,7 +59,7 @@ module.exports = {
             .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
         await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
-        await Log(string, "INFO/LOG")
+        await Log(string, "LOG")
         await Sleep(250);
 
         interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});

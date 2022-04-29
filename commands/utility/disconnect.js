@@ -25,14 +25,18 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
+        await Log(`'${interaction.user.tag}' executed /disconnect`, 'INFO')
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
-        const isAll = interaction.options.getBoolean('all') || false;
+        const is_all = interaction.options.getBoolean('all') || false;
+        await Log(`├─is_all: ${is_all}`, 'DEBUG');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -57,7 +61,7 @@ module.exports = {
         }
 
         //Code
-        if(!isAll) {
+        if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(null)
                 .then(() => {

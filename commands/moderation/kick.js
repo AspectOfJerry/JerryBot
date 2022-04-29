@@ -24,13 +24,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
+        await Log(`'${interaction.user.tag}' executed /kick`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL2";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG'); //Logs
 
         let reason = interaction.options.getString('reason');
 
@@ -47,7 +50,8 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role to user /kick.`, 'WARN');  //Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -57,7 +61,8 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot kick yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' tried to kick themselves.`, 'WARN')
             return;
         }
         //Role position check---
@@ -68,7 +73,8 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');   //Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -78,7 +84,8 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); //Logs
             return;
         }
         //---Role position check
@@ -125,7 +132,8 @@ module.exports = {
             .setTitle(`Confirm Kick${isRoleTitle}`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?${isRole}`)
 
-        interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral})
+        await interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
+        await Log(`├─Execution authorized. Waiting for the kick confirmation.`, 'DEBUG');   //Logs
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.memebr.roles.highest.position > interaction.member.roles.highest.position) {
@@ -158,7 +166,6 @@ module.exports = {
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 memberTarget.kick(reason)
                     .then(kickResult => {
-
                         const success_kick = new MessageEmbed()
                             .setColor('20ff20')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -168,13 +175,15 @@ module.exports = {
                         buttonInteraction.editReply({embeds: [success_kick], ephemeral: is_ephemeral});
                     })
                 kick_collector.stop();
+                await Log(`└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN');    //Logs
             } else {
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the kick.`)
 
-                buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
+                await buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
+                await Log(`└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO');   //Logs
             }
             kick_collector.stop();
         })
