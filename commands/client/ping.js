@@ -14,9 +14,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /ping`, 'DEBUG')
-        //Command information
         await Log(`'${interaction.user.tag}' executed /ping`, 'INFO');
+        //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
@@ -32,7 +31,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('ping...')
 
-        interaction.channel.send({embeds: [ping]}).then(pingMessage => {
+        interaction.channel.send({embeds: [ping]}).then(async pingMessage => {
             clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
             WebSocketLatency = client.ws.ping;
 
@@ -45,7 +44,7 @@ module.exports = {
 
             pingMessage.delete().catch(console.error)
             interaction.reply({embeds: [pong], ephemeral: is_ephemeral})
+            await Log(`└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`);
         })
-        await Log(`└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`)
     }
 }

@@ -43,8 +43,10 @@ module.exports = {
 
         const duration = interaction.options.getString('duration');
         let reason = interaction.options.getString('reason');
+        await Log(`├─reason: ${reason}`, 'DEBUG');
 
-        const durationInMs = ms(duration)
+        const duration_in_ms = ms(duration)
+        await Log(`├─duration_in_ms: ${duration}`, 'DEBUG');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -67,9 +69,10 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await Log(`${interaction.user.id} tried to timeout themselves.`, 'WARN');
             return;
         }
-        if(!durationInMs) {
+        if(!duration_in_ms) {
             const error_duration = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -107,7 +110,7 @@ module.exports = {
 
         //Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
-        memberTarget.timeout(durationInMs, reason)
+        memberTarget.timeout(duration_in_ms, reason)
             .then(timeoutResult => {
                 const success_timeout = new MessageEmbed()
                     .setColor('20ff20')
