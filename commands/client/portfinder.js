@@ -26,7 +26,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed /portfinder`, 'INFO');
+        await Log(`'${interaction.user.tag}' executed '/portfinder'.`, 'INFO');
         const REQUIRED_ROLE = "PL1";
 
         //Declaring variables
@@ -61,5 +61,6 @@ module.exports = {
 
         // interaction.reply({embeds: [available_ports], ephemeral: is_ephemeral});
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        await Log(`└─This command is currently unavailable.`, 'ERROR');
     }
 }

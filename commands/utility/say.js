@@ -20,7 +20,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed /say`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/say'.`, 'INFO')
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
@@ -39,6 +39,6 @@ module.exports = {
             .setDescription("This command is obsolete. Please use the `/send` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/send'`, 'DEBUG')
+        await Log(`└─This command is obsolete, and it is replaced by '/send'`, 'WARN')
     }
 }

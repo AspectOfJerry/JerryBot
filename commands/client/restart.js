@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /restart`, 'INFO');
+        await Log(`'${interaction.user.tag}' executed '/restart'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
@@ -28,15 +28,8 @@ module.exports = {
         await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const reason = interaction.options.getString('reason') || "No reason provided";
+        await Log(`├─reason: ${reason}`, 'DEBUG'); //Logs
 
-        const destroying_client = new MessageEmbed()
-            .setColor('FUCHSIA')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("Destroying the client...");
-        const soft_restart = new MessageEmbed()
-            .setColor('#ffff20')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("Initiating a soft restart...");
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
@@ -47,17 +40,29 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role to use '/restart'.`, 'WARN');  //Logs
             return;
         }
 
         //Code
-        interaction.reply({embeds: [soft_restart], ephemeral: false})
-        await interaction.channel.send({embeds: [destroying_client], ephemeral: false})
+        const soft_restart = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("Initiating a soft restart...");
+        const destroying_client = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("Destroying the client...");
+
+        await interaction.reply({embeds: [soft_restart], ephemeral: false})
+        await interaction.editReply({embeds: [destroying_client], ephemeral: false})
         const channel = client.channels.cache.get(interaction.channel.id);
         client.destroy();
+        await Log(`├─The client was destroyed.`, 'FATAL');    //Logs
 
         await Sleep(2500)
         await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
+        await Log(`└─Successfully logged in.`, 'DEBUG');  //Logs
         const online = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -65,7 +70,5 @@ module.exports = {
             .addField('Reason', `${reason}`, false);
 
         channel.send({embeds: [online], ephemeral: false});
-
-        console.log(`${interaction.user.id} executed /restart at ${interaction.createdAt}.`)
     }
 }

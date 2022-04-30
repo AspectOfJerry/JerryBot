@@ -30,7 +30,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed /send`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/send'.`, 'INFO')
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables

@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /avatar`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/avatar'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "everyone";
 
@@ -40,6 +40,6 @@ module.exports = {
             .setDescription("This command is obsolete. Please use the `/profile` command instead.")
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/profile'`, 'DEBUG')
+        await Log(`└─This command is obsolete, and it is replaced by '/profile'`, 'WARN')
     }
 }

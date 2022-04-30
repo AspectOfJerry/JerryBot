@@ -36,7 +36,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /calculate`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/calculate'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "everyone";
 

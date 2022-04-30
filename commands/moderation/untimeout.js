@@ -24,7 +24,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /untimeout`, 'INFO');
+        await Log(`'${interaction.user.tag}' executed '/untimeout'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
@@ -45,7 +45,8 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral})
+            interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role to use '/untimeout'.`, 'WARN');
             return;
         }
         if(memberTarget.id == interaction.user.id) {

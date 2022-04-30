@@ -11,7 +11,7 @@ module.exports = {
         .addUserOption((options) =>
             options
                 .setName('user')
-                .setDescription("The user's channel to disconnect everyone from. Defaults to yourself")
+                .setDescription("[OPTIONAL] The user's channel to disconnect everyone from. Defaults to yourself")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -20,15 +20,17 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        const REQUIRED_ROLE = "";
+        const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        // const target = interaction.options.getUser('user');
-        // const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        const target = interaction.options.getUser('user') || interaction.user;
+        const memberTarget = interaction.guild.members.cache.get(target.id);
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         //Checks
-        /*if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -37,10 +39,46 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role to use '/disconnectall'.`, 'WARN');
             return;
-        }*/
+        }
+        if(!memberTarget.voice.channel) {
+            const user_not_in_vc = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
+
+            interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
+            return;
+        }
 
         //Code
+        const current_voice_channel = memberTarget.voice.channel;
+        const member_count = memberTarget.voice.channel.members.size;
+        const disconnecting_members = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
+        await interaction.reply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
+
+        await memberTarget.voice.channel.members.forEach(member => {
+            let current_voice_channel = member.voice.channel
+            member.voice.setChannel(null)
+                .then(() => {
+                    const disconnect_success = new MessageEmbed()
+                        .setColor('GREEN')
+                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                        .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
+
+                    interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
+                })
+        })
+        const disconnected = new MessageEmbed()
+            .setColor('GREEN')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`);
+
+        interaction.editReply({embeds: [disconnected], ephemeral: is_ephemeral});
     }
 }

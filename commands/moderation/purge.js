@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /purge`, 'INFO');
+        await Log(`'${interaction.user.tag}' executed '/purge'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
@@ -40,6 +40,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN');    //Logs
             return;
         }
 

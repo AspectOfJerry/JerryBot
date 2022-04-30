@@ -28,7 +28,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed /weather`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/weather'.`, 'INFO')
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables

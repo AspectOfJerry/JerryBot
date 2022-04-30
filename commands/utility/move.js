@@ -29,7 +29,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /move`, 'INFO')
+        await Log(`'${interaction.user.tag}' executed '/move'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "Friends";
 
@@ -82,7 +82,7 @@ module.exports = {
             const current_voice_channel = memberTarget.voice.channel;
             const member_count = memberTarget.voice.channel.members.size;
             const moving_members = new MessageEmbed()
-                .setColor('#ffff20')
+                .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Moving all ${member_count} members from ${current_voice_channel} to ${new_voice_channel}...`);
 

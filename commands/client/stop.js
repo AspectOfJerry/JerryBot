@@ -19,8 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /stop`, 'INFO');
-        await Log(`'${interaction.user.tag}' executed '/stop'.`)
+        await Log(`'${interaction.user.tag}' executed '/stop'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
@@ -28,6 +27,7 @@ module.exports = {
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const reason = interaction.options.getString('reason') || "No reason provided";
+        await Log(`├─reason: ${reason}`, 'DEBUG');  //Logs
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -39,6 +39,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); //Logs
             return;
         }
 
@@ -54,8 +55,7 @@ module.exports = {
                     .setCustomId('stop_cancel_button')
                     .setLabel('Cancel')
                     .setStyle('PRIMARY')
-                    .setDisabled(false)
-            )
+                    .setDisabled(false))
 
         const confirm_stop = new MessageEmbed()
             .setColor('YELLOW')

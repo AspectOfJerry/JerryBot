@@ -37,20 +37,21 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed /ban`, 'INFO');
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(`'${interaction.user.tag}' executed '/ban'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL1";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG');
+        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
+        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');   //Logs
 
         let banDuration = interaction.options.getInteger('duration');
+        await Log(`├─banDuration: ${banDuration}`, 'DEBUG');  //Logs
         let reason = interaction.options.getString('reason');
+        await Log(`├─reason: '${reason}'`, 'DEBUG');    //Logs
 
         let isRole = "";
         let isRoleTitle = "";
@@ -66,6 +67,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' did not have the required role t use '/ban'.`, 'WARN');   //Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -76,6 +78,7 @@ module.exports = {
                 .setDescription('You cannot ban yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.id}' tried to ban themselves.`, 'WARN');   //Logs
             return;
         }
         //---Role position check
@@ -87,6 +90,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');    //Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -97,6 +101,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await Log(`└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');  //Logs
             return;
         }
         //Role position check---
@@ -134,8 +139,7 @@ module.exports = {
                     .setCustomId('ban_cancel_button')
                     .setLabel('Cancel')
                     .setStyle('PRIMARY')
-                    .setDisabled(false)
-            )
+                    .setDisabled(false))
 
         const confirm_ban = new MessageEmbed()
             .setColor('YELLOW')
@@ -143,7 +147,8 @@ module.exports = {
             .setTitle(`Confirm Ban${isRoleTitle}`)
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?${isRole}`)
 
-        interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
+        await interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
+        await Log(`├─Execution authorized. Waiting for confirmation.`, 'DEBUG');    //Logs
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id == interaction.user.id) {
@@ -163,6 +168,7 @@ module.exports = {
             interaction.editReply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'ban_confirm_button') {
+                await Log(`└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'DEBUG')
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 banDuration = banDuration ? banDuration : 0;
                 memberTarget.ban(banDuration, reason)
@@ -178,7 +184,8 @@ module.exports = {
                             .setTitle("GuildMember ban")
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
 
-                        interaction.reply({embeds: [success_ban], ephemeral: is_ephemeral});
+                        await interaction.reply({embeds: [success_ban], ephemeral: is_ephemeral});
+                        await Log(`  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild.`, 'WARN')
                     })
                 ban_collector.stop();
             } else {
@@ -188,6 +195,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> cancelled the ban.`);
 
                 buttonInteraction.reply({embeds: [cancel_ban], ephemeral: is_ephemeral});
+                await Log(`└─'${buttonInteraction.user.tag}' cancelled the ban.`, 'DEBUG')
             }
             ban_collector.stop();
         })
