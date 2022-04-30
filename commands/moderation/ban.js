@@ -172,7 +172,7 @@ module.exports = {
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 banDuration = banDuration ? banDuration : 0;
                 memberTarget.ban(banDuration, reason)
-                    .then(banResult => {
+                    .then(async banResult => {
                         if(banDuration == 0) {
                             banDuration = "";
                         } else {
