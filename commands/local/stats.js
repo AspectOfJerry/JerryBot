@@ -6,28 +6,21 @@ const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription("[OBSOLETE] Please use '/send' instead. Sends a message to the current channel.")
-        .addStringOption((options) =>
-            options
-                .setName('message')
-                .setDescription("[REQUIRED] The message to send.")
-                .setRequired(true))
+        .setName('stats')
+        .setDescription("[OBSOLETE]")
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to true.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed '/say'.`, 'INFO');    //Logs
         const REQUIRED_ROLE = "everyone";
+        await Log(`'${interaction.user.tag}' executed '/say'.`, 'INFO')
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
-
-        let message = interaction.options.getString("string");
 
         //Checks
 
@@ -36,9 +29,9 @@ module.exports = {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/send` command instead.")
+            .setDescription("This command is obsolete. Please use the `/info` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/send'`, 'WARN'); //Logs
+        await Log(`└─This command is obsolete, and it is replaced by '/info'`, 'WARN')
     }
 }
