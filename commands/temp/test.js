@@ -29,6 +29,10 @@ module.exports = {
         //Checks
 
         //Code
-
+        const embed = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setDescription(`${interaction.user.id} created the interaction`)
+        
+        interaction.reply({embeds: [embed], })
     }
 }
