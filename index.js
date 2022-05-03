@@ -1,13 +1,10 @@
 //const Discord = require('discord.js')
 const fs = require('fs');
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js')
-const {REST} = require('@discordjs/rest')
-const {Routes} = require('discord-api-types/v9')
-const GetFiles = require('./modules/get_files')
+const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const GetFiles = require('./modules/get_files');
 
-require('dotenv').config()
-
-const process = require('process')
+require('dotenv').config();
+const process = require('process');
 
 const client = new Client({
     intents: [
@@ -33,77 +30,16 @@ for(const file of command_files) {
     client.commands.set(command.data.name, command);
 }
 
+const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
-client.on('ready', () => {
-    console.log("Jerry Bot is now online.")
+for(const event_file of event_files) {
+    const event = require(`./events/${event_file}`);
 
-    const client_id = client.user.id;
-    const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
-    const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
-    const rest = new REST({
-        version: "9"
-    }).setToken(process.env.DISCORD_BOT_TOKEN_JERRY);
-
-    (async () => {
-        try {
-            await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id)
-                , {
-                    body: commands
-                });
-            console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
-            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id)
-                , {
-                    body: commands
-                });
-            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-        } catch(error) {
-            if(error) {
-                console.error(error);
-            }
-        }
-    })();
-
-    //Deleting a command
-    // const jerry_guild = client.guilds.cache.get(jerry_guild_id);
-    // jerry_guild.commands.delete('');
-
-    process.on('beforeExit', () => {
-        require('./events/stop')
-    })
-})
-
-client.on('interactionCreate', async interaction => {
-    if(!interaction.isCommand()) {
-        return;
+    if(event.once) {
+        client.once(event.name, (...args) => event.execute(...args, commands));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args, commands));
     }
-
-    const command = client.commands.get(interaction.commandName);
-
-    if(!command) {
-        return;
-    }
-    try {
-        await command.execute(client, interaction);
-    } catch(error) {
-        if(error) {
-            console.error(error);
-            // const execute_error = new MessageEmbed()
-            //     .setColor('#bb20ff')
-            //     .setTitle('Error')
-            //     .setDescription("An error occured while executing the command. No further information is available.")
-            //     .setTimestamp();
-
-            // await interaction.reply({embeds: [execute_error], ephemeral: false});
-        }
-    }
-})
-
-client.on('guildMemberAdd', (guildMember) => {
-    if(guildMember.guild.id == process.env.DISCORD_JERRY_GUILD_ID) {
-        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "GuildMember"))
-    } else if(guildMember.guild.id == process.env.DISCORD_CRA_GUILD_ID) {
-        guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Person"))
-    }
-})
+}
 
 client.login(process.env.DISCORD_BOT_TOKEN_JERRY);

@@ -25,15 +25,15 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed '/message'.`, 'INFO')
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/message'.`, 'INFO')
         const REQUIRED_ROLE = "PL0";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         const message = interaction.options.getString('message');
 
@@ -73,7 +73,7 @@ module.exports = {
             .then(messageResult => {
                 DMChannel = messageResult.channel;
                 const message_sent = new MessageEmbed()
-                    .setColor('20ff20')
+                    .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("Message sent!")
                     .setDescription(`This command creates a message collector in the DM channel. That is to say, you will be able to see what <@${memberTarget.id}> sends to the bot.\n` +

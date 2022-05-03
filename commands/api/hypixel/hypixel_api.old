@@ -56,7 +56,7 @@ module.exports = {
 
                     if(error_response_cause == "Invalid API key") {
                         const error_response_invalid_api_key = new Discord.MessageEmbed()
-                            .setColor('ff2020')
+                            .setColor('RED')
                             .setAuthor({name: "Error"})
                             .setTitle("Response")
                             .setDescription("The API key in the `.env` file is invalid.")
@@ -69,7 +69,7 @@ module.exports = {
                         return;
                     } else if(error_response_cause == "Key throttle") {
                         const error_response_key_throttle = new Discord.MessageEmbed()
-                            .setColor('ff2020')
+                            .setColor('RED')
                             .setAuthor({name: "Error"})
                             .setTitle("Response")
                             .setDescription("The API key is throttled. Please try again in a minute.")
@@ -86,7 +86,7 @@ module.exports = {
                 //Code
                 let remainingQueries = response_record_limit - response_record_queriesInPastMin;
                 const success_response = new Discord.MessageEmbed()
-                    .setColor('20ff20')
+                    .setColor('GREEN')
                     .setAuthor({name: "Success"})
                     .setTitle("Response")
                     .setDescription("A successful response was returned.\n" +

@@ -19,16 +19,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/avatar'.`, 'INFO')
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/avatar'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         //Checks
 
@@ -40,6 +40,6 @@ module.exports = {
             .setDescription("This command is obsolete. Please use the `/profile` command instead.")
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/profile'`, 'WARN')
+        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/profile'`, 'WARN')
     }
 }

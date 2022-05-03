@@ -19,16 +19,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/restart'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/restart'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const reason = interaction.options.getString('reason') || "No reason provided";
-        await Log(`├─reason: ${reason}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'DEBUG'); //Logs
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -40,7 +40,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.id}' did not have the required role to use '/restart'.`, 'WARN');  //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/restart'.`, 'WARN');  //Logs
             return;
         }
 
@@ -58,11 +58,11 @@ module.exports = {
         await interaction.editReply({embeds: [destroying_client], ephemeral: false})
         const channel = client.channels.cache.get(interaction.channel.id);
         client.destroy();
-        await Log(`├─The client was destroyed.`, 'FATAL');    //Logs
+        await Log(interaction.guild.id, `├─The client was destroyed.`, 'FATAL');    //Logs
 
         await Sleep(2500)
         await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
-        await Log(`└─Successfully logged in.`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `└─Successfully logged in.`, 'DEBUG');  //Logs
         const online = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

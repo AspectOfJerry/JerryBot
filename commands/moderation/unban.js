@@ -19,16 +19,16 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/unban'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/unban'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL1";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -40,12 +40,12 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN');
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN');
             return;
         }
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('You cannot unban yourself.');
@@ -55,7 +55,7 @@ module.exports = {
         }
         // //Check if target is in the guild
         // const error_user_not_banned = new MessageEmbed()
-        //     .setColor('ff2020')
+        //     .setColor('RED')
         //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         //     .setTitle('Error')
         //     .setDescription(`<@${memberTarget.id}> is not banned from the guild`)

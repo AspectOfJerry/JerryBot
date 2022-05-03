@@ -9,7 +9,7 @@ module.exports = (message, Discord, client, ...args) => {
                 const videoTitle = response.videoDetails.title;
                 if(videoTitle.toUpperCase().includes("RICK") && videoTitle.toUpperCase().includes("ROLL")) {
                     const jerrybot_rickroll_detection_module = new Discord.MessageEmbed()
-                        .setColor("ff2020")
+                        .setColor("RED")
                         .setAuthor({name: "MasterWarning"})
                         .setTitle("JerryBot Rick Roll Detection Module alert")
                         .setDescription(`<@${message.member.user.id}> has posted a link redirecting to a Rick Roll video.`)

@@ -29,19 +29,19 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/move'.`, 'INFO')
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO')
         //Command information
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG');
 
         const is_all = interaction.options.getBoolean('all') || false;
-        await Log(`├─is_all: ${is_all}`, 'DEBUG');
+        await Log(interaction.guild.id, `├─is_all: ${is_all}`, 'DEBUG');
         const new_voice_channel = interaction.options.getChannel('channel');
 
         //Checks
@@ -93,7 +93,7 @@ module.exports = {
                 member.voice.setChannel(new_voice_channel)
                     .then(() => {
                         const move_success = new MessageEmbed()
-                            .setColor('20ff20')
+                            .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 

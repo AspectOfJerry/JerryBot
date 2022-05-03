@@ -19,15 +19,15 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/stop'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const reason = interaction.options.getString('reason') || "No reason provided";
-        await Log(`├─reason: ${reason}`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'DEBUG');  //Logs
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -39,7 +39,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); //Logs
             return;
         }
 
@@ -64,7 +64,7 @@ module.exports = {
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
 
         interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral})
-        await Log(`├─Execution authotized. Waiting for the stop confirmation...`, 'DEBUG')
+        await Log(interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'DEBUG')
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id = interaction.user.id) {
@@ -94,10 +94,10 @@ module.exports = {
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
                 await buttonInteraction.reply({embeds: [stopping_bot], ephemeral: is_ephemeral})
-                await Log(`└─'${interaction.user.tag}' authorized the stop request.`, 'DEBUG'); //Logs
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'DEBUG'); //Logs
                 await client.destroy(); //Destroying the Discord client
-                await Log(`  ├─The client was destroyed.`, 'FATAL');    //Logs
-                await Log(`  └─The process will be terminated after this message.`, 'FATAL');   //Logs
+                await Log(interaction.guild.id, `  ├─The client was destroyed.`, 'FATAL');    //Logs
+                await Log(interaction.guild.id, `  └─The process will be terminated after this message.`, 'FATAL');   //Logs
                 process.exit(0);    //Exiting here
             } else {
                 const cancel_stop = new MessageEmbed()
@@ -106,7 +106,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
 
                 await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
-                await Log(`└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO')
+                await Log(interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO')
             }
             stop_collector.stop();
         })

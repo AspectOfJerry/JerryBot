@@ -19,13 +19,13 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/purge'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const amount = interaction.options.getInteger('amount');
         const channel = interaction.channel;
@@ -40,7 +40,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN');    //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN');    //Logs
             return;
         }
 

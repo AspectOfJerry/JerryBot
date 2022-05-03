@@ -14,13 +14,13 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/ping'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         let clientLatency = null;
         let WebSocketLatency = null;
@@ -44,7 +44,7 @@ module.exports = {
 
             pingMessage.delete().catch(console.error)
             interaction.reply({embeds: [pong], ephemeral: is_ephemeral})
-            await Log(`└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`);   //Logs
+            await Log(interaction.guild.id, `└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`, 'INFO');   //Logs
         })
     }
 }

@@ -20,15 +20,15 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed '/logs_append'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/logs_append'.`, 'INFO');
         const REQUIRED_ROLE = "Friends";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         const string = interaction.options.getString('string');
-        await Log(`└─string: ${string}`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `└─string: ${string}`, 'DEBUG');  //Logs
 
         const object = Log(string, 'LOG', true);
 
@@ -42,7 +42,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
             return;
         }
 
@@ -61,7 +61,7 @@ module.exports = {
             .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
         await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
-        await Log(string, 'LOG');   //Logging
+        await Log(interaction.guild.id, string, 'LOG');   //Logging
         await interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});
     }
 }

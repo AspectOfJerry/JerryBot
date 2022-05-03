@@ -30,23 +30,23 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' executed '/timeout'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "PL3";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(`├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG'); //Logs
 
         const duration = interaction.options.getString('duration');
         let reason = interaction.options.getString('reason');
-        await Log(`├─reason: ${reason}`, 'DEBUG');
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'DEBUG');
 
         const duration_in_ms = ms(duration)
-        await Log(`├─duration_in_ms: ${duration}`, 'DEBUG');
+        await Log(interaction.guild.id, `├─duration_in_ms: ${duration}`, 'DEBUG');
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -58,18 +58,18 @@ module.exports = {
                 .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
 
             interaction.reply({embeds: [error_permissions]})
-            await Log(`└─'${interaction.user.id}' did not have the required role to user '/timeout'.`, 'WARN');   //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to user '/timeout'.`, 'WARN');   //Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
-            await Log(`${interaction.user.id} tried to timeout themselves.`, 'WARN');
+            await Log(interaction.guild.id, `${interaction.user.id} tried to timeout themselves.`, 'WARN');
             return;
         }
         if(!duration_in_ms) {
@@ -86,24 +86,24 @@ module.exports = {
         //Role position check---
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');    //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');    //Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
-                .setColor('ff2020')
+                .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
-            await Log(`└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');  //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');  //Logs
             return;
         }
         //---Role position check
@@ -113,13 +113,13 @@ module.exports = {
         memberTarget.timeout(duration_in_ms, reason)
             .then(timeoutResult => {
                 const success_timeout = new MessageEmbed()
-                    .setColor('20ff20')
+                    .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User timeout")
                     .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);
 
                 interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
             })
-        await Log(`└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN');  //Logs
+        await Log(interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN');  //Logs
     }
 }

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const date = require('date-and-time');
 
-module.exports = async function Log(string, type, infoOnly) {
+module.exports = async function Log(guildId, string, type, infoOnly) {
     //Declaring variables
     const now = new Date();
 
@@ -17,7 +17,7 @@ module.exports = async function Log(string, type, infoOnly) {
     const file_name = `${now_date}_DiscordBot-Jerry-Bot.log`;
 
     //Generate the new line content
-    //Types: INFO, LOG (commanded log), DEBUG (events), WARN (moderation), ERROR, FATAL
+    //Types: INFO, LOG, DEBUG, WARN, ERROR, FATAL
     if(!type) {
         type = "NULL";
     }
@@ -28,7 +28,7 @@ module.exports = async function Log(string, type, infoOnly) {
         extraIndent = extraIndent + " ";
     }
 
-    string = `[${now_date}] [${now_time}] [Jerry-Bot/${type}]:${extraIndent} ${string}`;
+    string = `[${guildId}] [${now_time}] [Jerry-Bot/${type}]:${extraIndent} ${string}`;
 
     //Only return info
     const return_object = {fileName: file_name, parsedString: string};

@@ -20,12 +20,12 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
-        await Log(`'${interaction.user.tag}' executed '/say'.`, 'INFO');    //Logs
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/say'.`, 'INFO');    //Logs
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         let message = interaction.options.getString("string");
 
@@ -39,6 +39,6 @@ module.exports = {
             .setDescription("This command is obsolete. Please use the `/send` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/send'`, 'WARN'); //Logs
+        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/send'`, 'WARN'); //Logs
     }
 }

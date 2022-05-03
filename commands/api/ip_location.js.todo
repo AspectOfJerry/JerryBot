@@ -12,7 +12,7 @@ module.exports = {
         //Help command
         if(args[0] == '?') {
             const help_command = new Discord.MessageEmbed()
-                .setColor('#2020ff')
+                .setColor('#BLUE')
                 .setAuthor({name: "dir: ./commands/api/ipstack/ip_location.js; Lines: 127; File size: ~6.5 KB"})
                 .setThumbnail(`${message.author.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`%${COMMAND_NAME} command help (${REQUIRED_ROLE})`)
@@ -77,7 +77,7 @@ module.exports = {
                     let error_response_type = response.error.type;
                     let error_response_info = response.error.info;
                     const error_response = new Discord.MessageEmbed()
-                        .setColor('ff2020')
+                        .setColor('RED')
                         .setAuthor({name: "Error"})
                         .setTitle("Response")
                         .setDescription("An error was returned from the API.")

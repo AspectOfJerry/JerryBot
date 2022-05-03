@@ -16,11 +16,11 @@ module.exports = {
     async execute(client, interaction) {
         //Command information
         const REQUIRED_ROLE = "everyone";
-        await Log(`'${interaction.user.tag}' executed '/say'.`, 'INFO')
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/say'.`, 'INFO')
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         //Checks
 
@@ -32,6 +32,6 @@ module.exports = {
             .setDescription("This command is obsolete. Please use the `/info` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(`└─This command is obsolete, and it is replaced by '/info'`, 'WARN')
+        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/info'`, 'WARN')
     }
 }

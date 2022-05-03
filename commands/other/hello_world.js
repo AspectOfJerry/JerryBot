@@ -14,13 +14,13 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(`'${interaction.user.tag}' 'executed '/hello_world'.`, 'INFO');
+        await Log(interaction.guild.id, `'${interaction.user.tag}' 'executed '/hello_world'.`, 'INFO');
         //Command information
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(`├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
 
         //Checks
 
@@ -28,6 +28,6 @@ module.exports = {
         await interaction.channel.sendTyping();
         await Sleep(1000)
         await interaction.reply({content: "Hello World!", ephemeral: is_ephemeral});
-        await Log(`└─Replied with "Hello world!"`, 'INFO'); //Logs
+        await Log(interaction.guild.id, `└─Replied with "Hello world!"`, 'INFO'); //Logs
     }
 }
