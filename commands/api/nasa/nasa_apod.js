@@ -1,6 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const fetch = require('window-fetch')
+const fetch = require('window-fetch');
+
+const Sleep = require('../../../modules/sleep');
+const Log = require('../../../modules/logger');
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
