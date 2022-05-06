@@ -81,6 +81,10 @@ module.exports = {
             await Log(interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN');   //Logs
             return;
         }
+        if(memberTarget.user.tag == "Salmon#5933") {
+            interaction.reply({content: "L BAD YOU CANT BAN ME", ephemeral: is_ephemeral});
+            return;
+        }
         //---Role position check
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
