@@ -1,6 +1,9 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
+const Sleep = require('../modules/sleep');
+const Log = require('../modules/logger');
+
 require('dotenv').config();
 
 module.exports = {

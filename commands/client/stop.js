@@ -25,9 +25,9 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const reason = interaction.options.getString('reason') || "No reason provided";
-        await Log(interaction.guild.id, `├─reason: ${reason}`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'INFO');  //Logs
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -64,7 +64,7 @@ module.exports = {
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
 
         interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral})
-        await Log(interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'DEBUG')
+        await Log(interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO')
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id = interaction.user.id) {
@@ -94,10 +94,11 @@ module.exports = {
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
                 await buttonInteraction.reply({embeds: [stopping_bot], ephemeral: is_ephemeral})
-                await Log(interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'DEBUG'); //Logs
-                await client.destroy(); //Destroying the Discord client
-                await Log(interaction.guild.id, `  ├─The client was destroyed.`, 'FATAL');    //Logs
-                await Log(interaction.guild.id, `  └─The process will be terminated after this message.`, 'FATAL');   //Logs
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); //Logs
+                await Log(interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); //Logs
+                await Log(interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); //Logs
+                await client.destroy()  //Destroying the Discord client
+                await Sleep(250);
                 process.exit(0);    //Exiting here
             } else {
                 const cancel_stop = new MessageEmbed()

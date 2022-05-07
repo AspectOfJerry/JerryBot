@@ -25,12 +25,12 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const string = interaction.options.getString('string');
-        await Log(interaction.guild.id, `└─string: ${string}`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `└─string: ${string}`, 'INFO');  //Logs
 
-        const object = Log(string, 'LOG', true);
+        const object = Log(interaction.guild.id, string, 'LOG', true);
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {

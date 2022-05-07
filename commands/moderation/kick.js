@@ -30,10 +30,10 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); //Logs
 
         let reason = interaction.options.getString('reason');
 
@@ -133,7 +133,7 @@ module.exports = {
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?${isRole}`)
 
         await interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'DEBUG');   //Logs
+        await Log(interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO');   //Logs
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {

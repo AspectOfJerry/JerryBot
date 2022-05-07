@@ -25,10 +25,10 @@ module.exports = {
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const reason = interaction.options.getString('reason') || "No reason provided";
-        await Log(interaction.guild.id, `├─reason: ${reason}`, 'DEBUG'); //Logs
+        await Log(interaction.guild.id, `├─reason: ${reason}`, 'INFO'); //Logs
 
         //Checks
         if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
@@ -62,7 +62,7 @@ module.exports = {
 
         await Sleep(2500)
         await client.login(process.env.DISCORD_BOT_TOKEN_JERRY)
-        await Log(interaction.guild.id, `└─Successfully logged in.`, 'DEBUG');  //Logs
+        await Log(interaction.guild.id, `└─Successfully logged in.`, 'INFO');  //Logs
         const online = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

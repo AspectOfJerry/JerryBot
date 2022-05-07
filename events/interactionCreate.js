@@ -1,5 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 
+const Sleep = require('../modules/sleep');
+const Log = require('../modules/logger');
+
 module.exports = {
     name: "interactionCreate",
     once: false,
