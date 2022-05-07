@@ -97,7 +97,8 @@ module.exports = {
                 await Log(interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); //Logs
                 await Log(interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); //Logs
                 await Log(interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); //Logs
-                await client.destroy()  //Destroying the Discord client
+                await Sleep(100);
+                await client.destroy(); //Destroying the Discord client
                 await Sleep(250);
                 process.exit(0);    //Exiting here
             } else {
