@@ -70,8 +70,8 @@ module.exports = {
 
         await interaction.reply({embeds: [messaging_user], ephemeral: is_ephemeral})
         memberTarget.send({content: `${message}`})
-            .then(messageResult => {
-                DMChannel = messageResult.channel;
+            .then(async messageResult => {
+                DMChannel = await messageResult.channel;
                 const message_sent = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -84,23 +84,23 @@ module.exports = {
 
                 let filter = m => m.author.id == interaction.member.id;
 
-                const receive_collector = DMChannel.createMessageCollector({idle: 300000});
-                const send_collector = interaction.channel.createMessageCollector({filter, idle: 300000});
+                const receive_collector = await DMChannel.createMessageCollector({idle: 300000});
+                const send_collector = await interaction.channel.createMessageCollector({filter, idle: 300000});
 
-                receive_collector.on('collect', message => {
-                    if(message.author.id != client.user.id) {
+                receive_collector.on('collect', msg => {
+                    if(msg.author.id != client.user.id) {
                         const message_embed = new MessageEmbed()
                             .setColor('BLURPLE')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setAuthor({name: `${message.author.tag}`, iconURL: `${message.author.displayAvatarURL({dynamic: true})}`})
-                            .setDescription(`*Receive:* ${message.content}`)
+                            .setAuthor({name: `${msg.author.tag}`, iconURL: `${msg.author.displayAvatarURL({dynamic: true})}`})
+                            .setDescription(`*Receive:* ${msg.content}`)
 
                         interaction.followUp({embeds: [message_embed], ephemeral: is_ephemeral});
                     }
                 })
 
-                send_collector.on('collect', message => {
-                    if(message.content.toUpperCase() == 'BOT.STOP') {
+                send_collector.on('collect', msg => {
+                    if(msg.content.toUpperCase() == 'BOT.STOP') {
                         const stopping_collector = new MessageEmbed()
                             .setColor('RED')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -108,7 +108,7 @@ module.exports = {
                             .setDescription(`Stopping the message collector. That is it say, you will no longer be able to see what <@${memberTarget.id}> sends to the bot.\n` +
                                 "You can use `/message` to start this again.")
 
-                        message.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});
+                        msg.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});
 
                         receive_collector.stop();
                         send_collector.stop();
@@ -116,17 +116,17 @@ module.exports = {
                         const sending_message = new MessageEmbed()
                             .setColor('YELLOW')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Sending "${message.content}" to <@${memberTarget.id}>...`)
+                            .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`)
 
-                        message.reply({embeds: [sending_message], ephemeral: is_ephemeral})
+                        msg.reply({embeds: [sending_message], ephemeral: is_ephemeral})
                             .then(embed => {
-                                memberTarget.send({content: `${message.content}`})
+                                memberTarget.send({content: `${msg.content}`})
                                     .then(messageResult => {
                                         const message_sent = new MessageEmbed()
                                             .setColor('GREEN')
                                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                                             .setAuthor({name: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL({dynamic: true})}`})
-                                            .setDescription(`*Send:* ${message.content}`)
+                                            .setDescription(`*Send:* ${msg.content}`)
 
                                         embed.edit({embeds: [message_sent]})
                                     })
