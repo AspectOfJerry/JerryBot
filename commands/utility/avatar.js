@@ -7,7 +7,7 @@ const Log = require('../../modules/logger');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
-        .setDescription("[OBSOLETE] Please use the '/profile' command instead. Sends a user's avatar.")
+        .setDescription("[DEPRECATED] Please use the '/profile' command instead. Sends a user's avatar.")
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -37,9 +37,9 @@ module.exports = {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/profile` command instead.")
+            .setDescription("This command is deprecated. Please use the `/profile` command instead.")
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/profile'`, 'WARN')
+        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN')
     }
 }

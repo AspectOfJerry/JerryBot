@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed, DMChannel} = require('discord.js');
+const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep');
@@ -68,7 +68,8 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`)
 
-        await interaction.reply({embeds: [messaging_user], ephemeral: is_ephemeral})
+        await interaction.reply({embeds: [messaging_user], ephemeral: is_ephemeral});
+
         memberTarget.send({content: `${message}`})
             .then(async messageResult => {
                 DMChannel = await messageResult.channel;
@@ -78,14 +79,14 @@ module.exports = {
                     .setTitle("Message sent!")
                     .setDescription(`This command creates a message collector in the DM channel. That is to say, you will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
                         "You will also be able to chat with this person. Just send a message in this channel it they will receive it!")
-                    .addField('Important', "Send '**bot.stop**' in this channel to stop the collector.")
+                    .addField('Important', "Send '**msg.stop**' in this channel to stop the collector.")
 
-                interaction.followUp({embeds: [message_sent], ephemeral: is_ephemeral});
+                await interaction.followUp({embeds: [message_sent], ephemeral: is_ephemeral});
 
-                let filter = m => m.author.id == interaction.member.id;
+                const filter = m => m.author.id == interaction.member.id;
 
-                const receive_collector = await DMChannel.createMessageCollector({idle: 300000});
-                const send_collector = await interaction.channel.createMessageCollector({filter, idle: 300000});
+                const receive_collector = DMChannel.createMessageCollector({idle: 300000});
+                const send_collector = interaction.channel.createMessageCollector({filter, idle: 300000});
 
                 receive_collector.on('collect', msg => {
                     if(msg.author.id != client.user.id) {
@@ -100,12 +101,12 @@ module.exports = {
                 })
 
                 send_collector.on('collect', msg => {
-                    if(msg.content.toUpperCase() == 'BOT.STOP') {
+                    if(msg.content.toUpperCase() == 'MSG.STOP') {
                         const stopping_collector = new MessageEmbed()
                             .setColor('RED')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle('Stopping Collector')
-                            .setDescription(`Stopping the message collector. That is it say, you will no longer be able to see what <@${memberTarget.id}> sends to the bot.\n` +
+                            .setDescription(`Stopping the message collector. That is to say, you will no longer be able to see what <@${memberTarget.id}> sends to the bot.\n` +
                                 "You can use `/message` to start this again.")
 
                         msg.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});

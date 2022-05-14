@@ -7,7 +7,7 @@ const Log = require('../../modules/logger');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('say')
-        .setDescription("[OBSOLETE] Please use '/send' instead. Sends a message to the current channel.")
+        .setDescription("[DEPRECATED] Please use '/send' instead. Sends a message to the current channel.")
         .addStringOption((options) =>
             options
                 .setName('message')
@@ -36,9 +36,9 @@ module.exports = {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/send` command instead.")
+            .setDescription("This command is deprecated. Please use the `/send` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/send'`, 'WARN'); //Logs
+        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/send'`, 'WARN'); //Logs
     }
 }

@@ -19,11 +19,18 @@ module.exports = {
                 .setName('operation')
                 .setDescription('[REQUIRED] The operation.')
                 .addChoice("Addition", 'add')
+                .addChoice("+", 'add')
                 .addChoice("Subtraction", 'subtract')
+                .addChoice("-", 'subtract')
                 .addChoice("Multiplication", 'multiply')
+                .addChoice("*", 'multiply')
+                .addChoice("x", 'multiply')
                 .addChoice("Division", 'divide')
+                .addChoice("/", 'divide')
                 .addChoice("Modulus", 'modulus')
+                .addChoice("%", 'modulus')
                 .addChoice("Exponent", 'exponent')
+                .addChoice("^", 'exponent')
                 .setRequired(true))
         .addIntegerOption((options) =>
             options

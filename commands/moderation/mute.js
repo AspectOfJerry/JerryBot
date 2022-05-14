@@ -7,7 +7,7 @@ const Log = require('../../modules/logger');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mute')
-        .setDescription("[OBSOLETE] Please use the '/timeout' command instead. Mutes a member.")
+        .setDescription("[DEPRECATED] Please use the '/timeout' command instead. Mutes a member.")
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -44,9 +44,9 @@ module.exports = {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('DeprecationWarning')
-            .setDescription("This command is obsolete. Please use the `/timeout` command instead.")
+            .setDescription("This command is deprecated. Please use the `/timeout` command instead.")
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `└─This command is obsolete, and it is replaced by '/timeout'`, 'WARN')
+        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/timeout'`, 'WARN')
     }
 }

@@ -1,18 +1,18 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../modules/sleep');
-const Log = require('../../modules/logger');
+const Sleep = require('../../modules/sleep').default;
+const Log = require('../../modules/logger').default;
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('test')
         .setDescription("Test command")
-        // .addUserOption((options) =>
-        //     options
-        //         .setName('user')
-        //         .setDescription("User to test")
-        //         .setRequired(true))
+        .addUserOption((options) =>
+            options
+                .setName('user')
+                .setDescription("User to test")
+                .setRequired(true))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -29,10 +29,6 @@ module.exports = {
         //Checks
 
         //Code
-        const embed = new MessageEmbed()
-            .setColor('BLURPLE')
-            .setDescription(`${interaction.user.id} created the interaction`)
-        
-        interaction.reply({embeds: [embed], })
+
     }
 }
