@@ -27,7 +27,22 @@ module.exports = {
                     .setDescription("An error occured while executing the command. No further information is available.")
                     .setTimestamp();
 
-                await interaction.reply({embeds: [execute_error], ephemeral: false});
+                try {
+                    await interaction.channel.send({embeds: [execute_error], ephemeral: false});
+                } catch {
+                    try {
+                        await interaction.followUp({embeds: [execute_error], ephemeral: false});
+                        return;
+                    } catch {
+                        try {
+                            await interaction.reply({embeds: [execute_error], ephemeral: false});
+                            return;
+                        } catch {
+                            console.log(err)
+                            return;
+                        }
+                    }
+                }
             }
         }
     }

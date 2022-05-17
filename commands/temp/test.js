@@ -1,8 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../modules/sleep').default;
-const Log = require('../../modules/logger').default;
+const Sleep = require('../../modules/sleep');
+const Log = require('../../modules/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ module.exports = {
             options
                 .setName('user')
                 .setDescription("User to test")
-                .setRequired(true))
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -29,6 +29,40 @@ module.exports = {
         //Checks
 
         //Code
+        await interaction.reply({content: "testing VoiceConnection life cycle states embeds", ephemeral: is_ephemeral})
+        const connection_signalling = new MessageEmbed()
+            .setColor('YELLOW')
+            .setTitle('VoiceConnection')
+            .setDescription("__Signalling__. The bot is requesting to join the voice channel...")
 
+        await interaction.channel.send({embeds: [connection_signalling], ephemeral: is_ephemeral})
+        await Sleep(50);
+        const connection_connecting = new MessageEmbed()
+            .setColor('YELLOW')
+            .setTitle('VoiceConnection')
+            .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...")
+
+        await interaction.channel.send({embeds: [connection_connecting], ephemeral: is_ephemeral})
+        await Sleep(50);
+        const connection_ready = new MessageEmbed()
+            .setColor('GREEN')
+            .setTitle('VoiceConnection')
+            .setDescription("__Ready__. The connection to the voice channel has been established.")
+
+        interaction.channel.send({embeds: [connection_ready], ephemeral: is_ephemeral})
+        await Sleep(50);
+        const connection_disconnected = new MessageEmbed()
+            .setColor('RED')
+            .setTitle('VoiceConnection')
+            .setDescription("__Disconnected__. The connection to the voice channel has been severed.")
+
+        interaction.channel.send({embeds: [connection_disconnected], ephemeral: is_ephemeral})
+        await Sleep(50);
+        const connection_destroyed = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle('VoiceConnection')
+            .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.")
+
+        interaction.channel.send({embeds: [connection_destroyed], ephemeral: is_ephemeral})
     }
 }
