@@ -1,8 +1,8 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
-const Sleep = require('../../modules/sleep');
-const Log = require('../../modules/logger');
+const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
+const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,6 +32,7 @@ module.exports = {
         if(!interaction.member.voice.channel && !voice_channel) {
             const error_not_in_vc = new MessageEmbed()
                 .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.")
 
@@ -46,37 +47,43 @@ module.exports = {
             adapterCreator: interaction.guild.voiceAdapterCreator
         });
 
-        //const connection = getVoiceConnection(interaction.guild.id);
         connection.on(VoiceConnectionStatus.Signalling, async () => {
-            const connection_signalling = new MessageEmbed()
+            const _connection_signalling = new MessageEmbed()
                 .setColor('YELLOW')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle('VoiceConnection')
                 .setDescription("__Signalling__. The bot is requesting to join the voice channel...")
 
-            await interaction.channel.send({embeds: [connection_signalling], ephemeral: is_ephemeral})
+            await interaction.reply({embeds: [_connection_signalling], ephemeral: is_ephemeral})
         });
         connection.on(VoiceConnectionStatus.Connecting, async () => {
-            const connection_connecting = new MessageEmbed()
+            const _connection_connecting = new MessageEmbed()
                 .setColor('YELLOW')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle('VoiceConnection')
                 .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
-            await interaction.channel.send({embeds: [connection_connecting], ephemeral: is_ephemeral});
+            await interaction.channel.send({embeds: [_connection_connecting], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO');
         });
         connection.on(VoiceConnectionStatus.Ready, async () => {
-            const connection_ready = new MessageEmbed()
+            const _connection_ready = new MessageEmbed()
                 .setColor('GREEN')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle('VoiceConnection')
                 .setDescription("__Ready__. The connection to the voice channel has been established.")
 
-            await interaction.channel.send({embeds: [connection_ready], ephemeral: is_ephemeral})
+            await interaction.channel.send({embeds: [_connection_ready], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO');
         });
 
         const success_join = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setTitle('VoiceConnection')
             .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
         await interaction.channel.send({embeds: [success_join], ephemeral: is_ephemeral});
+        await Log(interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO');
     }
 }

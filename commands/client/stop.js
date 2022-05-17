@@ -1,8 +1,9 @@
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep');
-const Log = require('../../modules/logger');
+const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
+const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -84,6 +85,12 @@ module.exports = {
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
                 await stop_collector.stop()
+                const _destroying_voice_connections = new MessageEmbed()
+                    .setColor('YELLOW')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription("Destroying all active voice connections...")
+
+                await interaction.reply({embeds: [_destroying_voice_connections], ephemeral: is_ephemeral});
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -93,7 +100,7 @@ module.exports = {
                     .addField('Requested at', `${interaction.createdAt}`, false)
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
-                await buttonInteraction.reply({embeds: [stopping_bot], ephemeral: is_ephemeral})
+                await buttonInteraction.editReply({embeds: [stopping_bot], ephemeral: is_ephemeral})
                 await Log(interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); //Logs
                 await Log(interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); //Logs
                 await Log(interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); //Logs

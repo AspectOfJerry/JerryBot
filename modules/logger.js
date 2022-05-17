@@ -25,7 +25,7 @@ module.exports = async function Log(tag, string, type, infoOnly) {
     for(let i = 0; i < tagExtraIndentNum; i++) {
         tagExtraIndent = tagExtraIndent + ">";
     }
-    //Types: INFO, LOG, DEBUG, WARN, ERROR, FATAL
+    //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
     if(!type) {
         type = "NULL";
     }

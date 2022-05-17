@@ -1,7 +1,7 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 
-const Sleep = require('../modules/sleep');
-const Log = require('../modules/logger');
+const Sleep = require('../modules/sleep'); //delayInMilliseconds;
+const Log = require('../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     name: "interactionCreate",

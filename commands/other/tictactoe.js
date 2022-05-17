@@ -3,8 +3,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const TicTacToe = require('discord-tictactoe');
 const game = new TicTacToe({language: 'en'});
 
-const Sleep = require('../../modules/sleep');
-const Log = require('../../modules/logger');
+const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
+const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,6 +26,6 @@ module.exports = {
 
         //Code
         game.handleInteraction(interaction);
-        await Log(interaction.guild.id, `└─A game was started and it is fully handeled by the 'discord-tictactoe' package`, 'INFO')
+        await Log(interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' module`, 'INFO')
     }
 }
