@@ -1,5 +1,5 @@
 require('dotenv').config();
-const fetch = require('window-fetch');
+const fetch = require('node-fetch');
 
 module.exports = {
     callback: async (message, Discord, client, ...args) => {
@@ -69,7 +69,7 @@ module.exports = {
 
         //Code
         await fetch(`http://api.ipstack.com/${ipAdress}?access_key=${process.env.IPSTACK_API_KEY_JERRY}`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(response => {
                 if(String(response.success) == "false") {
                     let error_response_success = response.success;

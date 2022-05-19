@@ -1,6 +1,6 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const fetch = require('window-fetch');
+const fetch = require('node-fetch');
 
 const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
@@ -36,38 +36,37 @@ module.exports = {
         //Code
         //API request
         await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
-            .then(response => response.json())
-            .then(data => {
-                if(data.error) {
+            .then(res => res.json())
+            .then(res => {
+                if(res.error) {
                     const request_error = new MessageEmbed()
                         .setColor('RED')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("Error")
                         .setDescription("An error occured while trying to fetch the APOD from NASA. Please try again later.")
-                        .addField(`Error code:`, `${data.error.code}`, false)
-                        .addField(`Description`, `${data.error.message}`, false)
+                        .addField(`Error code:`, `${res.error.code}`, false)
+                        .addField(`Description`, `${res.error.message}`, false)
 
                     interaction.reply({embeds: [request_error], ephemeral: is_ephemeral});
                     return;
                 }
 
-                const response = data;
-                if(data.hdurl) {
-                    apod_image_url = response.hdurl;
-                } else if(data.thumbnail_url) {
-                    apod_image_url = response.thumbnail_url;
+                if(res.hdurl) {
+                    apod_image_url = res.hdurl;
+                } else if(res.thumbnail_url) {
+                    apod_image_url = res.thumbnail_url;
                 }
 
-                if(data.media_type == "image") {
-                    apod_image_url = response.hdurl;
-                } else if(data.media_type == "video") {
-                    apod_image_url = response.thumbnail_url;
+                if(res.media_type == "image") {
+                    apod_image_url = res.hdurl;
+                } else if(res.media_type == "video") {
+                    apod_image_url = res.thumbnail_url;
                 }
 
-                apod_date = response.date;
-                apod_explanation = response.explanation;
-                apod_url = response.url;
-                apod_title = response.title;
+                apod_date = res.date;
+                apod_explanation = res.explanation;
+                apod_url = res.url;
+                apod_title = res.title;
             })
 
         const nasa_apod = new MessageEmbed()

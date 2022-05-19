@@ -3,7 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const process = require('process');
 require('dotenv').config();
 
-const fetch = require('window-fetch');
+const fetch = require('node-fetch');
 
 const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
@@ -33,7 +33,7 @@ module.exports = {
 
         //Code
         await fetch(`https://api.hypixel.net/key?key=${process.env.HYPIXEL_API_KEY_JERRY}`)
-            .then(response => response.json())
+            .then(res => res.json())
             .then(response => {
                 response_success = String(response.success);
 
