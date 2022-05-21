@@ -71,9 +71,8 @@ module.exports = {
 
         const nasa_apod = new MessageEmbed()
             .setColor(nasa_logo_red_hex)
-            .setAuthor({name: "NASA APOD", url: "https://apod.nasa.gov/apod/astropix.html", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
             .setTitle(`NASA Astronomy Picture of the Day (APOD)`)
-            .setURL(`${apod_url}`)
+            .setURL(`https://apod.nasa.gov/apod/astropix.html`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setDescription(`${apod_explanation}`)
             .addField(`Title`, `${apod_title}`, true)

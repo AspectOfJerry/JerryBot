@@ -21,21 +21,22 @@ module.exports = {
         } catch(err) {
             if(err) {
                 console.error(err);
+                const _error = ":\n```\n" + err + "\n```" || " No further information is available.";
                 const execute_error = new MessageEmbed()
                     .setColor('#bb20ff')
                     .setTitle('Error')
-                    .setDescription("An error occured while executing the command. No further information is available.")
+                    .setDescription(`An error occured while executing the command${_error}`)
                     .setTimestamp();
 
                 try {
-                    await interaction.channel.send({embeds: [execute_error], ephemeral: false});
+                    await interaction.reply({embeds: [execute_error], ephemeral: false});
                 } catch {
                     try {
                         await interaction.followUp({embeds: [execute_error], ephemeral: false});
                         return;
                     } catch {
                         try {
-                            await interaction.reply({embeds: [execute_error], ephemeral: false});
+                            await interaction.channel.send({embeds: [execute_error], ephemeral: false});
                             return;
                         } catch {
                             console.log(err)

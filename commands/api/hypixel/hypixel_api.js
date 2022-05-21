@@ -52,6 +52,7 @@ module.exports = {
                             .setDescription("The API key is invalid.")
                             .addField("Success", `${response_success}`, true)
                             .addField("Cause:", `${error_response_cause} (Error 403)`, true)
+                            .setFooter({text: "Hypixel Public API"})
 
                         interaction.reply({embeds: [error_response_invalid_api_key], ephemeral: is_ephemeral});
                         return;
@@ -62,6 +63,7 @@ module.exports = {
                             .setDescription("The API key is throttled. Please try again in a minute.")
                             .addField("Success", `${response_success}`, true)
                             .addField("Cause", `${error_response_cause} (Error 429)`, true)
+                            .setFooter({text: "Hypixel Public API"})
 
                         interaction.reply({embeds: [error_response_key_throttle], ephemeral: is_ephemeral});
                         return;
@@ -79,6 +81,7 @@ module.exports = {
                     .addField("Queries in the last minute", `${response_record_queriesInPastMin}`, true)
                     .addField("Remaining queries this minute", `${remainingQueries}`, false)
                     .addField("Total queries", `${response_record_totalQueries}`, false)
+                    .setFooter({text: "Hypixel Public API"})
 
                 interaction.reply({embeds: [success_response], ephemeral: is_ephemeral});
             })

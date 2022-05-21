@@ -8,13 +8,21 @@ const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, W
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('define')
+        .setName('dictionary')
         .setDescription("Get the definition of a word.")
         .addStringOption((options) =>
             options
                 .setName('string')
                 .setDescription("[REQUIRED] the word to define.")
                 .setRequired(true))
+        .addStringOption((options) =>
+            options
+                .setName('language')
+                .setDescription("[OPTIONAL] the language to define the word in. Defaults to English.")
+                .addChoice("English (English)", 'en')
+                .addChoice("Français (French)", 'fr')
+                .addChoice("Español (Spanish)", 'es')
+                .setRequired(false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -28,25 +36,16 @@ module.exports = {
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
 
-        const word = interaction.options.getString('string')
+        const word = interaction.options.getString('string');
+        const language = interaction.options.getString('language') || 'en';
         //Checks
 
         //Code
-        const fetch_definition = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-            .then(response => {
+        await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/hello`)
+            .then(res => {
                 res => res.json()
-            }).then(async res => {
-                if(res.title == "No Definitions Found") {
-                    const unknown_word = new MessageEmbed()
-                        .setColor('RED')
-                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setTitle('Error')
-                        .setDescription(`Unknown word: "${word}".`)
-
-                    interaction.reply({emebds: [unknown_word], ephemeral: is_ephemeral})
-                    return;
-                }
-                //To do
+            }).then(res => {
+                console.log(res)
             })
     }
 }

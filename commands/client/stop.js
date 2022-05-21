@@ -90,7 +90,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription("Destroying all active voice connections...")
 
-                await interaction.reply({embeds: [_destroying_voice_connections], ephemeral: is_ephemeral});
+                await buttonInteraction.reply({embeds: [_destroying_voice_connections], ephemeral: is_ephemeral});
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
