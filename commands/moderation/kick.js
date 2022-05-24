@@ -135,7 +135,7 @@ module.exports = {
         await interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
         await Log(interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO');   //Logs
 
-        const filter = (buttonInteraction) => {
+        const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 return true;
             }

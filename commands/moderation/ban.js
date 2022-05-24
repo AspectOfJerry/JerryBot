@@ -154,7 +154,7 @@ module.exports = {
         await interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
         await Log(interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO'); //Logs
 
-        const filter = (buttonInteraction) => {
+        const filter = async (buttonInteraction) => {
             if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
