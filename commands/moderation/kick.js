@@ -142,7 +142,9 @@ module.exports = {
             else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
-                return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await Log(interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
+                return
             }
         }
         const kick_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});

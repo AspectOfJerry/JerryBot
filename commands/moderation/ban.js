@@ -82,7 +82,7 @@ module.exports = {
             return;
         }
         if(memberTarget.user.tag == "Salmon#5933") {
-            interaction.reply({content: "L BAD YOU CANT BAN ME", ephemeral: is_ephemeral});
+            interaction.reply({content: ">>>L BAD YOU CANT BAN ME - Salmon#5933", ephemeral: is_ephemeral});
             return;
         }
         //---Role position check
@@ -152,13 +152,15 @@ module.exports = {
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?${isRole}`)
 
         await interaction.reply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral})
-        await Log(interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO');    //Logs
+        await Log(interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO'); //Logs
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
-                return buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await Log(interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
+                return;
             }
         }
         const ban_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});

@@ -58,6 +58,7 @@ module.exports = {
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
+            await Log(interaction.guild.id, `├─└─'${memberTarget.tag}' is not in a voice channel.`, 'WARN');
             return;
         }
 
