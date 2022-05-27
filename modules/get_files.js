@@ -8,6 +8,9 @@ const GetFiles = (dir, file_suffix) => {
     let command_files = []
 
     for(const file of files) {
+        if(file.name.includes(".subcommand")) {
+            continue;
+        }
         if(file.isDirectory()) {
             command_files = [
                 ...command_files,
