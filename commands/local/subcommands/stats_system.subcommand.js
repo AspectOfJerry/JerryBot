@@ -31,6 +31,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .addField(`Total allocatable RAM`, `${os.totalmem().toLocaleString()} bytes (~${(os.totalmem / 1000000000).toLocaleString()} gigabytes)`, false)
         .addField(`Allocated RAM (~${((os.totalmem() - os.freemem()) / os.totalmem() * 100).toLocaleString()}%)`, `${(os.totalmem() - os.freemem()).toLocaleString()} bytes (~${((os.totalmem() - os.freemem()) / 1000000000).toLocaleString()} gigabytes)`, true)
         .addField(`Available RAM (~${(os.freemem() / os.totalmem() * 100).toLocaleString()}%)`, `${os.freemem().toLocaleString()} bytes (~${(os.freemem() / 1000000000).toLocaleString()} gigabytes)`, true)
+        .setFooter({text: "node:os"})
 
     await interaction.reply({embeds: [embed], ephemeral: is_ephemeral});
 }

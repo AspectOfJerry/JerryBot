@@ -6,6 +6,13 @@ const GetFiles = require('./modules/get_files');
 require('dotenv').config();
 const process = require('process');
 
+const Sleep = require('./modules/sleep');
+const Log = require('./modules/logger');
+
+/*
+    random hello message to logs
+*/
+
 const client = new Client({
     intents: [
         Intents.FLAGS.DIRECT_MESSAGES,
@@ -17,6 +24,7 @@ const client = new Client({
     ]
 })
 
+//Getting commands
 const file_suffix = '.js'
 const command_files = GetFiles('./commands', file_suffix)
 
@@ -31,6 +39,7 @@ for(const file of command_files) {
     client.commands.set(command.data.name, command);
 }
 
+//Getting events
 const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for(const event_file of event_files) {
