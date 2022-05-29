@@ -21,7 +21,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                .setDescription("[OPTIONAL] Whether you want the bote's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
