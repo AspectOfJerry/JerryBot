@@ -47,5 +47,7 @@ module.exports = {
             }).then(res => {
                 console.log(res)
             })
+
+        await interaction.reply({content: "This command is currently unavailable."});
     }
 }

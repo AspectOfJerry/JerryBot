@@ -3,8 +3,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const os = require('node:os');
 
-const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
+const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = async function (client, interaction, is_ephemeral) {
     //Command information
@@ -23,8 +23,8 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setColor('BLUE')
         .setTitle('System Statistics')
         .setDescription('Here are some statistics about the server running the bot.')
-        .addField('CPU model', `${os.cpus()[0].model}`, false)
-        .addField('OS CPU architecture', `${os.arch()}`, true)
+        .addField('Operating System', `${os.version()} (${os.type()}) ${os.release()}`, false)
+        .addField(`CPU model (${os.arch()} on ${os.platform()})`, `${os.cpus()[0].model}`, false)
         .addField('CPU logical core count', `${os.cpus().length}`, true)
         .addField('CPU base speed', `${os.cpus()[0].speed} MHz`, true)
         .addField('CPU average load', `*${os.loadavg()} unavailable on Windows*`, true)
