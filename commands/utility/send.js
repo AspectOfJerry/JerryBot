@@ -26,7 +26,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to true.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         //Command information
@@ -34,7 +34,7 @@ module.exports = {
         const REQUIRED_ROLE = "everyone";
 
         //Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral');
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
@@ -58,7 +58,7 @@ module.exports = {
         //Code
         switch(is_typing) {
             case true:
-                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: is_ephemeral})
+                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true})
 
                 await channel.sendTyping()
                 await Sleep(1000)
@@ -66,7 +66,7 @@ module.exports = {
                 await channel.send({content: `${message}`});
                 break;  //
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: is_ephemeral})
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true})
 
                 await channel.send({content: `${message}`});
                 break;  //
