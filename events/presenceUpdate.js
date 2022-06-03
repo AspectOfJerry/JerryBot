@@ -15,6 +15,7 @@ module.exports = {
             old_client_status = old_client_status.replace("{", "");
             old_client_status = old_client_status.replace("}", "");
         }
+
         let new_status = newPresence.status || "unknown";
         let new_client_status = newPresence.clientStatus || "unknown";
         new_client_status = JSON.stringify(new_client_status);
