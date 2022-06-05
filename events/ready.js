@@ -14,6 +14,7 @@ module.exports = {
 
         const client_id = client.user.id;
         const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
+        const goldfish_guild_id = process.env.DISCORD_GOLDFISH_GUILD_ID;
         const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
         const rest = new REST({
             version: "9"
@@ -26,6 +27,11 @@ module.exports = {
                         body: commands
                     });
                 console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
+                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id)
+                    , {
+                        body: commands
+                    });
+                console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
                 await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id)
                     , {
                         body: commands

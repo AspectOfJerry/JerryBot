@@ -19,9 +19,22 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/restart'.`, 'INFO');
-        //Command information
-        const REQUIRED_ROLE = "PL3";
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/restart'.`, 'INFO'); //Logs
+        //Command metadata
+        let MINIMUM_EXECUTION_ROLE = undefined;
+        switch(interaction.guild.id) {
+            case process.env.DISCORD_JERRY_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "PL3";
+                break;
+            case process.env.DISCORD_GOLDFISH_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "staff";
+                break;
+            case process.env.DISCORD_CRA_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "PL3";
+                break;
+            default:
+                throw `Error: Bad permission configuration.`;
+        }
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -31,13 +44,13 @@ module.exports = {
         await Log(interaction.guild.id, `├─reason: ${reason}`, 'INFO'); //Logs
 
         //Checks
-        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+        if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `You need at least the '${REQUIRED_ROLE}' role to use this command.`});
+                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/restart'.`, 'WARN');  //Logs

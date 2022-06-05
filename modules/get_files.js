@@ -15,7 +15,11 @@ const GetFiles = (dir, file_suffix) => {
         } else if(file.name.endsWith(".todo")) {
             console.log(`${file.name} => todo`);
             continue;
+        } else if(file.name.endsWith(".template.js")) {
+            console.log(`${file.name} => template file`);
+            continue;
         }
+
         if(file.isDirectory()) {
             command_files = [
                 ...command_files,

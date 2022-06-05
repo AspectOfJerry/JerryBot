@@ -3,9 +3,9 @@ const fetch = require('node-fetch');
 
 module.exports = {
     callback: async (message, Discord, client, ...args) => {
-        //Command information
+        //Command metadata
         const COMMAND_NAME = "ip_location";
-        const REQUIRED_ROLE = "PL0";
+        let MINIMUM_EXECUTION_ROLE = undefined;
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 0;
 

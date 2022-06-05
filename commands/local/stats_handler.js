@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const fs = require('fs');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
@@ -27,6 +29,7 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO'); //Logs
         //Declaring variables
         const is_ephemeral = await interaction.options.getBoolean('ephemeral') || false;
 
@@ -36,7 +39,7 @@ module.exports = {
         } else if(interaction.options.getSubcommand() == 'system') {
             require('./stats_system.subcommand')(client, interaction, is_ephemeral);
         } else {
-            throw "Invalid subcommand. `stats.js` 36:11";
+            throw "Invalid subcommand. `stats_handler.js`";
         }
     }
 }

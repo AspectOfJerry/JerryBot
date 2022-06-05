@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const fs = require('fs');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 const portfinder = require('portfinder');
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
@@ -25,9 +27,22 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        //Command information
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO');
-        const REQUIRED_ROLE = "PL1";
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO'); //Logs
+        //Command metadata
+        let MINIMUM_EXECUTION_ROLE = undefined;
+        switch(interaction.guild.id) {
+            case process.env.DISCORD_JERRY_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "PL1";
+                break;
+            case process.env.DISCORD_GOLDFISH_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "Admin";
+                break;
+            case process.env.DISCORD_CRA_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = "PL1";
+                break;
+            default:
+                throw `Error: Bad permission configuration.`;
+        }
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -39,7 +54,7 @@ module.exports = {
         let ports = [];
         let nextPort;
         //Checks
-        if(!interaction.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
+        if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

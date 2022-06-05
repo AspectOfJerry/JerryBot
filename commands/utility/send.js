@@ -1,5 +1,7 @@
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const fs = require('fs');
+const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
@@ -29,18 +31,33 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        //Command information
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO')
-        const REQUIRED_ROLE = "everyone";
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); //Logs
+        //Command metadata
+        let MINIMUM_EXECUTION_ROLE = undefined;
+        switch(interaction.guild.id) {
+            case process.env.DISCORD_JERRY_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = null;
+                break;
+            case process.env.DISCORD_GOLDFISH_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = null;
+                break;
+            case process.env.DISCORD_CRA_GUILD_ID:
+                MINIMUM_EXECUTION_ROLE = null;
+                break;
+            default:
+                throw `Error: Bad permission configuration.`;
+        }
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
+        await Log(interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); //Logs
         const message = interaction.options.getString('message') || true;
-        const is_typing = interaction.options.getBoolean('doTyping') || false;
-        await Log(interaction.guild.id, `├─is_typing: ${is_typing}`, 'INFO');
+        await Log(interaction.guild.id, `├─message: "${message}"`, 'INFO'); //Logs
+        const do_typing = interaction.options.getBoolean('type') || false;
+        await Log(interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); //Logs
 
         //Checks
         if(!channel.isText()) {
@@ -56,7 +73,7 @@ module.exports = {
         }
 
         //Code
-        switch(is_typing) {
+        switch(do_typing) {
             case true:
                 await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true})
 
