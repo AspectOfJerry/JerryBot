@@ -45,7 +45,7 @@ module.exports = {
         //Code
         if(interaction.options.getSubcommand() == 'append') {
             //Declaring variables
-            await Log(interaction.guild.id, `├─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); //Logs
 
             const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
             await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
@@ -58,9 +58,14 @@ module.exports = {
             //Calling the subcommand file
             require('./log_subcommands/logs_append.subcommand')(client, interaction, is_ephemeral, string, object);
         } else if(interaction.options.getSubcommand() == 'read') {
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); //Logs
+
+            //Declaring variables
+            const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+            await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
             //Calling the subcommand file
-            require('./logs_read.subcommand')(client, interaction, is_ephemeral);
+            require('./log_subcommands/logs_read.subcommand')(client, interaction, is_ephemeral);
         } else {
             throw "Invalid subcommand. `logs_handler.js`";
         }

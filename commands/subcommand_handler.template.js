@@ -44,7 +44,7 @@ module.exports = {
 
         //Code
         if(interaction.options.getSubcommand() == 'SUBCOMMAND1_NAME') {
-            await Log(interaction.guild.id, `├─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); //Logs
 
             //Declaring variables
             const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -53,7 +53,7 @@ module.exports = {
             //Calling the subcommand file
             require('./DIR')(client, interaction, is_ephemeral);
         } else if(interaction.options.getSubcommand() == 'SUBCOMMAND2_NAME') {
-            await Log(interaction.guild.id, `├─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); //Logs
 
             //Declaring variables
             const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
