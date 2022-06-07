@@ -31,13 +31,13 @@ module.exports = {
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                MINIMUM_EXECUTION_ROLE = "PL0";
                 break;
             case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                MINIMUM_EXECUTION_ROLE = "Admin";
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                MINIMUM_EXECUTION_ROLE = "PL2";
                 break;
             default:
                 throw `Error: Bad permission configuration.`;
