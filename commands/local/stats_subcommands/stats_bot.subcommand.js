@@ -9,7 +9,7 @@ const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, W
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); //Logs
     await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
-    //Command metadata
+    //Checks
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
