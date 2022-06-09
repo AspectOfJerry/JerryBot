@@ -22,7 +22,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); //Logs
-        //Command metadata
+
+        //Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -88,8 +89,9 @@ module.exports = {
                 return buttonInteraction.reply({content: "You cannot use this button", ephemeral: true});
             }
         }
-        const stop_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
-        stop_collector.on('collect', async buttonInteraction => {
+
+        const stop_button_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+        stop_button_collector.on('collect', async buttonInteraction => {
             //Disabling buttons
             row.components[0]
                 .setDisabled(true);
@@ -98,7 +100,7 @@ module.exports = {
             interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
-                await stop_collector.stop()
+                await stop_button_collector.stop()
                 const _destroying_voice_connections = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -131,7 +133,7 @@ module.exports = {
                 await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
                 await Log(interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO')
             }
-            stop_collector.stop();
+            stop_button_collector.stop();
         })
     }
 }

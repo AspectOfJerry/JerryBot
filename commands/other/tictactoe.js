@@ -19,7 +19,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); //Logs
-        //Command metadata
+        //Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
