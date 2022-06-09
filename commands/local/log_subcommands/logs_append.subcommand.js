@@ -56,6 +56,6 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
         .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
     await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
-    await Log(interaction.guild.id, string, 'LOG');   //Logging
+    await Log(interaction.guild.id, string, 'LOG'); //Logging
     await interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});
 }

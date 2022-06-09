@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,35 +39,42 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/log [...]'.`, 'INFO'); //Logs
-        //Declaring variables
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/log [...]'.`, 'INFO'); // Logs
 
-        //Code
-        if(interaction.options.getSubcommand() == 'append') {
-            //Declaring variables
-            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); //Logs
+        // Declaring variables
+        const subcommand = interaction.options.getSubcommand();
 
-            const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-            await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        // Code
+        switch(subcommand) {
+            case 'append': {
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); // Logs
 
-            const string = interaction.options.getString('string');
-            await Log(interaction.guild.id, `  └─string: ${string}`, 'INFO');  //Logs
+                //Declaring variables
+                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+                await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
-            const object = Log(interaction.guild.id, string, 'LOG', true);
+                const string = interaction.options.getString('string');
+                await Log(interaction.guild.id, `  └─string: ${string}`, 'INFO'); // Logs
 
-            //Calling the subcommand file
-            require('./log_subcommands/logs_append.subcommand')(client, interaction, is_ephemeral, string, object);
-        } else if(interaction.options.getSubcommand() == 'read') {
-            await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); //Logs
+                const object = Log(interaction.guild.id, string, 'LOG', true);
 
-            //Declaring variables
-            const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-            await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+                // Calling the subcommand file
+                require('./log_subcommands/logs_append.subcommand')(client, interaction, is_ephemeral, string, object);
+            }
+                break;
+            case 'read': {
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
 
-            //Calling the subcommand file
-            require('./log_subcommands/logs_read.subcommand')(client, interaction, is_ephemeral);
-        } else {
-            throw "Invalid subcommand. `logs_handler.js`";
+                // Declaring variables
+                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+                await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+
+                // Calling the subcommand file
+                require('./log_subcommands/logs_read.subcommand')(client, interaction, is_ephemeral);
+            }
+                break;
+            default:
+                throw "Invalid subcommand.";
         }
     }
 }

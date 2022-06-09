@@ -25,7 +25,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
 
     // Declaring variables
 
-    //Checks
+    // Checks
     const _connection = getVoiceConnection(interaction.guild.id);
     if(!_connection) {
         const error_not_in_vc = new MessageEmbed()
@@ -38,24 +38,16 @@ module.exports = async function (client, interaction, is_ephemeral) {
         return;
     }
 
-    //Code
-    const fetching_connection = new MessageEmbed()
-        .setColor('YELLOW')
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('VoiceConnection')
-        .setDescription("Fetching voice connections in this guild...")
-
-    await interaction.reply({embeds: [fetching_connection], ephemeral: is_ephemeral});
-
+    // Code
     const connection = getVoiceConnection(interaction.guild.id);
 
-    connection.destroy();
+    await connection.selfDeaf()
 
-    const connection_destroyed = new MessageEmbed()
-        .setColor('FUCHSIA')
+    const self_deaf = new MessageEmbed()
+        .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('VoiceConnection')
-        .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.")
+        .setTitle("Voice selfDeaf")
+        .setDescription("Successfully toggled self-deaf.")
 
-    await interaction.editReply({embeds: [connection_destroyed], ephemeral: is_ephemeral});
+    await interaction.relpy({embeds: [self_deaf], ephemeral: is_ephemeral});
 }

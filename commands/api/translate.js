@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -34,7 +34,7 @@ module.exports = {
                 .addChoice("Svenska (Swedish)", 'sv')
                 .addChoice("Türkçe (Turkish)", 'tr')
                 .addChoice("Nederlands (Dutch)", 'nl')
-                //.addChoice("Русский (Russian) #StandForUkraine", 'ru') #StandForUkraine
+                // .addChoice("Русский (Russian) #StandForUkraine", 'ru') #StandForUkraine
                 .setRequired(true))
         .addStringOption((options) =>
             options
@@ -56,7 +56,7 @@ module.exports = {
                 .addChoice("Svenska (Swedish)", 'sv')
                 .addChoice("Türkçe (Turkish)", 'tr')
                 .addChoice("Nederlands (Dutch)", 'nl')
-                //.addChoice("Русский (Russian) #StandForUkraine", 'ru') #StandForUkraine
+                // .addChoice("Русский (Russian) #StandForUkraine", 'ru') #StandForUkraine
                 .setRequired(true))
         .addBooleanOption((options) =>
             options
@@ -64,8 +64,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/translate'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/translate'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -81,16 +81,16 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
 
         const string = interaction.options.getString('string');
         const original_language = interaction.options.getString('from');
         const target_language = interaction.options.getString('to');
-        //Checks
+        // Checks
 
-        //Code
+        // Code
         interaction.reply({content: "This command is currently unavailable."})
         return;
     }

@@ -7,8 +7,8 @@ require('dotenv').config();
 
 const fetch = require('node-fetch');
 
-const Sleep = require('../../../modules/sleep'); //dedlayInMilliseconds;
-const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../../modules/sleep'); // dedlayInMilliseconds;
+const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,8 +20,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -37,7 +37,7 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 
         let response_success;
@@ -45,9 +45,9 @@ module.exports = {
         let response_record_limit;
         let response_record_queriesInPastMin;
         let response_record_totalQueries;
-        //Checks
+        // Checks
 
-        //Code
+        // Code
         await fetch(`https://api.hypixel.net/key?key=${process.env.HYPIXEL_API_KEY_JERRY}`)
             .then(res => res.json())
             .then(response => {

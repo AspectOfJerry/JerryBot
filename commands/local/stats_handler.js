@@ -30,16 +30,37 @@ module.exports = {
                         .setRequired(false))),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO'); //Logs
+
         //Declaring variables
-        const is_ephemeral = await interaction.options.getBoolean('ephemeral') || false;
+
+        const subcommand = interaction.options.getSubcommand();
 
         //Code
-        if(interaction.options.getSubcommand() == 'bot') {
-            require('./stats_bot.subcommand')(client, interaction, is_ephemeral);
-        } else if(interaction.options.getSubcommand() == 'system') {
-            require('./stats_system.subcommand')(client, interaction, is_ephemeral);
-        } else {
-            throw "Invalid subcommand. `stats_handler.js`";
+        switch(subcommand) {
+            case 'bot': {
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
+
+                // Declaring variables
+                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+                await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+
+                // Calling the subcommand file
+                require('./stats_bot.subcommand')(client, interaction, is_ephemeral);
+            }
+                break;
+            case 'system': {
+                await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice system'.`, 'INFO'); // Logs
+
+                // Declaring variables
+                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+                await Log(interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+
+                // Calling the subcommand file
+                require('./stats_system.subcommand')(client, interaction, is_ephemeral);
+            }
+                break;
+            default:
+                throw "Invalid subcommand."
         }
     }
 }

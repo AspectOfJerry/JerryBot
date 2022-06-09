@@ -4,8 +4,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 const weather = require('weather-js');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,8 +29,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -46,16 +46,16 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
 
-        //Checks
+        // Checks
 
-        //Code
+        // Code
         weather.find({search: search_location, degreeType: search_unit}, function (error, result) {
             if(error) {
                 console.error(error);
@@ -71,7 +71,7 @@ module.exports = {
                 interaction.reply({embeds: [search_error], ephemeral: false});
                 return;
             }
-            //Current stats
+            // Current stats
             const degree_type = result[0].location.degreetype;
             const location = result[0].location.name;
             const zip_code = result[0].location.zipcode ? ` (${result[0].location.zipcode})` : "";
@@ -84,35 +84,35 @@ module.exports = {
             const local_winddisplay = result[0].current.winddisplay;
             const local_humidity = result[0].current.humidity;
             const local_condition = result[0].current.skytext;
-            //Day 0
+            // Day 0
             const day0_day = result[0].forecast[0].day;
             const day0_date = result[0].forecast[0].date;
             const day0_lowest_temp = result[0].forecast[0].low;
             const day0_highest_temp = result[0].forecast[0].high;
             const day0_condition = result[0].forecast[0].skytextday;
             const day0_precipitations = result[0].forecast[0].precip || "0";
-            //Day 1
+            // Day 1
             const day1_day = result[0].forecast[1].day;
             const day1_date = result[0].forecast[1].date;
             const day1_lowest_temp = result[0].forecast[1].low;
             const day1_highest_temp = result[0].forecast[1].high;
             const day1_condition = result[0].forecast[1].skytextday;
             const day1_precipitations = result[0].forecast[1].precip || "0";
-            //Day 2
+            // Day 2
             const day2_day = result[0].forecast[2].day;
             const day2_date = result[0].forecast[2].date;
             const day2_lowest_temp = result[0].forecast[2].low;
             const day2_highest_temp = result[0].forecast[2].high;
             const day2_condition = result[0].forecast[2].skytextday;
             const day2_precipitations = result[0].forecast[2].precip || "0";
-            //Day 3
+            // Day 3
             const day4_day = result[0].forecast[3].day;
             const day4_date = result[0].forecast[3].date;
             const day4_lowest_temp = result[0].forecast[3].low;
             const day4_highest_temp = result[0].forecast[3].high;
             const day4_condition = result[0].forecast[3].skytextday;
             const day4_precipitations = result[0].forecast[3].precip || "0";
-            //Day 4
+            // Day 4
             const day5_day = result[0].forecast[4].day;
             const day5_date = result[0].forecast[4].date;
             const day5_lowest_temp = result[0].forecast[4].low;
@@ -131,27 +131,27 @@ module.exports = {
                     `• Winds at ${local_winddisplay}.\n` +
                     `• Humidity: ${local_humidity} %\n\n` +
                     "**:calendar_spiral: Forecast**", false)
-                //Day 0
+                // Day 0
                 .addField(`** **${day0_day} (${day0_date})`,
                     `• Condition: ${day0_condition}\n` +
                     `• High: ${day0_highest_temp}°${degree_type}, Low: ${day0_lowest_temp}°${degree_type}\n` +
                     `• Precipitation: ${day0_precipitations}%`, false)
-                //Day 2
+                // Day 2
                 .addField(`** **${day1_day} (${day1_date})`,
                     `• Condition: ${day1_condition}\n` +
                     `• High: ${day1_highest_temp}°${degree_type}, Low: ${day1_lowest_temp}°${degree_type}\n` +
                     `• Precipitation: ${day1_precipitations}%`, false)
-                //Day 2
+                // Day 2
                 .addField(`** **${day2_day} (${day2_date})`,
                     `• Condition: ${day2_condition}\n` +
                     `• High: ${day2_highest_temp}°${degree_type}, Low: ${day2_lowest_temp}°${degree_type}\n` +
                     `• Precipitation: ${day2_precipitations}%`, false)
-                //Day 3
+                // Day 3
                 .addField(`** **${day4_day} (${day4_date})`,
                     `• Condition: ${day4_condition}\n` +
                     `• High: ${day4_highest_temp}°${degree_type}, Low: ${day4_lowest_temp}°${degree_type}\n` +
                     `• Precipitation: ${day4_precipitations}%`, false)
-                //Day 4
+                // Day 4
                 .addField(`** **${day5_day} (${day5_date})`,
                     `• Condition: ${day5_condition}\n` +
                     `• High: ${day5_highest_temp}°${degree_type}, Low: ${day5_lowest_temp}°${degree_type}\n` +

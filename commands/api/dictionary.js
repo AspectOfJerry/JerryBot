@@ -1,12 +1,12 @@
-//https://api.dictionaryapi.dev/api/v2/entries/en/<word>
+// https:// api.dictionaryapi.dev/api/v2/entries/en/<word>
 const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 const fetch = require('node-fetch');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -31,8 +31,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/dictionary'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/dictionary'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -48,16 +48,16 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
 
         const word = interaction.options.getString('string');
         const language = interaction.options.getString('language') || 'en';
-        //Checks
+        // Checks
 
-        //Code
-        await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/hello`)
+        // Code
+        await fetch(`https:// api.dictionaryapi.dev/api/v2/entries/en/hello`)
             .then(res => {
                 res => res.json()
             }).then(res => {

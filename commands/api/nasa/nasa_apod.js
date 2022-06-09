@@ -4,8 +4,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 const fetch = require('node-fetch');
 
-const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
@@ -19,8 +19,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/nasa_apod'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/nasa_apod'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -36,9 +36,9 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const nasa_logo_red_hex = '#0b3d91'
         let apod_date;
         let apod_explanation;
@@ -46,10 +46,10 @@ module.exports = {
         let apod_image_url;
         let apod_title;
 
-        //Checks
+        // Checks
 
-        //Code
-        //API request
+        // Code
+        // API request
         await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
             .then(res => res.json())
             .then(res => {

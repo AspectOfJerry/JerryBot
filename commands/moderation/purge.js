@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,8 +21,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -38,14 +38,14 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const amount = interaction.options.getInteger('amount');
         const channel = interaction.channel;
 
-        //Checks
+        // Checks
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -55,11 +55,11 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN');    //Logs
+            await Log(interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN'); // Logs
             return;
         }
 
-        //Code
+        // Code
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }

@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
-const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,8 +26,8 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO'); //Logs
-        //Permission check
+        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO'); // Logs
+        // Permission check
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -43,15 +43,15 @@ module.exports = {
                 throw `Error: Bad permission configuration.`;
         }
 
-        //Declaring variables
+        // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log(interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         let reason = interaction.options.getString('reason');
-        //Checks
+        // Checks
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -74,7 +74,7 @@ module.exports = {
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
             return;
         }
-        //Role position check---
+        // Role position check---
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('RED')
@@ -95,9 +95,9 @@ module.exports = {
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral})
             return;
         }
-        //---Role position check
+        // ---Role position check
 
-        //Code
+        // Code
         reason = reason ? ` \n**Reason:** ${reason}` : "";
         memberTarget.timeout(null, reason)
             .then(timeoutResult => {

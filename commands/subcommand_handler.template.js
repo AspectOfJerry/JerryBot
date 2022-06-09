@@ -40,8 +40,10 @@ module.exports = {
                         .setRequired(false))),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/NAME [...]'.`, 'INFO'); // Logs
+
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
+
         // Code
         switch(subcommand) {
             case 'SUBCOMMAND1_NAME': {
@@ -67,7 +69,7 @@ module.exports = {
             }
                 break;
             default:
-                throw "Invalid subcommand. `NAME.js`";
+                throw "Invalid subcommand.";
         }
     }
 }
