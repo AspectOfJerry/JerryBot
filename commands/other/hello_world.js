@@ -17,7 +17,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' 'executed '/hello_world'.`, 'INFO'); // Logs
-        // Permission check
+        // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:

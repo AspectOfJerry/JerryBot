@@ -30,7 +30,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
-        // Permission check
+        // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -43,6 +43,7 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
+                await Log(interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 

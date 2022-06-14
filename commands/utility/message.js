@@ -26,7 +26,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        // Permission check
+        // Set minimum execution role
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/message'.`, 'INFO'); // Logs
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {

@@ -23,7 +23,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
 
-        // Permission check
+        // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:

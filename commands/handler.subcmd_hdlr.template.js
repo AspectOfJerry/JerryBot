@@ -12,12 +12,12 @@ module.exports = {
         .setDescription("DESCRIPTION")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('SUBCOMMAND1_NAME')
-                .setDescription("SUBCOMMAND1_DESCRIPTION")
+                .setName('SUBCMD1_NAME')
+                .setDescription("SUBCMD1_DESCRIPTION")
                 .addStringOption((options) =>
                     options
-                        .setName('SUBCOMMAND_OPTION_NAME')
-                        .setDescription("[REQUIRED / OPTIONAL] SUBCOMMAND_OPTION_DESCRIPTION")
+                        .setName('SUBCMD_OPTION_NAME')
+                        .setDescription("[REQUIRED / OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
                         .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
@@ -26,12 +26,12 @@ module.exports = {
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('SUBCOMMAND2_NAME')
-                .setDescription("SUBCOMMAND2_DESCRIPTION")
+                .setName('SUBCMD2_NAME')
+                .setDescription("SUBCMD2_DESCRIPTION")
                 .addStringOption((options) =>
                     options
-                        .setName('SUBCOMMAND2_OPTION_NAME')
-                        .setDescription("[REQUIRED / OPTIONAL] SUBCOMMAND_OPTION_DESCRIPTION")
+                        .setName('SUBCMD2_OPTION_NAME')
+                        .setDescription("[REQUIRED / OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
                         .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
@@ -46,8 +46,8 @@ module.exports = {
 
         // Code
         switch(subcommand) {
-            case 'SUBCOMMAND1_NAME': {
-                await Log("subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); // Logs
+            case 'SUBCMD1_NAME': {
+                await Log("subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -57,8 +57,8 @@ module.exports = {
                 require('./DIR')(client, interaction, is_ephemeral);
             }
                 break;
-            case 'SUBCOMMAND2_NAME': {
-                await Log("subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCOMMAND_NAME'.`, 'INFO'); // Logs
+            case 'SUBCMD2_NAME': {
+                await Log("subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;

@@ -7,7 +7,7 @@ const Sleep = require('../../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = async function (client, interaction, is_ephemeral, string, object) {
-    //Permission check
+    //Set minimum execution role
 
     //Checks
     let MINIMUM_EXECUTION_ROLE = undefined;

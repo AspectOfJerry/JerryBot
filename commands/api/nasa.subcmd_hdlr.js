@@ -59,6 +59,7 @@ module.exports = {
             }
                 break;
             default:
+                await Log(interaction.guild.id, "Throwing because of an invalid subcommand.", "ERROR"); // Logs
                 throw "Invalid subcommand.";
         }
     }
