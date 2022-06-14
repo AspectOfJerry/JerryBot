@@ -9,7 +9,7 @@ const GetFiles = (dir, file_suffix) => {
     let command_files = []
 
     for(const file of files) {
-        if(file.name.endsWith(".subcommand.js")) {
+        if(file.name.endsWith(".subcmd.js")) {
             console.log(`${file.name} => subcommand`);
             continue;
         } else if(file.name.endsWith(".todo")) {
@@ -17,6 +17,9 @@ const GetFiles = (dir, file_suffix) => {
             continue;
         } else if(file.name.endsWith(".template.js")) {
             console.log(`${file.name} => template file`);
+            continue;
+        } else if(file.name.endsWith(".subcmd_hdlr.js")) {
+            console.log(`${file.name} => subcommand handler`);
             continue;
         }
 

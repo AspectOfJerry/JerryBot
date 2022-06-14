@@ -7,6 +7,7 @@ const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds;
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
+    await Log(interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
     // Permission check
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
