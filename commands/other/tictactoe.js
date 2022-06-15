@@ -18,7 +18,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -32,6 +32,7 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
+                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -41,6 +42,6 @@ module.exports = {
 
         // Code
         game.handleInteraction(interaction);
-        await Log(interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' module`, 'INFO');
+        await Log("read", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' module`, 'INFO');
     }
 }

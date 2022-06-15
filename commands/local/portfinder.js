@@ -27,7 +27,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO'); //Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO'); //Logs
         //Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -41,12 +41,13 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
+                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         //Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+        await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
 
         const search_amount = interaction.options.getInteger('amount') || 10;
         const start_port = interaction.options.getInteger('start') || 8000;
@@ -76,6 +77,6 @@ module.exports = {
 
         // interaction.reply({embeds: [available_ports], ephemeral: is_ephemeral});
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `└─This command is currently unavailable.`, 'ERROR');
+        await Log("read", interaction.guild.id, `└─This command is currently unavailable.`, 'ERROR');
     }
 }

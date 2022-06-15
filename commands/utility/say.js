@@ -21,7 +21,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to true.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/say'.`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/say'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -35,12 +35,13 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
+                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         let message = interaction.options.getString("string");
 
@@ -54,6 +55,6 @@ module.exports = {
             .setDescription("This command is deprecated. Please use the `/send` command instead.")
 
         interaction.reply({emebds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log(interaction.guild.id, `└─This command is deprecated, and it is replaced by '/send'`, 'WARN'); // Logs
+        await Log("read", interaction.guild.id, `└─This command is deprecated, and it is replaced by '/send'`, 'WARN'); // Logs
     }
 }

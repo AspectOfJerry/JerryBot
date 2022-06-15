@@ -31,7 +31,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -45,19 +45,20 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
+                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
-        await Log(interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
         const message = interaction.options.getString('message') || true;
-        await Log(interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
         const do_typing = interaction.options.getBoolean('type') || false;
-        await Log(interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); // Logs
 
         // Checks
         if(!channel.isText()) {

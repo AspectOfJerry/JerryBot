@@ -64,7 +64,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/translate'.`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/translate'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -78,13 +78,13 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log(interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
+        await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
 
         const string = interaction.options.getString('string');
         const original_language = interaction.options.getString('from');

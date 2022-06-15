@@ -22,7 +22,7 @@ module.exports = {
                 .setRequired(false))
     ,
     async execute(client, interaction) {
-        await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/test'.`, 'INFO'); // Logs
+        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/test'.`, 'INFO'); // Logs
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
 

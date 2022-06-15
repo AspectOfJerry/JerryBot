@@ -5,6 +5,6 @@ module.exports = {
     name: "debug",
     once: false,
     async execute(info) {
-        Log('debug', info, 'DEBUG');
+        Log("read", 'debug', info, 'DEBUG');
     }
 }

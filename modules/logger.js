@@ -1,47 +1,57 @@
 const fs = require('fs');
 const date = require('date-and-time');
 
-module.exports = async function Log(tag, string, type, infoOnly) {
-    //Declaring variables
-    const now = new Date();
+module.exports = async function Log(method, tag, string, type, infoOnly) {
+    switch(method) {
+        case "append": {
+            //Declaring variables
+            const now = new Date();
 
-    let tagLenght = 0;
-    let tagExtraIndentNum = 0;
-    let tagExtraIndent = "";
-    let typeLenght = 0;
-    let typeExtraIndentNum = 0;
-    let typeExtraIndent = "";
+            let tagLenght = 0;
+            let tagExtraIndentNum = 0;
+            let tagExtraIndent = "";
+            let typeLenght = 0;
+            let typeExtraIndentNum = 0;
+            let typeExtraIndent = "";
 
-    //Get current date
-    const now_date = date.format(now, 'YYYY-MM-DD');
-    const now_time = date.format(now, 'HH:mm:ss.SSS');
+            //Get current date
+            const now_date = date.format(now, 'YYYY-MM-DD');
+            const now_time = date.format(now, 'HH:mm:ss.SSS');
 
-    //Generate the log file name
-    const file_name = `${now_date}_DiscordBot-Jerry-Bot.log`;
+            //Generate the log file name
+            const file_name = `${now_date}_DiscordBot-Jerry-Bot.log`;
 
-    //Generate the new line content
-    tagLenght = tag.length;
-    tagExtraIndentNum = 18 - tagLenght;
-    for(let i = 0; i < tagExtraIndentNum; i++) {
-        tagExtraIndent = tagExtraIndent + ">";
+            //Generate the new line content
+            tagLenght = tag.length;
+            tagExtraIndentNum = 18 - tagLenght;
+            for(let i = 0; i < tagExtraIndentNum; i++) {
+                tagExtraIndent = tagExtraIndent + ">";
+            }
+            //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+            if(!type) {
+                type = "NULL";
+            }
+            typeLenght = type.length;
+            typeExtraIndentNum = 5 - typeLenght;
+            for(let i = 0; i < typeExtraIndentNum; i++) {
+                typeExtraIndent = typeExtraIndent + " ";
+            }
+
+            string = `[${tagExtraIndent}${tag}] [${now_time}] [Jerry-Bot/${type}]:${typeExtraIndent} ${string}`;
+
+            //Only return info
+            const return_object = {fileName: file_name, parsedString: string};
+            if(infoOnly) return return_object;
+
+            //Append to file
+            fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {if(err) throw err;});
+            return return_object;
+        }
+        case "read": {
+            //Read stuff
+        }
+            break;
+        default:
+            throw "Unknown action";
     }
-    //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
-    if(!type) {
-        type = "NULL";
-    }
-    typeLenght = type.length;
-    typeExtraIndentNum = 5 - typeLenght;
-    for(let i = 0; i < typeExtraIndentNum; i++) {
-        typeExtraIndent = typeExtraIndent + " ";
-    }
-
-    string = `[${tagExtraIndent}${tag}] [${now_time}] [Jerry-Bot/${type}]:${typeExtraIndent} ${string}`;
-
-    //Only return info
-    const return_object = {fileName: file_name, parsedString: string};
-    if(infoOnly) return return_object;
-
-    //Append to file
-    fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {if(err) throw err;});
-    return return_object;
 }

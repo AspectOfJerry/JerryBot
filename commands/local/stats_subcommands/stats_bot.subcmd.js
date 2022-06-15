@@ -7,8 +7,8 @@ const Sleep = require('../../modules/sleep'); //delayInMilliseconds;
 const Log = require('../../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log(interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); //Logs
-    await Log(interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
+    await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); //Logs
+    await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); //Logs
     //Checks
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -22,6 +22,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
+            await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
             throw `Error: Bad permission configuration.`;
     }
 
