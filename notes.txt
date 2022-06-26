@@ -13,7 +13,7 @@ Black: #000000 (RGB: 0, 0, 0)
 Useful links:
 Hypixel Network levels: https://github.com/HypixelDev/PublicAPI/wiki/Common-Questions#how-do-i-find-a-players-network-level
 
------HTTP status codes-----
+-----Common HTTP status codes-----
 Code                                            Meaning
 200 OK                                          Standard response for successful HTTP requests.
 
@@ -28,7 +28,7 @@ Code                                            Meaning
 500 Internal Server Error                       A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
 503 Service Unavailable                         The server cannot handle the request (because it is overloaded or down for maintenance).
 
------Hypixel API info-----
+-----Hypixel API info----- (NEEDS TO BE UPDATED)
 
 Games
 

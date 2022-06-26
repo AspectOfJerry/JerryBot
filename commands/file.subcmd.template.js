@@ -3,11 +3,11 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log("read", interaction.guild.id, `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -21,7 +21,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+            await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
             throw `Error: Bad permission configuration.`;
     }
 

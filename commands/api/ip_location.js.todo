@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 module.exports = {
     callback: async (message, Discord, client, ...args) => {
-        //Set minimum execution role
+        // Set minimum execution role
         const COMMAND_NAME = "ip_location";
         let MINIMUM_EXECUTION_ROLE = undefined;
         const EXCPECTED_ARGUMENTS = 1;
@@ -28,7 +28,7 @@ module.exports = {
             return;
         }
 
-        //Declaring variables
+        // Declaring variables
         let ipAdress;
         let ipAdressType;
         let ipAdressContinentCode;
@@ -45,7 +45,7 @@ module.exports = {
 
         //Declaring functions
 
-        //Checks
+        // Checks
         if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('RED')
@@ -67,7 +67,7 @@ module.exports = {
         }
         ipAdress = args[0];
 
-        //Code
+        // Code
         await fetch(`http://api.ipstack.com/${ipAdress}?access_key=${process.env.IPSTACK_API_KEY_JERRY}`)
             .then(res => res.json())
             .then(response => {

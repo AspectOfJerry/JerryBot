@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-//module.exports = async function GetFiles(dir, file_suffix){}
+// module.exports = async function GetFiles(dir, file_suffix){}
 const GetFiles = (dir, file_suffix) => {
     const files = fs.readdirSync(dir, {
         withFileTypes: true

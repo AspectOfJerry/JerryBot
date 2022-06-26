@@ -1,11 +1,11 @@
-const Sleep = require('../modules/sleep'); //delayInMilliseconds;
-const Log = require('../modules/logger'); //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../modules/sleep'); // delayInMilliseconds
+const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     name: "presenceUpdate",
     once: false,
     async execute(oldPresence, newPresence) {
-        //Declaring variables
+        // Declaring variables
         let old_status = "unknown";
         let old_client_status = "unknown";
         if(oldPresence) {
@@ -23,6 +23,6 @@ module.exports = {
         new_client_status = new_client_status.replace("{", "");
         new_client_status = new_client_status.replace("}", "");
 
-        Log("read", 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_status}' (${old_client_status}) to '${new_status}' (${new_client_status}) in "${newPresence.guild.name}"`, 'INFO');
+        await Log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_status}' (${old_client_status}) to '${new_status}' (${new_client_status}) in "${newPresence.guild.name}"`, 'INFO');
     }
 }

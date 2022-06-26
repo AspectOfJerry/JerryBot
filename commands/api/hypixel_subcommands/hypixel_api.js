@@ -8,7 +8,7 @@ require('dotenv').config();
 const fetch = require('node-fetch');
 
 const Sleep = require('../../../modules/sleep'); // dedlayInMilliseconds;
-const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -34,7 +34,7 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 

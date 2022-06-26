@@ -3,11 +3,11 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log("read", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -26,7 +26,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
 
     // Declaring variables
 
-    //Checks
+    // Checks
     const _connection = getVoiceConnection(interaction.guild.id);
     if(!_connection) {
         const error_not_in_vc = new MessageEmbed()
@@ -39,7 +39,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         return;
     }
 
-    //Code
+    // Code
     const fetching_connection = new MessageEmbed()
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

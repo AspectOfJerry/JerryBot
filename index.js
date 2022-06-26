@@ -1,4 +1,3 @@
-//const Discord = require('discord.js')
 const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const GetFiles = require('./modules/get_files');
@@ -24,13 +23,13 @@ const client = new Client({
         Intents.FLAGS.GUILD_PRESENCES,
         Intents.FLAGS.GUILD_INVITES,
     ]
-})
+});
 
-//Getting commands
+// Getting commands
 const file_suffix = '.js'
-const command_files = GetFiles('./commands', file_suffix)
+const command_files = GetFiles('./commands', file_suffix);
 
-console.log(command_files)
+console.log(command_files);
 const commands = [];
 
 client.commands = new Collection();
@@ -41,7 +40,7 @@ for(const file of command_files) {
     client.commands.set(command.data.name, command);
 }
 
-//Getting events
+// Getting events
 const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for(const event_file of event_files) {

@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,7 +39,7 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/NAME [...]'.`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/NAME [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -47,22 +47,22 @@ module.exports = {
         // Code
         switch(subcommand) {
             case 'SUBCMD1_NAME': {
-                await Log("read", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("read", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./DIR')(client, interaction, is_ephemeral);
             }
                 break;
             case 'SUBCMD2_NAME': {
-                await Log("read", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("read", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./DIR')(client, interaction, is_ephemeral);

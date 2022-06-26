@@ -3,11 +3,11 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
-    await Log("read", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -24,7 +24,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             throw `Error: Bad permission configuration.`;
     }
 
-    //Declaring variables
+    // Declaring variables
 
     // Checks
     if(!interaction.member.voice.channel && !voice_channel) {
@@ -60,7 +60,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
         await interaction.editReply({embeds: [_connection_connecting], ephemeral: is_ephemeral});
-        await Log("read", interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO');
+        await Log("append", interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO');
     });
     connection.on(VoiceConnectionStatus.Ready, async () => {
         const _connection_ready = new MessageEmbed()
@@ -70,7 +70,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             .setDescription("__Ready__. The connection to the voice channel has been established.")
 
         await interaction.editReply({embeds: [_connection_ready], ephemeral: is_ephemeral});
-        await Log("read", interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO');
+        await Log("append", interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO');
     });
 
     const success_join = new MessageEmbed()
@@ -80,5 +80,5 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
         .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
     await interaction.editReply({embeds: [success_join], ephemeral: is_ephemeral});
-    await Log("read", interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO');
+    await Log("append", interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO');
 }

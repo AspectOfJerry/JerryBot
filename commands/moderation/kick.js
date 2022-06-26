@@ -3,8 +3,8 @@ const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButto
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,7 +26,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -40,16 +40,16 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = PL2;
                 break;
             default:
-                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("read", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("read", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         let reason = interaction.options.getString('reason');
 
@@ -67,7 +67,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log("read", interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'.`, 'WARN'); // Logs
+            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'.`, 'WARN'); // Logs
             return;
         }
         if(memberTarget.id == interaction.user.id) {
@@ -78,7 +78,7 @@ module.exports = {
                 .setDescription('You cannot kick yourself.');
 
             await interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
-            await Log("read", interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, 'WARN')
+            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, 'WARN')
             return;
         }
         // Role position check---
@@ -90,7 +90,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
-            await Log("read", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
+            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -101,7 +101,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
-            await Log("read", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
+            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
         // ---Role position check
@@ -149,7 +149,7 @@ module.exports = {
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?${isRole}`)
 
         await interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
-        await Log("read", interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
@@ -159,7 +159,7 @@ module.exports = {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log("read", interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
+                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
                 return
             }
         }
@@ -193,7 +193,7 @@ module.exports = {
                         buttonInteraction.editReply({embeds: [success_kick], ephemeral: is_ephemeral});
                     })
                 kick_collector.stop();
-                await Log("read", interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
+                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
             } else {
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
@@ -201,7 +201,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> cancelled the kick.`)
 
                 await buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
-                await Log("read", interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
+                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
             }
             kick_collector.stop();
         })

@@ -4,7 +4,7 @@ const date = require('date-and-time');
 module.exports = async function Log(method, tag, string, type, infoOnly) {
     switch(method) {
         case "append": {
-            //Declaring variables
+            // Declaring variables
             const now = new Date();
 
             let tagLenght = 0;
@@ -14,20 +14,20 @@ module.exports = async function Log(method, tag, string, type, infoOnly) {
             let typeExtraIndentNum = 0;
             let typeExtraIndent = "";
 
-            //Get current date
+            // Get current date
             const now_date = date.format(now, 'YYYY-MM-DD');
             const now_time = date.format(now, 'HH:mm:ss.SSS');
 
-            //Generate the log file name
+            // Generate the log file name
             const file_name = `${now_date}_DiscordBot-Jerry-Bot.log`;
 
-            //Generate the new line content
+            // Generate the new line content
             tagLenght = tag.length;
             tagExtraIndentNum = 18 - tagLenght;
             for(let i = 0; i < tagExtraIndentNum; i++) {
                 tagExtraIndent = tagExtraIndent + ">";
             }
-            //DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+            // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
             if(!type) {
                 type = "NULL";
             }
@@ -39,16 +39,16 @@ module.exports = async function Log(method, tag, string, type, infoOnly) {
 
             string = `[${tagExtraIndent}${tag}] [${now_time}] [Jerry-Bot/${type}]:${typeExtraIndent} ${string}`;
 
-            //Only return info
+            // Only return info
             const return_object = {fileName: file_name, parsedString: string};
             if(infoOnly) return return_object;
 
-            //Append to file
+            // Append to file
             fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {if(err) throw err;});
             return return_object;
         }
         case "read": {
-            //Read stuff
+            // Read stuff
         }
             break;
         default:

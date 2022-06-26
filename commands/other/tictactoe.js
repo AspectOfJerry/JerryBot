@@ -5,8 +5,8 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const TicTacToe = require('discord-tictactoe');
 const game = new TicTacToe({language: 'en'});
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds;
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─;
+const Sleep = require('../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("read", interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -32,7 +32,7 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -42,6 +42,6 @@ module.exports = {
 
         // Code
         game.handleInteraction(interaction);
-        await Log("read", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' module`, 'INFO');
+        await Log("append", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' module`, 'INFO');
     }
 }
