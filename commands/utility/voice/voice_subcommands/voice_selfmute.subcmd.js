@@ -7,7 +7,7 @@ const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -42,13 +42,13 @@ module.exports = async function (client, interaction, is_ephemeral) {
     // Code
     const connection = getVoiceConnection(interaction.guild.id);
 
-    await connection.selfMute()
+    await connection.selfMute();
 
     const self_mute = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Voice selfMute")
-        .setDescription("Successfully toggled self-mute.")
+        .setDescription("Successfully toggled self-mute.");
 
     await interaction.relpy({embeds: [self_mute], ephemeral: is_ephemeral});
 }

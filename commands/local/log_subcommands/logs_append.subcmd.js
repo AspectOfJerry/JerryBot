@@ -7,7 +7,7 @@ const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral, string, object) {
-    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -21,7 +21,7 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
             MINIMUM_EXECUTION_ROLE = "PL3";
             break;
         default:
-            await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+            await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
             throw `Error: Bad permission configuration.`;
     }
 
@@ -37,7 +37,7 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
             .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`})
 
         await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-        await Log("append", interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
+        await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
         return;
     }
 
@@ -56,6 +56,6 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
         .addField('Target Directory', `../logs/${(await object).fileName}`, false)
 
     await interaction.reply({embeds: [writing_to_logs], ephemeral: is_ephemeral});
-    await Log("append", interaction.guild.id, string, 'LOG'); // Logs
+    await Log('append', interaction.guild.id, string, 'LOG'); // Logs
     await interaction.editReply({embeds: [_writing_to_logs], ephemeral: is_ephemeral});
 }

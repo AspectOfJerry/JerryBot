@@ -7,7 +7,7 @@ const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -33,7 +33,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Error')
-            .setDescription("The bot is not in a voice channel.")
+            .setDescription("The bot is not in a voice channel.");
 
         await interaction.reply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
         return;
@@ -44,7 +44,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('VoiceConnection')
-        .setDescription("Fetching voice connections in this guild...")
+        .setDescription("Fetching voice connections in this guild...");
 
     await interaction.reply({embeds: [fetching_connection], ephemeral: is_ephemeral});
 
@@ -56,7 +56,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setColor('FUCHSIA')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('VoiceConnection')
-        .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.")
+        .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
     await interaction.editReply({embeds: [connection_destroyed], ephemeral: is_ephemeral});
 }

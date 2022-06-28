@@ -7,7 +7,7 @@ const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral, offset) {
-    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -21,7 +21,7 @@ module.exports = async function (client, interaction, is_ephemeral, offset) {
             MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+            await Log("read", interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
             throw `Error: Bad permission configuration.`;
     }
 

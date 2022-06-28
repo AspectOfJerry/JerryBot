@@ -39,7 +39,7 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/log [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/log [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -47,30 +47,30 @@ module.exports = {
         // Code
         switch(subcommand) {
             case 'append': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/log append'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 const string = interaction.options.getString('string');
-                await Log("append", interaction.guild.id, `  └─string: ${string}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  └─string: ${string}`, 'INFO'); // Logs
 
-                const object = Log("read", interaction.guild.id, string, 'LOG', true);
+                const object = Log('append', interaction.guild.id, string, 'LOG', true);
 
                 // Calling the subcommand file
                 require('./log_subcommands/logs_append.subcmd')(client, interaction, is_ephemeral, string, object);
             }
                 break;
             case 'read': {
-                await Log("append", "subcmd_handler", `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 const offset = interaction.options.getInteger('offset') || 0;
-                await Log("append", interaction.guild.id, `  └─offset: ${offset}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  └─offset: ${offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./log_subcommands/logs_read.subcmd')(client, interaction, is_ephemeral, offset);

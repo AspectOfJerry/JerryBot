@@ -29,7 +29,7 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
 
@@ -38,29 +38,29 @@ module.exports = {
         // Code
         switch(subcommand) {
             case 'bot': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./stats_bot.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
             case 'system': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice system'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice system'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./stats_system.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
             default:
-                throw "Invalid subcommand."
+                throw "Invalid subcommand.";
         }
     }
 }

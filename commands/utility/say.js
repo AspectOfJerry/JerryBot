@@ -31,7 +31,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -45,20 +45,20 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const channel = interaction.options.getChannel('channel') || interaction.channel;
-        await Log("append", interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
         const message = interaction.options.getString('message') || true;
-        await Log("append", interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
         const do_typing = interaction.options.getBoolean('type') || false;
-        await Log("append", interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); // Logs
 
         // Checks
         if(!channel.isText()) {
@@ -78,16 +78,16 @@ module.exports = {
             case true:
                 await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true})
 
-                await channel.sendTyping()
-                await Sleep(1000)
+                await channel.sendTyping();
+                await Sleep(1000);
 
                 await channel.send({content: `${message}`});
-                break; // 
+                break;
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true})
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});;
 
                 await channel.send({content: `${message}`});
-                break; // 
+                break;
         }
     }
 }

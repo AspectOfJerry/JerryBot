@@ -21,7 +21,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -35,16 +35,16 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = "PL3";
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         // Checks
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
@@ -53,17 +53,17 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`})
+                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnectall'.`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnectall'.`, 'WARN');
             return;
         }
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`)
+                .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
             return;
@@ -75,18 +75,18 @@ module.exports = {
         const disconnecting_members = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`)
+            .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
         await interaction.reply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
 
         await memberTarget.voice.channel.members.forEach(member => {
-            let current_voice_channel = member.voice.channel
+            let current_voice_channel = member.voice.channel;
             member.voice.setChannel(null)
                 .then(() => {
                     const disconnect_success = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`)
+                        .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
 
                     interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
                 })
@@ -94,7 +94,7 @@ module.exports = {
         const disconnected = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`)
+            .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`);
 
         interaction.editReply({embeds: [disconnected], ephemeral: is_ephemeral});
     }

@@ -14,7 +14,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -28,22 +28,24 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         let clientLatency = null;
         let WebSocketLatency = null;
+        // Check
+        /*none*/
 
         // Code
         const ping = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription('ping...')
+            .setDescription('ping...');
 
         interaction.channel.send({embeds: [ping]}).then(async pingMessage => {
             clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
@@ -54,11 +56,11 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
                 .addField(`Bot latency`, `~${clientLatency}ms`, true)
-                .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true)
+                .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
 
             pingMessage.delete().catch(console.error);
             interaction.reply({embeds: [pong], ephemeral: is_ephemeral});
-            await Log("append", interaction.guild.id, `└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`, 'INFO'); // Logs
-        })
+            await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`, 'INFO'); // Logs
+        });
     }
 }

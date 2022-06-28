@@ -7,7 +7,7 @@ const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
-    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
     // Set minimum execution role
     let MINIMUM_EXECUTION_ROLE = undefined;
     switch(interaction.guild.id) {
@@ -32,7 +32,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Error')
-            .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.")
+            .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.");
 
         await interaction.reply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
         return;
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
     const creating_connection = new MessageEmbed()
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-        .setDescription('Creating a connection...')
+        .setDescription('Creating a connection...');
 
     await interaction.reply({embeds: [creating_connection], ephemeral: is_ephemeral});
 
@@ -60,17 +60,17 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
         await interaction.editReply({embeds: [_connection_connecting], ephemeral: is_ephemeral});
-        await Log("append", interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO');
+        await Log('append', interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO'); // Logs
     });
     connection.on(VoiceConnectionStatus.Ready, async () => {
         const _connection_ready = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('VoiceConnection')
-            .setDescription("__Ready__. The connection to the voice channel has been established.")
+            .setDescription("__Ready__. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [_connection_ready], ephemeral: is_ephemeral});
-        await Log("append", interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO');
+        await Log('append', interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO'); // Logs
     });
 
     const success_join = new MessageEmbed()
@@ -80,5 +80,5 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
         .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
     await interaction.editReply({embeds: [success_join], ephemeral: is_ephemeral});
-    await Log("append", interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO');
+    await Log('append', interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
 }

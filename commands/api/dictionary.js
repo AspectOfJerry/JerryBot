@@ -31,7 +31,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/dictionary'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dictionary'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -45,24 +45,24 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO');
 
         const word = interaction.options.getString('string');
         const language = interaction.options.getString('language') || 'en';
         // Checks
 
         // Code
-        await fetch(`https:// api.dictionaryapi.dev/api/v2/entries/en/hello`)
+        await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/hello`)
             .then(res => {
-                res => res.json()
+                res => res.json();
             }).then(res => {
-                console.log(res)
+                console.log(res);
             })
 
         await interaction.reply({content: "This command is currently unavailable."});

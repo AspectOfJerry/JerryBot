@@ -21,7 +21,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
 
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
@@ -36,15 +36,15 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = "PL3";
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const reason = interaction.options.getString('reason') || "No reason provided";
-        await Log("append", interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
 
         // Checks
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
@@ -56,7 +56,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); // Logs
             return;
         }
 
@@ -72,16 +72,17 @@ module.exports = {
                     .setCustomId('stop_cancel_button')
                     .setLabel('Cancel')
                     .setStyle('PRIMARY')
-                    .setDisabled(false))
+                    .setDisabled(false)
+            );
 
         const confirm_stop = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Confirm Stop')
-            .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
+            .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
-        interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral})
-        await Log("append", interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO')
+        interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
+        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO');
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id = interaction.user.id) {
@@ -105,7 +106,7 @@ module.exports = {
                 const _destroying_voice_connections = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription("Destroying all active voice connections...")
+                    .setDescription("Destroying all active voice connections...");
 
                 await buttonInteraction.reply({embeds: [_destroying_voice_connections], ephemeral: is_ephemeral});
                 const stopping_bot = new MessageEmbed()
@@ -118,9 +119,9 @@ module.exports = {
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
                 await buttonInteraction.editReply({embeds: [stopping_bot], ephemeral: is_ephemeral})
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); // Logs
-                await Log("append", interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); // Logs
-                await Log("append", interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); // Logs
+                await Log('append', interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); // Logs
                 await Sleep(100);
                 await client.destroy(); // Destroying the Discord client
                 await Sleep(250);
@@ -129,10 +130,10 @@ module.exports = {
                 const cancel_stop = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> aborted the stop request.`)
+                    .setDescription(`<@${interaction.user.id}> aborted the stop request.`);
 
                 await buttonInteraction.reply({embeds: [cancel_stop], ephemeral: is_ephemeral});
-                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO')
+                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO');
             }
             stop_button_collector.stop();
         })

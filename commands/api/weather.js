@@ -29,7 +29,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -43,13 +43,13 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
@@ -157,7 +157,7 @@ module.exports = {
                     `• Condition: ${day5_condition}\n` +
                     `• High: ${day5_highest_temp}°${degree_type}, Low: ${day5_lowest_temp}°${degree_type}\n` +
                     `• Precipitation: ${day5_precipitations}%`, false)
-                .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"})
+                .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
             interaction.reply({embeds: [weather], ephemeral: is_ephemeral});
         });

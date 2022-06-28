@@ -52,7 +52,7 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -60,47 +60,47 @@ module.exports = {
         // Code
         switch(subcommand) {
             case 'join': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 const voice_channel = interaction.options.getChannel('channel') || interaction.member.voice.channel;
-                await Log("append", interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./voice_subcommands/voice_join.subcmd')(client, interaction, is_ephemeral, voice_channel);
             }
                 break;
             case 'leave': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./voice_subcommands/voice_leave.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
             case 'selfmute': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./voice_subcommands/voice_selfmute.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
             case 'selfdeaf': {
-                await Log("append", "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfdeaf'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfdeaf'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log("append", interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 require('./voice_subcommands/voice_selfdeaf.subcmd')(client, interaction, is_ephemeral);

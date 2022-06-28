@@ -23,6 +23,6 @@ module.exports = {
         new_client_status = new_client_status.replace("{", "");
         new_client_status = new_client_status.replace("}", "");
 
-        await Log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_status}' (${old_client_status}) to '${new_status}' (${new_client_status}) in "${newPresence.guild.name}"`, 'INFO');
+        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_status}' (${old_client_status}) to '${new_status}' (${new_client_status}) in "${newPresence.guild.name}"`, 'INFO'); // Logs
     }
 }

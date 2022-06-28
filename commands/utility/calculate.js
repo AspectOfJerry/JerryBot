@@ -45,7 +45,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log("append", interaction.guild.id, `'${interaction.user.tag}' executed '/calculate'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/calculate'.`, 'INFO'); // Logs
         // Set minimum execution role
         let MINIMUM_EXECUTION_ROLE = undefined;
         switch(interaction.guild.id) {
@@ -59,13 +59,13 @@ module.exports = {
                 MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log("append", interaction.guild.id, "Throwing because of bad permission configuration.", "ERROR"); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log("append", interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
         const operand1 = interaction.options.getInteger('operand1');
         const operation = interaction.options.getString('operation');
@@ -81,7 +81,7 @@ module.exports = {
                     .setColor('GREEN')
                     .setTitle("Addition")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2B${operand2}`)
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setThumbnail(`${interatcion.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setDescription(`${operand1} + ${operand2} = **${add_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 

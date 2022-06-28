@@ -37,7 +37,7 @@ module.exports = {
                         try {
                             await interaction.channel.send({embeds: [execute_error], ephemeral: false});
                         } catch {
-                            console.error(err);
+                            console.log("All three methods failed to send an error message to the text channel.");
                         }
                     }
                 }
