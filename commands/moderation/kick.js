@@ -179,27 +179,27 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Kicking <@${memberTarget.id}>...`);
 
-                await buttonInteraction.reply({embeds: [kicking], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [kicking], ephemeral: is_ephemeral});
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 memberTarget.kick(reason)
-                    .then(kickResult => {
+                    .then(async kickResult => {
                         const success_kick = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
 
-                        buttonInteraction.editReply({embeds: [success_kick], ephemeral: is_ephemeral});
+                        interaction.editReply({embeds: [success_kick], components: [], ephemeral: is_ephemeral});
+                        await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
                     })
                 kick_collector.stop();
-                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
             } else {
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the kick.`);
+                    .setDescription(`<@${buttonInteraction.user.id}> denied the kick.`);
 
-                await buttonInteraction.reply({embeds: [cancel_kick], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [cancel_kick], components: [], ephemeral: is_ephemeral});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
             }
             kick_collector.stop();

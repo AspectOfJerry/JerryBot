@@ -133,7 +133,7 @@ module.exports = {
                     .setTitle("User timeout")
                     .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);
 
-                interaction.reply({embeds: [success_timeout], ephemeral: is_ephemeral});
+                interaction.reply({embeds: [success_timeout], components: [], ephemeral: is_ephemeral});
             });
         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
     }

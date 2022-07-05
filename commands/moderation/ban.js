@@ -15,19 +15,6 @@ module.exports = {
                 .setName('user')
                 .setDescription("[REQUIRED] The user to ban.")
                 .setRequired(true))
-        .addIntegerOption((options) =>
-            options
-                .setName('duration')
-                .setDescription("[OPTIONAL] The duration of the ban in days (0 to 7). Defaults to 0 (no duration).")
-                .addChoice("No duration", 0)
-                .addChoice("1 day", 1)
-                .addChoice("2 days", 2)
-                .addChoice("3 days", 3)
-                .addChoice("4 days", 4)
-                .addChoice("5 days", 5)
-                .addChoice("6 days", 6)
-                .addChoice("7 days", 7)
-                .setRequired(false))
         .addStringOption((options) =>
             options
                 .setName('reason')
@@ -64,8 +51,6 @@ module.exports = {
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
-        let banDuration = interaction.options.getInteger('duration');
-        await Log('append', interaction.guild.id, `├─banDuration: ${banDuration}`, 'INFO'); // Logs
         let reason = interaction.options.getString('reason');
         await Log('append', interaction.guild.id, `├─reason: '${reason}'`, 'INFO'); // Logs
 
@@ -171,14 +156,18 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
-            if(buttonInteraction.user.id == interaction.user.id) {
+            if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
+                return true;
+            }
+            else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
                 await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
-                return;
+                return
             }
         }
+
         const ban_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
 
         ban_collector.on('collect', async buttonInteraction => {
@@ -190,33 +179,34 @@ module.exports = {
             interaction.editReply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'ban_confirm_button') {
+                const banning = new MessageEmbed()
+                    .setColor('YELLOW')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`Banning <@${memberTarget.id}>...`);
+
+                await interaction.reply({embeds: [banning], ephemeral: is_ephemeral});
+
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO')
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
-                banDuration = banDuration ? banDuration : 0;
-                memberTarget.ban(banDuration, reason)
+                memberTarget.ban({reason: reason})
                     .then(async banResult => {
-                        if(banDuration == 0) {
-                            banDuration = "";
-                        } else {
-                            banDuration = ` for ${banDuration} days`;
-                        }
                         const success_ban = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember ban")
-                            .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${banDuration}.${reason}`);
+                            .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild.${reason}`);
 
-                        await interaction.reply({embeds: [success_ban], ephemeral: is_ephemeral});
-                        await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild.`, 'WARN')
+                        await interaction.editReply({embeds: [success_ban], components: [], ephemeral: is_ephemeral});
+                        await Log('append', interaction.guild.id, `  └─'${buttonInteraction.user.tag}' banned '${memberTarget.user.tag}' form the guild.`, 'WARN')
                     })
                 ban_collector.stop();
             } else {
                 const cancel_ban = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the ban.`);
+                    .setDescription(`<@${buttonInteraction.user.id}> denied the ban.`);
 
-                buttonInteraction.reply({embeds: [cancel_ban], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [cancel_ban], components: [], ephemeral: is_ephemeral});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the ban.`, 'INFO')
             }
             ban_collector.stop();
