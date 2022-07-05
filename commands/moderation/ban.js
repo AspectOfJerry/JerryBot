@@ -204,7 +204,7 @@ module.exports = {
                 const cancel_ban = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${buttonInteraction.user.id}> denied the ban.`);
+                    .setDescription(`<@${buttonInteraction.user.id}> cancelled the ban.`);
 
                 interaction.editReply({embeds: [cancel_ban], components: [], ephemeral: is_ephemeral});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the ban.`, 'INFO')
