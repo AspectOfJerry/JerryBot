@@ -120,8 +120,8 @@ module.exports = {
 
                 await buttonInteraction.editReply({embeds: [stopping_bot], ephemeral: is_ephemeral})
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); // Logs
-                await Log('append', interaction.guild.id, `  ├─The client will be destroyed.`, 'FATAL'); // Logs
-                await Log('append', interaction.guild.id, `  └─The process will be terminated.`, 'FATAL'); // Logs
+                await Log('append', interaction.guild.id, `├─The destroying .`, 'FATAL'); // Logs
+                await Log('append', interaction.guild.id, `└─The process will be terminated.`, 'FATAL'); // Logs
                 await Sleep(100);
                 await client.destroy(); // Destroying the Discord client
                 await Sleep(250);

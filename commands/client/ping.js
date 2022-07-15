@@ -60,7 +60,7 @@ module.exports = {
 
             pingMessage.delete().catch(console.error);
             interaction.reply({embeds: [pong], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}; WebSocket latency: ${WebSocketLatency};`, 'INFO'); // Logs
+            await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }
 }

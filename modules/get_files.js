@@ -6,7 +6,7 @@ const GetFiles = (dir, file_suffix) => {
         withFileTypes: true
     })
 
-    let command_files = []
+    let command_files = [];
 
     for(const file of files) {
         if(file.name.endsWith(".subcmd.js")) {
@@ -20,7 +20,6 @@ const GetFiles = (dir, file_suffix) => {
             continue;
         } else if(file.name.endsWith(".subcmd_hdlr.js")) {
             console.log(`${file.name} => subcommand handler`);
-            continue;
         }
 
         if(file.isDirectory()) {
@@ -32,7 +31,7 @@ const GetFiles = (dir, file_suffix) => {
             command_files.push(`${dir}/${file.name}`)
         }
     }
-    return command_files
+    return command_files;
 }
 
 module.exports = GetFiles;
