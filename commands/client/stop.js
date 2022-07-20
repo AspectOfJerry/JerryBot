@@ -43,7 +43,7 @@ module.exports = {
         // Declaring variables
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        const reason = interaction.options.getString('reason') || "No reason provided";
+        const reason = interaction.options.getString('reason') || "No reason provided.";
         await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
 
         // Checks
