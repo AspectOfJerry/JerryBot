@@ -70,14 +70,15 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/NAME'.`, 'WARN'); // Logs
             return;
         }
-        if(!channel.isText) {
+
+        if(channel.type !== 'GUILD_TEXT') {
             const error_not_voice_channel = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`<#${voice_channel.channel.id}> is not a text channel!`).
+                .setDescription(`<#${channel.id}> is not a text channel!`);
 
-                interaction.reply({embeds: [error_not_voice_channel], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.channel.name}).`, 'WARN'); // Logs
+            interaction.reply({embeds: [error_not_voice_channel], ephemeral: is_ephemeral});
+            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}).`, 'WARN'); // Logs
             return;
         }
 
