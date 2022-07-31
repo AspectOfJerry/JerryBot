@@ -33,7 +33,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
         // Set minimum execution role
-        let MINIMUM_EXECUTION_ROLE = undefined;
+        let MINIMUM_EXECUTION_ROLE;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
                 MINIMUM_EXECUTION_ROLE = null;

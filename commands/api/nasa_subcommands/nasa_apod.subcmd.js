@@ -13,7 +13,7 @@ const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
     // Set minimum execution role
-    let MINIMUM_EXECUTION_ROLE = undefined;
+    let MINIMUM_EXECUTION_ROLE;
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
             MINIMUM_EXECUTION_ROLE = null;

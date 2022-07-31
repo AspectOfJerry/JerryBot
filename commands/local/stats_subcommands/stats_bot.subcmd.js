@@ -10,7 +10,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
     await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
     // Checks
-    let MINIMUM_EXECUTION_ROLE = undefined;
+    let MINIMUM_EXECUTION_ROLE;
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
             MINIMUM_EXECUTION_ROLE = null;
