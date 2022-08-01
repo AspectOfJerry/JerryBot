@@ -184,7 +184,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Banning <@${memberTarget.id}>...`);
 
-                await interaction.reply({embeds: [banning], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [banning], ephemeral: is_ephemeral});
 
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO')
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
