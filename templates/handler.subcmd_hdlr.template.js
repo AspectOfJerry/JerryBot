@@ -44,9 +44,9 @@ module.exports = {
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
 
-        // Code
+        // Main
         switch(subcommand) {
-            case 'SUBCMD1_NAME': {
+            case 'SUBCMD_NAME': {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/*CMD_NAME SUBCMD_NAME*'.`, 'INFO'); // Logs
 
                 // Declaring variables
@@ -54,10 +54,10 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                require('./*DIRECTORY*')(client, interaction, is_ephemeral);
+                require('./*DIRECTORY*_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
-            case 'SUBCMD2_NAME': {
+            case 'SUBCMD_NAME': {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/*CMD_NAME SUBCMD_NAME*'.`, 'INFO'); // Logs
 
                 // Declaring variables
@@ -65,7 +65,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                require('./*DIRECTORY*')(client, interaction, is_ephemeral);
+                require('./*DIRECTORY*_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
             default:

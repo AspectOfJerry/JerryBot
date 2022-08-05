@@ -37,7 +37,7 @@ module.exports = {
         // Checks
         /*none*/
 
-        // Code
+        // Main
         switch(subcommand) {
             case 'api': {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs

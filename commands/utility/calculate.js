@@ -73,7 +73,7 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
         switch(operation) {
             case 'add':
                 const add_result = operand1 + operand2;

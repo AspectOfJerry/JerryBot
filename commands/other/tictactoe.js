@@ -40,7 +40,7 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
         game.handleInteraction(interaction);
         await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO');
     }

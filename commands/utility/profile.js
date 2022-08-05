@@ -48,7 +48,7 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
         /*
             User creation,

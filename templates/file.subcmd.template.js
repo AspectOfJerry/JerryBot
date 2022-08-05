@@ -29,6 +29,6 @@ module.exports = async function (client, interaction, is_ephemeral) {
 
     // Checks
 
-    // Code
+    // Main
 
 }

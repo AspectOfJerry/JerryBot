@@ -48,7 +48,7 @@ module.exports = {
         let response_record_totalQueries;
         // Checks
 
-        // Code
+        // Main
         await fetch(`https://api.hypixel.net/key?key=${process.env.HYPIXEL_API_KEY_JERRY}`)
             .then(res => res.json())
             .then(response => {

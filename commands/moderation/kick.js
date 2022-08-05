@@ -58,6 +58,7 @@ module.exports = {
         let kickAnyway = "";
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -70,6 +71,7 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('RED')
@@ -81,7 +83,7 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, 'WARN');
             return;
         }
-        // Role position check-----
+        // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('RED')
@@ -104,35 +106,14 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
-        // -----Role position check
-        if(memberTarget.roles.cache.find(role => role.name == "Owner")) {
-            kickAnyway = " anyway";
-            isRoleTitle = " Owner";
-            isRole = " They have the 'Owner' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Administrator")) {
-            kickAnyway = " anyway";
-            isRoleTitle = " Administrator";
-            isRole = " They have the 'Administrator' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Moderator")) {
-            kickAnyway = " anyway";
-            isRoleTitle = " Moderator";
-            isRole = " They have the 'Moderator' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Staff")) {
-            kickAnyway = " anyway";
-            isRoleTitle = " Staff";
-            isRole = " They have the 'Staff' role.";
-        } else if(memberTarget.roles.cache.find(role => role.name == "Friends")) {
-            kickAnyway = " anyway";
-            isRoleTitle = " Friend";
-            isRole = " They are your friend.";
-        }
+        // -----END HIERARCHY CHECK-----
 
-        // Code
+        // Main
         let row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('kick_confirm_button')
-                    .setLabel(`Kick${kickAnyway}`)
+                    .setLabel(`Kick`)
                     .setStyle('DANGER')
                     .setDisabled(false),
                 new MessageButton()
@@ -145,8 +126,8 @@ module.exports = {
         const confirm_kick = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle(`Confirm Kick${isRoleTitle}`)
-            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?${isRole}`);
+            .setTitle(`Confirm Kick`)
+            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`);
 
         await interaction.reply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO'); // Logs
@@ -174,6 +155,8 @@ module.exports = {
             interaction.editReply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
+                buttonInteraction.deferUpdate();
+                kick_collector.stop();
                 const kicking = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -191,9 +174,10 @@ module.exports = {
 
                         interaction.editReply({embeds: [success_kick], components: [], ephemeral: is_ephemeral});
                         await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
-                    })
-                kick_collector.stop();
+                    });
             } else {
+                buttonInteraction.deferUpdate();
+                kick_collector.stop();
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -202,7 +186,6 @@ module.exports = {
                 await interaction.editReply({embeds: [cancel_kick], components: [], ephemeral: is_ephemeral});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
             }
-            kick_collector.stop();
-        })
+        });
     }
 }

@@ -44,11 +44,11 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         // Checks
 
-        // Code
+        // Main
         const deprecation_warning = new MessageEmbed()
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -56,6 +56,6 @@ module.exports = {
             .setDescription("This command is deprecated. Please use the `/profile` command instead.");
 
         interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
-        await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN');
+        await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN'); // Logs
     }
 }

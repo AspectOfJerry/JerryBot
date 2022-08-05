@@ -1,15 +1,15 @@
 const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
-const GetFiles = require('./modules/get_files');
-
 require('dotenv').config();
 const process = require('process');
 
-const Sleep = require('./modules/sleep');
-const Log = require('./modules/logger');
+const Sleep = require('./modules/sleep'); // delayInMilliseconds
+const Log = require('./modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const GetFiles = require('./modules/get_files');
 
 /*
     random hello message to logs
+    // Log()
 */
 
 const client = new Client({
@@ -28,7 +28,7 @@ const client = new Client({
 });
 
 // Getting commands
-const file_suffix = '.js'
+const file_suffix = '.js';
 const command_files = GetFiles('./commands', file_suffix);
 
 console.log(command_files);

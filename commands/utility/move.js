@@ -23,7 +23,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('all')
-                .setDescription("[OPTIONAL] If you want to move everyone in their channel with them. Defaults to false.")
+                .setDescription("[OPTIONAL] If you want to move everyone in the user's channel with them. Defaults to false.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -61,6 +61,7 @@ module.exports = {
         const new_voice_channel = interaction.options.getChannel('channel');
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -70,8 +71,10 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/move'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
                 .setColor('RED')
@@ -82,7 +85,7 @@ module.exports = {
             return;
         }
 
-        // Code
+        // Main
         if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(new_voice_channel)
@@ -104,18 +107,19 @@ module.exports = {
 
             interaction.reply({embeds: [moving_members], ephemeral: is_ephemeral});
 
-            memberTarget.voice.channel.members.forEach(member => {
+            memberTarget.voice.channel.members.forEach(async (member) => {
                 let current_voice_channel = member.voice.channel;
                 member.voice.setChannel(new_voice_channel)
-                    .then(() => {
+                    .then(async () => {
                         const move_success = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                        interaction.followUp({embeds: [move_success], ephemeral: is_ephemeral});
-                    })
-            })
+                        await interaction.editReply({embeds: [move_success], ephemeral: is_ephemeral});
+                        await Sleep(150);
+                    });
+            });
         }
     }
 }

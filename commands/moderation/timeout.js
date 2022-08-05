@@ -61,10 +61,11 @@ module.exports = {
         let reason = interaction.options.getString('reason');
         await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO');
 
-        const duration_in_ms = ms(duration)
+        const duration_in_ms = ms(duration);
         await Log('append', interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO');
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -73,10 +74,11 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions]})
+            interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to user '/timeout'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('RED')
@@ -99,7 +101,7 @@ module.exports = {
             interaction.reply({embeds: [error_duration], ephemeral: is_ephemeral});
             return;
         }
-        // Role position check---
+        // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('RED')
@@ -122,8 +124,9 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
-        // ---Role position check
-        // Code
+        // -----END HIERARCHY CHECK-----
+
+        // Main
         reason = reason ? ` \n**Reason:** ${reason}` : "";
         memberTarget.timeout(duration_in_ms, reason)
             .then(timeoutResult => {

@@ -39,7 +39,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
 
     // Checks
 
-    // Code
+    // Main
     // API request
     await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
         .then(res => res.json())

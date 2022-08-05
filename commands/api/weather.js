@@ -56,7 +56,7 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
         weather.find({search: search_location, degreeType: search_unit}, function (error, result) {
             if(error) {
                 console.error(error);

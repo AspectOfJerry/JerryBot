@@ -46,6 +46,7 @@ module.exports = {
         //Declaring functions
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!message.member.roles.cache.find(role => role.name == REQUIRED_ROLE)) {
             const error_permissions = new Discord.MessageEmbed()
                 .setColor('RED')
@@ -55,6 +56,7 @@ module.exports = {
             message.channel.send({embeds: [error_permissions]})
             return;
         }
+        // -----END ROLE CHECK-----
         if(!args[0]) {
             const error_missing_arguments = new Discord.MessageEmbed()
                 .setColor('RED')
@@ -67,7 +69,7 @@ module.exports = {
         }
         ipAdress = args[0];
 
-        // Code
+        // Main
         await fetch(`http://api.ipstack.com/${ipAdress}?access_key=${process.env.IPSTACK_API_KEY_JERRY}`)
             .then(res => res.json())
             .then(response => {

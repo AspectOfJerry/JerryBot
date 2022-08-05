@@ -47,6 +47,7 @@ module.exports = {
         // await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -59,8 +60,8 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/*CMD_NAME*'.`, 'WARN'); // Logs
             return;
         }
-
-        // Code
+        // -----END ROLE CHECK-----
+        // Main
 
     }
 }

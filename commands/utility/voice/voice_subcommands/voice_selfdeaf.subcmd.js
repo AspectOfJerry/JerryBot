@@ -39,7 +39,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         return;
     }
 
-    // Code
+    // Main
     const connection = getVoiceConnection(interaction.guild.id);
 
     await connection.selfDeaf();

@@ -91,7 +91,7 @@ module.exports = {
         const target_language = interaction.options.getString('to');
         // Checks
 
-        // Code
+        // Main
         interaction.reply({content: "This command is currently unavailable."});
         return;
     }

@@ -47,6 +47,7 @@ module.exports = {
         const channel = interaction.channel;
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -59,8 +60,9 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/purge'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
 
-        // Code
+        // Main
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }

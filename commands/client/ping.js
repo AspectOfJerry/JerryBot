@@ -41,7 +41,7 @@ module.exports = {
         // Check
         /*none*/
 
-        // Code
+        // Main
         const ping = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

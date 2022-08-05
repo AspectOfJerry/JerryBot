@@ -66,17 +66,16 @@ module.exports = {
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setURL("https:// discord.js.org/#/docs/discord.js/stable/typedef/TextBasedChannels")
-                .setDescription("You need to mention a text-based channel.")
+                .setDescription("You need to mention a text-based channel.");
 
             interaction.reply({embeds: [error_require_text_based_channel], ephemeral: is_ephemeral});
             return;
         }
 
-        // Code
+        // Main
         switch(do_typing) {
             case true:
-                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true})
+                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
 
                 await channel.sendTyping();
                 await Sleep(1000);
@@ -84,7 +83,7 @@ module.exports = {
                 await channel.send({content: `${message}`});
                 break;
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});;
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
                 await channel.send({content: `${message}`});
                 break;

@@ -49,12 +49,13 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         const is_all = interaction.options.getBoolean('all') || false;
-        await Log('append', interaction.guild.id, `├─is_all: ${is_all}`, 'INFO');
+        await Log('append', interaction.guild.id, `├─is_all: ${is_all}`, 'INFO'); // Logs
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -64,9 +65,10 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnect'.`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnect'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
                 .setColor('RED')
@@ -74,11 +76,11 @@ module.exports = {
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `├─└─'${memberTarget.tag}' is not in a voice channel.`, 'WARN');
+            await Log('append', interaction.guild.id, `├─└─'${memberTarget.tag}' is not in a voice channel.`, 'WARN'); // Logs
             return;
         }
 
-        // Code
+        // Main
         if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             const disconnecting = new MessageEmbed()

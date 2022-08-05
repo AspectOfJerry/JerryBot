@@ -49,40 +49,42 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         const message = interaction.options.getString('message');
 
         let DMChannel;
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`})
+                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
+        // -----END ROLE CHECK-----
         if(memberTarget.user.bot) {
             const error_cannot_message_bot = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle('Error')
-                .setDescription("You cannot message a bot.")
+                .setDescription("You cannot message a bot.");
 
             interaction.reply({embeds: [error_cannot_message_bot], ephemeral: is_ephemeral});
             return;
         }
 
-        // Code
+        // Main
         const messaging_user = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`)
+            .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`);
 
         await interaction.reply({embeds: [messaging_user], ephemeral: is_ephemeral});
 
@@ -93,9 +95,9 @@ module.exports = {
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("Message sent!")
-                    .setDescription(`This command creates a message collector in the DM channel. That is to say, you will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
-                        "You will also be able to chat with this person. Just send a message in this channel it they will receive it!")
-                    .addField('Important', "Send '**msg.stop**' in this channel to stop the collector.")
+                    .setDescription(`Creating a message collector in the DM channel. You will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
+                        "To send them a message, type your message in this channel and the bot will relay it!")
+                    .addField('Important', "Send '**msg.stop**' in this channel to stop the collector.");
 
                 await interaction.followUp({embeds: [message_sent], ephemeral: is_ephemeral});
 
@@ -110,7 +112,7 @@ module.exports = {
                             .setColor('BLURPLE')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setAuthor({name: `${msg.author.tag}`, iconURL: `${msg.author.displayAvatarURL({dynamic: true})}`})
-                            .setDescription(`*Receive:* ${msg.content}`)
+                            .setDescription(`*Receive:* ${msg.content}`);
 
                         interaction.followUp({embeds: [message_embed], ephemeral: is_ephemeral});
                     }
@@ -122,8 +124,7 @@ module.exports = {
                             .setColor('RED')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle('Stopping Collector')
-                            .setDescription(`Stopping the message collector. That is to say, you will no longer be able to see what <@${memberTarget.id}> sends to the bot.\n` +
-                                "You can use `/message` to start this again.")
+                            .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
 
                         msg.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});
 
@@ -133,23 +134,23 @@ module.exports = {
                         const sending_message = new MessageEmbed()
                             .setColor('YELLOW')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`)
+                            .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`);
 
                         msg.reply({embeds: [sending_message], ephemeral: is_ephemeral})
                             .then(embed => {
                                 memberTarget.send({content: `${msg.content}`})
-                                    .then(messageResult => {
+                                    .then(async messageResult => {
                                         const message_sent = new MessageEmbed()
                                             .setColor('GREEN')
                                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                                             .setAuthor({name: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL({dynamic: true})}`})
-                                            .setDescription(`*Send:* ${msg.content}`)
+                                            .setDescription(`*Send:* ${msg.content}`);
 
                                         embed.edit({embeds: [message_sent]});
-                                    })
-                            })
+                                    });
+                            });
                     }
-                })
-            })
+                });
+            });
     }
 }

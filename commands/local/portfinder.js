@@ -55,6 +55,7 @@ module.exports = {
         let ports = [];
         let nextPort;
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -65,8 +66,9 @@ module.exports = {
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
+        // -----END ROLE CHECK-----
 
-        // Code
+        // Main
         portfinder.basePort = start_port;
         // const available_ports = new MessageEmbed()
         //     .setColor('GREEN')

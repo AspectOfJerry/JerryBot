@@ -44,9 +44,10 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -56,9 +57,10 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('RED')
@@ -79,7 +81,7 @@ module.exports = {
         // interaction.reply({embeds: [error_user_not_banned], ephemeral: is_ephemeral});
         // // return;
 
-        // Code
+        // Main
         interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }

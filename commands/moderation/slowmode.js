@@ -58,6 +58,7 @@ module.exports = {
         const reason = interaction.options.getString('reason') || "No reason provided."
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -70,7 +71,7 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/NAME'.`, 'WARN'); // Logs
             return;
         }
-
+        // -----END ROLE CHECK-----
         if(channel.type !== 'GUILD_TEXT') {
             const error_not_voice_channel = new MessageEmbed()
                 .setColor('RED')
@@ -82,7 +83,7 @@ module.exports = {
             return;
         }
 
-        // Code
+        // Main
         if(duration === 0) {
             channel.setRateLimitPerUser(0, reason)
                 .then(async () => {

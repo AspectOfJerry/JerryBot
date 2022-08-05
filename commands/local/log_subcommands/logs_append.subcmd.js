@@ -28,6 +28,7 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
     // Declaring variables
 
     // Checks
+    // -----BEGIN ROLE CHECK-----
     if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
         const error_permissions = new MessageEmbed()
             .setColor('RED')
@@ -40,8 +41,9 @@ module.exports = async function (client, interaction, is_ephemeral, string, obje
         await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/log'.`, 'WARN');
         return;
     }
+    // -----END ROLE CHECK-----
 
-    // Code
+    // Main
     const writing_to_logs = new MessageEmbed()
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

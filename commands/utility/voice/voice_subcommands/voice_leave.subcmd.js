@@ -39,7 +39,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         return;
     }
 
-    // Code
+    // Main
     const fetching_connection = new MessageEmbed()
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

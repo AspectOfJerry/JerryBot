@@ -55,7 +55,7 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
         const deprecation_warning = new MessageEmbed()
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

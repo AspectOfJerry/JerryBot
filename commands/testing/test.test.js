@@ -30,7 +30,12 @@ module.exports = {
 
         // Checks
 
-        // Code
+        // Main
+        await interaction.reply("Editing this message 10 times with 10ms delay... Edit #**0**");
 
+        for(let i = 0; i < 10; i++) {
+            interaction.editReply(`Editing this message 10 times with 50ms delay... Edit #**${i}**`);
+            await Sleep(500);
+        }
     }
 }

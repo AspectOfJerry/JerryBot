@@ -46,6 +46,7 @@ module.exports = {
         let voice_channel = interaction.options.get('channel');
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -58,6 +59,7 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' did not have the required role to use '/disconnectall'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(!voice_channel) {
             if(!interaction.member.voice.channel) {
                 const not_in_vc = new MessageEmbed()
@@ -84,7 +86,7 @@ module.exports = {
             return;
         }
 
-        // Code
+        // Main
         try {
             voice_channel.members.size;
         } catch {
@@ -110,7 +112,7 @@ module.exports = {
         let failed_member_count = 0;
         let failed_string = "";
 
-        await voice_channel.members.forEach(member => {
+        await voice_channel.members.forEach(async (member) => {
             let voice_channel = member.voice.channel;
             member.voice.setChannel(null)
                 .then(async () => {
@@ -119,7 +121,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
-                    interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
+                    await interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
                     await Log('append', interaction.guild.id, `  ├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
                 }).catch(async () => {
                     const disconnect_error = new MessageEmbed()
@@ -127,11 +129,12 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`An error occurred while disconnecting <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
-                    interaction.reply({embeds: [disconnect_error], ephemeral: is_ephemeral});
+                    await interaction.reply({embeds: [disconnect_error], ephemeral: is_ephemeral});
                     await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
                     member_count--
                     failed_member_count++
                 });
+            await Sleep(150);
         });
         let embed_color = 'GREEN';
         if(failed_member_count !== 0) {

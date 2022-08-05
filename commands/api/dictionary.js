@@ -57,7 +57,7 @@ module.exports = {
         const language = interaction.options.getString('language') || 'en';
         // Checks
 
-        // Code
+        // Main
         await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/hello`)
             .then(res => {
                 res => res.json();

@@ -57,7 +57,7 @@ module.exports = {
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
 
-        // Code
+        // Main
         switch(subcommand) {
             case 'join': {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs

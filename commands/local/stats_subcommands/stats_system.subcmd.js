@@ -34,7 +34,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
     const ram_used = ram_total - ram_free;
     // Checks
 
-    // Code
+    // Main
     const embed = new MessageEmbed()
         .setColor('BLUE')
         .setTitle('System Statistics')

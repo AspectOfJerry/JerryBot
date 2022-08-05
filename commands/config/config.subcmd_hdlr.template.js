@@ -8,12 +8,17 @@ const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('stats')
-        .setDescription("Shows statistics about the bot.")
+        .setName('config')
+        .setDescription("Edit the bot's settings.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('bot')
-                .setDescription("Shows statistics about the bot.")
+                .setName('*SUBCMD_NAME*')
+                .setDescription("*SUBCMD_DESCRIPTION*")
+                .addStringOption((options) =>
+                    options
+                        .setName('*SUBCMD_OPTION_NAME*')
+                        .setDescription("[REQUIRED/OPTIONAL] *SUBCMD_OPTION_DESCRIPTION*")
+                        .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
@@ -21,42 +26,46 @@ module.exports = {
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('system')
-                .setDescription("Shows statistics about the system running the bot.")
+                .setName('*SUBCMD_NAME')
+                .setDescription("*SUBCMD_DESCRIPTION*")
+                .addStringOption((options) =>
+                    options
+                        .setName('*SUBCMD_OPTION_NAME*')
+                        .setDescription("[REQUIRED/OPTIONAL] *SUBCMD_OPTION_DESCRIPTION*")
+                         .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/*CMD_NAME [...]*'.`, 'INFO'); // Logs
 
         // Declaring variables
-
         const subcommand = interaction.options.getSubcommand();
 
         // Main
         switch(subcommand) {
-            case 'bot': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
+            case 'SUBCMD_NAME': {
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/*CMD_NAME SUBCMD_NAME*'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                require('./stats_bot.subcmd')(client, interaction, is_ephemeral);
+                require('./*DIRECTORY*_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
-            case 'system': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice system'.`, 'INFO'); // Logs
+            case 'SUBCMD_NAME': {
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/*CMD_NAME SUBCMD_NAME*'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                require('./stats_system.subcmd')(client, interaction, is_ephemeral);
+                require('./*DIRECTORY*_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
             default:

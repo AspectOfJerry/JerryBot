@@ -49,10 +49,11 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         let reason = interaction.options.getString('reason');
         // Checks
+        // -----BEGIN ROLE CHECK-----
         if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_ROLE)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
@@ -62,9 +63,10 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/untimeout'.`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/untimeout'.`, 'WARN'); // Logs
             return;
         }
+        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('RED')
@@ -75,7 +77,7 @@ module.exports = {
             interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
             return;
         }
-        // Role position check---
+        // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
                 .setColor('RED')
@@ -96,8 +98,8 @@ module.exports = {
             interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
-        // ---Role position check
-        // Code
+        // -----END HIERARCHY CHECK-----
+        // Main
         reason = reason ? ` \n**Reason:** ${reason}` : "";
         memberTarget.timeout(null, reason)
             .then(timeoutResult => {
@@ -108,6 +110,6 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
 
                 interaction.reply({embeds: [success_untimeout], ephemeral: is_ephemeral});
-            })
+            });
     }
 }

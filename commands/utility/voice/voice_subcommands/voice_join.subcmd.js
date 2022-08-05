@@ -38,7 +38,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
         return;
     }
 
-    // Code
+    // Main
     const creating_connection = new MessageEmbed()
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
