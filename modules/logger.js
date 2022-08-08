@@ -25,7 +25,7 @@ module.exports = async function Log(method, tag, string, type, infoOnly) {
             tagLenght = tag.length;
             tagExtraIndentNum = 18 - tagLenght;
             for(let i = 0; i < tagExtraIndentNum; i++) {
-                tagExtraIndent = tagExtraIndent + ">";
+                tagExtraIndent = tagExtraIndent + "-";
             }
             // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
             if(!type) {

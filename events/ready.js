@@ -12,6 +12,10 @@ module.exports = {
     execute(client, commands) {
         console.log("Jerry Bot is now online.");
 
+        // Starting Heartbeat
+        console.log("Starting Heartbeat...");
+        require('../jobs/heartbeat');
+
         const client_id = client.user.id;
 
         const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
