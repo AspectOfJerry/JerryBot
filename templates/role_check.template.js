@@ -8,7 +8,7 @@ if(!interaction.member.roles.cache.find(role => role.name == MINIMUM_EXECUTION_R
         .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
     await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-    await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/*CMD_NAME*'.`, 'WARN'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/CMD_NAME'.`, 'WARN'); // Logs
     return;
 }
 // -----END ROLE CHECK-----

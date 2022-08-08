@@ -26,18 +26,17 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        // Set minimum execution role
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/message'.`, 'INFO'); // Logs
-        let MINIMUM_EXECUTION_ROLE;
+        // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "PL0";
+                var MINIMUM_EXECUTION_ROLE = "PL0";
                 break;
             case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "Admin";
+                var MINIMUM_EXECUTION_ROLE = "Admin";
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "PL1";
+                var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
                 await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs

@@ -8,12 +8,12 @@ const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('*CMD_NAME*')
-        .setDescription("*CMD_DESCRIPTION*")
+        .setName('CMD_NAME')
+        .setDescription("CMD_DESCRIPTION")
         .addStringOption((options) =>
             options
-                .setName('*OPTION_NAME*')
-                .setDescription("[OPTIONAL/REQUIRED] *OPTION_DESCRIPTION*")
+                .setName('OPTION_NAME')
+                .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
                 .setRequired(true / false))
         .addBooleanOption((options) =>
             options
@@ -21,18 +21,17 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/*CMD_NAME*'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME'.`, 'INFO'); // Logs
         // Set minimum execution role
-        let MINIMUM_EXECUTION_ROLE;
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                var MINIMUM_EXECUTION_ROLE = null;
                 break;
             case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                var MINIMUM_EXECUTION_ROLE = null;
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = null;
+                var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
                 await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
@@ -57,7 +56,7 @@ module.exports = {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/*CMD_NAME*'.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/CMD_NAME'.`, 'WARN'); // Logs
             return;
         }
         // -----END ROLE CHECK-----

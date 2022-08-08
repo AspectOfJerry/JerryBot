@@ -9,16 +9,15 @@ const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO,
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice selfdeaf'.`, 'INFO'); // Logs
     // Set minimum execution role
-    let MINIMUM_EXECUTION_ROLE;
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
-            MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = null;
             break;
         case process.env.DISCORD_GOLDFISH_GUILD_ID:
-            MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = null;
             break;
         case process.env.DISCORD_CRA_GUILD_ID:
-            MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
             throw `Error: Bad permission configuration.`;

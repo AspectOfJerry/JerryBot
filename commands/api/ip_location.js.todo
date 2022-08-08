@@ -5,7 +5,7 @@ module.exports = {
     callback: async (message, Discord, client, ...args) => {
         // Set minimum execution role
         const COMMAND_NAME = "ip_location";
-        let MINIMUM_EXECUTION_ROLE;
+        
         const EXCPECTED_ARGUMENTS = 1;
         const OPTIONAL_ARGUMENTS = 0;
 

@@ -28,16 +28,16 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/mute'.`, 'INFO'); // Logs
         // Set minimum execution role
-        let MINIMUM_EXECUTION_ROLE;
+        
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "PL3";
+                var MINIMUM_EXECUTION_ROLE = "PL3";
                 break;
             case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "staff";
+                var MINIMUM_EXECUTION_ROLE = "staff";
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
-                MINIMUM_EXECUTION_ROLE = "PL3";
+                var MINIMUM_EXECUTION_ROLE = "PL3";
                 break;
             default:
                 await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
