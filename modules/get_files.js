@@ -1,6 +1,5 @@
 const fs = require('fs')
 
-// module.exports = async function GetFiles(dir, file_suffix){}
 const GetFiles = (dir, file_suffix) => {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
@@ -26,9 +25,9 @@ const GetFiles = (dir, file_suffix) => {
             command_files = [
                 ...command_files,
                 ...GetFiles(`${dir}/${file.name}`, file_suffix)
-            ]
+            ];
         } else if(file.name.endsWith(file_suffix)) {
-            command_files.push(`${dir}/${file.name}`)
+            command_files.push(`${dir}/${file.name}`);
         }
     }
     return command_files;
