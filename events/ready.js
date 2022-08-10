@@ -9,12 +9,15 @@ require('dotenv').config();
 module.exports = {
     name: 'ready',
     once: true,
-    execute(client, commands) {
+    async execute(client, commands) {
         console.log("Jerry Bot is now online.");
 
         // Starting Heartbeat
+        await Log('append', 'Heartbeat', `[Heartbeat] Starting Heartbeat...`, 'DEBUG'); // Logs
         console.log("Starting Heartbeat...");
         require('../jobs/heartbeat');
+
+        console.log("Registering the commands...");
 
         const client_id = client.user.id;
 
@@ -24,21 +27,19 @@ module.exports = {
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
-        (async () => {
-            try {
-                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands}); // Registering commands
-                console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
+        try {
+            await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands}); // Registering commands
+            console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands}); // Registering commands
-                console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
+            await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands}); // Registering commands
+            console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands}); // Registering commands
-                console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-            } catch(err) {
-                if(err) {
-                    console.error(err);
-                }
+            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands}); // Registering commands
+            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+        } catch(err) {
+            if(err) {
+                console.error(err);
             }
-        })();
+        }
     }
 }
