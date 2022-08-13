@@ -24,7 +24,7 @@ const GetFiles = (dir, file_suffix) => {
         if(file.isDirectory()) {
             command_files = [
                 ...command_files,
-                ...GetFiles(`${dir}/${file.name}`, file_suffix)
+                ...GetFiles(`${dir}/${file.name}`, file_suffix),
             ];
         } else if(file.name.endsWith(file_suffix)) {
             command_files.push(`${dir}/${file.name}`);
