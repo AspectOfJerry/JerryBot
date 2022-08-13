@@ -33,7 +33,7 @@ heartbeat.start();
 Log('append', 'Heartbeat', `[Heartbeat] Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
 console.log(`Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
 
-await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
     .then(async () => {
         await Log('append', 'Heartbeat', `[Heartbeat] The first Heartbeat was sent to the status page.`, 'DEBUG'); // Logs
     });
