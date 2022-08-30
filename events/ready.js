@@ -24,6 +24,7 @@ module.exports = {
         const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
         const goldfish_guild_id = process.env.DISCORD_GOLDFISH_GUILD_ID;
         const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
+        const group_311_guild_id = process.env.DISCORD_311_GUILD_ID;
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
@@ -36,6 +37,9 @@ module.exports = {
 
             await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands}); // Registering commands
             console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+
+            await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+            console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
         } catch(err) {
             if(err) {
                 console.error(err);

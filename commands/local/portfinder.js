@@ -39,6 +39,9 @@ module.exports = {
             case process.env.DISCORD_CRA_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
+            case process.env.DISCORD_311_GUILD_ID:
+                var MINIMUM_EXECUTION_ROLE = "PL0";
+                break;
             default:
                 await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;

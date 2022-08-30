@@ -31,7 +31,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
         // Set minimum execution role
-        
+
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
@@ -40,6 +40,9 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
+                var MINIMUM_EXECUTION_ROLE = null;
+                break;
+            case process.env.DISCORD_311_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
