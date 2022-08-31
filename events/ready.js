@@ -12,11 +12,18 @@ module.exports = {
     async execute(client, commands) {
         console.log("Jerry Bot is now online.");
 
+        // Jobs
         // Starting Heartbeat
         await Log('append', 'Heartbeat', `[Heartbeat] Starting Heartbeat...`, 'DEBUG'); // Logs
         console.log("Starting Heartbeat...");
         require('../jobs/heartbeat');
 
+        // Starting google classroom api notifications
+        // await Log('append', 'ClassroomAPI', `[ClassroomAPI] ...`, 'DEBUG'); // Logs
+        // console.log("Starting the Google Classroom notification job...");
+        // require('../jobs/googleclassroomapi/get_work');
+
+        // Registering commands
         console.log("Registering the commands...");
 
         const client_id = client.user.id;
