@@ -11,15 +11,19 @@ module.exports = async function (client, interaction, is_ephemeral) {
     // Set minimum execution role
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "PL3";
             break;
         case process.env.DISCORD_GOLDFISH_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "staff";
             break;
         case process.env.DISCORD_CRA_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "PL3";
+            break;
+        case process.env.DISCORD_311_GUILD_ID:
+            var MINIMUM_EXECUTION_ROLE = "PL1";
             break;
         default:
+            await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
             throw `Error: Bad permission configuration.`;
     }
 
