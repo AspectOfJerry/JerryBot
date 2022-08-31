@@ -6,6 +6,8 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+const date = require('date-and-time');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('test')
@@ -31,11 +33,9 @@ module.exports = {
         // Checks
 
         // Main
-        await interaction.reply("Editing this message 10 times with 10ms delay... Edit #**0**");
+        const now = new Date();
 
-        for(let i = 0; i < 10; i++) {
-            interaction.editReply(`Editing this message 10 times with 50ms delay... Edit #**${i}**`);
-            await Sleep(500);
-        }
+        // Get current date
+        interaction.reply({content: `${interaction.createdAt}`})
     }
 }
