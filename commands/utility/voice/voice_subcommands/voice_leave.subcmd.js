@@ -8,6 +8,8 @@ const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO,
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+    await interaction.deferReply();
+
     // Set minimum execution role
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
@@ -38,7 +40,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
 
-        await interaction.reply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
         return;
     }
 
@@ -49,7 +51,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setTitle('VoiceConnection')
         .setDescription("Fetching voice connections in this guild...");
 
-    await interaction.reply({embeds: [fetching_connection], ephemeral: is_ephemeral});
+    await interaction.editReply({embeds: [fetching_connection], ephemeral: is_ephemeral});
 
     const connection = getVoiceConnection(interaction.guild.id);
 

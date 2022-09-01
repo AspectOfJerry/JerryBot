@@ -22,6 +22,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -57,7 +59,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' did not have the required role to use '/disconnectall'.`, 'WARN'); // Logs
             return;
         }
@@ -69,7 +71,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription("You must be in a voice channel if you are not providing a voice channel.");
 
-                interaction.reply({embeds: [not_in_vc], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [not_in_vc], ephemeral: is_ephemeral});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, 'WARN') // Logs
                 return;
             }
@@ -83,7 +85,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<#${voice_channel.channel.id}> is not a voice channel!`);
 
-            interaction.reply({embeds: [error_not_voice_channel], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_not_voice_channel], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.channel.name}).`); // Logs
             return;
         }
@@ -97,7 +99,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`The <#${voice_channel.channel.id}> voice channel is empty.`);
 
-            interaction.reply({embeds: [empty_voice_channel], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [empty_voice_channel], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─The provided channel was empty.`); // Logs
             return;
         }
@@ -108,7 +110,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Disconnecting all ${member_count} members from <#${voice_channel.channel.id}>...`);
 
-        await interaction.reply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [disconnecting_members], ephemeral: is_ephemeral});
         await Log('append', interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`); // Logs
 
         let failed_member_count = 0;
@@ -131,7 +133,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`An error occurred while disconnecting <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
-                    await interaction.reply({embeds: [disconnect_error], ephemeral: is_ephemeral});
+                    await interaction.editReply({embeds: [disconnect_error], ephemeral: is_ephemeral});
                     await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
                     member_count--
                     failed_member_count++

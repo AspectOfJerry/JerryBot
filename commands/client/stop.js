@@ -22,6 +22,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -57,7 +59,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); // Logs
             return;
         }
@@ -84,14 +86,14 @@ module.exports = {
             .setTitle('Confirm Stop')
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
-        interaction.reply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
+        interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO');
 
         const filter = (buttonInteraction) => {
             if(buttonInteraction.user.id = interaction.user.id) {
                 return true;
             } else {
-                return buttonInteraction.reply({content: "You cannot use this button", ephemeral: true});
+                return buttonInteraction.editReply({content: "You cannot use this button", ephemeral: true});
             }
         }
 

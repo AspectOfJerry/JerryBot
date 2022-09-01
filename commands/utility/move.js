@@ -32,6 +32,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -72,7 +74,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/move'.`, 'WARN'); // Logs
             return;
         }
@@ -83,7 +85,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
-            interaction.reply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
             return;
         }
 
@@ -97,7 +99,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                    interaction.reply({embeds: [success_move], ephemeral: is_ephemeral});
+                    interaction.editReply({embeds: [success_move], ephemeral: is_ephemeral});
                 })
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -107,7 +109,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Moving all ${member_count} members from ${current_voice_channel} to ${new_voice_channel}...`);
 
-            interaction.reply({embeds: [moving_members], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [moving_members], ephemeral: is_ephemeral});
 
             memberTarget.voice.channel.members.forEach(async (member) => {
                 let current_voice_channel = member.voice.channel;

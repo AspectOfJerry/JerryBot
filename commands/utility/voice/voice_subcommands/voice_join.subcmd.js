@@ -8,6 +8,8 @@ const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO,
 
 module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+    await interaction.deferReply();
+
     // Set minimum execution role
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
@@ -37,7 +39,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             .setTitle('Error')
             .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.");
 
-        await interaction.reply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
         return;
     }
 
@@ -47,7 +49,7 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setDescription('Creating a connection...');
 
-    await interaction.reply({embeds: [creating_connection], ephemeral: is_ephemeral});
+    await interaction.editReply({embeds: [creating_connection], ephemeral: is_ephemeral});
 
     const connection = joinVoiceChannel({
         channelId: voice_channel.id,

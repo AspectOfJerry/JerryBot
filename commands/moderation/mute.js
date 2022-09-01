@@ -27,6 +27,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/mute'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -64,7 +66,7 @@ module.exports = {
             .setTitle('DeprecationWarning')
             .setDescription("This command is deprecated. Please use the `/timeout` command instead.");
 
-        interaction.reply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
+        interaction.editReply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
         await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/timeout'`, 'WARN');
     }
 }

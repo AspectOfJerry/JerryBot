@@ -8,6 +8,8 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 
 module.exports = async function (client, interaction, is_ephemeral, offset) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
+    await interaction.deferReply();
+
     // Set minimum execution role
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:

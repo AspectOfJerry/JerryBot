@@ -27,6 +27,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/message'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -67,7 +69,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         // -----END ROLE CHECK-----
@@ -78,7 +80,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription("You cannot message a bot.");
 
-            interaction.reply({embeds: [error_cannot_message_bot], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_message_bot], ephemeral: is_ephemeral});
             return;
         }
 
@@ -88,7 +90,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`);
 
-        await interaction.reply({embeds: [messaging_user], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [messaging_user], ephemeral: is_ephemeral});
 
         memberTarget.send({content: `${message}`})
             .then(async messageResult => {
@@ -128,7 +130,7 @@ module.exports = {
                             .setTitle('Stopping Collector')
                             .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
 
-                        msg.reply({embeds: [stopping_collector], ephemeral: is_ephemeral});
+                        msg.editReply({embeds: [stopping_collector], ephemeral: is_ephemeral});
 
                         receive_collector.stop();
                         send_collector.stop();
@@ -138,7 +140,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`);
 
-                        msg.reply({embeds: [sending_message], ephemeral: is_ephemeral})
+                        msg.editReply({embeds: [sending_message], ephemeral: is_ephemeral})
                             .then(embed => {
                                 memberTarget.send({content: `${msg.content}`})
                                     .then(async messageResult => {

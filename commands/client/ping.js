@@ -15,6 +15,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -60,7 +62,7 @@ module.exports = {
                 .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
 
             pingMessage.delete().catch(console.error);
-            interaction.reply({embeds: [pong], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [pong], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }

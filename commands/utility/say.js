@@ -32,6 +32,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -70,14 +72,14 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription("You need to mention a text-based channel.");
 
-            interaction.reply({embeds: [error_require_text_based_channel], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_require_text_based_channel], ephemeral: is_ephemeral});
             return;
         }
 
         // Main
         switch(do_typing) {
             case true:
-                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
+                await interaction.editReply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
 
                 await channel.sendTyping();
                 await Sleep(1000);
@@ -85,7 +87,7 @@ module.exports = {
                 await channel.send({content: `${message}`});
                 break;
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+                await interaction.editReply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
                 await channel.send({content: `${message}`});
                 break;

@@ -30,8 +30,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
-        // Set minimum execution role
+        await interaction.deferReply();
 
+        // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
@@ -72,7 +73,7 @@ module.exports = {
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-                interaction.reply({embeds: [search_error], ephemeral: false});
+                interaction.editReply({embeds: [search_error], ephemeral: false});
                 return;
             }
             // Current stats
@@ -162,7 +163,7 @@ module.exports = {
                     `• Precipitation: ${day5_precipitations}%`, false)
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-            interaction.reply({embeds: [weather], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [weather], ephemeral: is_ephemeral});
         });
     }
 }

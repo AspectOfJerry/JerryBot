@@ -28,6 +28,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -65,7 +67,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             return;
         }
         // -----END ROLE CHECK-----
@@ -79,8 +81,8 @@ module.exports = {
         //     .setDescription(`Searched for ${search_amount} ports:\n` +
         //         `[${ports.join(', ')}]`);
 
-        // interaction.reply({embeds: [available_ports], ephemeral: is_ephemeral});
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        // interaction.editReply({embeds: [available_ports], ephemeral: is_ephemeral});
+        interaction.editReply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
         await Log('append', interaction.guild.id, `└─This command is currently unavailable.`, 'ERROR');
     }
 }

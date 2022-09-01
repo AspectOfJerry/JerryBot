@@ -27,6 +27,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -64,7 +66,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/untimeout'.`, 'WARN'); // Logs
             return;
         }
@@ -76,7 +78,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: false});
+            await interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: false});
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -87,7 +89,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -97,21 +99,21 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             return;
         }
         // -----END HIERARCHY CHECK-----
         // Main
         reason = reason ? ` \n**Reason:** ${reason}` : "";
         memberTarget.timeout(null, reason)
-            .then(timeoutResult => {
+            .then(async timeoutResult => {
                 const success_untimeout = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User untimeout")
                     .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
 
-                interaction.reply({embeds: [success_untimeout], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [success_untimeout], ephemeral: is_ephemeral});
             });
     }
 }

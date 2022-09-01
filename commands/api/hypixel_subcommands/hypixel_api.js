@@ -21,8 +21,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
-        // Set minimum execution role
+        await interaction.deferReply();
 
+        // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
@@ -74,7 +75,7 @@ module.exports = {
                             .addField("Cause:", `${error_response_cause} (Error 403)`, true)
                             .setFooter({text: "Hypixel Public API", iconURL: "https://pbs.twimg.com/profile_images/1346968969849171970/DdNypQdN_400x400.png"})
 
-                        interaction.reply({embeds: [error_response_invalid_api_key], ephemeral: is_ephemeral});
+                        interaction.editReply({embeds: [error_response_invalid_api_key], ephemeral: is_ephemeral});
                         return;
                     } else if(error_response_cause == "Key throttle") {
                         const error_response_key_throttle = new MessageEmbed()
@@ -85,7 +86,7 @@ module.exports = {
                             .addField("Cause", `${error_response_cause} (Error 429)`, true)
                             .setFooter({text: "Hypixel Public API", iconURl: "https://pbs.twimg.com/profile_images/1346968969849171970/DdNypQdN_400x400.png"})
 
-                        interaction.reply({embeds: [error_response_key_throttle], ephemeral: is_ephemeral});
+                        interaction.editReply({embeds: [error_response_key_throttle], ephemeral: is_ephemeral});
                         return;
                     }
                 }
@@ -103,7 +104,7 @@ module.exports = {
                     .addField("Total queries", `${response_record_totalQueries}`, false)
                     .setFooter({text: "Hypixel Public API", iconURL: "https://pbs.twimg.com/profile_images/1346968969849171970/DdNypQdN_400x400.png"})
 
-                interaction.reply({embeds: [success_response], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [success_response], ephemeral: is_ephemeral});
             })
     }
 }

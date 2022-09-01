@@ -33,6 +33,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -76,7 +78,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            interaction.reply({embeds: [error_permissions]});
+            interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to user '/timeout'.`, 'WARN'); // Logs
             return;
         }
@@ -88,7 +90,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `${interaction.user.id} tried to timeout themselves.`, 'WARN');
             return;
         }
@@ -100,7 +102,7 @@ module.exports = {
                 .setDescription('Invalid duration. Please use a valid duration.')
                 .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*");
 
-            interaction.reply({embeds: [error_duration], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_duration], ephemeral: is_ephemeral});
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -111,7 +113,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -122,7 +124,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
@@ -135,7 +137,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription(`<@${memberTarget.id}> has the ` + `ADMINISTRATOR ` + `permission flag.`);
 
-            interaction.reply({embeds: [target_is_admin], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [target_is_admin], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but they had the 'ADMINISTRATOR' permission flag.`, 'WARN'); // Logs
             return;
         }
@@ -150,7 +152,7 @@ module.exports = {
                     .setTitle("User timeout")
                     .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);
 
-                interaction.reply({embeds: [success_timeout], components: [], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [success_timeout], components: [], ephemeral: is_ephemeral});
             });
         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
     }

@@ -32,8 +32,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dictionary'.`, 'INFO'); // Logs
-        // Set minimum execution role
+        await interaction.deferReply();
 
+        // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
@@ -68,6 +69,6 @@ module.exports = {
                 console.log(res);
             })
 
-        await interaction.reply({content: "This command is currently unavailable."});
+        await interaction.editReply({content: "This command is currently unavailable."});
     }
 }

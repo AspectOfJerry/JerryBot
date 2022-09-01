@@ -22,6 +22,8 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/unban'.`, 'INFO'); // Logs
+        await interaction.deferReply();
+
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -58,7 +60,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.reply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN'); // Logs
             return;
         }
@@ -70,7 +72,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription('You cannot unban yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
             return;
         }
         // // Check if target is in the guild
@@ -80,10 +82,10 @@ module.exports = {
         //     .setTitle('Error')
         //     .setDescription(`<@${memberTarget.id}> is not banned from the guild`)
 
-        // interaction.reply({embeds: [error_user_not_banned], ephemeral: is_ephemeral});
+        // interaction.editReply({embeds: [error_user_not_banned], ephemeral: is_ephemeral});
         // // return;
 
         // Main
-        interaction.reply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        interaction.editReply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
     }
 }
