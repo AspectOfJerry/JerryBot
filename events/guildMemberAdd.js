@@ -55,7 +55,7 @@ module.exports = {
 
             channel.send({embeds: [join_message]});
 
-            guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "311"));
+            // guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "311"));
             await Log('append', 'guildMemberAdd', `'${guildMember.user.tag}' joined guild '${guildMember.guild.id}'!`, 'INFO'); // Logs
         }
     }

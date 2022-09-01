@@ -72,7 +72,7 @@ module.exports = {
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-                interaction.editReply({embeds: [search_error], ephemeral: false});
+                interaction.editReply({embeds: [search_error]});
                 return;
             }
             // Current stats
