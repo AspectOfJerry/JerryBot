@@ -22,7 +22,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/profile'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -44,8 +46,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -53,7 +53,7 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.editReply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        interaction.editReply({content: "This command is currently unavailable."});
         /*
             User creation,
             avatar,

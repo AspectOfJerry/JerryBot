@@ -32,7 +32,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -54,8 +56,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -74,7 +74,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/move'.`, 'WARN'); // Logs
             return;
         }
@@ -85,7 +85,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
-            interaction.editReply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [user_not_in_vc]});
             return;
         }
 
@@ -99,7 +99,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                    interaction.editReply({embeds: [success_move], ephemeral: is_ephemeral});
+                    interaction.editReply({embeds: [success_move]});
                 })
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -109,7 +109,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Moving all ${member_count} members from ${current_voice_channel} to ${new_voice_channel}...`);
 
-            interaction.editReply({embeds: [moving_members], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [moving_members]});
 
             memberTarget.voice.channel.members.forEach(async (member) => {
                 let current_voice_channel = member.voice.channel;
@@ -120,7 +120,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                        await interaction.editReply({embeds: [move_success], ephemeral: is_ephemeral});
+                        await interaction.editReply({embeds: [move_success]});
                         await Sleep(150);
                     });
             });

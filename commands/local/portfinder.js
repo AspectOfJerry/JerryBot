@@ -28,7 +28,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/portfinder'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -50,9 +52,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         const search_amount = interaction.options.getInteger('amount') || 10;
         const start_port = interaction.options.getInteger('start') || 8000;
 
@@ -67,7 +66,7 @@ module.exports = {
                 .setTitle("PermissionError")
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.");
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             return;
         }
         // -----END ROLE CHECK-----
@@ -81,8 +80,8 @@ module.exports = {
         //     .setDescription(`Searched for ${search_amount} ports:\n` +
         //         `[${ports.join(', ')}]`);
 
-        // interaction.editReply({embeds: [available_ports], ephemeral: is_ephemeral});
-        interaction.editReply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        // interaction.editReply({embeds: [available_ports]});
+        interaction.editReply({content: "This command is currently unavailable."});
         await Log('append', interaction.guild.id, `└─This command is currently unavailable.`, 'ERROR');
     }
 }

@@ -22,7 +22,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -44,8 +46,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const reason = interaction.options.getString('reason') || "No reason provided.";
         await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
 
@@ -59,7 +59,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the requried role to use '/stop'.`, 'WARN'); // Logs
             return;
         }
@@ -86,7 +86,7 @@ module.exports = {
             .setTitle('Confirm Stop')
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
-        interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
+        interaction.editReply({embeds: [confirm_stop], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO');
 
         const filter = (buttonInteraction) => {
@@ -104,7 +104,7 @@ module.exports = {
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_stop], components: [row], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [confirm_stop], components: [row]});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
                 buttonInteraction.deferUpdate();
@@ -114,7 +114,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription("Destroying all active voice connections...");
 
-                await interaction.editReply({embeds: [_destroying_voice_connections], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [_destroying_voice_connections]});
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -124,7 +124,7 @@ module.exports = {
                     .addField('Requested at', `${interaction.createdAt}`, false)
                     .setFooter({text: "The NodeJS process will exit after this message."});
 
-                await interaction.editReply({embeds: [stopping_bot], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [stopping_bot]});
                 await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); // Logs
                 await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL'); // Logs
                 await Sleep(100);
@@ -140,7 +140,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> aborted the stop request.`);
 
-                await interaction.editReply({embeds: [cancel_stop], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [cancel_stop]});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO'); // Logs
             }
         });

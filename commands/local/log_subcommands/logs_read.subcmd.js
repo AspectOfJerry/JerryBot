@@ -8,7 +8,8 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 
 module.exports = async function (client, interaction, is_ephemeral, offset) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/log read'.`, 'INFO'); // Logs
-    await interaction.deferReply();
+    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Set minimum execution role
     switch(interaction.guild.id) {

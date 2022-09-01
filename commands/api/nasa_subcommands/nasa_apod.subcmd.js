@@ -12,7 +12,8 @@ const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
-    await interaction.deferReply();
+    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Set minimum execution role
     switch(interaction.guild.id) {
@@ -57,7 +58,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
                     .addField(`Error code:`, `${res.error.code}`, false)
                     .addField(`Description`, `${res.error.message}`, false)
 
-                interaction.editReply({embeds: [request_error], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [request_error]});
                 return;
             }
 
@@ -90,5 +91,5 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setFooter({text: "NASA Open APIs", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
         .setImage(`${apod_image_url}`)
 
-    interaction.editReply({embeds: [nasa_apod], ephemeral: is_ephemeral});
+    interaction.editReply({embeds: [nasa_apod]});
 }

@@ -46,7 +46,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/calculate'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -68,9 +70,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         const operand1 = interaction.options.getInteger('operand1');
         const operation = interaction.options.getString('operation');
         const operand2 = interaction.options.getInteger('operand2');
@@ -89,7 +88,7 @@ module.exports = {
                     .setDescription(`${operand1} + ${operand2} = **${add_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [add_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [add_embed]});
                 break;
             case 'subtract':
                 const subtract_result = operand1 - operand2;
@@ -101,7 +100,7 @@ module.exports = {
                     .setDescription(`${operand1} - ${operand2} = **${subtract_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [subtract_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [subtract_embed]});
                 break;
             case 'multiply':
                 const multiply_result = operand1 * operand2;
@@ -113,7 +112,7 @@ module.exports = {
                     .setDescription(`${operand1} * ${operand2} = **${multiply_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [multiply_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [multiply_embed]});
                 break;
             case 'divide':
                 const divide_result = operand1 / operand2;
@@ -125,7 +124,7 @@ module.exports = {
                     .setDescription(`${operand1} / ${operand2} = **${divide_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [divide_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [divide_embed]});
                 break;
             case 'modulus':
                 const modulus_result = operand1 % operand2;
@@ -137,7 +136,7 @@ module.exports = {
                     .setDescription(`${operand1} % ${operand2} = **${modulus_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [modulus_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [modulus_embed]});
                 break;
             case 'exponent':
                 const exponent_result = Math.pow(operand1, operand2);
@@ -149,7 +148,7 @@ module.exports = {
                     .setDescription(`${operand1} ^ ${operand2} = **${exponent_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [exponent_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [exponent_embed]});
                 break;
             case 'increment':
                 const increment_result = operand1 + 1;
@@ -161,7 +160,7 @@ module.exports = {
                     .setDescription(`${operand1} + 1 = **${increment_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [increment_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [increment_embed]});
                 break;
             case 'decrement':
                 const decrement_result = operand1 - 1;
@@ -173,7 +172,7 @@ module.exports = {
                     .setDescription(`${operand1} - 1 = **${decrement_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 
-                interaction.editReply({embeds: [decrement_embed], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [decrement_embed]});
                 break;
         }
     }

@@ -27,7 +27,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnect'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -49,8 +51,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -68,7 +68,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnect'.`, 'WARN'); // Logs
             return;
         }
@@ -79,7 +79,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
-            interaction.editReply({embeds: [user_not_in_vc], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [user_not_in_vc]});
             await Log('append', interaction.guild.id, `├─└─'${memberTarget.tag}' is not in a voice channel.`, 'WARN'); // Logs
             return;
         }
@@ -92,7 +92,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting <@${memberTarget.id}> from ${current_voice_channel}...`);
 
-            await interaction.editReply({embeds: [disconnecting], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [disconnecting]});
             await memberTarget.voice.setChannel(null)
                 .then(() => {
                     const disconnect_success = new MessageEmbed()
@@ -100,7 +100,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${current_voice_channel}.`);
 
-                    interaction.editReply({embeds: [disconnect_success], ephemeral: is_ephemeral});
+                    interaction.editReply({embeds: [disconnect_success]});
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -110,7 +110,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
-            interaction.editReply({embeds: [disconnecting], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [disconnecting]});
 
             await memberTarget.voice.channel.members.forEach(member => {
                 let current_voice_channel = member.voice.channel
@@ -121,7 +121,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
 
-                        interaction.channel.send({embeds: [disconnect_success], ephemeral: is_ephemeral});
+                        interaction.channel.send({embeds: [disconnect_success]});
                     });
             });
             const disconnect_success = new MessageEmbed()
@@ -129,7 +129,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`);
 
-            interaction.editReply({embeds: [disconnect_success], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [disconnect_success]});
         }
     }
 }

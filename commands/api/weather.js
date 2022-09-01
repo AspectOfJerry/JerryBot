@@ -30,7 +30,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -52,9 +54,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         const search_location = interaction.options.getString('location');
         const search_unit = interaction.options.getString('unit') || "C";
 
@@ -163,7 +162,7 @@ module.exports = {
                     `• Precipitation: ${day5_precipitations}%`, false)
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-            interaction.editReply({embeds: [weather], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [weather]});
         });
     }
 }

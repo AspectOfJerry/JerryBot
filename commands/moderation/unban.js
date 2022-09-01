@@ -22,7 +22,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/unban'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -44,8 +46,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -60,7 +60,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/unban'.`, 'WARN'); // Logs
             return;
         }
@@ -72,7 +72,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription('You cannot unban yourself.');
 
-            interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_use_on_self]});
             return;
         }
         // // Check if target is in the guild
@@ -82,10 +82,10 @@ module.exports = {
         //     .setTitle('Error')
         //     .setDescription(`<@${memberTarget.id}> is not banned from the guild`)
 
-        // interaction.editReply({embeds: [error_user_not_banned], ephemeral: is_ephemeral});
+        // interaction.editReply({embeds: [error_user_not_banned]});
         // // return;
 
         // Main
-        interaction.editReply({content: "This command is currently unavailable.", ephemeral: is_ephemeral});
+        interaction.editReply({content: "This command is currently unavailable."});
     }
 }

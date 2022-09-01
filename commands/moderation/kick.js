@@ -27,7 +27,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -49,8 +51,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -71,7 +71,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'.`, 'WARN'); // Logs
             return;
         }
@@ -83,7 +83,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot kick yourself.');
 
-            await interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_cannot_use_on_self]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, 'WARN');
             return;
         }
@@ -95,7 +95,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -106,7 +106,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
@@ -133,7 +133,7 @@ module.exports = {
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`);
 
-        await interaction.editReply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [confirm_kick], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
@@ -156,7 +156,7 @@ module.exports = {
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_kick], components: [row], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
                 buttonInteraction.deferUpdate();
@@ -166,7 +166,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Kicking <@${memberTarget.id}>...`);
 
-                await interaction.editReply({embeds: [kicking], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [kicking]});
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
                 memberTarget.kick(reason)
                     .then(async kickResult => {
@@ -176,7 +176,7 @@ module.exports = {
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
 
-                        interaction.editReply({embeds: [success_kick], components: [], ephemeral: is_ephemeral});
+                        interaction.editReply({embeds: [success_kick], components: []});
                         await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
                     });
             } else {
@@ -187,7 +187,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${buttonInteraction.user.id}> cancelled the kick.`);
 
-                await interaction.editReply({embeds: [cancel_kick], components: [], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [cancel_kick], components: []});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
             }
         });

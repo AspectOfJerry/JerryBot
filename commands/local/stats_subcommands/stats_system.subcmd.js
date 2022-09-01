@@ -10,7 +10,8 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats system'.`, 'INFO'); // Logs
-    await interaction.deferReply();
+    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Checks
     switch(interaction.guild.id) {
@@ -52,5 +53,5 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .addField(`Available RAM (~${(os.freemem() / os.totalmem() * 100).toLocaleString()}%)`, `${os.freemem().toLocaleString()} bytes (~${(os.freemem() / 1000000000).toLocaleString()} gigabytes)`, true)
         .setFooter({text: "node:os"})
 
-    await interaction.editReply({embeds: [embed], ephemeral: is_ephemeral});
+    await interaction.editReply({embeds: [embed]});
 }

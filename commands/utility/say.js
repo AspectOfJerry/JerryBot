@@ -32,7 +32,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -54,9 +56,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         await Log('append', interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
         const message = interaction.options.getString('message') || true;
@@ -72,7 +71,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription("You need to mention a text-based channel.");
 
-            interaction.editReply({embeds: [error_require_text_based_channel], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_require_text_based_channel]});
             return;
         }
 

@@ -27,7 +27,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -49,8 +51,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -68,7 +68,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role t use '/ban'.`, 'WARN'); // Logs
             return;
         }
@@ -80,7 +80,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot ban yourself.');
 
-            interaction.editReply({embeds: [error_cannot_use_on_self], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_use_on_self]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN'); // Logs
             return;
         }
@@ -92,7 +92,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_role_too_low], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -103,7 +103,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_equal_roles], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
@@ -130,7 +130,7 @@ module.exports = {
             .setTitle(`Confirm Ban`)
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?`);
 
-        await interaction.editReply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [confirm_ban], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for confirmation.`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
@@ -154,7 +154,7 @@ module.exports = {
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_ban], components: [row], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [confirm_ban], components: [row]});
 
             if(buttonInteraction.customId == 'ban_confirm_button') {
                 buttonInteraction.deferUpdate();
@@ -164,7 +164,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Banning <@${memberTarget.id}>...`);
 
-                await interaction.editReply({embeds: [banning], ephemeral: is_ephemeral});
+                await interaction.editReply({embeds: [banning]});
 
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO'); // Logs
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
@@ -176,7 +176,7 @@ module.exports = {
                             .setTitle("GuildMember ban")
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild.${reason}`);
 
-                        await interaction.editReply({embeds: [success_ban], components: [], ephemeral: is_ephemeral});
+                        await interaction.editReply({embeds: [success_ban], components: []});
                         await Log('append', interaction.guild.id, `  └─'${buttonInteraction.user.tag}' banned '${memberTarget.user.tag}' form the guild.`, 'WARN'); // Logs
                     });
             } else {
@@ -187,7 +187,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${buttonInteraction.user.id}> cancelled the ban.`);
 
-                interaction.editReply({embeds: [cancel_ban], components: [], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [cancel_ban], components: []});
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the ban.`, 'INFO'); // Logs
             }
         });

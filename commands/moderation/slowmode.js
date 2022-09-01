@@ -32,7 +32,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/COMMAND'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -54,9 +56,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         const duration = interaction.options.getInteger('duration');
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         const reason = interaction.options.getString('reason') || "No reason provided."
@@ -71,7 +70,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/NAME'.`, 'WARN'); // Logs
             return;
         }
@@ -82,7 +81,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
-            interaction.editReply({embeds: [error_not_voice_channel], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_not_voice_channel]});
             await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}).`, 'WARN'); // Logs
             return;
         }
@@ -96,7 +95,7 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
 
-                    interaction.editReply({embeds: [disabled_slowmode], ephemeral: is_ephemeral});
+                    interaction.editReply({embeds: [disabled_slowmode]});
                     await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '${channel.name}'.`, 'INFO'); // Logs
                 })
             return;
@@ -110,7 +109,7 @@ module.exports = {
                     .setDescription(`Successfully enabled a **${duration}** second rate limit per user in <#${channel.id}>.`)
                     .setFooter({text: "Setting the rate limit to 0 will disable it."})
 
-                interaction.editReply({embeds: [enabled_slowmode], ephemeral: is_ephemeral});
+                interaction.editReply({embeds: [enabled_slowmode]});
                 await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}'.`, 'INFO'); // Logs
             })
     }

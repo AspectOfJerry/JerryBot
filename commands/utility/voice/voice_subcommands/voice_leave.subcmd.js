@@ -8,7 +8,8 @@ const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO,
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
-    await interaction.deferReply();
+    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Set minimum execution role
     switch(interaction.guild.id) {
@@ -40,7 +41,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
 
-        await interaction.editReply({embeds: [error_not_in_vc], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [error_not_in_vc]});
         return;
     }
 
@@ -51,7 +52,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setTitle('VoiceConnection')
         .setDescription("Fetching voice connections in this guild...");
 
-    await interaction.editReply({embeds: [fetching_connection], ephemeral: is_ephemeral});
+    await interaction.editReply({embeds: [fetching_connection]});
 
     const connection = getVoiceConnection(interaction.guild.id);
 
@@ -63,5 +64,5 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .setTitle('VoiceConnection')
         .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
-    await interaction.editReply({embeds: [connection_destroyed], ephemeral: is_ephemeral});
+    await interaction.editReply({embeds: [connection_destroyed]});
 }

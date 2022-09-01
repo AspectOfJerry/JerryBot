@@ -15,7 +15,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -37,9 +39,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
         let clientLatency = null;
         let WebSocketLatency = null;
         // Checks
@@ -62,7 +61,7 @@ module.exports = {
                 .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
 
             pingMessage.delete().catch(console.error);
-            interaction.editReply({embeds: [pong], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [pong]});
             await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }

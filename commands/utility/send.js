@@ -27,7 +27,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/message'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -49,8 +51,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -69,7 +69,7 @@ module.exports = {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions], ephemeral: is_ephemeral});
+            await interaction.editReply({embeds: [error_permissions]});
             return;
         }
         // -----END ROLE CHECK-----
@@ -80,7 +80,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription("You cannot message a bot.");
 
-            interaction.editReply({embeds: [error_cannot_message_bot], ephemeral: is_ephemeral});
+            interaction.editReply({embeds: [error_cannot_message_bot]});
             return;
         }
 
@@ -90,7 +90,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`);
 
-        await interaction.editReply({embeds: [messaging_user], ephemeral: is_ephemeral});
+        await interaction.editReply({embeds: [messaging_user]});
 
         memberTarget.send({content: `${message}`})
             .then(async messageResult => {
@@ -103,7 +103,7 @@ module.exports = {
                         "To send them a message, type your message in this channel and the bot will relay it!")
                     .addField('Important', "Send '**msg.stop**' in this channel to stop the collector.");
 
-                await interaction.followUp({embeds: [message_sent], ephemeral: is_ephemeral});
+                await interaction.followUp({embeds: [message_sent]});
 
                 const filter = m => m.author.id == interaction.member.id;
 
@@ -118,7 +118,7 @@ module.exports = {
                             .setAuthor({name: `${msg.author.tag}`, iconURL: `${msg.author.displayAvatarURL({dynamic: true})}`})
                             .setDescription(`*Receive:* ${msg.content}`);
 
-                        interaction.followUp({embeds: [message_embed], ephemeral: is_ephemeral});
+                        interaction.followUp({embeds: [message_embed]});
                     }
                 })
 
@@ -130,7 +130,7 @@ module.exports = {
                             .setTitle('Stopping Collector')
                             .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
 
-                        msg.editReply({embeds: [stopping_collector], ephemeral: is_ephemeral});
+                        msg.editReply({embeds: [stopping_collector]});
 
                         receive_collector.stop();
                         send_collector.stop();
@@ -140,7 +140,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`);
 
-                        msg.editReply({embeds: [sending_message], ephemeral: is_ephemeral})
+                        msg.editReply({embeds: [sending_message]})
                             .then(embed => {
                                 memberTarget.send({content: `${msg.content}`})
                                     .then(async messageResult => {

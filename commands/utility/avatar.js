@@ -22,7 +22,9 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/avatar'.`, 'INFO'); // Logs
-        await interaction.deferReply();
+        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -44,8 +46,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
@@ -59,7 +59,7 @@ module.exports = {
             .setTitle('DeprecationWarning')
             .setDescription("This command is deprecated. Please use the `/profile` command instead.");
 
-        interaction.editReply({embeds: [deprecation_warning], ephemeral: is_ephemeral});
+        interaction.editReply({embeds: [deprecation_warning]});
         await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN'); // Logs
     }
 }
