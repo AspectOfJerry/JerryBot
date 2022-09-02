@@ -6,7 +6,7 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 
 // Main
 const heartbeat_interval = '1 minute';
-const grace_period = '10 seconds';
+const grace_period = '15 seconds';
 
 const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
     try {
