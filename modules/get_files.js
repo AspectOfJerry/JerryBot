@@ -1,13 +1,9 @@
-const fs = require('fs')
+const fs = require('fs');
 
-const GetFiles = (dir, file_suffix) => {
+const GetCurrentDirectoryFiles = (dir, file_suffix, command_files, ignored_files, skipped_files) => {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
-    })
-
-    let command_files = [];
-    let ignored_files = [];
-    let skipped_files = [];
+    });
 
     for(const file of files) {
         if(file.name.endsWith(".subcmd.js")) {
@@ -25,20 +21,26 @@ const GetFiles = (dir, file_suffix) => {
         }
 
         if(file.isDirectory()) {
-            command_files = [
-                ...command_files,
-                ...GetFiles(`${dir}/${file.name}`, file_suffix),
-            ];
+            GetCurrentDirectoryFiles(`${dir}/${file.name}`, file_suffix, command_files, ignored_files, skipped_files);
+
         } else if(file.name.endsWith(file_suffix)) {
             command_files.push(`${dir}/${file.name}`);
         }
     }
+};
+
+const GetFiles = (dir, file_suffix) => {
+    let command_files = [];
+    let ignored_files = [];
+    let skipped_files = [];
+
+    GetCurrentDirectoryFiles(dir, file_suffix, command_files, ignored_files, skipped_files);
 
     console.log(`Ignored ${ignored_files.length} files:`);
     console.log(ignored_files);
     console.log(`Skipped ${skipped_files.length} files:`);
     console.log(skipped_files);
     return command_files;
-}
+};
 
 module.exports = GetFiles;
