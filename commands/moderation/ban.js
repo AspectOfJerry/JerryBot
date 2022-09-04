@@ -21,7 +21,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO'); // Logs

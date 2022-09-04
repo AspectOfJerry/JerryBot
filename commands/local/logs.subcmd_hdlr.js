@@ -20,7 +20,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -34,7 +34,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -44,7 +44,7 @@ module.exports = {
                     options
                         .setName('offset')
                         .setDescription("[OPTIONAL] Number of days to skip starting with the current day going back. Defaults to 0 (today).")
-                        .setRequried(false))
+                        .setRequired(false))
                 .addBooleanOption((options) =>
                     options
                         .setName('todms')
