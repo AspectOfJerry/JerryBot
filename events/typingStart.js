@@ -7,4 +7,4 @@ module.exports = {
     async execute(typing) {
         await Log('append', typing.guild.id, `'${typing.user.tag}' started typing!`, 'INFO'); // Logs
     }
-}
+};

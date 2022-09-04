@@ -20,7 +20,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/test'.`, 'INFO'); // Logs
@@ -38,4 +38,4 @@ module.exports = {
         // Get current date
         interaction.reply({content: `${interaction.createdAt}`})
     }
-}
+};

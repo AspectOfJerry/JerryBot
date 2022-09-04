@@ -1,4 +1,3 @@
-const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
@@ -22,7 +21,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -31,7 +30,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -40,7 +39,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -49,7 +48,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO'); // Logs
@@ -70,6 +69,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./voice_subcommands/voice_join.subcmd')(client, interaction, is_ephemeral, voice_channel);
             }
                 break;
@@ -81,6 +81,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./voice_subcommands/voice_leave.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
@@ -92,6 +93,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./voice_subcommands/voice_selfmute.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
@@ -103,6 +105,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./voice_subcommands/voice_selfdeaf.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
@@ -110,4 +113,4 @@ module.exports = {
                 throw "Invalid subcommand.";
         }
     }
-}
+};

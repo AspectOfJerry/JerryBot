@@ -27,21 +27,25 @@ module.exports = {
                     .setColor('#bb20ff')
                     .setTitle('Error')
                     .setDescription(`An error occured while executing the command${_error}`)
-                    .setFooter({text: `${interaction.createdAt}`})
+                    .setFooter({text: `${interaction.createdAt}`});
                 try {
-                    await interaction.reply({embeds: [execute_error], ephemeral: false});
+                    await interaction.reply({embeds: [execute_error]});
                 } catch {
                     try {
-                        await interaction.followUp({embeds: [execute_error], ephemeral: false});
+                        interaction.editReply({embeds: [execute_error]});
                     } catch {
                         try {
-                            await interaction.channel.send({embeds: [execute_error], ephemeral: false});
+                            await interaction.followUp({embeds: [execute_error]});
                         } catch {
-                            console.log("All three methods failed to send an error message to the text channel.");
+                            try {
+                                await interaction.channel.send({embeds: [execute_error]});
+                            } catch {
+                                console.log("All four attempts to send an error message to a text channel failed.");
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
+};

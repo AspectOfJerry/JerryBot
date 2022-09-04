@@ -22,7 +22,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -36,7 +36,7 @@ module.exports = {
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO'); // Logs
@@ -54,6 +54,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./DIRECTORY_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
@@ -65,6 +66,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
+                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./DIRECTORY_subcommands')(client, interaction, is_ephemeral);
             }
                 break;
@@ -72,4 +74,4 @@ module.exports = {
                 throw "Invalid subcommand.";
         }
     }
-}
+};

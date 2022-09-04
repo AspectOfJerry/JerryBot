@@ -12,6 +12,6 @@ switch(interaction.guild.id) {
         var MINIMUM_EXECUTION_ROLE = null;
         break;
     default:
-        await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
+        await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
         throw `Error: Bad permission configuration.`;
 }

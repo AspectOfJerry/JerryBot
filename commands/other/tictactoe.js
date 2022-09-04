@@ -1,12 +1,10 @@
-const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
-const TicTacToe = require('discord-tictactoe');
-const game = new TicTacToe({language: 'en'});
 
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+
+const TicTacToe = require('discord-tictactoe');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,8 +17,6 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
-        //         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
@@ -38,16 +34,33 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
+        const game = new TicTacToe({language: 'en'});
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
+        if(MINIMUM_EXECUTION_ROLE !== null) {
+            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
+                const error_permissions = new MessageEmbed()
+                    .setColor('RED')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setTitle('PermissionError')
+                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
+
+                await interaction.editReply({embeds: [error_permissions]});
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/tictactoe'.`, 'WARN'); // Logs
+                return;
+            }
+        }
+        // -----END ROLE CHECK-----
 
         // Main
         game.handleInteraction(interaction);
-        await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO');
+        await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO'); // Logs
     }
-}
+};

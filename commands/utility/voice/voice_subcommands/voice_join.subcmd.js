@@ -1,4 +1,3 @@
-const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
@@ -8,7 +7,7 @@ const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO,
 
 module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
     await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Set minimum execution role
@@ -26,13 +25,29 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
             throw `Error: Bad permission configuration.`;
     }
 
     // Declaring variables
 
     // Checks
+    // -----BEGIN ROLE CHECK-----
+    if(MINIMUM_EXECUTION_ROLE !== null) {
+        if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
+            const error_permissions = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('PermissionError')
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
+
+            await interaction.editReply({embeds: [error_permissions]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice join'.`, 'WARN'); // Logs
+            return;
+        }
+    }
+    // -----END ROLE CHECK-----
     if(!interaction.member.voice.channel && !voice_channel) {
         const error_not_in_vc = new MessageEmbed()
             .setColor('RED')
@@ -87,4 +102,4 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
 
     await interaction.editReply({embeds: [success_join]});
     await Log('append', interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
-}
+};

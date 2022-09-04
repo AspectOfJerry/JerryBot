@@ -1,7 +1,7 @@
 const fs = require('fs');
 const date = require('date-and-time');
 
-module.exports = async function Log(method, tag, string, type, returnInfoOnly) {
+async function Log(method, tag, string, type, returnInfoOnly) {
     switch(method) {
         case "append": {
             // Declaring variables
@@ -60,4 +60,6 @@ module.exports = async function Log(method, tag, string, type, returnInfoOnly) {
         default:
             throw "Unknown logging method.";
     }
-}
+};
+
+module.exports = Log;

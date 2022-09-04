@@ -1,7 +1,5 @@
-const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
@@ -18,7 +16,7 @@ module.exports = {
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself. Defaults to false.")
+                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible to yourself or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/avatar'.`, 'INFO'); // Logs
@@ -41,7 +39,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -51,6 +49,22 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         // Checks
+        // -----BEGIN ROLE CHECK-----
+        if(MINIMUM_EXECUTION_ROLE !== null) {
+            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
+                const error_permissions = new MessageEmbed()
+                    .setColor('RED')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setTitle('PermissionError')
+                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
+
+                await interaction.editReply({embeds: [error_permissions]});
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/avatar'.`, 'WARN'); // Logs
+                return;
+            }
+        }
+        // -----END ROLE CHECK-----
 
         // Main
         const deprecation_warning = new MessageEmbed()
@@ -62,4 +76,4 @@ module.exports = {
         interaction.editReply({embeds: [deprecation_warning]});
         await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN'); // Logs
     }
-}
+};

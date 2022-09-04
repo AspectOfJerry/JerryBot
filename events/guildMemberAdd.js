@@ -6,15 +6,10 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 require('dotenv').config();
 const process = require('process');
 
-const date = require('date-and-time');
-
 module.exports = {
     name: "guildMemberAdd",
     once: false,
     async execute(guildMember) {
-        const now = new Date();
-        //const joinedTime = now.format('dd-mmm-yyyy hh:mm:ss.s')
-
         if(guildMember.guild.id == process.env.DISCORD_JERRY_GUILD_ID) {
             const channel = guildMember.guild.channels.cache.find(channel => channel.name == "🔄io");
 

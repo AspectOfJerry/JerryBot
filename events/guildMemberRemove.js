@@ -32,4 +32,4 @@ module.exports = {
             channel.send({embeds: [leave_message]});
         }
     }
-}
+};

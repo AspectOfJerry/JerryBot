@@ -1,7 +1,5 @@
-const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const fetch = require('node-fetch');
 
@@ -12,7 +10,7 @@ const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
     await interaction.deferReply({ephemeral: is_ephemeral});
 
     // Set minimum execution role
@@ -30,7 +28,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
             throw `Error: Bad permission configuration.`;
     }
 
@@ -43,6 +41,22 @@ module.exports = async function (client, interaction, is_ephemeral) {
     let apod_title;
 
     // Checks
+    // -----BEGIN ROLE CHECK-----
+    if(MINIMUM_EXECUTION_ROLE !== null) {
+        if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
+            const error_permissions = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('PermissionError')
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
+
+            await interaction.editReply({embeds: [error_permissions]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/nasa apod'.`, 'WARN'); // Logs
+            return;
+        }
+    }
+    // -----END ROLE CHECK-----
 
     // Main
     // API request
@@ -56,7 +70,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
                     .setTitle("Error")
                     .setDescription("An error occured while trying to fetch the APOD from NASA. Please try again later.")
                     .addField(`Error code:`, `${res.error.code}`, false)
-                    .addField(`Description`, `${res.error.message}`, false)
+                    .addField(`Description`, `${res.error.message}`, false);
 
                 interaction.editReply({embeds: [request_error]});
                 return;
@@ -78,7 +92,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             apod_explanation = res.explanation;
             apod_url = res.url;
             apod_title = res.title;
-        })
+        });
 
     const nasa_apod = new MessageEmbed()
         .setColor(nasa_logo_red_hex)
@@ -89,7 +103,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .addField(`Title`, `${apod_title}`, true)
         .addField(`Date`, `${apod_date}`, true)
         .setFooter({text: "NASA Open APIs", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
-        .setImage(`${apod_image_url}`)
+        .setImage(`${apod_image_url}`);
 
     interaction.editReply({embeds: [nasa_apod]});
-}
+};
