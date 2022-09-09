@@ -14,7 +14,7 @@ module.exports = {
             options
                 .setName('OPTION_NAME')
                 .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
-                .setRequired(true / false))
+                .setRequired(true/false))
         .addBooleanOption((options) =>
             options
                 .setName('ephemeral')
@@ -35,6 +35,9 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             case process.env.DISCORD_CRA_GUILD_ID:
+                var MINIMUM_EXECUTION_ROLE = null;
+                break;
+            case process.env.DISCORD_311_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:

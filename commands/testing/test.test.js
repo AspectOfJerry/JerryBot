@@ -33,9 +33,6 @@ module.exports = {
         // Checks
 
         // Main
-        const now = new Date();
 
-        // Get current date
-        interaction.reply({content: `${interaction.createdAt}`})
     }
 };

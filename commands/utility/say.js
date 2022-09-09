@@ -32,7 +32,7 @@ module.exports = {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -72,7 +72,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/say'.`, 'WARN'); // Logs
                 return;
             }
@@ -85,14 +85,14 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription("You need to mention a text-based channel.");
 
-            interaction.editReply({embeds: [error_require_text_based_channel]});
+            interaction.reply({embeds: [error_require_text_based_channel]});
             return;
         }
 
         // Main
         switch(do_typing) {
             case true:
-                await interaction.editReply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
+                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
 
                 await channel.sendTyping();
                 await Sleep(1000);
@@ -100,7 +100,7 @@ module.exports = {
                 await channel.send({content: `${message}`});
                 break;
             case false:
-                await interaction.editReply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
                 await channel.send({content: `${message}`});
                 break;

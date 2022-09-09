@@ -1,22 +1,27 @@
+const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
+const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('CMD_NAME')
-        .setDescription("CMD_DESCRIPTION")
+        .setName('311')
+        .setDescription("Commands for 311.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('SUBCMD_NAME')
-                .setDescription("SUBCMD_DESCRIPTION")
+                .setName('schedule')
+                .setDescription("Get's today or tomorrow's schedule.")
                 .addStringOption((options) =>
                     options
-                        .setName('SUBCMD_OPTION_NAME')
-                        .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true/false))
+                        .setName('day')
+                        .setDescription("[OPTIONAL] The day for the schedule. Defaults to Automatic.")
+                        .addChoice("Automatic (closest Jour)", 'auto')
+                        .addChoice("Today", 'nextjour')
+                        .addChoice("Next Jour", 'nextnextjour')
+                        .setRequired(false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
@@ -24,28 +29,24 @@ module.exports = {
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('SUBCMD_NAME')
-                .setDescription("SUBCMD_DESCRIPTION")
-                .addStringOption((options) =>
-                    options
-                        .setName('SUBCMD_OPTION_NAME')
-                        .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true/false))
+                .setName('weather')
+                .setDescription("Get today's weather.")
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                        .setRequired(false))),
+                        .setRequired(false)))
+    ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/311 [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
 
         // Main
         switch(subcommand) {
-            case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+            case 'schedule': {
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -53,11 +54,11 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./DIRECTORY_subcommands')(client, interaction, is_ephemeral);
+                require('./311_schedule.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
-            case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+            case 'weather': {
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
@@ -65,11 +66,11 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./DIRECTORY_subcommands')(client, interaction, is_ephemeral);
+                require('./311_weather.subcmd')(client, interaction, is_ephemeral);
             }
                 break;
             default:
                 throw "Invalid subcommand.";
         }
     }
-}
+};

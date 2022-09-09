@@ -18,7 +18,7 @@ module.exports = {
                     options
                         .setName('SUBCMD_OPTION_NAME')
                         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true / false))
+                        .setRequired(true/false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
@@ -32,7 +32,7 @@ module.exports = {
                     options
                         .setName('SUBCMD_OPTION_NAME')
                         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true / false))
+                        .setRequired(true/false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')

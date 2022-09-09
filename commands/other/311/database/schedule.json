@@ -1,0 +1,586 @@
+{
+    "metadata": {
+        "day0": "",
+        "day19": "",
+        "jour": {
+            "starttime": "8h10",
+            "endtime": "14h50"
+        }
+    },
+    "jour1": {
+        "period1": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "ESP",
+            "classroom": "C09A",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "ROB",
+            "classroom": "030",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        }
+    },
+    "jour2": {
+        "period1": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "ROB",
+            "classroom": "30",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "SCT",
+            "classroom": "C09B",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        }
+    },
+    "jour3": {
+        "period1": {
+            "classcode": "ANE",
+            "classroom": "100B",
+            "notes": "100A for Regular and 100B for Enriched"
+        },
+        "period2": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "SCT",
+            "classroom": "C08",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "ESP",
+            "classroom": "C09A",
+            "notes": "none"
+        }
+    },
+    "jour4": {
+        "period1": {
+            "classcode": "ROB",
+            "classroom": "30",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "SCT",
+            "classroom": "C08",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "MAT",
+            "classroom": "100B",
+            "notes": "Different classroom (C200 -> 100B)"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        }
+    },
+    "jour5": {
+        "period1": {
+            "classcode": "SCT",
+            "classroom": "C08",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "ANE",
+            "classroom": "100B",
+            "notes": "100A for Regular and 100B for Enriched"
+        },
+        "period3": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "ESP",
+            "classroom": "C09A",
+            "notes": "none"
+        }
+    },
+    "jour6": {
+        "period1": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "SCT",
+            "classroom": "C09A",
+            "notes": "Different classroom (C08 -> C09A)"
+        },
+        "period4": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "ANE",
+            "classroom": "100B",
+            "notes": "100A for Regular and 100B for Enriched"
+        }
+    },
+    "jour7": {
+        "period1": {
+            "classcode": "EDP",
+            "classroom": "G2",
+            "notes": "Uniforme d'éduc"
+        },
+        "period2": {
+            "classcode": "SCT",
+            "classroom": "C08",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "ANE",
+            "classroom": "100B",
+            "notes": "100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classcode": "FRA",
+            "classroom": "C100",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "ARP",
+            "classroom": "157",
+            "notes": "none"
+        }
+    },
+    "jour8": {
+        "period1": {
+            "classcode": "ESP",
+            "classroom": "C09A",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "SCT",
+            "classroom": "C08",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "ANE",
+            "classroom": "100B",
+            "notes": "100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classcode": "HIS",
+            "classroom": "321",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "MAT",
+            "classroom": "C200",
+            "notes": "none"
+        }
+    },
+    "jour9": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour10": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour11": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour12": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour13": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour14": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour15": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour16": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour17": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    },
+    "jour18": {
+        "period1": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period2": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period3": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period4": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        },
+        "period5": {
+            "classcode": "DIN",
+            "classroom": "N/A",
+            "notes": "Lunch period"
+        },
+        "period6": {
+            "classcode": "",
+            "classroom": "",
+            "notes": "none"
+        }
+    }
+}

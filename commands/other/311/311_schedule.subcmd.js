@@ -44,12 +44,27 @@ module.exports = async function (client, interaction, is_ephemeral) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/CMD_NAME SUBCMD_NAME'.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/311 schedule'.`, 'WARN'); // Logs
             return;
         }
     }
     // -----END ROLE CHECK-----
+    if(interaction.guild.id != "1014278986135781438") {
+        const cmd_not_avail_in_guild = new MessageEmbed()
+            .setColor('RED')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("This command is not available in this guild!");
 
+        await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
+    }
     // Main
+    const schedule_message = `<@&1016500157480706191>; J00: XYZ(A123), XYZ(B123), XYZ(C123), XYZ(D123), XYZ(E123)`;
 
+    const schedule_embed = new MessageEmbed()
+        .setTitle('[JOUR 00] Monday, January 00, 0000')
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+        .setDescription("this will be the embed for the schedule!")
+
+    interaction.editReply({content: `Good morning, here's today's schedule!`});
+    interaction.channel.send({content: schedule_message, embeds: [schedule_embed]})
 };
