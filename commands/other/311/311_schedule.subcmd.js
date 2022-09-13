@@ -7,7 +7,7 @@ const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, is_ephemeral) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
     await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
     await interaction.deferReply({ephemeral: is_ephemeral});
 
@@ -58,8 +58,6 @@ module.exports = async function (client, interaction, is_ephemeral) {
         await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
     }
     // Main
-    const schedule_message = `<@&1016500157480706191>; J00: XYZ(A123), XYZ(B123), XYZ(C123), XYZ(D123), XYZ(E123)`;
-
     const schedule_embed = new MessageEmbed()
         .setTitle('[JOUR 00] Monday, January 00, 0000')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
