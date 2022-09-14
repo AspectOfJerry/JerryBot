@@ -6,18 +6,21 @@ const GetCurrentDirectoryFiles = (dir, file_suffix, command_files, ignored_files
     });
 
     for(const file of files) {
-        if(file.name.endsWith(".subcmd.js")) {
+        if(file.name.endsWith('.subcmd.js')) {
             ignored_files.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
             continue;
-        } else if(file.name.endsWith(".todo")) {
+        } else if(file.name.endsWith('.todo')) {
             ignored_files.push(`${dir}/${file.name} => todo`);
             continue;
-        } else if(file.name.endsWith(".template.js")) {
+        } else if(file.name.endsWith('.template.js')) {
             ignored_files.push(`${dir}/${file.name} => template file`);
             continue;
-        } else if(file.name.endsWith(".subcmd_hdlr.js")) {
+        } else if(file.name.endsWith('.subcmd_hdlr.js')) {
             skipped_files.push(`${dir}/${file.name} => subcommand handler`);
-            // Do not put `continue;` here! Subcommand handlers should not be ignored and they are considered as command files.
+            // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
+        } else if(file.name.endsWith('.dbms.js')) {
+            skipped_files.push(`${dir}/${file.name} => database manager`);
+            continue;
         }
 
         if(file.isDirectory()) {
