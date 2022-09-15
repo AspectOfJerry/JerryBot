@@ -74,32 +74,34 @@ module.exports = async function (client, interaction, is_ephemeral, voice_channe
     });
 
     connection.on(VoiceConnectionStatus.Connecting, async () => {
-        const _connection_connecting = new MessageEmbed()
+        const connection_connecting = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('VoiceConnection')
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
-        await interaction.editReply({embeds: [_connection_connecting]});
+        await interaction.editReply({embeds: [connection_connecting]});
         await Log('append', interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, 'INFO'); // Logs
     });
     connection.on(VoiceConnectionStatus.Ready, async () => {
-        const _connection_ready = new MessageEmbed()
+        const connection_ready = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('VoiceConnection')
             .setDescription("__Ready__. The connection to the voice channel has been established.");
 
-        await interaction.editReply({embeds: [_connection_ready]});
+        await interaction.editReply({embeds: [connection_ready]});
         await Log('append', interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, 'INFO'); // Logs
+
+        await Sleep(500);
+
+        const success_join = new MessageEmbed()
+            .setColor('GREEN')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('VoiceConnection')
+            .setDescription(`Successfully joined <#${voice_channel.id}>`);
+
+        await interaction.editReply({embeds: [success_join]});
+        await Log('append', interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
     });
-
-    const success_join = new MessageEmbed()
-        .setColor('GREEN')
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('VoiceConnection')
-        .setDescription(`Successfully joined <#${voice_channel.id}>`);
-
-    await interaction.editReply({embeds: [success_join]});
-    await Log('append', interaction.guild.id, `├─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
 };

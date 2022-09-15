@@ -6,6 +6,9 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+const date = require('date-and-time');
+const {GetFullSchedule, GetJourByDate, GetExceptions} = require('./database/dbms');
+
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
     await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
@@ -58,11 +61,53 @@ module.exports = async function (client, interaction, is_ephemeral) {
         await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
     }
     // Main
+    const schedule_message = `<@&1016500157480706191>; J00: XYZ(A123), XYZ(B123), XYZ(C123), XYZ(D123), XYZ(E123)`;
+
     const schedule_embed = new MessageEmbed()
         .setTitle('[JOUR 00] Monday, January 00, 0000')
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-        .setDescription("this will be the embed for the schedule!")
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setDescription("this will be the embed for the schedule!");
 
-    interaction.editReply({content: `Good morning, here's today's schedule!`});
-    interaction.channel.send({content: schedule_message, embeds: [schedule_embed]})
+    await interaction.editReply({content: `Good morning, here's today's schedule!`});
+    await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]})
+
+    async function GetDate() {
+        const _now = new Date();
+        const now = date.format(_now, 'YYYY-MM-DD');
+        return now;
+    }
+    await interaction.channel.send(`GetDate(): ${await GetDate()}`); //
+
+    //async function GetJourByDate() {
+    const now = await GetDate();
+    const full_schedule = await GetFullSchedule();
+    let jour = 1;
+
+    let firstDay = full_schedule.metadata.firstJourDate;
+    let _day = date.parse(firstDay, 'YYYY-MM-DD')
+    console.log(_day)
+    let day = date.format(_day, 'YYYY-MM-DD');
+    console.log(day)
+    await Sleep(500)
+
+    while(day != now) {
+        console.log(`${jour} | ${day}`);
+        jour++;
+
+        // Check for exceptions here
+
+        _day = date.parse(day, 'YYYY-MM-DD');
+        _day = date.addDays(_day, 1);
+        day = date.format(_day, 'YYYY-MM-DD');
+
+        if(jour > 18) {
+            jour = 1;
+        }
+        await Sleep(25);
+    }
+    console.log(`>>> ${jour} | ${day}`);
+    // return jour;
+    //}
+
+    await interaction.channel.send(`GetJourByDate(): ${await GetJourByDate()}`);
 };

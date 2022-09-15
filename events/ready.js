@@ -36,14 +36,14 @@ module.exports = {
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
         try {
-            await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
+            // await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
+            // await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+            // await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
 
             await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
             console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);

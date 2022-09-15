@@ -1,7 +1,7 @@
 {
     "metadata": {
-        "day0": "2022-08-29",
-        "day19": "2023-06-22",
+        "firstJourDate": "2022-08-29",
+        "lastJourDate": "2023-06-22",
         "jour": {
             "starttime": "8h10",
             "endtime": "14h50"
