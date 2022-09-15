@@ -55,10 +55,6 @@ module.exports = {
 
         let reason = interaction.options.getString('reason');
 
-        let isRole = "";
-        let isRoleTitle = "";
-        let kickAnyway = "";
-
         // Checks
         // -----BEGIN ROLE CHECK-----
         if(MINIMUM_EXECUTION_ROLE !== null) {
@@ -107,7 +103,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             await interaction.editReply({embeds: [error_equal_roles]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest roles were equal.`, 'WARN'); // Logs
             return;
         }
         // -----END HIERARCHY CHECK-----
