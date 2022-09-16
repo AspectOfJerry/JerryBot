@@ -62,7 +62,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
     }
 
     // Main
-    let jour = 5;//await GetJourByDate();
+    let jour = await GetJourByDate();
     let _day = await GetDate();
     const day = date.format(_day, 'dddd, MMMM DD, YYYY');
 
