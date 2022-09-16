@@ -59,6 +59,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             .setDescription("This command is not available in this guild!");
 
         await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
+        return;
     }
 
     // Main
