@@ -33,8 +33,7 @@ module.exports = {
                     options
                         .setName('ephemeral')
                         .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                        .setRequired(false)))
-    ,
+                        .setRequired(false))),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/311 [...]'.`, 'INFO'); // Logs
 
