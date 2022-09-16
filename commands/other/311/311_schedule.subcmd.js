@@ -7,7 +7,7 @@ const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 const date = require('date-and-time');
-const {GetFullSchedule, GetJourByDate, GetExceptions} = require('./database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
 
 module.exports = async function (client, interaction, is_ephemeral) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
@@ -60,54 +60,58 @@ module.exports = async function (client, interaction, is_ephemeral) {
 
         await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
     }
+
     // Main
-    const schedule_message = `<@&1016500157480706191>; J00: XYZ(A123), XYZ(B123), XYZ(C123), XYZ(D123), XYZ(E123)`;
+    let jour = 5;//await GetJourByDate();
+    let _day = await GetDate();
+    const day = date.format(_day, 'dddd, MMMM DD, YYYY');
+
+    if(isNaN(jour)) {
+        const schedule_message = `<@&1016500157480706191>; ${jour} No school`;
+
+        const schedule_embed = new MessageEmbed()
+            .setTitle(`[${jour}] ${day}`)
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setDescription("No school today!");
+
+        await interaction.editReply({content: `Here's today's schedule!`});
+        await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]});
+        return;
+    }
+    const schedule = await GetScheduleByJour(jour);
+    jour = jour.toString();
+
+    if(jour.length == 1) {
+        jour = "0".toString() + jour;
+    }
+
+    const schedule_message = `<@&1016500157480706191>; J${jour}:` +
+        ` ${schedule.period1.classcode} (${schedule.period1.classroom}),` +
+        ` ${schedule.period2.classcode} (${schedule.period2.classroom}),` +
+        ` ${schedule.period3.classcode} (${schedule.period3.classroom}),` +
+        ` ${schedule.period4.classcode} (${schedule.period4.classroom}),` +
+        ` ${schedule.period6.classcode} (${schedule.period6.classroom})`;
 
     const schedule_embed = new MessageEmbed()
-        .setTitle('[JOUR 00] Monday, January 00, 0000')
+        .setTitle(`[Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setDescription("this will be the embed for the schedule!");
+        .setDescription(`This is the schedule for Jour ${jour}.`)
+        .addField(`Period 1: `, `• Classcode: ${schedule.period1.classcode}\n• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, false)
+        .addField(`Period 2: `, `• Classcode: ${schedule.period2.classcode}\n• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, false)
+        .addField(`Period 3: `, `• Classcode: ${schedule.period3.classcode}\n• Classroom: ${schedule.period3.classroom}${schedule.period3.notes}`, false)
+        .addField(`Period 4: `, `• Classcode: ${schedule.period4.classcode}\n• Classroom: ${schedule.period4.classroom}${schedule.period4.notes}`, false)
+        .addField(`Period 5: `, `• Classcode: ${schedule.period5.classcode}\n• Classroom: ${schedule.period5.classroom}${schedule.period5.notes}`, false)
+        .addField(`Period 6: `, `• Classcode: ${schedule.period6.classcode}\n• Classroom: ${schedule.period6.classroom}${schedule.period6.notes}`, false)
+        .setFooter({
+            text: `Jour ${jour}:` +
+                `${schedule.period1.classcode},` +
+                ` ${schedule.period2.classcode},` +
+                ` ${schedule.period3.classcode},` +
+                ` ${schedule.period4.classcode},` +
+                ` ${schedule.period5.classcode},` +
+                ` ${schedule.period6.classcode}`
+        });
 
-    await interaction.editReply({content: `Good morning, here's today's schedule!`});
-    await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]})
-
-    async function GetDate() {
-        const _now = new Date();
-        const now = date.format(_now, 'YYYY-MM-DD');
-        return now;
-    }
-    await interaction.channel.send(`GetDate(): ${await GetDate()}`); //
-
-    //async function GetJourByDate() {
-    const now = await GetDate();
-    const full_schedule = await GetFullSchedule();
-    let jour = 1;
-
-    let firstDay = full_schedule.metadata.firstJourDate;
-    let _day = date.parse(firstDay, 'YYYY-MM-DD')
-    console.log(_day)
-    let day = date.format(_day, 'YYYY-MM-DD');
-    console.log(day)
-    await Sleep(500)
-
-    while(day != now) {
-        console.log(`${jour} | ${day}`);
-        jour++;
-
-        // Check for exceptions here
-
-        _day = date.parse(day, 'YYYY-MM-DD');
-        _day = date.addDays(_day, 1);
-        day = date.format(_day, 'YYYY-MM-DD');
-
-        if(jour > 18) {
-            jour = 1;
-        }
-        await Sleep(25);
-    }
-    console.log(`>>> ${jour} | ${day}`);
-    // return jour;
-    //}
-
-    await interaction.channel.send(`GetJourByDate(): ${await GetJourByDate()}`);
+    await interaction.editReply({content: `Here's today's schedule!`});
+    await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]});
 };

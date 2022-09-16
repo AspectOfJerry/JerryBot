@@ -18,9 +18,7 @@ module.exports = {
                     options
                         .setName('day')
                         .setDescription("[OPTIONAL] The day for the schedule. Defaults to Automatic.")
-                        .addChoice("Automatic (closest Jour)", 'auto')
-                        .addChoice("Today", 'nextjour')
-                        .addChoice("Next Jour", 'nextnextjour')
+                        // .addChoice("Today", 'today')
                         .setRequired(false))
                 .addBooleanOption((options) =>
                     options
