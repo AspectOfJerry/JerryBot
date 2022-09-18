@@ -5,6 +5,6 @@ module.exports = {
     name: "typingStart",
     once: false,
     async execute(typing) {
-        await Log('append', typing.guild.id, `'${typing.user.tag}' started typing!`, 'INFO'); // Logs
+        await Log('append', 'typingStart', `'${typing.user.tag}' started typing in ${typing.guild.id}!`, 'INFO'); // Logs
     }
 };

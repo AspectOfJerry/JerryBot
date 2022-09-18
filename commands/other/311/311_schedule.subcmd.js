@@ -68,7 +68,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
     const day = date.format(_day, 'dddd, MMMM DD, YYYY');
 
     if(isNaN(jour)) {
-        const schedule_message = `<@&1016500157480706191>; ${jour} No school`;
+        const schedule_message = `${jour} No school`;
 
         const schedule_embed = new MessageEmbed()
             .setTitle(`[${jour}] ${day}`)
@@ -86,7 +86,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         jour = "0".toString() + jour;
     }
 
-    const schedule_message = `<@&1016500157480706191>; J${jour}:` +
+    const schedule_message = `J${jour}:` +
         ` ${schedule.period1.classcode} (${schedule.period1.classroom}),` +
         ` ${schedule.period2.classcode} (${schedule.period2.classroom}),` +
         ` ${schedule.period3.classcode} (${schedule.period3.classroom}),` +

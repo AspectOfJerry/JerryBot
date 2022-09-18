@@ -80,6 +80,8 @@ module.exports = {
                     .setDisabled(false)
             );
 
+        let isOverriddenText = "";
+
         const confirm_stop = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -87,13 +89,19 @@ module.exports = {
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
         interaction.editReply({embeds: [confirm_stop], components: [row]});
-        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO');
+        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO'); // Logs
 
-        const filter = (buttonInteraction) => {
-            if(buttonInteraction.user.id = interaction.user.id) {
+        const filter = async (buttonInteraction) => {
+            if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
+                isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+                return true;
+            } else if(buttonInteraction.user.id = interaction.user.id) {
                 return true;
             } else {
-                return buttonInteraction.editReply({content: "You cannot use this button", ephemeral: true});
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                return;
             }
         };
 
@@ -119,13 +127,13 @@ module.exports = {
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('Stopping the bot')
-                    .setDescription(`<@${interaction.user.id}> requested the bot to stop.`)
+                    .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)
                     .addField('Reason', `${reason}`, false)
                     .addField('Requested at', `${interaction.createdAt}`, false)
-                    .setFooter({text: "The NodeJS process will exit after this message."});
+                    .setFooter({text: "The process will exit after this message."});
 
                 await interaction.editReply({embeds: [stopping_bot]});
-                await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO'); // Logs
                 await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL'); // Logs
                 await Sleep(100);
                 await client.destroy(); // Destroying the Discord client
@@ -138,10 +146,10 @@ module.exports = {
                 const cancel_stop = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> aborted the stop request.`);
+                    .setDescription(`<@${interaction.user.id}> aborted the stop request${isOverriddenText}.`);
 
                 await interaction.editReply({embeds: [cancel_stop]});
-                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' aborted the stop request.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' aborted the stop request${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
     }

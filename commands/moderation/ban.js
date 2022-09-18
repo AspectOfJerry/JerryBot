@@ -124,6 +124,8 @@ module.exports = {
                     .setDisabled(false),
             );
 
+        let isOverriddenText = "";
+
         const confirm_ban = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -135,12 +137,13 @@ module.exports = {
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
+                isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
                 return true;
-            }
-            else if(buttonInteraction.user.id == interaction.user.id) {
+            } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
-                await buttonInteraction.editReply({content: "You cannot use this button.", ephemeral: true});
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
                 await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
                 return;
             }
@@ -174,10 +177,10 @@ module.exports = {
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember ban")
-                            .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild.${reason}`);
+                            .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
                         await interaction.editReply({embeds: [success_ban], components: []});
-                        await Log('append', interaction.guild.id, `  └─'${buttonInteraction.user.tag}' banned '${memberTarget.user.tag}' form the guild.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
                 buttonInteraction.deferUpdate();
@@ -185,10 +188,10 @@ module.exports = {
                 const cancel_ban = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${buttonInteraction.user.id}> cancelled the ban.`);
+                    .setDescription(`<@${interaction.user.id}> cancelled the ban${isOverriddenText}.`);
 
                 interaction.editReply({embeds: [cancel_ban], components: []});
-                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the ban.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
     }

@@ -123,6 +123,8 @@ module.exports = {
                     .setDisabled(false),
             );
 
+        let isOverriddenText = "";
+
         const confirm_kick = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -134,14 +136,15 @@ module.exports = {
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
+                isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
                 return true;
-            }
-            else if(buttonInteraction.user.id == interaction.user.id) {
+            } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
-                await buttonInteraction.editReply({content: "You cannot use this button.", ephemeral: true});
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' tried to use the button but was not allowed.`, 'WARN');
-                return
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                return;
             }
         }
         const kick_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
@@ -155,7 +158,7 @@ module.exports = {
             interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
-                buttonInteraction.deferUpdate();
+                // buttonInteraction.deferUpdate();
                 kick_collector.stop();
                 const kicking = new MessageEmbed()
                     .setColor('YELLOW')
@@ -170,21 +173,21 @@ module.exports = {
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember kick")
-                            .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild.${reason}`);
+                            .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
                         interaction.editReply({embeds: [success_kick], components: []});
-                        await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' kicked '${memberTarget.user.tag}' from the guild.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
-                buttonInteraction.deferUpdate();
+                // buttonInteraction.deferUpdate();
                 kick_collector.stop();
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${buttonInteraction.user.id}> cancelled the kick.`);
+                    .setDescription(`<@${interaction.user.id}> cancelled the kick${isOverriddenText}.`);
 
                 await interaction.editReply({embeds: [cancel_kick], components: []});
-                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' cancelled the kick.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
     }
