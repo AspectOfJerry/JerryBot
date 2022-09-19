@@ -39,7 +39,7 @@ module.exports = {
             guildMember.roles.add(guildMember.guild.roles.cache.find(role => role.name == "Person"));
             await Log('append', 'guildMemberAdd', `'${guildMember.user.tag}' joined guild '${guildMember.guild.id}'!`, 'INFO'); // Logs
         } else if(guildMember.guild.id == process.env.DISCORD_311_GUILD_ID) {
-            const channel = guildMember.guild.channels.cache.find(channel => channel.name == "welcome");
+            const channel = guildMember.guild.channels.cache.find(channel => channel.name == "🌎welcome");
 
             const join_message = new MessageEmbed()
                 .setColor('GREEN')
