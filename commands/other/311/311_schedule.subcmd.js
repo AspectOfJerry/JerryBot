@@ -71,6 +71,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         const schedule_message = `${jour} No school`;
 
         const schedule_embed = new MessageEmbed()
+            .setColor('YELLOW')
             .setTitle(`[${jour}] ${day}`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setDescription("No school today!");
@@ -86,7 +87,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         jour = "0".toString() + jour;
     }
 
-    const schedule_message = `J${jour}:` +
+    const schedule_message = `<@${interaction.user.id}>; J${jour}:` +
         ` ${schedule.period1.classcode} (${schedule.period1.classroom}),` +
         ` ${schedule.period2.classcode} (${schedule.period2.classroom}),` +
         ` ${schedule.period3.classcode} (${schedule.period3.classroom}),` +
@@ -94,6 +95,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         ` ${schedule.period6.classcode} (${schedule.period6.classroom})`;
 
     const schedule_embed = new MessageEmbed()
+        .setColor('GREEN')
         .setTitle(`[Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setDescription(`This is the schedule for Jour ${jour}.`)

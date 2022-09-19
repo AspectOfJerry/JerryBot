@@ -38,6 +38,7 @@ async function GetJourByDate() {
         if(day.toString().toLowerCase().startsWith('sat') || day.toString().toLowerCase().startsWith('sun')) {
             day = date.addDays(day, 1);
             dayType = "WEKN";
+            await Sleep(10);
             continue main;
         }
         for(let [key, value] of Object.entries(exceptions)) {
@@ -45,6 +46,7 @@ async function GetJourByDate() {
             if(date.isSameDay(key, day)) {
                 day = date.addDays(day, 1);
                 dayType = value;
+                await Sleep(10);
                 continue main;
             }
         }
@@ -56,9 +58,10 @@ async function GetJourByDate() {
             jour = 1;
         }
 
-        await Sleep(25);
+        await Sleep(10);
     }
 
+    dayType = "SCO";
     if(day.toString().toLowerCase().startsWith('sat') || day.toString().toLowerCase().startsWith('sun')) {
         dayType = "WEKN";
         return dayType;
