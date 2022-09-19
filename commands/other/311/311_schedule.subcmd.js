@@ -107,7 +107,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
         .addField(`Period 6: `, `• Classcode: ${schedule.period6.classcode}\n• Classroom: ${schedule.period6.classroom}${schedule.period6.notes}`, false)
         .setFooter({
             text: `Jour ${jour}:` +
-                `${schedule.period1.classcode},` +
+                ` ${schedule.period1.classcode},` +
                 ` ${schedule.period2.classcode},` +
                 ` ${schedule.period3.classcode},` +
                 ` ${schedule.period4.classcode},` +
