@@ -7,10 +7,8 @@ const Sleep = require('./modules/sleep'); // delayInMilliseconds
 const Log = require('./modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 const GetFiles = require('./modules/get_files');
 
-/*
-    random hello message to logs
-    // Log()
-*/
+
+Log('append', 'DiscordBot', 'The bot was started!', 'INFO'); // Logs
 
 const client = new Client({
     intents: [
@@ -28,6 +26,9 @@ const client = new Client({
 });
 
 // Getting commands
+console.log("Getting command files...");
+Log('append', 'DiscordBot', 'Getting command files...', 'INFO'); // Logs
+
 const file_suffix = '.js';
 const command_files = GetFiles('./commands', file_suffix);
 
@@ -44,7 +45,13 @@ for(const file of command_files) {
 }
 
 // Getting events
+console.log("Getting event files...");
+Log('append', 'DiscordBot', 'Getting event files...', 'INFO'); // Logs
+
 const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+console.log(`Event files (${event_files.length}):`);
+console.log(event_files);
 
 for(const event_file of event_files) {
     const event = require(`./events/${event_file}`);

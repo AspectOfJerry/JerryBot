@@ -13,13 +13,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('schedule')
-                .setDescription("Get's today or tomorrow's schedule.")
-                .addStringOption((options) =>
-                    options
-                        .setName('day')
-                        .setDescription("[OPTIONAL] The day for the schedule. Defaults to Automatic.")
-                        // .addChoice("Today", 'today')
-                        .setRequired(false))
+                .setDescription("Get's today's schedule or select another day.")
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')

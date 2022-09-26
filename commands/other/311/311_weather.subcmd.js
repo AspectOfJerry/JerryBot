@@ -51,5 +51,5 @@ module.exports = async function (client, interaction, is_ephemeral) {
     // -----END ROLE CHECK-----
 
     // Main
-
+    interaction.reply("This command is currently under development.")
 };
