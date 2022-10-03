@@ -6,23 +6,39 @@ module.exports = {
     once: false,
     async execute(oldPresence, newPresence) {
         // Declaring variables
-        let old_status = "unknown";
-        let old_client_status = "unknown";
+        let oldStatus = "unknown";
+        let oldClientStatus = "unknown";
+        let oldClientActivityType = "unknown";
+        let oldClientActivityName = "unknown";
+        let oldClientActivityDetails = "unknown";
+        let oldClientActivityState = "unknown";
+
         if(oldPresence) {
-            old_status = oldPresence.status || "unknown";
-            old_client_status = oldPresence.clientStatus || "unknown";
-            old_client_status = JSON.stringify(old_client_status);
-            old_client_status = old_client_status.replace("{", "");
-            old_client_status = old_client_status.replace("}", "");
+            oldStatus = oldPresence.status || "unknown";
+            oldClientStatus = oldPresence.clientStatus || "unknown";
+            oldClientStatus = JSON.stringify(oldClientStatus);
+            oldClientStatus = oldClientStatus.replace("{", "");
+            oldClientStatus = oldClientStatus.replace("}", "");
+            oldClientActivityType = oldPresence.activities[0].type + " " || "";
+            oldClientActivityName = oldPresence.activities[0].name + " " || "";
+            oldClientActivityDetails = oldPresence.activities[0].details + " " || "";
+            oldClientActivityState = oldPresence.activities[0].state + " " || "";
         }
 
-        let new_status = newPresence.status || "unknown";
-        let new_client_status = newPresence.clientStatus || "unknown";
-        new_client_status = JSON.stringify(new_client_status);
-        new_client_status.toString();
-        new_client_status = new_client_status.replace("{", "");
-        new_client_status = new_client_status.replace("}", "");
+        let newStatus = newPresence.status || "unknown";
+        let newClientStatus = newPresence.clientStatus || "unknown";
+        let newClientActivityType = newPresence.activities[0].type + " " || "";
+        let newClientActivityName = newPresence.activities[0].name + " " || "";
+        let newClientActivityDetails = newPresence.activities[0].details + " " || "";
+        let newClientActivityState = newPresence.activities[0].state + " " || "";
+        newClientStatus = JSON.stringify(newClientStatus);
+        newClientStatus.toString();
+        newClientStatus = newClientStatus.replace("{", "");
+        newClientStatus = newClientStatus.replace("}", "");
 
-        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_status}' (${old_client_status}) to '${new_status}' (${new_client_status}) in "${newPresence.guild.name}"`, 'INFO'); // Logs
+        const old_activity = oldStatus + "; " + oldClientActivityType + oldClientActivityName + oldClientActivityDetails + oldClientActivityState;
+        const new_activity = newStatus + "; " + newClientActivityType + newClientActivityName + newClientActivityDetails + newClientActivityState;
+
+        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from '${old_activity}' (${oldClientStatus}) to '${new_activity}' (${newClientStatus}) in "${newPresence.guild.name}"`, 'INFO'); // Logs
     }
 };

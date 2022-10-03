@@ -62,10 +62,10 @@ module.exports = {
 
         const duration = interaction.options.getString('duration');
         let reason = interaction.options.getString('reason');
-        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO');
+        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
 
         const duration_in_ms = ms(duration);
-        await Log('append', interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO');
+        await Log('append', interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO'); // Logs
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -79,20 +79,20 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/timeout'.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/timeout'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
         }
         // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
-            const error_cannot_use_on_self = new MessageEmbed()
+            const error_cannot_timeout_self = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            interaction.editReply({embeds: [error_cannot_use_on_self]});
-            await Log('append', interaction.guild.id, `${interaction.user.id} tried to timeout themselves.`, 'WARN');
+            interaction.editReply({embeds: [error_cannot_timeout_self]});
+            await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves. [error_cannot_timeout_self]`, 'WARN'); // Logs
             return;
         }
         if(!duration_in_ms) {
@@ -104,6 +104,7 @@ module.exports = {
                 .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*");
 
             interaction.editReply({embeds: [error_duration]});
+            await Log('append', interaction.guild.id, `└─Invalid duration.`); // Logs
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -145,13 +146,14 @@ module.exports = {
 
         // Main
         reason = reason ? ` \n**Reason:** ${reason}` : "";
+
         memberTarget.timeout(duration_in_ms, reason)
-            .then(timeoutResult => {
+            .then(then => {
                 const success_timeout = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User timeout")
-                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`);
+                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n• Timeout expiration: <t:${memberTarget.communicationDisabledUntilTimestamp}:R>.`);
 
                 interaction.editReply({embeds: [success_timeout], components: []});
             });

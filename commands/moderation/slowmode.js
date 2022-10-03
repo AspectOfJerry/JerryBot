@@ -29,7 +29,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/COMMAND'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/slowmode'.`, 'INFO'); // Logs
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
         await interaction.deferReply({ephemeral: is_ephemeral});
@@ -70,19 +70,19 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/slowmode'.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/slowmode'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
         }
         // -----END ROLE CHECK-----
         if(channel.type !== 'GUILD_TEXT') {
-            const error_not_voice_channel = new MessageEmbed()
+            const error_not_text_channel = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
-            interaction.editReply({embeds: [error_not_voice_channel]});
-            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}).`, 'WARN'); // Logs
+            interaction.editReply({embeds: [error_not_text_channel]});
+            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}). [error_not_text_channel]`, 'WARN'); // Logs
             return;
         }
 

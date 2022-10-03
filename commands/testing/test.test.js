@@ -33,6 +33,7 @@ module.exports = {
         // Checks
 
         // Main
-
+        const unix_time = Math.ceil(Date.now() / 1000)
+        interaction.reply(`<t:${unix_time}:R>`)
     }
 };

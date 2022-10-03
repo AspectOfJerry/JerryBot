@@ -71,7 +71,7 @@ module.exports = {
                 const object = Log('append', interaction.guild.id, string, 'LOG', true);
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./log_subcommands/logs_append.subcmd')(client, interaction, is_ephemeral, string, object);
             }
                 break;
@@ -86,7 +86,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  └─offset: ${line_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./log_subcommands/logs_read.subcmd')(client, interaction, is_ephemeral, line_offset);
             }
                 break;
@@ -101,7 +101,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  └─offset: ${day_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Now handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
                 require('./log_subcommands/logs_get.subcmd')(client, interaction, is_ephemeral, day_offset);
             }
                 break;

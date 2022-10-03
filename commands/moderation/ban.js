@@ -68,7 +68,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/ban'.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/ban'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
         }
@@ -108,6 +108,7 @@ module.exports = {
             return;
         }
         // -----END HIERARCHY CHECK-----
+        // Check if the client user is allowed to ban the member
 
         // Main
         let row = new MessageActionRow()
