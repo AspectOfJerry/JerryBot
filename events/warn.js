@@ -2,10 +2,9 @@ const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
-    name: "error",
-    once: false,
-    async execute(error) {
-        console.log(error);
-        await Log('append', 'error', error, 'ERROR'); // Logs
+    name: "warn",
+    once: false, // Whether or not this even should only be triggered once
+    async execute(info) {
+        await Log('append', 'warn', info, 'WARN'); // Logs
     }
 };

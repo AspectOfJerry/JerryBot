@@ -1,4 +1,4 @@
-const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
@@ -16,7 +16,7 @@ module.exports = {
                     options
                         .setName('*SUBCMD_OPTION_NAME*')
                         .setDescription("[REQUIRED/OPTIONAL] *SUBCMD_OPTION_DESCRIPTION*")
-                        .setRequired(true/false))
+                        .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')
@@ -30,7 +30,7 @@ module.exports = {
                     options
                         .setName('*SUBCMD_OPTION_NAME*')
                         .setDescription("[REQUIRED/OPTIONAL] *SUBCMD_OPTION_DESCRIPTION*")
-                        .setRequired(true/false))
+                        .setRequired(true / false))
                 .addBooleanOption((options) =>
                     options
                         .setName('ephemeral')

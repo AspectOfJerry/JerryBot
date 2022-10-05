@@ -4,7 +4,7 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 module.exports = {
     name: "EVENT_NAME",
     once: false, // Whether or not this even should only be triggered once
-    async execute(err) {
+    async execute(event) {
         await Log('append', 'EVENT_NAME', "", ''); // Logs
     }
 };

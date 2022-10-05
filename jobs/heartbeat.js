@@ -6,7 +6,7 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 
 // Main
 const heartbeat_interval = '1 minute';
-const grace_period = '15 seconds';
+const grace_period = '10 seconds';
 
 const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
     try {
@@ -19,7 +19,7 @@ const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
             console.error(err);
         }
 
-        Log('append', 'Heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 5 seconds.`, 'FATAL'); // Logs
+        Log('append', 'Heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 5 seconds.`, 'ERROR'); // Logs
         await Sleep(5000);
         await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
             .then(async () => {
@@ -31,7 +31,7 @@ const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
 heartbeat.start();
 
 Log('append', 'Heartbeat', `[Heartbeat] Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
-console.log(`Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
+console.log(`[Heartbeat] Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
 
 fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
     .then(async () => {

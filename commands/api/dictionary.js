@@ -1,5 +1,5 @@
 // https:// api.dictionaryapi.dev/api/v2/entries/en/<word>
-const {Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const fetch = require('node-fetch');
 

@@ -1,10 +1,12 @@
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
+
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     name: "messageDelete",
     once: false, // Whether or not this even should only be triggered once
-    async execute(err) {
-        await Log('append', 'EVENT_NAME', "", ''); // Logs
+    async execute(message) {
+        await Log('append', 'messageDelete', "", ''); // Logs
     }
 };

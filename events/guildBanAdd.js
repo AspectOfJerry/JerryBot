@@ -4,7 +4,7 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 module.exports = {
     name: "guildBanAdd",
     once: false, // Whether or not this even should only be triggered once
-    async execute(err) {
-        await Log('append', 'EVENT_NAME', "", ''); // Logs
+    async execute(ban) {
+        await Log('append', 'guildBanAdd', "", ''); // Logs
     }
 };
