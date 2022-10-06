@@ -20,8 +20,8 @@ module.exports = {
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
-                .setName('type')
-                .setDescription("[OPTIONAL] Whether you want the bot to type for 1 seconds before the message is sent.")
+                .setName('typing')
+                .setDescription("[OPTIONAL] Whether you want the bot to type before sending the message (dynamic typing speed).")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
@@ -32,7 +32,7 @@ module.exports = {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
         const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
         await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        // await interaction.deferReply({ephemeral: is_ephemeral});
+        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -58,8 +58,8 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
         const message = interaction.options.getString('message') || true;
         await Log('append', interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
-        const do_typing = interaction.options.getBoolean('type') || false;
-        await Log('append', interaction.guild.id, `├─do_typing: ${do_typing}`, 'INFO'); // Logs
+        const send_typing = interaction.options.getBoolean('typing') || false;
+        await Log('append', interaction.guild.id, `├─send_typing: ${send_typing}`, 'INFO'); // Logs
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -72,7 +72,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.reply({embeds: [error_permissions]});
+                await interaction.editReply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/say'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -85,22 +85,25 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription("You need to mention a text-based channel.");
 
-            interaction.reply({embeds: [error_require_text_based_channel]});
+            interaction.editRreply({embeds: [error_require_text_based_channel]});
             return;
         }
 
         // Main
-        switch(do_typing) {
+        switch(send_typing) {
             case true:
-                await interaction.reply({content: `Sending "${message}" to #${channel} with typing...`, ephemeral: true});
+                const message_lenght = message.lenght;
+                const duration_in_ms = Math.round(message_lenght / 14 * 1000);
+
+                await interaction.editReply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
 
                 await channel.sendTyping();
-                await Sleep(1000);
+                await Sleep(duration_in_ms);
 
-                await channel.send({content: `${message}`});
+                await channel.send({content: `${message}`, ephe});
                 break;
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+                await interaction.editReply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
                 await channel.send({content: `${message}`});
                 break;
