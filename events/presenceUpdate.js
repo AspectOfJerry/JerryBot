@@ -36,13 +36,13 @@ module.exports = {
         */
         // ---STATUS UPDATE ONLY--
         // Declaring variables
-        let oldStatus = oldPresence?.status;
-        let oldClientStatus = oldPresence?.clientStatus;
-        let oldClientActivityType = oldPresence?.activities[0]?.type || "";
+        let oldStatus = oldPresence?.status || "unknown";
+        let oldClientStatus = oldPresence?.clientStatus || "unknown";
+        let oldClientActivityType = oldPresence?.activities[0]?.type + ", " || "";
 
-        let newStatus = newPresence?.status;
-        let newClientStatus = newPresence?.clientStatus;
-        let newClientActivityType = newPresence?.activities[0]?.type || "";
+        let newStatus = newPresence?.status || "unknown";
+        let newClientStatus = newPresence?.clientStatus || "unknown";
+        let newClientActivityType = newPresence?.activities[0]?.type + ", " || "";
 
         if(oldStatus == newStatus && oldClientActivityType == newClientActivityType) {
             return; // No changes
@@ -57,6 +57,6 @@ module.exports = {
         oldClientStatus = oldClientStatus.replace("{", "");
         oldClientStatus = oldClientStatus.replace("}", "");
 
-        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${oldClientActivityType}' to: '${newStatus} (${newClientStatus})' | '${newClientActivityType}' in: "${newPresence.guild.name}"`, 'INFO'); // Logs
+        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldClientActivityType}${oldStatus} (${oldClientStatus})' to: '${newClientActivityType}${newStatus} (${newClientStatus})'  in: "${newPresence.guild.name}"`, 'INFO'); // Logs
     }
 };
