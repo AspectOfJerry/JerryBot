@@ -32,7 +32,7 @@ module.exports = {
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "Friends";
+                var MINIMUM_EXECUTION_ROLE = "PL3";
                 break;
             case process.env.DISCORD_GOLDFISH_GUILD_ID:
                 var MINIMUM_EXECUTION_ROLE = "staff";
