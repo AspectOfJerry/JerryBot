@@ -1,5 +1,6 @@
 const fs = require('fs');
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js'); const {SlashCommandBuilder} = require("@discordjs/builders");
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
+const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
@@ -42,7 +43,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/CMD_NAME SUBCMD_NAME'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/311 weather'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
     }
