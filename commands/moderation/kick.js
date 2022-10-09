@@ -158,13 +158,12 @@ module.exports = {
         button_collector.on('collect', async buttonInteraction => {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
-            await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_kick], components: [row]});
+            await interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
                 const kicking = new MessageEmbed()
@@ -182,7 +181,7 @@ module.exports = {
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
-                        interaction.editReply({embeds: [success_kick], components: []});
+                        await interaction.editReply({embeds: [success_kick], components: [row]});
                         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
@@ -191,20 +190,18 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the kick${isOverriddenText}.`);
 
-                await interaction.editReply({embeds: [cancel_kick], components: []});
+                await interaction.editReply({embeds: [cancel_kick], components: [row]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
 
         button_collector.on('end', async collected => {
-            await button_collector.stop();
             await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(collected.size === 0) {
                 const auto_abort = new MessageEmbed()

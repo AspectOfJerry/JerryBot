@@ -117,13 +117,12 @@ module.exports = {
         button_collector.on('collect', async buttonInteraction => {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
-            await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_stop], components: [row]});
+            await interaction.editReply({embeds: [confirm_stop], components: [row]});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
                 const destroying_voice_connections = new MessageEmbed()
@@ -160,14 +159,12 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await button_collector.stop();
             await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_stop], components: [row]});
 
             if(collected.size === 0) {
                 const auto_abort = new MessageEmbed()
@@ -177,6 +174,7 @@ module.exports = {
 
                 await interaction.editReply({embeds: [auto_abort], components: [row]});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                return;
             }
         });
     }

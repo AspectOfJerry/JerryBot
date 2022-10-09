@@ -160,14 +160,12 @@ module.exports = {
         button_collector.on('collect', async buttonInteraction => {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
-            await cancelTimerMessage.delete();
-
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_ban], components: [row]});
+            await interaction.editReply({embeds: [confirm_ban], components: [row]});
 
             if(buttonInteraction.customId == 'ban_confirm_button') {
                 const banning = new MessageEmbed()
@@ -187,7 +185,7 @@ module.exports = {
                             .setTitle("GuildMember ban")
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
-                        await interaction.editReply({embeds: [success_ban], components: []});
+                        await interaction.editReply({embeds: [success_ban], components: [row]});
                         await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
@@ -196,20 +194,18 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the ban${isOverriddenText}.`);
 
-                interaction.editReply({embeds: [cancel_ban], components: []});
+                await interaction.editReply({embeds: [cancel_ban], components: [row]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
 
         button_collector.on('end', async collected => {
-            await button_collector.stop();
             await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(collected.size === 0) {
                 const auto_abort = new MessageEmbed()
@@ -219,6 +215,7 @@ module.exports = {
 
                 await interaction.editReply({embeds: [auto_abort], components: [row]});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                return;
             }
         });
     }
