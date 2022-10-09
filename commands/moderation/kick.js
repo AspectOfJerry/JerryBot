@@ -133,7 +133,12 @@ module.exports = {
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`);
 
         await interaction.editReply({embeds: [confirm_kick], components: [row]});
-        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the kick confirmation.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
+
+        const now = Math.round(Date.now() / 1000);
+        const timeout = now + 10;
+
+        let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
@@ -148,9 +153,12 @@ module.exports = {
                 return;
             }
         }
-        const kick_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
 
-        kick_collector.on('collect', async buttonInteraction => {
+        button_collector.on('collect', async buttonInteraction => {
+            await buttonInteraction.deferUpdate();
+            await button_collector.stop();
+            await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
@@ -159,8 +167,6 @@ module.exports = {
             interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
-                // buttonInteraction.deferUpdate();
-                kick_collector.stop();
                 const kicking = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -180,8 +186,6 @@ module.exports = {
                         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
-                // buttonInteraction.deferUpdate();
-                kick_collector.stop();
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -189,6 +193,27 @@ module.exports = {
 
                 await interaction.editReply({embeds: [cancel_kick], components: []});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO'); // Logs
+            }
+        });
+
+        button_collector.on('end', async collected => {
+            await button_collector.stop();
+            await cancelTimerMessage.delete();
+            // Disabling buttons
+            row.components[0]
+                .setDisabled(true);
+            row.components[1]
+                .setDisabled(true);
+            interaction.editReply({embeds: [confirm_kick], components: [row]});
+
+            if(collected.size === 0) {
+                const auto_abort = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`Auto aborted.`);
+
+                await interaction.editReply({embeds: [auto_abort], components: [row]});
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
             }
         });
     }

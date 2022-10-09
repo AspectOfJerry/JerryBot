@@ -1,3 +1,5 @@
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
+
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
 
@@ -30,8 +32,8 @@ const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
 
 heartbeat.start();
 
-Log('append', 'Heartbeat', `[Heartbeat] Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
-console.log(`[Heartbeat] Heartbeat initiated! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
+Log('append', 'Heartbeat', `[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
+console.log(`[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
 
 fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
     .then(async () => {

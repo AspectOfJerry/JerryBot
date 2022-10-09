@@ -148,15 +148,15 @@ module.exports = {
         reason = reason ? ` \n**Reason:** ${reason}` : "";
 
         memberTarget.timeout(duration_in_ms, reason)
-            .then(then => {
+            .then(async then => {
                 const success_timeout = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User timeout")
-                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n• Timeout expiration: <t:${memberTarget.communicationDisabledUntilTimestamp}:R>.`);
+                    .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`);
 
-                interaction.editReply({embeds: [success_timeout], components: []});
+                interaction.editReply({embeds: [success_timeout]});
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
             });
-        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
     }
 };

@@ -3,6 +3,7 @@ const {Routes} = require('discord-api-types/v9');
 
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const StartJobs = require('../modules/start_jobs')
 
 require('dotenv').config();
 
@@ -10,18 +11,12 @@ module.exports = {
     name: 'ready',
     once: true,
     async execute(client, commands) {
-        console.log("Jerry Bot is now online.");
+        await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG'); // Logs
+        console.log("JerryBot is now online.");
 
         // Jobs
-        // Starting Heartbeat
-        await Log('append', 'Heartbeat', `[Heartbeat] Starting Heartbeat...`, 'DEBUG'); // Logs
-        console.log("Starting Heartbeat...");
-        require('../jobs/heartbeat');
-
-        // Starting google classroom api notifications
-        // await Log('append', 'ClassroomAPI', `[ClassroomAPI] ...`, 'DEBUG'); // Logs
-        // console.log("Starting the Google Classroom notification job...");
-        // require('../jobs/googleclassroomapi/get_work');
+        await Log('append', 'start_jobs', `[StartJobs] Starting jobs...`, 'DEBUG'); // Logs
+        await StartJobs();
 
         // Registering commands
         console.log("Registering the commands...");

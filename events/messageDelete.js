@@ -7,6 +7,10 @@ module.exports = {
     name: "messageDelete",
     once: false, // Whether or not this even should only be triggered once
     async execute(message) {
-        await Log('append', 'messageDelete', "", ''); // Logs
+        if(message.content === message.cleanContent) {
+            await Log('append', 'messageDelete', `A message sent by '${message?.author.tag}' has been deleted (content: "${message.content}").`, 'WARN'); // Logs
+        } else {
+            await Log('append', 'messageDelete', `A message sent by '${message?.author.tag}' has been deleted (content: "${message.content}", cleanContent: ${message.cleanContent}).`, 'WARN'); // Logs
+        }
     }
 };

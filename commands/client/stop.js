@@ -4,6 +4,8 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+const date = require('date-and-time');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stop')
@@ -89,7 +91,12 @@ module.exports = {
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
         interaction.editReply({embeds: [confirm_stop], components: [row]});
-        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the stop confirmation...`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
+
+        const now = Math.round(Date.now() / 1000);
+        const timeout = now + 10;
+
+        let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
@@ -105,8 +112,12 @@ module.exports = {
             }
         };
 
-        const stop_button_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
-        stop_button_collector.on('collect', async buttonInteraction => {
+        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
+
+        button_collector.on('collect', async buttonInteraction => {
+            await buttonInteraction.deferUpdate();
+            await button_collector.stop();
+            await cancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
@@ -115,14 +126,12 @@ module.exports = {
             interaction.editReply({embeds: [confirm_stop], components: [row]});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
-                buttonInteraction.deferUpdate();
-                await stop_button_collector.stop()
-                const _destroying_voice_connections = new MessageEmbed()
+                const destroying_voice_connections = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription("Destroying all active voice connections...");
 
-                await interaction.editReply({embeds: [_destroying_voice_connections]});
+                await interaction.editReply({embeds: [destroying_voice_connections]});
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -140,9 +149,6 @@ module.exports = {
                 await Sleep(250);
                 process.exit(0); // Exiting here
             } else {
-                buttonInteraction.deferUpdate();
-                stop_button_collector.stop();
-
                 const cancel_stop = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -150,6 +156,27 @@ module.exports = {
 
                 await interaction.editReply({embeds: [cancel_stop]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' aborted the stop request${isOverriddenText}.`, 'INFO'); // Logs
+            }
+        });
+
+        button_collector.on('end', async collected => {
+            await button_collector.stop();
+            await cancelTimerMessage.delete();
+            // Disabling buttons
+            row.components[0]
+                .setDisabled(true);
+            row.components[1]
+                .setDisabled(true);
+            interaction.editReply({embeds: [confirm_stop], components: [row]});
+
+            if(collected.size === 0) {
+                const auto_abort = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setDescription(`Auto aborted.`);
+
+                await interaction.editReply({embeds: [auto_abort], components: [row]});
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
             }
         });
     }

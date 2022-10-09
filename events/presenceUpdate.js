@@ -34,6 +34,7 @@ module.exports = {
     
             await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${old_activity}' to: '${newStatus} (${newClientStatus})' | '${new_activity}' in: "${newPresence.guild.name}"`, 'INFO'); // Logs
         */
+
         // ---STATUS UPDATE ONLY--
         // Declaring variables
         let oldStatus = oldPresence?.status || "unknown";
@@ -57,6 +58,6 @@ module.exports = {
         oldClientStatus = oldClientStatus.replace("{", "");
         oldClientStatus = oldClientStatus.replace("}", "");
 
-        await Log('append', 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldClientActivityType}${oldStatus} (${oldClientStatus})' to: '${newClientActivityType}${newStatus} (${newClientStatus})'  in: "${newPresence.guild.name}"`, 'INFO'); // Logs
+        await Log('append', 'presenceUpdate', `'${newPresence.user.tag}' went from: '${oldClientActivityType}${oldStatus} (${oldClientStatus})' to: '${newClientActivityType}${newStatus} (${newClientStatus})' in: "${newPresence.guild.name}"`, 'INFO'); // Logs
     }
 };
