@@ -81,7 +81,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
-            interaction.editReply({embeds: [error_not_text_channel]});
+            await interaction.editReply({embeds: [error_not_text_channel]});
             await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}). [error_not_text_channel]`, 'WARN'); // Logs
             return;
         }
@@ -95,8 +95,8 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
 
-                    interaction.editReply({embeds: [disabled_slowmode]});
-                    await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '${channel.name}'.`, 'INFO'); // Logs
+                    await interaction.editReply({embeds: [disabled_slowmode]});
+                    await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
                 });
             return;
         }
@@ -109,8 +109,8 @@ module.exports = {
                     .setDescription(`Successfully enabled a **${duration}** second rate limit per user in <#${channel.id}>.`)
                     .setFooter({text: "Setting the rate limit to 0 will disable it."})
 
-                interaction.editReply({embeds: [enabled_slowmode]});
-                await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}'.`, 'INFO'); // Logs
+                await interaction.editReply({embeds: [enabled_slowmode]});
+                await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
             });
     }
 };

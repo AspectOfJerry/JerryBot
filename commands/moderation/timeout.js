@@ -132,6 +132,17 @@ module.exports = {
         }
         // -----END HIERARCHY CHECK-----
         // Check if memberTarget has the ADMINISTRATOR permission flag
+        if(memberTarget.moderatable) {
+            const member_not_moderatable = new MessageEmbed()
+                .setColor('FUCHSIA')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('Error')
+                .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
+
+            await interaction.editReply({embeds: [member_not_moderatable]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'FATAL'); // Logs
+            return;
+        }
         if(memberTarget.permissions.has("ADMINISTRATOR")) {
             const target_is_admin = new MessageEmbed()
                 .setColor('RED')

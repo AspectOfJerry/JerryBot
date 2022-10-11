@@ -150,6 +150,7 @@ module.exports = {
 
         let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
+        // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
@@ -163,6 +164,7 @@ module.exports = {
                 return;
             }
         }
+
         const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
 
         button_collector.on('collect', async buttonInteraction => {
@@ -182,7 +184,9 @@ module.exports = {
                     .setDescription(`Kicking <@${memberTarget.id}>...`);
 
                 await interaction.editReply({embeds: [kicking]});
+
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
+
                 memberTarget.kick(reason)
                     .then(async kickResult => {
                         const success_kick = new MessageEmbed()

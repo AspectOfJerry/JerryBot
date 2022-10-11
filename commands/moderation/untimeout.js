@@ -105,6 +105,7 @@ module.exports = {
         // -----END HIERARCHY CHECK-----
         // Main
         reason = reason ? ` \n**Reason:** ${reason}` : "";
+
         memberTarget.timeout(null, reason)
             .then(async timeoutResult => {
                 const success_untimeout = new MessageEmbed()

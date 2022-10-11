@@ -151,6 +151,7 @@ module.exports = {
 
         let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
+        // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
@@ -186,7 +187,9 @@ module.exports = {
                 await interaction.editReply({embeds: [banning]});
 
                 await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO'); // Logs
+
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
+
                 memberTarget.ban({reason: reason})
                     .then(async banResult => {
                         const success_ban = new MessageEmbed()
