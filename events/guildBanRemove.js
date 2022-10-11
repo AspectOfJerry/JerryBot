@@ -5,6 +5,6 @@ module.exports = {
     name: "guildBanRemove",
     once: false, // Whether or not this even should only be triggered once
     async execute(ban) {
-        await Log('append', 'guildBanRemove', "", ''); // Logs
+        await Log('append', 'guildBanRemove', `'${ban.user.tag}' was unbanned in "${ban.guild.name}".`, 'WARN'); // Logs
     }
 };
