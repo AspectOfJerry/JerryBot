@@ -107,7 +107,17 @@ module.exports = {
             return;
         }
         // -----END HIERARCHY CHECK-----
-        // Check f the client user is allowed to kick the member
+        if(!memberTarget.kickable) {
+            const member_not_kickcable = new MessageEmbed()
+                .setColor('FUCHSIA')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTilte('Error')
+                .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`)
+
+            await interaction.editReply({embeds: [member_not_kickcable]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, 'FATAL'); // Logs
+            return;
+        }
 
         // Main
         let row = new MessageActionRow()

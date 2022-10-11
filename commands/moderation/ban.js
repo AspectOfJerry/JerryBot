@@ -108,7 +108,17 @@ module.exports = {
             return;
         }
         // -----END HIERARCHY CHECK-----
-        // Check if the client user is allowed to ban the member
+        if(!memberTarget.bannable) {
+            const member_not_bannable = new MessageEmbed()
+                .setColor('FUCHSIA')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTilte('Error')
+                .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)
+
+            await interaction.editReply({embeds: [member_not_bannable]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'FATAL'); // Logs
+            return;
+        }
 
         // Main
         let row = new MessageActionRow()
