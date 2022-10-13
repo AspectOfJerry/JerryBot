@@ -50,7 +50,11 @@ async function Log(method, tag, string, type, returnInfoOnly) {
             }
 
             // Append to file
-            fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {if(err) throw err;});
+            fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {
+                if(err) {
+                    throw err;
+                }
+            });
             return return_object;
         }
         case "read": {
