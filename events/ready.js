@@ -16,7 +16,7 @@ module.exports = {
 
         // Jobs
         await Log('append', 'start_jobs', `[StartJobs] Starting jobs...`, 'DEBUG'); // Logs
-        await StartJobs();
+        await StartJobs(client);
 
         // Registering commands
         console.log("Registering the commands...");
