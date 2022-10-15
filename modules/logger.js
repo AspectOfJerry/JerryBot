@@ -19,14 +19,14 @@ async function Log(method, tag, string, type, returnInfoOnly) {
             const now_time = date.format(now, 'HH:mm:ss.SSS');
 
             // Generate the log file name
-            const file_name = `${now_date}_DiscordBot-JerryBot.log`;
+            const file_name = `${now_date}_Discord-JerryBot.log`;
 
             // Generate the new line content
             if(tag == null) {
                 tag = "------------------"
             }
             tagLenght = tag.length;
-            tagExtraIndentNum = 18 - tagLenght;
+            tagExtraIndentNum = 19 - tagLenght;
             for(let i = 0; i < tagExtraIndentNum; i++) {
                 tagExtraIndent = tagExtraIndent + " ";
             }

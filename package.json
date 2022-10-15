@@ -1,5 +1,5 @@
 {
-    "name": "discordbot-jerry-bot",
+    "name": "discord-jerrybot",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -10,15 +10,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/AspectOfJerry/DiscordBot-Jerry-Bot.git"
+        "url": "https://github.com/AspectOfJerry/Discord-JerryBot.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/AspectOfJerry/DiscordBot-Jerry-Bot/issues"
+        "url": "https://github.com/AspectOfJerry/Discord-JerryBot/issues"
     },
-    "homepage": "https://github.com/AspectOfJerry/DiscordBot-Jerry-Bot#readme",
+    "homepage": "https://github.com/AspectOfJerry/Discord-JerryBot#readme",
     "type": "commonjs",
     "dependencies": {
         "@discordjs/builders": "^0.12.0",

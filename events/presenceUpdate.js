@@ -1,6 +1,10 @@
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+let lastGuildId;
+let latestGuildId;
+let firstTime = true;
+
 module.exports = {
     name: "presenceUpdate",
     once: false,
@@ -39,25 +43,36 @@ module.exports = {
         // Declaring variables
         let oldStatus = oldPresence?.status || "unknown";
         let oldClientStatus = oldPresence?.clientStatus || "unknown";
-        let oldClientActivityType = oldPresence?.activities[0]?.type + ", " || "";
+        let oldClientActivityType = oldPresence?.activities[0]?.type ? oldPresence.activities[0].type + ", " : "NULL, ";
 
         let newStatus = newPresence?.status || "unknown";
         let newClientStatus = newPresence?.clientStatus || "unknown";
-        let newClientActivityType = newPresence?.activities[0]?.type + ", " || "";
+        let newClientActivityType = newPresence?.activities[0]?.type ? newPresence.activities[0].type + ", " : "NULL, ";
 
-        if(oldStatus == newStatus && oldClientActivityType == newClientActivityType) {
+        latestGuildId = newPresence.guild.id;
+
+        if(oldStatus == newStatus && oldClientActivityType == newClientActivityType || lastGuildId != latestGuildId && firstTime != true) {
             return; // No changes
         }
 
         newClientStatus = JSON.stringify(newClientStatus);
         newClientStatus.toString();
-        newClientStatus = newClientStatus.replace("{", "");
-        newClientStatus = newClientStatus.replace("}", "");
+        newClientStatus = newClientStatus.replaceAll("{", "");
+        newClientStatus = newClientStatus.replaceAll("}", "");
+        newClientStatus = newClientStatus.replaceAll('"', "");
+        newClientStatus = newClientStatus.replaceAll(":", ": ");
+        newClientStatus = newClientStatus.replaceAll(",", ", ");
+
         oldClientStatus = JSON.stringify(oldClientStatus);
         oldClientStatus.toString();
-        oldClientStatus = oldClientStatus.replace("{", "");
-        oldClientStatus = oldClientStatus.replace("}", "");
+        oldClientStatus = oldClientStatus.replaceAll("{", "");
+        oldClientStatus = oldClientStatus.replaceAll("}", "");
+        oldClientStatus = oldClientStatus.replaceAll('"', "");
+        oldClientStatus = oldClientStatus.replaceAll(":", ": ");
+        oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        await Log('append', 'presenceUpdate', `'${newPresence.user.tag}' went from: '${oldClientActivityType}${oldStatus} (${oldClientStatus})' to: '${newClientActivityType}${newStatus} (${newClientStatus})' in: "${newPresence.guild.name}"`, 'INFO'); // Logs
+        await Log('append', 'presenceUpdate', `'${newPresence.user.tag}' went from: '${oldClientActivityType}${oldStatus} (${oldClientStatus})' to: '${newClientActivityType}${newStatus} (${newClientStatus})'`, 'INFO'); // Logs
+        lastGuildId = newPresence.guild.id;
+        firstTime = false;
     }
 };
