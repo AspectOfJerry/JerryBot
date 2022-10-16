@@ -3,7 +3,8 @@ const {Routes} = require('discord-api-types/v9');
 
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
-const StartJobs = require('../modules/start_jobs')
+const {ChecklistBotReady, IniSystemMonitor} = require('../modules/system_monitor');
+const StartJobs = require('../modules/start_jobs');
 
 require('dotenv').config();
 
@@ -13,6 +14,9 @@ module.exports = {
     async execute(client, commands) {
         await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG'); // Logs
         console.log("JerryBot is now online.");
+
+        // System Monitor
+        await IniSystemMonitor(client);
 
         // Jobs
         await Log('append', 'start_jobs', `[StartJobs] Starting jobs...`, 'DEBUG'); // Logs
@@ -51,5 +55,7 @@ module.exports = {
                 console.error(err);
             }
         }
+
+        await ChecklistBotReady();
     }
 };

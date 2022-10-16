@@ -1,9 +1,9 @@
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-let lastGuildId;
-let latestGuildId;
-let firstTime = true;
+var lastGuildId;
+var latestGuildId;
+var firstTime = true;
 
 module.exports = {
     name: "presenceUpdate",

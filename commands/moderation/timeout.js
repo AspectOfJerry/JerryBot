@@ -132,7 +132,7 @@ module.exports = {
         }
         // -----END HIERARCHY CHECK-----
         // Check if memberTarget has the ADMINISTRATOR permission flag
-        if(memberTarget.moderatable) {
+        if(!memberTarget.moderatable) {
             const member_not_moderatable = new MessageEmbed()
                 .setColor('FUCHSIA')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

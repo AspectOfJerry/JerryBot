@@ -1,5 +1,6 @@
 const Sleep = require('../modules/sleep'); // delayInMilliseconds
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {ChecklistJobsStarted} = require('../modules/system_monitor');
 
 async function StartJobs(client) {
     // Heartbeat
@@ -11,6 +12,8 @@ async function StartJobs(client) {
     await Log('append', 'schedule_311', `[Schedule311] Starting the 311 daily schedule announcer...`, 'DEBUG'); // Logs
     console.log("Starting the 311 daily schedule announcer...");
     require('../jobs/schedule_311')(client);
+
+    await ChecklistJobsStarted();
 }
 
 module.exports = StartJobs;

@@ -5,6 +5,9 @@ const fetch = require('node-fetch');
 
 const Sleep = require('../modules/sleep'); // dedlayInMilliseconds;
 const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {ChecklistHeartbeatSynced, UpdateHeartbeat} = require('../modules/system_monitor');
+
+once = false;
 
 module.exports = async function (client) {
     const heartbeat_interval = '1 minute';
@@ -15,6 +18,12 @@ module.exports = async function (client) {
             await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
                 .then(async () => {
                     await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to the status page.`, 'DEBUG'); // Logs
+                    const now = Math.round(Date.now() / 1000);
+                    UpdateHeartbeat(client, now);
+                    if(!once) {
+                        ChecklistHeartbeatSynced();
+                        once = true;
+                    }
                 });
         } catch(err) {
             if(err) {
@@ -26,6 +35,12 @@ module.exports = async function (client) {
             await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
                 .then(async () => {
                     await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to status page.`, 'DEBUG'); // Logs
+                    const now = Math.round(Date.now() / 1000);
+                    UpdateHeartbeat(client, now);
+                    if(!once) {
+                        ChecklistHeartbeatSynced();
+                        once = true;
+                    }
                 });
         }
     });
@@ -38,5 +53,7 @@ module.exports = async function (client) {
     fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
         .then(async () => {
             await Log('append', 'Heartbeat', `[Heartbeat] The first Heartbeat was sent to the status page.`, 'DEBUG'); // Logs
+            const now = Math.round(Date.now() / 1000);
+            UpdateHeartbeat(client, now);
         });
 };
