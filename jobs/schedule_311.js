@@ -31,7 +31,7 @@ module.exports = async function (client) {
 
     const delay_ms = 15000;
     const now = Math.round(Date.now() / 1000);
-    const delay_timestamp = now + delay_ms / 1000;
+    const delay_timestamp = now + (delay_ms / 1000);
 
     const embed = await channel.send({embeds: [attached]});
     channel.send(`> Auto deleting: <t:${delay_timestamp}:R>`)
