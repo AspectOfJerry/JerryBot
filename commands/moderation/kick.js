@@ -17,17 +17,9 @@ module.exports = {
             options
                 .setName('reason')
                 .setDescription("[OPTIONAL] The reason for the kick.")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -66,7 +58,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -79,7 +71,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot kick yourself.');
 
-            await interaction.editReply({embeds: [error_cannot_use_on_self]});
+            await interaction.reply({embeds: [error_cannot_use_on_self]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, 'WARN');
             return;
         }
@@ -91,7 +83,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_role_too_low]});
+            await interaction.reply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -102,7 +94,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_equal_roles]});
+            await interaction.reply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest roles were equal.`, 'WARN'); // Logs
             return;
         }
@@ -114,7 +106,7 @@ module.exports = {
                 .setTilte('Error')
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`)
 
-            await interaction.editReply({embeds: [member_not_kickcable]});
+            await interaction.reply({embeds: [member_not_kickcable]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, 'FATAL'); // Logs
             return;
         }
@@ -131,7 +123,7 @@ module.exports = {
                     .setCustomId('kick_cancel_button')
                     .setLabel('Cancel')
                     .setStyle('PRIMARY')
-                    .setDisabled(false),
+                    .setDisabled(false)
             );
 
         let isOverriddenText = "";
@@ -140,15 +132,16 @@ module.exports = {
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Confirm Kick`)
-            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`);
+            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
+            .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-        await interaction.editReply({embeds: [confirm_kick], components: [row]});
+        await interaction.reply({embeds: [confirm_kick], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
 
         const now = Math.round(Date.now() / 1000);
-        const timeout = now + 10;
+        const auto_delete_timestamp = now + 10;
 
-        let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
+        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${auto_delete_timestamp}:R>*.`});
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
@@ -167,17 +160,19 @@ module.exports = {
 
         const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
 
-        button_collector.on('collect', async buttonInteraction => {
+        button_collector.on('collect', async (buttonInteraction) => {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
-            // Disabling buttons
-            row.components[0]
-                .setDisabled(true);
-            row.components[1]
-                .setDisabled(true);
-            await interaction.editReply({embeds: [confirm_kick], components: [row]});
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
+                // Disabling buttons
+                row.components[0]
+                    .setStyle('SUCCESS')
+                    .setDisabled(true);
+                row.components[1]
+                    .setStyle('SECONDARY')
+                    .setDisabled(true);
+
                 const kicking = new MessageEmbed()
                     .setColor('YELLOW')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -199,6 +194,14 @@ module.exports = {
                         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
+                // Disabling buttons
+                row.components[0]
+                    .setStyle('SECONDARY')
+                    .setDisabled(true);
+                row.components[1]
+                    .setStyle('SUCCESS')
+                    .setDisabled(true);
+
                 const cancel_kick = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -210,14 +213,17 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await cancelTimerMessage.delete();
-            // Disabling buttons
-            row.components[0]
-                .setDisabled(true);
-            row.components[1]
-                .setDisabled(true);
+            await autoCancelTimerMessage.delete();
 
             if(collected.size === 0) {
+                // Disabling buttons
+                row.components[0]
+                    .setStyle('SECONDARY')
+                    .setDisabled(true);
+                row.components[1]
+                    .setStyle('SECONDARY')
+                    .setDisabled(true);
+
                 const auto_abort = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

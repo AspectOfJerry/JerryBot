@@ -49,10 +49,11 @@ async function IniSystemMonitor(_client) {
     const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle('JerryBot System Monitor')
-        .setDescription(`Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
+        .setDescription(`• *Relative timestamps can look out of sync depending on your timezone;\n\n:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addField('Checklist', `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, false)
         .addField('Last Heartbeat', `:heartbeat: N/A;`, true)
-        .addField('Next expected Heartbeat', `:green_heart: <t:${next_heartbeat_timestamp}:R>;`, true);
+        .addField('Next expected Heartbeat', `:green_heart: <t:${next_heartbeat_timestamp}:R>;`, true)
+        .setTimestamp();
 
     messages.push(await channels[0].send({embeds: [embed]}));
     messages.push(await channels[1].send({embeds: [embed]}));
@@ -117,7 +118,7 @@ async function UpdateTimestamp() {
         throw "Cannot access HeartbeatNotifier before System Monitor ready.";
     }
 
-    embedMessage.description = embedMessage.description.replace(/Last updated:.*;/i, `Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
+    embedMessage.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
 
     await UpdateEmbeds(embedMessage);
 }
