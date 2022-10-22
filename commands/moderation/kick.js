@@ -104,7 +104,7 @@ module.exports = {
                 .setColor('FUCHSIA')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTilte('Error')
-                .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`)
+                .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
             await interaction.reply({embeds: [member_not_kickcable]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, 'FATAL'); // Logs

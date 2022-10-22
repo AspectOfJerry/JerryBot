@@ -7,7 +7,7 @@ module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
-        await Log('append', 'interactionCreate', `An interaction was created.`, 'INFO'); // Logs
+        await Log('append', 'interactionCreate', `An interaction was created.`, 'DEBUG'); // Logs
         if(!interaction.isCommand()) {
             return;
         }

@@ -5,8 +5,8 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 
 module.exports = {
     name: "voiceStateUpdate",
-    once: false, // Whether or not this even should only be triggered once
+    once: false, // Whether or not this event should only be triggered once
     async execute(oldState, newState) {
-        await Log('append', 'voiceStateUpdate', "", 'INFO'); // Logs
+        await Log('append', 'voiceStateUpdate', "", 'DEBUG'); // Logs
     }
 };

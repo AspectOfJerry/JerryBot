@@ -134,7 +134,7 @@ module.exports = {
                             .setDescription(`<@${interaction.user.id}> purged __${msgs.size - 1}__ *(+2 bot-sent message)* messages in <#${channel.id}>${isOverriddenText}.`);
 
                         await interaction.followUp({embeds: [success_purge], ephemeral: true, components: [row]});
-                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' in '${channel.name}'${isOverriddenText}.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
                 // Disabling buttons

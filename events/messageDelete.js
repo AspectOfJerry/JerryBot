@@ -5,7 +5,7 @@ const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WAR
 
 module.exports = {
     name: "messageDelete",
-    once: false, // Whether or not this even should only be triggered once
+    once: false, // Whether or not this event should only be triggered once
     async execute(message) {
         if(message.content === message.cleanContent) {
             await Log('append', 'messageDelete', `A message sent by '${message?.author.tag}' has been deleted (content: "${message.content}").`, 'WARN'); // Logs

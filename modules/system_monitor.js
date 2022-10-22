@@ -70,7 +70,7 @@ async function IniSystemMonitor(_client) {
 async function UpdateEmbeds(newEmbed) {
     // DO NOT CALL UpdateTimestamp() IN THIS FUNCTION
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
     if(!messages[0]) {
@@ -98,7 +98,7 @@ async function UpdateEmbeds(newEmbed) {
 async function UpdateHeartbeat(_client, timestamp) {
     client = _client;
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
     // Calculate next Heartbeat timestamp
@@ -115,7 +115,7 @@ async function UpdateHeartbeat(_client, timestamp) {
 
 async function UpdateTimestamp() {
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
     embedMessage.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
