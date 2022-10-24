@@ -96,7 +96,7 @@ module.exports = {
         const now = Math.round(Date.now() / 1000);
         const timeout = now + 10;
 
-        let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
+        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
@@ -159,7 +159,7 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await cancelTimerMessage.delete();
+            await autoCancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);

@@ -149,7 +149,7 @@ module.exports = {
         const now = Math.round(Date.now() / 1000);
         const timeout = now + 10;
 
-        let cancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
+        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
@@ -213,7 +213,7 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await cancelTimerMessage.delete();
+            await autoCancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);

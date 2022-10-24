@@ -7,26 +7,17 @@ const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('CMD_NAME')
-        .setDescription("CMD_DESCRIPTION")
+        .setName('dev')
+        .setDescription("Developer commands")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('SUBCMD_NAME')
-                .setDescription("SUBCMD_DESCRIPTION")
-                .addStringOption((options) =>
-                    options
-                        .setName('SUBCMD_OPTION_NAME')
-                        .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true/false)))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('SUBCMD_NAME')
-                .setDescription("SUBCMD_DESCRIPTION")
-                .addStringOption((options) =>
-                    options
-                        .setName('SUBCMD_OPTION_NAME')
-                        .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true/false))),
+                .setName('stop')
+                .setDescription("Pauses the Heartbeat monitor and stops the bot."))
+    // .addSubcommand(subcommand =>
+    //     subcommand
+    //         .setName('SUBCMD_NAME')
+    //         .setDescription("SUBCMD_DESCRIPTION"))
+    ,
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO'); // Logs
 
@@ -35,8 +26,8 @@ module.exports = {
 
         // Main
         switch(subcommand) {
-            case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+            case 'stop': {
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
 
                 // Declaring variables
 

@@ -87,7 +87,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/calculate'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
+        }z
         // -----END ROLE CHECK-----
 
         // Main
@@ -98,7 +98,7 @@ module.exports = {
                     .setColor('GREEN')
                     .setTitle("Addition")
                     .setURL(`https://mathsolver.microsoft.com/en/solve-problem/${operand1}%2B${operand2}`)
-                    .setThumbnail(`${interatcion.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setDescription(`${operand1} + ${operand2} = **${add_result}**`)
                     .setFooter({text: "This command is still under development. More features will be added in the future."});
 

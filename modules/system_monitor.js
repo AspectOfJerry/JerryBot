@@ -49,10 +49,11 @@ async function IniSystemMonitor(_client) {
     const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle('JerryBot System Monitor')
-        .setDescription(`Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
+        .setDescription(`• *Relative timestamps can look out of sync depending on your timezone;\n\n:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addField('Checklist', `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, false)
         .addField('Last Heartbeat', `:heartbeat: N/A;`, true)
-        .addField('Next expected Heartbeat', `:green_heart: <t:${next_heartbeat_timestamp}:R>;`, true);
+        .addField('Next expected Heartbeat', `:green_heart: <t:${next_heartbeat_timestamp}:R>;`, true)
+        .setTimestamp();
 
     messages.push(await channels[0].send({embeds: [embed]}));
     messages.push(await channels[1].send({embeds: [embed]}));
@@ -69,7 +70,7 @@ async function IniSystemMonitor(_client) {
 async function UpdateEmbeds(newEmbed) {
     // DO NOT CALL UpdateTimestamp() IN THIS FUNCTION
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
     if(!messages[0]) {
@@ -97,7 +98,7 @@ async function UpdateEmbeds(newEmbed) {
 async function UpdateHeartbeat(_client, timestamp) {
     client = _client;
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
     // Calculate next Heartbeat timestamp
@@ -114,10 +115,10 @@ async function UpdateHeartbeat(_client, timestamp) {
 
 async function UpdateTimestamp() {
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor ready.";
+        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
     }
 
-    embedMessage.description = embedMessage.description.replace(/Last updated:.*;/i, `Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
+    embedMessage.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
 
     await UpdateEmbeds(embedMessage);
 }
