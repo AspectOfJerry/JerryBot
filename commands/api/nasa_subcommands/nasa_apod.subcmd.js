@@ -8,10 +8,9 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
-module.exports = async function (client, interaction, is_ephemeral) {
+module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-    await interaction.deferReply({ephemeral: is_ephemeral});
+    await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {

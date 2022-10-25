@@ -3,10 +3,9 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-module.exports = async function (client, interaction, is_ephemeral) {
+module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-    await interaction.deferReply({ephemeral: is_ephemeral});
+    await interaction.deferReply();
 
     // Checks
     switch(interaction.guild.id) {
@@ -48,5 +47,5 @@ module.exports = async function (client, interaction, is_ephemeral) {
     // -----END ROLE CHECK-----
 
     // Main
-
+    await interaction.reply({content: "This command is currently unavailable."});
 };

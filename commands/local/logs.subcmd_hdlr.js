@@ -16,12 +16,7 @@ module.exports = {
                     options
                         .setName('string')
                         .setDescription("[REQUIRED] The string to append to the log file.")
-                        .setRequired(true))
-                .addBooleanOption((options) =>
-                    options
-                        .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                        .setRequired(false)))
+                        .setRequired(true)))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('read')
@@ -30,11 +25,6 @@ module.exports = {
                     options
                         .setName('offset')
                         .setDescription("[OPTIONAL] Number of the line to read starting with the latest line. Defaults to 0 (latest line).")
-                        .setRequired(false))
-                .addBooleanOption((options) =>
-                    options
-                        .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -62,9 +52,6 @@ module.exports = {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/logs append'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
                 const string = interaction.options.getString('string');
                 await Log('append', interaction.guild.id, `  └─string: ${string}`, 'INFO'); // Logs
 
@@ -72,37 +59,31 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./log_subcommands/logs_append.subcmd')(client, interaction, is_ephemeral, string, object);
+                require('./log_subcommands/logs_append.subcmd')(client, interaction, string, object);
             }
                 break;
             case 'read': {
                 await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs read'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
                 const line_offset = interaction.options.getInteger('offset') || 0;
                 await Log('append', interaction.guild.id, `  └─offset: ${line_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./log_subcommands/logs_read.subcmd')(client, interaction, is_ephemeral, line_offset);
+                require('./log_subcommands/logs_read.subcmd')(client, interaction, line_offset);
             }
                 break;
             case 'get': {
                 await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs get'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-
                 const day_offset = interaction.options.getInteger('offset') || 0;
                 await Log('append', interaction.guild.id, `  └─offset: ${day_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./log_subcommands/logs_get.subcmd')(client, interaction, is_ephemeral, day_offset);
+                require('./log_subcommands/logs_get.subcmd')(client, interaction, day_offset);
             }
                 break;
             default:

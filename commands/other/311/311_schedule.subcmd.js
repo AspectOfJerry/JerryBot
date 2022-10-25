@@ -8,10 +8,9 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 const date = require('date-and-time');
 const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
 
-module.exports = async function (client, interaction, is_ephemeral) {
+module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-    await interaction.deferReply({ephemeral: is_ephemeral});
+    await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {

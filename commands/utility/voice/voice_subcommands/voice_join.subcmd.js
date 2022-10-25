@@ -5,10 +5,9 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-module.exports = async function (client, interaction, is_ephemeral, voice_channel) {
+module.exports = async function (client, interaction, voice_channel) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-    await interaction.deferReply({ephemeral: is_ephemeral});
+    // await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {

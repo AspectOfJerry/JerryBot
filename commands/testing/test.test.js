@@ -25,7 +25,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/test'.`, 'INFO'); // Logs
         // Declaring variables
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
+        
 
         let target = interaction.options.getUser('user') || interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);

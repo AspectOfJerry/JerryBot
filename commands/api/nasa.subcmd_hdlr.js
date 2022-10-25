@@ -11,21 +11,11 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('api')
-                .setDescription("Makes an API call to NASA's APOD API.")
-                .addBooleanOption((options) =>
-                    options
-                        .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                        .setRequired(false)))
+                .setDescription("Makes an API call to NASA's APOD API."))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('apod')
-                .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")
-                .addBooleanOption((options) =>
-                    options
-                        .setName('ephemeral')
-                        .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                        .setRequired(false))),
+                .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/nasa [...]'.`, 'INFO'); // Logs
 
@@ -41,24 +31,20 @@ module.exports = {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./nasa_subcommands/nasa_apod.subcmd')(client, interaction, is_ephemeral);
+                require('./nasa_subcommands/nasa_apod.subcmd')(client, interaction);
             }
                 break;
             case 'apod': {
                 await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
 
-                // Declaring variables
-                const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-                await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
+                // Declaring variables                
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./nasa_subcommands/nasa_api.subcmd')(client, interaction, is_ephemeral);
+                require('./nasa_subcommands/nasa_api.subcmd')(client, interaction);
             }
                 break;
             default:
