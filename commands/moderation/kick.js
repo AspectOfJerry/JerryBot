@@ -156,7 +156,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
                 return;
             }
-        }
+        };
 
         const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
 
