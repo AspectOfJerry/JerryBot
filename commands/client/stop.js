@@ -4,8 +4,6 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-const date = require('date-and-time');
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stop')

@@ -10,6 +10,7 @@ module.exports = {
         .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {

@@ -19,7 +19,7 @@ module.exports = {
     //         .setDescription("SUBCMD_DESCRIPTION"))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dev [...]'.`, 'INFO'); // Logs
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -33,11 +33,11 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
-                require('./DIRECTORY_subcommands')(client, interaction);
+                require('./dev_subcommands/dev_stop.subcmd')(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Declaring variables
 

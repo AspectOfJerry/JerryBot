@@ -17,7 +17,7 @@ module.exports = {
                     options
                         .setName('SUBCMD_OPTION_NAME')
                         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true / false)))
+                        .setRequired(true/false)))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('SUBCMD_NAME')
@@ -26,7 +26,7 @@ module.exports = {
                     options
                         .setName('SUBCMD_OPTION_NAME')
                         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-                        .setRequired(true / false))),
+                        .setRequired(true/false))),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO'); // Logs
 
