@@ -62,7 +62,8 @@ module.exports = async function (client, interaction) {
     // Main
     const connection = getVoiceConnection(interaction.guild.id);
 
-    await connection.selfMute();
+    console.log(connection.joinConfig.selfMute);
+    await connection.joinConfig.selfMute();
 
     const self_mute = new MessageEmbed()
         .setColor('GREEN')
