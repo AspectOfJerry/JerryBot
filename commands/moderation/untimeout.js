@@ -97,6 +97,18 @@ module.exports = {
         }
         // -----END HIERARCHY CHECK-----
         // Main
+        if(!memberTarget.isCommunicationDisabled()) {
+            const member_not_timed_out = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`<@${memberTarget.user.id}> is not timed out.`)
+                .setFooter({text: "Attempting to remove timeout anyway..."})
+
+            await interaction.reply({embeds: [member_not_timed_out]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to remove timeout anyway.`, 'WARN'); // Logs
+            return;
+        }
+
         reason = reason ? ` \n**Reason:** ${reason}` : "";
 
         memberTarget.timeout(null, reason)
