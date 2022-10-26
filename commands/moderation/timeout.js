@@ -147,9 +147,10 @@ module.exports = {
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("User timeout")
-                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`);
+                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                        .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                    interaction.editReply({embeds: [success_timeout]});
+                    interaction.reply({embeds: [success_timeout]});
                     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                 });
         } else {
@@ -174,7 +175,7 @@ module.exports = {
                 .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Overrite timeout`)
-                .setDescription(`<@${memberTarget.used.id}> is already timed out. Do you want to overrite the current timeout?`)
+                .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
             await interaction.reply({embeds: [confirm_override], components: [row]});
@@ -223,10 +224,10 @@ module.exports = {
                                 .setColor('GREEN')
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                                 .setTitle("User timeout override")
-                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
                                 .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                            interaction.editReply({embeds: [success_timeout]});
+                            interaction.editReply({embeds: [success_timeout], components: [row]});
                             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                         });
                 } else {

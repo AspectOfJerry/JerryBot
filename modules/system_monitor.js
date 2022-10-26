@@ -6,6 +6,8 @@ const fetch = require('node-fetch');
 const Sleep = require('./sleep'); // dedlayInMilliseconds;
 const Log = require('./logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+var updateFailCount = 0;
+
 var ready;
 var client;
 var guilds = [];
@@ -80,7 +82,11 @@ async function UpdateEmbeds(newEmbed) {
     try {
         await messages[0].edit({embeds: [newEmbed]});
     } catch(err) {
-        console.error(err);
+        if(updateFailCount === 3 && updateFailCount < 4) {
+            console.log(`Failed to update embed 3 times. No longer logging error.`);
+        } else {
+            console.log(`Failed to update the embed 0. Fail count: ${updateFailCount}`);
+        }
     }
 
     try {
@@ -90,7 +96,11 @@ async function UpdateEmbeds(newEmbed) {
 
         await messages[1].edit({embeds: [newEmbed]});
     } catch(err) {
-        console.error(err);
+        if(updateFailCount === 3 && updateFailCount < 4) {
+            console.log(`Failed to update embed 3 times. No longer logging error.`);
+        } else {
+            console.log(`Failed to update the embed 0. Fail count: ${updateFailCount}`);
+        }
     }
 }
 

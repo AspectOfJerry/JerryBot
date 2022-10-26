@@ -110,7 +110,7 @@ module.exports = {
 
         await voice_channel.members.forEach(async (member) => {
             let voice_channel = member.voice.channel;
-            member.voice.setChannel(null)
+            await member.voice.setChannel(null)
                 .then(async () => {
                     const disconnect_success = new MessageEmbed()
                         .setColor('GREEN')
@@ -123,19 +123,19 @@ module.exports = {
                     const disconnect_error = new MessageEmbed()
                         .setColor('RED')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`An error occurred while disconnecting <@${member.id}> from <#${voice_channel.channel.id}>.`);
+                        .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
                     await interaction.editReply({embeds: [disconnect_error]});
                     await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
                     member_count--
                     failed_member_count++
                 });
-            await Sleep(150);
+            await Sleep(100);
         });
         let embed_color = 'GREEN';
         if(failed_member_count !== 0) {
             embed_color = 'YELLOW';
-            failed_string = `\nFailed to disconnect ${failed_member_count} members from <#${voice_channel.channel.id}>.`;
+            failed_string = `\nFailed to disconnect ${failed_member_count} members.`;
         }
         if(failed_member_count !== 0 && member_count === 0) {
             embed_color = 'RED';
