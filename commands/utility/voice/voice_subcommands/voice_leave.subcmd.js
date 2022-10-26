@@ -41,7 +41,7 @@ module.exports = async function (client, interaction) {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions]});
+            await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice leave'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
@@ -53,7 +53,7 @@ module.exports = async function (client, interaction) {
         .setTitle('VoiceConnection')
         .setDescription("Fetching voice connections in this guild...");
 
-    await interaction.editReply({embeds: [fetching_connection]});
+    await interaction.reply({embeds: [fetching_connection]});
     const connection = getVoiceConnection(interaction.guild.id);
     if(!connection) {
         const error_not_in_vc = new MessageEmbed()
@@ -62,7 +62,7 @@ module.exports = async function (client, interaction) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
 
-        await interaction.editReply({embeds: [error_not_in_vc]});
+        await interaction.reply({embeds: [error_not_in_vc]});
         return;
     }
 

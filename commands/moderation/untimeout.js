@@ -58,7 +58,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/untimeout'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -71,7 +71,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            await interaction.editReply({embeds: [error_cannot_use_on_self]});
+            await interaction.reply({embeds: [error_cannot_use_on_self]});
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -82,7 +82,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_role_too_low]});
+            await interaction.reply({embeds: [error_role_too_low]});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -92,7 +92,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            await interaction.editReply({embeds: [error_equal_roles]});
+            await interaction.reply({embeds: [error_equal_roles]});
             return;
         }
         // -----END HIERARCHY CHECK-----

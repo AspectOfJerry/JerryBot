@@ -46,7 +46,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/ping'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -70,7 +70,7 @@ module.exports = {
                 .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
 
             pingMessage.delete().catch(console.error);
-            interaction.editReply({embeds: [pong]});
+            interaction.reply({embeds: [pong]});
             await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }

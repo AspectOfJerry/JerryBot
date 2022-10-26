@@ -17,7 +17,9 @@ module.exports = {
                 .setRequired(true/false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME'.`, 'INFO'); // Logs
-
+        // interaction.deferUpdate()
+        const test = "adwa"
+        
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -53,7 +55,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/CMD_NAME'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }

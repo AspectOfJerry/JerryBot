@@ -20,7 +20,7 @@ module.exports = {
             .setColor('RED')
             .setDescription("This command is deprecated. Please use the `/timeout` command instead.");
 
-        interaction.editReply({embeds: [deprecation_warning]});
+        interaction.reply({embeds: [deprecation_warning]});
         await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/timeout'`, 'WARN');
     }
 };

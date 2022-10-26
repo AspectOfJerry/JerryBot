@@ -61,7 +61,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/send'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -74,7 +74,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription("You cannot message a bot.");
 
-            interaction.editReply({embeds: [error_cannot_message_bot]});
+            interaction.reply({embeds: [error_cannot_message_bot]});
             return;
         }
 
@@ -84,7 +84,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`);
 
-        await interaction.editReply({embeds: [messaging_user]});
+        await interaction.reply({embeds: [messaging_user]});
 
         memberTarget.send({content: `${message}`})
             .then(async messageResult => {
@@ -124,7 +124,7 @@ module.exports = {
                             .setTitle('Stopping Collector')
                             .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
 
-                        msg.editReply({embeds: [stopping_collector]});
+                        msg.reply({embeds: [stopping_collector]});
 
                         receive_collector.stop();
                         send_collector.stop();
@@ -134,7 +134,7 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`);
 
-                        msg.editReply({embeds: [sending_message]})
+                        msg.reply({embeds: [sending_message]})
                             .then(embed => {
                                 memberTarget.send({content: `${msg.content}`})
                                     .then(async messageResult => {

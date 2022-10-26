@@ -60,7 +60,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/ban'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -73,7 +73,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot ban yourself.');
 
-            interaction.editReply({embeds: [error_cannot_use_on_self]});
+            interaction.reply({embeds: [error_cannot_use_on_self]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN'); // Logs
             return;
         }
@@ -85,7 +85,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -96,7 +96,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_equal_roles]});
+            interaction.reply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
@@ -108,7 +108,7 @@ module.exports = {
                 .setTilte('Error')
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)
 
-            await interaction.editReply({embeds: [member_not_bannable]});
+            await interaction.reply({embeds: [member_not_bannable]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'FATAL'); // Logs
             return;
         }
@@ -136,7 +136,7 @@ module.exports = {
             .setTitle(`Confirm Ban`)
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?`);
 
-        await interaction.editReply({embeds: [confirm_ban], components: [row]});
+        await interaction.reply({embeds: [confirm_ban], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
 
         const now = Math.round(Date.now() / 1000);
