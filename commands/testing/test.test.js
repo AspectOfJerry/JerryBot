@@ -33,6 +33,23 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.reply("Nothing here...");
+        // interaction.reply("Nothing here...");
+
+        console.log("---client.voice---");
+        console.log(client.voice);
+
+        const connection = joinVoiceChannel({
+            // channelId: 123,
+            guildId: interaction.guild.id,
+            adapterCreator: interaction.guild.voiceAdapterCreator
+        });
+
+        console.log("---connection---");
+        console.log(connection);
+
+        console.log("---connection JoinConfig---");
+        console.log(connection.joinConfig);
+
+
     }
 };
