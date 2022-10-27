@@ -46,7 +46,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./voice_subcommands/voice_join.subcmd')(client, interaction, voice_channel);
             }
                 break;
@@ -56,7 +56,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./voice_subcommands/voice_leave.subcmd')(client, interaction);
             }
                 break;
@@ -66,7 +66,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./voice_subcommands/voice_selfmute.subcmd')(client, interaction,);
             }
                 break;
@@ -76,7 +76,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./voice_subcommands/voice_selfdeaf.subcmd')(client, interaction,);
             }
                 break;

@@ -63,7 +63,7 @@ for(const event_file of event_files) {
     }
 }
 
-console.log('The messageUpdate event will not log if `channel.name == 📊system-monitor`');
-Log('append', 'DiscordBot', 'The messageUpdate event will not log if `channel.name == 📊system-monitor`', 'DEBUG');
+console.log('The messageDelete and messageUpdate events will not log if the user is a bot.');
+Log('append', 'DiscordBot', 'The messageDelete and messageUpdate events will not log if the user is a bot.', 'DEBUG');
 
 client.login(process.env.DISCORD_BOT_TOKEN_JERRY);

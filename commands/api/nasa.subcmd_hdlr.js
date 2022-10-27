@@ -33,7 +33,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 interaction.reply("This command is currently unavailable.")
                 return;
                 require('./nasa_subcommands/nasa_api.subcmd')(client, interaction);
@@ -46,7 +46,7 @@ module.exports = {
                 // Declaring variables                
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./nasa_subcommands/nasa_apod.subcmd')(client, interaction);
             }
                 break;

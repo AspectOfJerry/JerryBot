@@ -10,17 +10,17 @@ module.exports = {
         let oldContent;
         let newContent;
 
-        if(oldMessage.channel.name == "📊system-monitor" || newMessage.channel.name == "📊system-monitor") {
+        if(newMessage.author.bot) {
             return;
         }
 
-        // If cleanContent is the same as the true content
+        // Check if .cleanContent is the same as .content in the old message
         if(oldMessage.content === oldMessage.cleanContent) {
             oldContent = oldMessage.content;
         } else {
             oldContent = `${oldMessage.content} (cleanContent: ${oldMessage.cleanContent})`;
         }
-        // If cleanContent is the same as the true content
+        // Check if .cleanContent is the same as .content in the new message
         if(newMessage.content === newMessage.cleanContent) {
             newContent = newMessage.content;
         } else {

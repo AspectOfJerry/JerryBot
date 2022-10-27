@@ -41,7 +41,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./DIRECTORY_subcommands')(client, interaction);
             }
                 break;
@@ -51,7 +51,7 @@ module.exports = {
                 // Declaring variables
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'WARN'); // Logs
+                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./DIRECTORY_subcommands')(client, interaction);
             }
                 break;
