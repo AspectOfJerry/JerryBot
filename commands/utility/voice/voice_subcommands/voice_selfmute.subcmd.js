@@ -5,10 +5,9 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-module.exports = async function (client, interaction, is_ephemeral) {
+module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
-    await Log('append', interaction.guild.id, `  ├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-    await interaction.deferReply({ephemeral: is_ephemeral});
+    // await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {
@@ -42,7 +41,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions]});
+            await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice selmute'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
@@ -56,7 +55,7 @@ module.exports = async function (client, interaction, is_ephemeral) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.")
 
-        await interaction.editReply({embeds: [error_not_in_vc]});
+        await interaction.reply({embeds: [error_not_in_vc]});
         return;
     }
 

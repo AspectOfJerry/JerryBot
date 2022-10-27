@@ -22,17 +22,10 @@ module.exports = {
             options
                 .setName('all')
                 .setDescription("[OPTIONAL] If you want to move everyone in the user's channel with them. Defaults to false.")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO'); // Logs        
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -73,7 +66,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/move'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -85,7 +78,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
-            interaction.editReply({embeds: [user_not_in_vc]});
+            interaction.reply({embeds: [user_not_in_vc]});
             return;
         }
 
@@ -93,37 +86,71 @@ module.exports = {
         if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(new_voice_channel)
-                .then(() => {
+                .then(async () => {
                     const success_move = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                    interaction.editReply({embeds: [success_move]});
-                })
+                    await interaction.reply({embeds: [success_move]});
+                    await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+                });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
-            const member_count = memberTarget.voice.channel.members.size;
+            let member_count = memberTarget.voice.channel.members.size;
             const moving_members = new MessageEmbed()
                 .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Moving all ${member_count} members from ${current_voice_channel} to ${new_voice_channel}...`);
+                .setDescription(`Moving all ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>...`);
 
-            interaction.editReply({embeds: [moving_members]});
+            await interaction.reply({embeds: [moving_members]});
+            await Log('append', interaction.guild.id, `└─Attemping to move every member in <#${current_voice_channel.name}> to <#${new_voice_channel.name}>...`); // Logs
 
-            memberTarget.voice.channel.members.forEach(async (member) => {
+            let failed_member_count = 0;
+            let failed_string = "";
+
+            await memberTarget.voice.channel.members.forEach(async (member) => {
                 let current_voice_channel = member.voice.channel;
-                member.voice.setChannel(new_voice_channel)
+                await member.voice.setChannel(new_voice_channel)
                     .then(async () => {
                         const move_success = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Successfully moved <@${member.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
+                            .setDescription(`Successfully moved <@${member.id}> from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.`);
 
                         await interaction.editReply({embeds: [move_success]});
-                        await Sleep(150);
+                        await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+                    }).catch(async () => {
+                        const move_error = new MessageEmbed()
+                            .setColor('RED')
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setDescription(`An error occurred while moving <@${member.id}>.`);
+
+                        await interaction.editReply({embeds: [move_error]});
+                        await Log('append', interaction.guild.id, `  ├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+
+                        member_count--
+                        failed_member_count++
                     });
+                await Sleep(100);
             });
+            let embed_color = 'GREEN';
+            if(failed_member_count !== 0) {
+                embed_color = 'YELLOW';
+                failed_string = `\nFailed to move ${failed_member_count} members.`;
+            }
+            if(failed_member_count !== 0 && member_count === 0) {
+                embed_color = 'RED';
+            }
+
+            const succes_move = new MessageEmbed()
+                .setColor(embed_color)
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`Successfully moved ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.${failed_string}`);
+
+            await interaction.editReply({embeds: [succes_move]});
+            await Log('append', interaction.guild.id, `  └─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`); // Logs
+
         }
     }
 };

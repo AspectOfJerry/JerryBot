@@ -11,17 +11,10 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('hypixel_api')
-        .setDescription("Makes an API call to 'api.hypixel.net'.")
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                .setRequired(false)),
+        .setDescription("Makes an API call to 'api.hypixel.net'."),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {

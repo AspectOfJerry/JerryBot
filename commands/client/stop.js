@@ -4,8 +4,6 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const Sleep = require('../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-const date = require('date-and-time');
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stop')
@@ -14,17 +12,10 @@ module.exports = {
             options
                 .setName('reason')
                 .setDescription("[OPTIONAL] The reason for the stop request.")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
-        const is_ephemeral = await interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -60,7 +51,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/stop'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -90,7 +81,7 @@ module.exports = {
             .setTitle('Confirm Stop')
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
 
-        interaction.editReply({embeds: [confirm_stop], components: [row]});
+        interaction.reply({embeds: [confirm_stop], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
 
         const now = Math.round(Date.now() / 1000);

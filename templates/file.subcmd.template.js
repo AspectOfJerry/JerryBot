@@ -7,6 +7,7 @@ const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LO
 
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+    // interaction.deferUpdate();
 
     // Set minimum execution role
     switch(interaction.guild.id) {
@@ -40,7 +41,7 @@ module.exports = async function (client, interaction) {
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-            await interaction.editReply({embeds: [error_permissions]});
+            await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/CMD_NAME SUBCMD_NAME'. [error_permissions]`, 'WARN'); // Logs
             return;
         }

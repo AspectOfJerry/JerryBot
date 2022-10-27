@@ -24,17 +24,10 @@ module.exports = {
             options
                 .setName('reason')
                 .setDescription("[OPTIONAL] The reason for the timeout.")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -78,7 +71,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/timeout'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -91,7 +84,7 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            interaction.editReply({embeds: [error_cannot_timeout_self]});
+            interaction.reply({embeds: [error_cannot_timeout_self]});
             await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves. [error_cannot_timeout_self]`, 'WARN'); // Logs
             return;
         }
@@ -103,7 +96,7 @@ module.exports = {
                 .setDescription('Invalid duration. Please use a valid duration.')
                 .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*");
 
-            interaction.editReply({embeds: [error_duration]});
+            interaction.reply({embeds: [error_duration]});
             await Log('append', interaction.guild.id, `└─Invalid duration.`); // Logs
             return;
         }
@@ -115,7 +108,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
@@ -126,7 +119,7 @@ module.exports = {
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.editReply({embeds: [error_equal_roles]});
+            interaction.reply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
@@ -139,7 +132,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
 
-            await interaction.editReply({embeds: [member_not_moderatable]});
+            await interaction.reply({embeds: [member_not_moderatable]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'FATAL'); // Logs
             return;
         }
@@ -154,9 +147,10 @@ module.exports = {
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("User timeout")
-                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`);
+                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                        .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                    interaction.editReply({embeds: [success_timeout]});
+                    interaction.reply({embeds: [success_timeout]});
                     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                 });
         } else {
@@ -181,7 +175,7 @@ module.exports = {
                 .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Overrite timeout`)
-                .setDescription(`<@${memberTarget.used.id}> is already timed out. Do you want to overrite the current timeout?`)
+                .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
             await interaction.reply({embeds: [confirm_override], components: [row]});
@@ -230,10 +224,10 @@ module.exports = {
                                 .setColor('GREEN')
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                                 .setTitle("User timeout override")
-                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
                                 .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                            interaction.editReply({embeds: [success_timeout]});
+                            interaction.editReply({embeds: [success_timeout], components: [row]});
                             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                         });
                 } else {

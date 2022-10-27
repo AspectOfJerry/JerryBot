@@ -12,17 +12,10 @@ module.exports = {
             options
                 .setName('user')
                 .setDescription("[OPTIONAL] The user's avatar to send. Defaults to yourself.")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/avatar'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -59,7 +52,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/avatar'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -73,7 +66,7 @@ module.exports = {
             .setTitle('DeprecationWarning')
             .setDescription("This command is deprecated. Please use the `/profile` command instead.");
 
-        interaction.editReply({embeds: [deprecation_warning]});
+        interaction.reply({embeds: [deprecation_warning]});
         await Log('append', interaction.guild.id, `└─This command is deprecated, and it is replaced by '/profile'`, 'WARN'); // Logs
     }
 };

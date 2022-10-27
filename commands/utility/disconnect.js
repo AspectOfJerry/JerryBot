@@ -17,17 +17,10 @@ module.exports = {
             options
                 .setName('all')
                 .setDescription("[OPTIONAL] If you want to disconnect everyone in the targted user's voice channel. Defaults to false")
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bote's messages to only be visible to yourself. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnect'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -67,7 +60,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnect'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -79,7 +72,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
-            interaction.editReply({embeds: [user_not_in_vc]});
+            interaction.reply({embeds: [user_not_in_vc]});
             await Log('append', interaction.guild.id, `├─└─'${memberTarget.tag}' is not in a voice channel.`, 'WARN'); // Logs
             return;
         }
@@ -92,15 +85,15 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting <@${memberTarget.id}> from ${current_voice_channel}...`);
 
-            await interaction.editReply({embeds: [disconnecting]});
+            await interaction.reply({embeds: [disconnecting]});
             await memberTarget.voice.setChannel(null)
-                .then(() => {
+                .then(async () => {
                     const disconnect_success = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${memberTarget.id}> from ${current_voice_channel}.`);
 
-                    interaction.editReply({embeds: [disconnect_success]});
+                    await interaction.editReply({embeds: [disconnect_success]});
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -110,18 +103,18 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
 
-            interaction.editReply({embeds: [disconnecting]});
+            await interaction.reply({embeds: [disconnecting]});
 
             await memberTarget.voice.channel.members.forEach(member => {
                 let current_voice_channel = member.voice.channel
                 member.voice.setChannel(null)
-                    .then(() => {
+                    .then(async () => {
                         const disconnect_success = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
 
-                        interaction.channel.send({embeds: [disconnect_success]});
+                        await interaction.channel.followUp({embeds: [disconnect_success], ephemeral: true});
                     });
             });
             const disconnect_success = new MessageEmbed()
@@ -129,7 +122,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`);
 
-            interaction.editReply({embeds: [disconnect_success]});
+            await interaction.editReply({embeds: [disconnect_success]});
         }
     }
 };

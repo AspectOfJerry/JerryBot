@@ -21,17 +21,10 @@ module.exports = {
                 .setDescription("[OPTIONAL] The unit of measurement for temperatures (C or F). Defaults to 'C'")
                 .addChoice("C", 'C')
                 .addChoice("F", 'F')
-                .setRequired(false))
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/weather'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -75,7 +68,7 @@ module.exports = {
         // -----END ROLE CHECK-----
 
         // Main
-        weather.find({search: search_location, degreeType: search_unit}, function (error, result) {
+        weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {
             if(error) {
                 console.error(error);
             }
@@ -87,7 +80,7 @@ module.exports = {
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-                interaction.editReply({embeds: [search_error]});
+                await interaction.editReply({embeds: [search_error]});
                 return;
             }
             // Current stats
@@ -177,7 +170,8 @@ module.exports = {
                     `• Precipitation: ${day5_precipitations}%`, false)
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-            interaction.editReply({embeds: [weather]});
+            await interaction.editReply({embeds: [weather]});
+            await interaction.followUp({content: "This command needs a heavy rework."})
         });
     }
 };

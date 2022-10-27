@@ -7,17 +7,10 @@ const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
-        .setDescription("Displays the client latency and the WebSocket server latency.")
-        .addBooleanOption((options) =>
-            options
-                .setName('ephemeral')
-                .setDescription("[OPTIONAL] Whether you want the bot's messages to only be visible by you or not. Defaults to false.")
-                .setRequired(false)),
+        .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
-        const is_ephemeral = interaction.options.getBoolean('ephemeral') || false;
-        await Log('append', interaction.guild.id, `├─ephemeral: ${is_ephemeral}`, 'INFO'); // Logs
-        await interaction.deferReply({ephemeral: is_ephemeral});
+        // await interaction.deferReply();
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -53,7 +46,7 @@ module.exports = {
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
-                await interaction.editReply({embeds: [error_permissions]});
+                await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/ping'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
@@ -63,7 +56,6 @@ module.exports = {
         // Main
         const ping = new MessageEmbed()
             .setColor('YELLOW')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription('ping...');
 
         interaction.channel.send({embeds: [ping]}).then(async pingMessage => {
@@ -78,7 +70,7 @@ module.exports = {
                 .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
 
             pingMessage.delete().catch(console.error);
-            interaction.editReply({embeds: [pong]});
+            interaction.reply({embeds: [pong]});
             await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }
