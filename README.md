@@ -1,2 +1,2 @@
-# Discord-Jerry-Bot
+# Discord-JerryBot
 Do not contribute.
