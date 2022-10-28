@@ -124,7 +124,7 @@ module.exports = {
                 new MessageButton()
                     .setCustomId('ban_cancel_button')
                     .setLabel('Cancel')
-                    .setStyle('PRIMARY')
+                    .setStyle('SECONDARY')
                     .setDisabled(false),
             );
 

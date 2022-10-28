@@ -69,7 +69,7 @@ module.exports = {
                 new MessageButton()
                     .setCustomId('stop_cancel_button')
                     .setLabel('Cancel')
-                    .setStyle('PRIMARY')
+                    .setStyle('SECONDARY')
                     .setDisabled(false)
             );
 

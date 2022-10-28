@@ -123,7 +123,7 @@ module.exports = {
                 new MessageButton()
                     .setCustomId('kick_cancel_button')
                     .setLabel('Cancel')
-                    .setStyle('PRIMARY')
+                    .setStyle('SECONDARY')
                     .setDisabled(false)
             );
 

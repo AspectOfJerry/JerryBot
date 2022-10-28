@@ -51,10 +51,11 @@ async function IniSystemMonitor(_client) {
     const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle('JerryBot System Monitor')
-        .setDescription(`• *Relative timestamps can look out of sync depending on your timezone;\n\n:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
+        .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addField('Checklist', `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, false)
         .addField('Last Heartbeat', `:heartbeat: N/A;`, true)
         .addField('Next expected Heartbeat', `:green_heart: <t:${next_heartbeat_timestamp}:R>;`, true)
+        .setFooter({text: "Relative timestamps can look out of sync depending on your timezone;"})
         .setTimestamp();
 
     messages.push(await channels[0].send({embeds: [embed]}));

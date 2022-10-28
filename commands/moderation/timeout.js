@@ -165,7 +165,7 @@ module.exports = {
                     new MessageButton()
                         .setCustomId('override_cancel_button')
                         .setLabel('Cancel')
-                        .setStyle('PRIMARY')
+                        .setStyle('SECONDARY')
                         .setDisabled(false)
                 );
 
