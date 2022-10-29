@@ -69,7 +69,9 @@ module.exports = async function (client, interaction, voice_channel) {
     const connection = joinVoiceChannel({
         channelId: voice_channel.id,
         guildId: interaction.guild.id,
-        adapterCreator: interaction.guild.voiceAdapterCreator
+        adapterCreator: interaction.guild.voiceAdapterCreator,
+        selfMute: false,
+        selfDeaf: false,
     });
 
     connection.on(VoiceConnectionStatus.Connecting, async () => {
@@ -102,5 +104,18 @@ module.exports = async function (client, interaction, voice_channel) {
 
         await interaction.editReply({embeds: [success_join]});
         await Log('append', interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
+
+        const bot = interaction.guild.members.cache.get(client.user.id);
+
+        if(!bot.voice) {
+            return;
+        }
+
+        if(bot.voice.serverMute) {
+            await bot.voice.setMute(false);
+        }
+        if(bot.voice.serverDeaf) {
+            await bot.voice.setDeaf(false);
+        }
     });
 };

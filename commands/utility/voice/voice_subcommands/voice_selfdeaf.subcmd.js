@@ -60,15 +60,19 @@ module.exports = async function (client, interaction) {
     }
 
     // Main
-    const connection = getVoiceConnection(interaction.guild.id);
+    const bot = interaction.guild.members.cache.get(client.user.id);
 
-    await connection.selfDeaf();
+    if(bot.voice.serverDeaf) {
+        await bot.voice.setDeaf(false);
+    } else {
+        await bot.voice.setDeaf(true);
+    }
 
     const self_deaf = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Voice selfDeaf")
-        .setDescription("Successfully toggled self-deaf.");
+        .setDescription("Successfully toggled deafen.");
 
     await interaction.relpy({embeds: [self_deaf]});
 };

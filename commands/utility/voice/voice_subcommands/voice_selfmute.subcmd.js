@@ -60,16 +60,19 @@ module.exports = async function (client, interaction) {
     }
 
     // Main
-    const connection = getVoiceConnection(interaction.guild.id);
+    const bot = interaction.guild.members.cache.get(client.user.id);
 
-    console.log(connection.joinConfig.selfMute);
-    await connection.joinConfig.selfMute();
+    if(bot.voice.serverMute) {
+        await bot.voice.setMute(false);
+    } else {
+        await bot.voice.setMute(true);
+    }
 
     const self_mute = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Voice selfMute")
-        .setDescription("Successfully toggled self-mute.");
+        .setDescription("Successfully toggled mute.");
 
-    await interaction.relpy({embeds: [self_mute]});
+    await interaction.reply({embeds: [self_mute]});
 };

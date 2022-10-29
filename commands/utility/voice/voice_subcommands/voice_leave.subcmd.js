@@ -80,7 +80,7 @@ module.exports = async function (client, interaction) {
         await Sleep(500);
 
         const success_leave = new MessageEmbed()
-            .setColor('FUCHSIA')
+            .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('VoiceConnection')
             .setDescription(`Successfully left the voice channel.`);
