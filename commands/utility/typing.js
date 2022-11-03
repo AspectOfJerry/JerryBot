@@ -8,15 +8,10 @@ const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('CMD_NAME')
-        .setDescription("CMD_DESCRIPTION")
-        .addStringOption((options) =>
-            options
-                .setName('OPTION_NAME')
-                .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
-                .setRequired(true/false)),
+        .setName('typing')
+        .setDescription("Send the typing indicator to a channel."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/typing'.`, 'INFO'); // Logs
         // interaction.deferUpdate()
 
         // Set minimum execution role
@@ -39,9 +34,8 @@ module.exports = {
         }
 
         // Declaring variables
-        // const target = interaction.options.getUser('user') || interaction.user;
-        // const memberTarget = interaction.guild.members.cache.get(target.id);
-        // await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        const channel = interaction.options.getChannel('channel');
+        await Log('append', interaction.guild.id, `├─channel: '${channel}'`, 'INFO'); // Logs
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -62,6 +56,7 @@ module.exports = {
         // -----END ROLE CHECK-----
 
         // Main
-
+        await channel.sendTyping();
+        await Log('append', interaction.guild.id, `Typing in <#${channel.name}>`, 'INFO'); // Logs
     }
 };
