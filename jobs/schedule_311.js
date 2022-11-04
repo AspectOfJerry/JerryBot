@@ -13,7 +13,7 @@ module.exports = async function (client) {
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        channel.send("<@611633988515266562>, urygufyjbxdldskjdfgjhbsisje");
+        channel.send("<@611633988515266562>, ersiohjjnkuytfyguguyi");
     });
 
     schedule_311.start();
@@ -29,7 +29,7 @@ module.exports = async function (client) {
         .setDescription("Successfully attached the schedule announcer to this channel!")
         .setFooter({text: "Announcement time: 06h45"});
 
-    const delay_ms = 15000;
+    const delay_ms = 10000;
     const now = Math.round(Date.now() / 1000);
     const delay_timestamp = now + (delay_ms / 1000);
 
