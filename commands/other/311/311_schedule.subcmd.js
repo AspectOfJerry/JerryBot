@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, ModalBuilder} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
