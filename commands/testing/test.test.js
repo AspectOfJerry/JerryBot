@@ -40,7 +40,7 @@ module.exports = {
         const description_input = new TextInputComponent()
             .setCustomId('input_description')
             .setLabel("Tell me a bit about yourself!")
-            .setStyle('PARAHRAPH');
+            .setStyle('PARAGRAPH');
 
         const first_row = new MessageActionRow().addComponents(name_input);
         const second_row = new MessageActionRow().addComponents(description_input);
@@ -49,15 +49,19 @@ module.exports = {
 
         await interaction.showModal(test_modal);
 
-        await client.on('interactionCreate', async (interaction) => {
-            if(!interaction.isModalSubmit()) {
+        client.once('interactionCreate', async (modalInteraction) => {
+            if(!modalInteraction.isModalSubmit()) {
                 return;
             }
 
-            const input_name = interaction.fields.getTextInputValue('name_input')
-            const input_description = interaction.fields.getTextInputValue('description_input')
+            if(modalInteraction.customId == 'test_modal') {
+                const input_name = modalInteraction.fields.getTextInputValue('input_name')
+                const input_description = modalInteraction.fields.getTextInputValue('input_description')
 
-            await interaction.reply(`Your name is ${input_name}. Description: ${input_description}`)
+                console.log(input_name, input_description)
+
+                await modalInteraction.reply(`Your name is ${input_name}. Description: ${input_description}`);
+            }
         });
     }
 };
