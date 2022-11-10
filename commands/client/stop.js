@@ -55,8 +55,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/stop'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
 
         // Main
         let row = new MessageActionRow()

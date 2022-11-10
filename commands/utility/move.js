@@ -70,8 +70,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/move'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(!memberTarget.voice.channel) {
             const user_not_in_vc = new MessageEmbed()
                 .setColor('RED')

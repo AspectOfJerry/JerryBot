@@ -15,7 +15,7 @@ module.exports = async function (client) {
 
     const heartbeat = new CronJob('* * * * *', async () => { // Interval of 1 minute
         try {
-            await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+            await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`, {method: 'POST'})
                 .then(async () => {
                     await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to the status page.`, 'DEBUG'); // Logs
                     const now = Math.round(Date.now() / 1000);

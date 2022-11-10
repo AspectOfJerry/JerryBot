@@ -55,8 +55,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/tictactoe'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
 
         // Main
         await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO'); // Logs

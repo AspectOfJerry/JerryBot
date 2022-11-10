@@ -64,8 +64,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/weather'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
 
         // Main
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {

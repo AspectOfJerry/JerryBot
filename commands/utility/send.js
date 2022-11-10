@@ -65,8 +65,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/send'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(memberTarget.user.bot) {
             const error_cannot_message_bot = new MessageEmbed()
                 .setColor('RED')

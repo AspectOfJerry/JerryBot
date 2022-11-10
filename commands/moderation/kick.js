@@ -63,8 +63,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/kick'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_use_on_self = new MessageEmbed()
                 .setColor('RED')

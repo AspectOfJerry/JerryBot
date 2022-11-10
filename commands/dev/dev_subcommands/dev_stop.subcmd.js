@@ -5,12 +5,40 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
+const stop_json_payload = require('./data/dev_stop_pause_payload.json');
+
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
 
     // Whitelist
+    const whitelist = ["611633988515266562"]
+
+    let isWhitelisted = false;
+
+    for(let userId in whitelist) {
+        if(interaction.user.id == userId) {
+            isWhitelisted = true;
+            break;
+        }
+        continue;
+    }
+
+    // -----BEGIN PERMISSION CHECK-----
+    if(!isWhitelisted) {
+        const error_whitelist = new MessageEmbed()
+            .setColor('RED')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('PermissionError')
+            .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+            .setFooter({text: `You are not whitelisted to use this command.`});
+
+        await interaction.reply({embeds: [error_whitelist]});
+        await Log('append', interaction.guild.id, `└─'${interaction.user.id}' was not whitelisted to use '/dev stop'. [error_permissions]`, 'WARN'); // Logs
+        return;
+    } // -----END PERMISSION CHECK-----
 
     // Declaring variables
+    const payload_body = null;
 
     // Checks
 

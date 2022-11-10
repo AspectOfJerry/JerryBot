@@ -66,8 +66,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/slowmode'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(channel.type !== 'GUILD_TEXT') {
             const error_not_text_channel = new MessageEmbed()
                 .setColor('RED')

@@ -54,8 +54,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/disconnectall'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(!voice_channel) {
             if(!interaction.member.voice.channel) {
                 const not_in_vc = new MessageEmbed()

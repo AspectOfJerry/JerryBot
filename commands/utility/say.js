@@ -69,8 +69,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/say'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        }
-        // -----END ROLE CHECK-----
+        } // -----END ROLE CHECK-----
         if(!channel.isText()) {
             const error_require_text_based_channel = new MessageEmbed()
                 .setColor('RED')
