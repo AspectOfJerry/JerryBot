@@ -5,8 +5,6 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
 const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
-const stop_json_payload = require('./data/dev_stop_pause_payload.json');
-
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
 
@@ -43,5 +41,5 @@ module.exports = async function (client, interaction) {
     // Checks
 
     // Main
-
+    await interaction("This command is currently under development.");
 };
