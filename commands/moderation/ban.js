@@ -66,13 +66,13 @@ module.exports = {
             }
         } // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
-            const error_cannot_use_on_self = new MessageEmbed()
+            const error_target_self = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot ban yourself.');
 
-            interaction.reply({embeds: [error_cannot_use_on_self]});
+            interaction.reply({embeds: [error_target_self]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN'); // Logs
             return;
         }

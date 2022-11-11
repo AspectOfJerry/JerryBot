@@ -64,13 +64,13 @@ module.exports = {
             }
         } // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
-            const error_cannot_use_on_self = new MessageEmbed()
+            const error_target_self = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
-            await interaction.reply({embeds: [error_cannot_use_on_self]});
+            await interaction.reply({embeds: [error_target_self]});
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
