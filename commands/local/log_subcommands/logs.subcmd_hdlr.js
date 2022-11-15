@@ -1,8 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -59,7 +59,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./log_subcommands/logs_append.subcmd')(client, interaction, string, object);
+                require('./logs_append.subcmd')(client, interaction, string, object);
             }
                 break;
             case 'read': {
@@ -71,7 +71,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./log_subcommands/logs_read.subcmd')(client, interaction, line_offset);
+                require('./logs_read.subcmd')(client, interaction, line_offset);
             }
                 break;
             case 'get': {
@@ -83,7 +83,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./log_subcommands/logs_get.subcmd')(client, interaction, day_offset);
+                require('./logs_get.subcmd')(client, interaction, day_offset);
             }
                 break;
             default:

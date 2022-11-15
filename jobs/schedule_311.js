@@ -3,8 +3,8 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
 
-const Sleep = require('../modules/sleep'); // dedlayInMilliseconds;
-const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../modules/sleep.js'); // dedlayInMilliseconds;
+const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('45 06 * * *', async () => { // Interval of 1 day, at 06h45

@@ -2,26 +2,26 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO'); // Logs
     // await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {
         case process.env.DISCORD_JERRY_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "PL3";
             break;
         case process.env.DISCORD_GOLDFISH_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "staff";
             break;
         case process.env.DISCORD_CRA_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "PL3";
             break;
         case process.env.DISCORD_311_GUILD_ID:
-            var MINIMUM_EXECUTION_ROLE = null;
+            var MINIMUM_EXECUTION_ROLE = "PL1";
             break;
         default:
             await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
@@ -42,20 +42,13 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice leave'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice selfdeaf'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
     }
     // -----END ROLE CHECK-----
-    const fetching_connection = new MessageEmbed()
-        .setColor('YELLOW')
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('VoiceConnection')
-        .setDescription("Fetching voice connections in this guild...");
-
-    await interaction.reply({embeds: [fetching_connection]});
-    const connection = getVoiceConnection(interaction.guild.id);
-    if(!connection) {
+    const _connection = getVoiceConnection(interaction.guild.id);
+    if(!_connection) {
         const error_not_in_vc = new MessageEmbed()
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -67,26 +60,19 @@ module.exports = async function (client, interaction) {
     }
 
     // Main
-    connection.on(VoiceConnectionStatus.Destroyed, async () => {
-        const connection_destroyed = new MessageEmbed()
-            .setColor('FUCHSIA')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('VoiceConnection')
-            .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
+    const bot = interaction.guild.members.cache.get(client.user.id);
 
-        await interaction.editReply({embeds: [connection_destroyed]});
-        await Log('append', interaction.guild.id, `├─Destroyed. The connection to the voice channel has been destroyed.`, 'INFO'); // Logs
+    if(bot.voice.serverDeaf) {
+        await bot.voice.setDeaf(false);
+    } else {
+        await bot.voice.setDeaf(true);
+    }
 
-        await Sleep(500);
+    const self_deaf = new MessageEmbed()
+        .setColor('GREEN')
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setTitle("Voice selfDeaf")
+        .setDescription("Successfully toggled deafen.");
 
-        const success_leave = new MessageEmbed()
-            .setColor('GREEN')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('VoiceConnection')
-            .setDescription(`Successfully left the voice channel.`);
-
-        await interaction.editReply({embeds: [success_leave]});
-        await Log('append', interaction.guild.id, `└─Successfully left the voice channel.`, 'INFO'); // Logs
-    });
-    connection.destroy();
+    await interaction.relpy({embeds: [self_deaf]});
 };

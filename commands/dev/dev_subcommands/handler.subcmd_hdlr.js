@@ -2,8 +2,8 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -33,7 +33,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./dev_subcommands/dev_stop.subcmd')(client, interaction);
+                require('./dev_stop.subcmd')(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {

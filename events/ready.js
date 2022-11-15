@@ -1,8 +1,8 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const Sleep = require('../modules/sleep'); // delayInMilliseconds
-const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 const {ChecklistBotReady, IniSystemMonitor} = require('../modules/system_monitor');
 const StartJobs = require('../modules/start_jobs');
 

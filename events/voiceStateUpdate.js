@@ -1,7 +1,7 @@
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../modules/sleep'); // delayInMilliseconds
-const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     name: "voiceStateUpdate",

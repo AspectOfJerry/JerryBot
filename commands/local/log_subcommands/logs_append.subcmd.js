@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 
-const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction, string, object) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/logs append'.`, 'INFO'); // Logs

@@ -2,11 +2,11 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice selfdeaf'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO'); // Logs
     // await interaction.deferReply();
 
     // Set minimum execution role
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice selfdeaf'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/voice selmute'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
     }
@@ -53,7 +53,7 @@ module.exports = async function (client, interaction) {
             .setColor('RED')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Error')
-            .setDescription("The bot is not in a voice channel.");
+            .setDescription("The bot is not in a voice channel.")
 
         await interaction.reply({embeds: [error_not_in_vc]});
         return;
@@ -62,17 +62,17 @@ module.exports = async function (client, interaction) {
     // Main
     const bot = interaction.guild.members.cache.get(client.user.id);
 
-    if(bot.voice.serverDeaf) {
-        await bot.voice.setDeaf(false);
+    if(bot.voice.serverMute) {
+        await bot.voice.setMute(false);
     } else {
-        await bot.voice.setDeaf(true);
+        await bot.voice.setMute(true);
     }
 
-    const self_deaf = new MessageEmbed()
+    const self_mute = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle("Voice selfDeaf")
-        .setDescription("Successfully toggled deafen.");
+        .setTitle("Voice selfMute")
+        .setDescription("Successfully toggled mute.");
 
-    await interaction.relpy({embeds: [self_deaf]});
+    await interaction.reply({embeds: [self_mute]});
 };

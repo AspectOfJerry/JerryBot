@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 
-const Sleep = require('../modules/sleep'); // delayInMilliseconds
-const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 require('dotenv').config();
 const process = require('process');

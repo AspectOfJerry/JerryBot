@@ -1,4 +1,4 @@
-const Sleep = require('../../../../modules/sleep'); // delayInMilliseconds
+const Sleep = require('../../../../modules/sleep.js'); // delayInMilliseconds
 
 const date = require('date-and-time');
 

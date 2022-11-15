@@ -1,8 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,7 +23,6 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
 
         // Checks
-        /*none*/
 
         // Main
         switch(subcommand) {
@@ -36,7 +35,7 @@ module.exports = {
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 interaction.reply("This command is currently unavailable.")
                 return;
-                require('./nasa_subcommands/nasa_api.subcmd')(client, interaction);
+                require('./nasa_api.subcmd.js')(client, interaction);
 
             }
                 break;
@@ -47,7 +46,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./nasa_subcommands/nasa_apod.subcmd')(client, interaction);
+                require('./nasa_apod.subcmd.js')(client, interaction);
             }
                 break;
             default:

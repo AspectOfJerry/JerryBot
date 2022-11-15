@@ -1,5 +1,5 @@
-const Sleep = require('../modules/sleep'); // delayInMilliseconds
-const Log = require('../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 const {ChecklistJobsStarted} = require('../modules/system_monitor');
 
 async function StartJobs(client) {

@@ -2,8 +2,8 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const Sleep = require('../../../modules/sleep'); // delayInMilliseconds
-const Log = require('../../../modules/logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
+const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,12 +24,12 @@ module.exports = {
                 .setDescription("Leaves the voice channel."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('selfmute')
-                .setDescription("Toggles self-mute."))
+                .setName('mute')
+                .setDescription("Toggles server-mute on the bot."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('selfdeaf')
-                .setDescription("Toggles self-deaf.")),
+                .setName('deaf')
+                .setDescription("Toggles server-deaf on the bot.")),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO'); // Logs
 
@@ -47,7 +47,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_subcommands/voice_join.subcmd')(client, interaction, voice_channel);
+                require('./voice_join.subcmd')(client, interaction, voice_channel);
             }
                 break;
             case 'leave': {
@@ -57,27 +57,27 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_subcommands/voice_leave.subcmd')(client, interaction);
+                require('./voice_leave.subcmd')(client, interaction);
             }
                 break;
             case 'selfmute': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfmute'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO'); // Logs
 
                 // Declaring variables
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_subcommands/voice_selfmute.subcmd')(client, interaction,);
+                require('./voice_selfmute.subcmd')(client, interaction,);
             }
                 break;
             case 'selfdeaf': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice selfdeaf'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO'); // Logs
 
                 // Declaring variables
 
                 // Calling the subcommand file
                 await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_subcommands/voice_selfdeaf.subcmd')(client, interaction,);
+                require('./voice_selfdeaf.subcmd')(client, interaction,);
             }
                 break;
             default:
