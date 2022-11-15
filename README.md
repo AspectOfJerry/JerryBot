@@ -13,31 +13,31 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │  │  ├─ aspectofjerry
 │  │  │  ├─ [...] .js
 │  │  ├─ hypixel_subcommands
+│  │  │  ├─ hypixel.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ hypixel.subcmd_hdlr.js
 │  │  ├─ nasa_subcommands
+│  │  │  ├─ nasa.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ nasa.subcmd_hdlr.js
 │  │  ├─ [...] .js
 │  ├─ client                    <-
 │  │  ├─ ping.js
 │  │  ├─ status.js
 │  │  └─ stop.js
 │  ├─ config                    <-
-│  │  ├─ config_subcommands
-│  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ config.subcmd_hdlr.js
+│  │  └─ config_subcommands
+│  │     ├─ config.subcmd_hdlr.js
+│  │     ├─ [...] .subcmd.js
 │  ├─ dev                       <-
 │  │  └─ dev_subcommands
+│  │     ├─ dev.subcmd_hdlr.js
 │  │     ├─ [...] .subcmd.js
-│  │     └─ dev.subcmd_hdlr.js
 │  ├─ local
 │  │  ├─ log_subcommands
+│  │  │  ├─ logs.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ logs.subcmd_hdlr.js
 │  │  ├─ stats_subcommand
+│  │  │  ├─ stats.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ stats.subcmd_hdlr.js
 │  │  ├─ [...] .js
 │  ├─ moderation
 │  ├─ [...] .js
@@ -46,18 +46,18 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │  │  │  ├─ database
 │  │  │  │  ├─ dbms.js
 │  │  │  │  ├─ [...] .json
+│  │  │  ├─ 311.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
-│  │  │  └─ 311.subcmd_hdlr.js
 │  │  ├─ [...] .js
 │  ├─ testing                   <-
-│  │  ├─ test.test.js
+│  │  └─ test.test.js
 │  └─ utility                   <-
 │     ├─ voice_subcommands
+│     │  ├─ voice.subcmd_hdlr.js
 │     │  ├─ voice_deaf.subcmd.js
 │     │  ├─ voice_join.subcmd.js
 │     │  ├─ voice_leave.subcmd.js
-│     │  ├─ voice_mute.subcmd.js
-│     │  └─ voice.subcmd_hdlr.js
+│     │  └─ voice_mute.subcmd.js
 │     ├─ [...] .js
 ├─ events
 │  ├─ [...] .js
