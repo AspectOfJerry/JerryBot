@@ -47,5 +47,5 @@ module.exports = async function (client, interaction) {
     // -----END ROLE CHECK-----
 
     // Main
-    await interaction.reply({content: "This command is currently unavailable."});
+    await interaction.editReply({content: "This command is currently unavailable."});
 };

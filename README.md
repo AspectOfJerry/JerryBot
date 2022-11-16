@@ -10,8 +10,6 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 [Repo]
 ├─ commands                     -> command files
 │  ├─ api                       <-
-│  │  ├─ aspectofjerry
-│  │  │  ├─ [...] .js
 │  │  ├─ hypixel_subcommands
 │  │  │  ├─ hypixel.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
@@ -20,6 +18,7 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │  │  │  ├─ [...] .subcmd.js
 │  │  ├─ [...] .js
 │  ├─ client                    <-
+│  │  ├─ info.js
 │  │  ├─ ping.js
 │  │  ├─ status.js
 │  │  └─ stop.js
@@ -59,12 +58,12 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │     │  ├─ voice_leave.subcmd.js
 │     │  └─ voice_mute.subcmd.js
 │     ├─ [...] .js
-├─ events
+├─ events                       -> event files
 │  ├─ [...] .js
 ├─ jobs                         -> cron jobs
 │  ├─ heartbeat.js
 │  ├─ [...] .js
-├─ logs                         -> logs output
+├─ logs                         -> logs output directory
 │  ├─ digest
 │  │  ├─ .gitignore
 │  │  ├─ [...] .log
@@ -76,9 +75,9 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │  ├─ sleep.js
 │  ├─ start_jobs.js
 │  └─ system_monitor.js
-├─ templates
-│  ├─ [...] template.js
-├─ .env.template                -> empty .env template
+├─ templates                    -> code template files
+│  ├─ [...] .template.js
+├─ .env.template                -> empty .env template file
 ├─ .gitignore
 ├─ README.md
 ├─ index.js                     -> entrypoint

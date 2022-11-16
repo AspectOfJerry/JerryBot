@@ -53,6 +53,7 @@ module.exports = async function (client, interaction) {
     // Main
     const embed = new MessageEmbed()
         .setColor('BLUE')
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('System Statistics')
         .setDescription('Here are some statistics about the server running the bot.')
         .addField('Operating System', `${os.version()} (${os.type()}) ${os.release()}`, false)
