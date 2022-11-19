@@ -23,25 +23,36 @@ module.exports = {
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
 
+        // Checks
+        if(interaction.guild.id != '1014278986135781438') {
+            const cmd_not_avail_in_guild = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription("This command is not available in this guild!");
+
+            await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
+            return;
+        }
+
         // Main
         switch(subcommand) {
             case 'schedule': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./311_schedule.subcmd')(client, interaction);
             }
                 break;
             case 'weather': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./311_weather.subcmd')(client, interaction);
             }
                 break;

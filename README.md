@@ -48,8 +48,8 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 │  │  │  ├─ 311.subcmd_hdlr.js
 │  │  │  ├─ [...] .subcmd.js
 │  │  ├─ [...] .js
-│  ├─ testing                   <-
-│  │  └─ test.test.js
+│  ├─ tests                     <-
+│  │  ├─ [...] .test.js
 │  └─ utility                   <-
 │     ├─ voice_subcommands
 │     │  ├─ voice.subcmd_hdlr.js

@@ -33,25 +33,27 @@ module.exports = {
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
 
+        // Checks
+
         // Main
         switch(subcommand) {
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./FILE.subcmd.js')(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./FILE.subcmd.js')(client, interaction);
             }
                 break;

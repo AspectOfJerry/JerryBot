@@ -40,7 +40,7 @@ module.exports = async function (client, interaction, string, object) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/logs append'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/logs append'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
     }

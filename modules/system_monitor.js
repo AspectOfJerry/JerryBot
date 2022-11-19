@@ -35,7 +35,7 @@ async function ChecklistHeartbeatSynced() {
 }
 
 
-async function IniSystemMonitor(_client) {
+async function InitSystemMonitor(_client) {
     client = _client;
     guilds.push(await client.guilds.fetch('631939549332897842')); // devServer guild
     channels.push(await guilds[0].channels.fetch('1030988308202922084')); // system-monitor channel in devServer guild
@@ -140,7 +140,7 @@ module.exports = {
     ChecklistBotReady,
     ChecklistJobsStarted,
     ChecklistHeartbeatSynced,
-    IniSystemMonitor,
+    InitSystemMonitor,
     UpdateEmbeds,
     UpdateHeartbeat,
     UpdateTimestamp,

@@ -27,12 +27,12 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'api': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 interaction.reply("This command is currently unavailable.")
                 return;
                 require('./nasa_api.subcmd.js')(client, interaction);
@@ -40,12 +40,12 @@ module.exports = {
             }
                 break;
             case 'apod': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
 
-                // Declaring variables                
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./nasa_apod.subcmd.js')(client, interaction);
             }
                 break;

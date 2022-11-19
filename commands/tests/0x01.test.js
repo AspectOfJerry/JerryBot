@@ -8,26 +8,30 @@ const Log = require('../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LO
 
 const date = require('date-and-time');
 
+const test_label = "0x01";
+
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('test')
-        .setDescription("Test command")
+        .setName(`test-${test_label}`)
+        .setDescription(`[TEST/${test_label}] models test`)
         .addUserOption((options) =>
             options
                 .setName('user')
                 .setDescription("[OPTIONAL] User to test")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/test'.`, 'INFO'); // Logs
-        // Declaring variables
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        await interaction.channel.send(`Executing Test ${test_label}...`);
+        await Sleep(100);
+        // Declaring variables 
+        let testFailureCount = 0;
+
         let target = interaction.options.getUser('user') || interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks
 
         // Main
-        // interaction.reply("Nothing here...");
-
         const test_modal = new Modal()
             .setCustomId('test_modal')
             .setTitle('Test modal!');

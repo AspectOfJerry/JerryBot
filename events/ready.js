@@ -3,7 +3,8 @@ const {Routes} = require('discord-api-types/v9');
 
 const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
 const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
-const {ChecklistBotReady, IniSystemMonitor} = require('../modules/system_monitor');
+const {ChecklistBotReady, InitSystemMonitor} = require('../modules/system_monitor');
+const InitNukeNotifier = require('../modules/nuking_notifier');
 const StartJobs = require('../modules/start_jobs');
 
 require('dotenv').config();
@@ -16,11 +17,14 @@ module.exports = {
         console.log("JerryBot is now online.");
 
         // System Monitor
-        await IniSystemMonitor(client);
+        await InitSystemMonitor(client);
 
         // Jobs
         await Log('append', 'start_jobs', `[StartJobs] Starting jobs...`, 'DEBUG'); // Logs
         await StartJobs(client);
+
+        // Other
+        await InitNukeNotifier(client);
 
         // Registering commands
         console.log("Registering the commands...");
@@ -39,17 +43,17 @@ module.exports = {
             console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
             await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
+            // await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+            // await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
+            // await Sleep(1000);
         } catch(err) {
             if(err) {
                 console.error(err);

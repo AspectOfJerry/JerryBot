@@ -45,20 +45,11 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to use '/311 schedule'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/311 schedule'. [error_permissions]`, 'WARN'); // Logs
             return;
         }
     }
     // -----END ROLE CHECK-----
-    if(interaction.guild.id != "1014278986135781438") {
-        const cmd_not_avail_in_guild = new MessageEmbed()
-            .setColor('RED')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("This command is not available in this guild!");
-
-        await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
-        return;
-    }
 
     // Main
     let jour = await GetJourByDate();

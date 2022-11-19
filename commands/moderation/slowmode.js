@@ -63,10 +63,11 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/slowmode'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/slowmode'. [error_permissions]`, 'WARN'); // Logs
                 return;
             }
-        } // -----END ROLE CHECK-----
+        }
+        // -----END ROLE CHECK-----
         if(channel.type !== 'GUILD_TEXT') {
             const error_not_text_channel = new MessageEmbed()
                 .setColor('RED')

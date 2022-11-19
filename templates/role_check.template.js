@@ -9,7 +9,7 @@ if(MINIMUM_EXECUTION_ROLE !== null) {
             .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
         await interaction.editReply({embeds: [error_permissions]});
-        await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use '/CMD_NAME'. [error_permissions]`, 'WARN'); // Logs
+        await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/CMD_NAME'. [error_permissions]`, 'WARN'); // Logs
         return;
     }
 }

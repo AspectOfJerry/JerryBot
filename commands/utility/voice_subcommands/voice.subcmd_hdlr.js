@@ -16,7 +16,7 @@ module.exports = {
                 .addChannelOption((options) =>
                     options
                         .setName('channel')
-                        .setDescription("[OPTIONAL]The channel to join. Defaults to your current voice channel.")
+                        .setDescription("[OPTIONAL] The channel to join. Defaults to your current voice channel.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
@@ -39,45 +39,43 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'join': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
 
-                // Declaring variables
-                const voice_channel = interaction.options.getChannel('channel') || interaction.member.voice.channel;
-                await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_join.subcmd')(client, interaction, voice_channel);
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                require('./voice_join.subcmd')(client, interaction);
             }
                 break;
             case 'leave': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./voice_leave.subcmd')(client, interaction);
             }
                 break;
             case 'selfmute': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_selfmute.subcmd')(client, interaction,);
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                require('./voice_selfmute.subcmd')(client, interaction);
             }
                 break;
             case 'selfdeaf': {
-                await Log('append', "subcmd_hdlr", `└─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO'); // Logs
+                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO'); // Logs
 
-                // Declaring variables
+                // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `└─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./voice_selfdeaf.subcmd')(client, interaction,);
+                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                require('./voice_selfdeaf.subcmd')(client, interaction);
             }
                 break;
             default:
