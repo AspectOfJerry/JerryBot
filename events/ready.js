@@ -43,17 +43,17 @@ module.exports = {
             console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
             await Sleep(1000);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
-            // await Sleep(1000);
+            await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+            console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
+            await Sleep(1000);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-            // await Sleep(1000);
+            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
+            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+            await Sleep(1000);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
-            // await Sleep(1000);
+            await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+            console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
+            await Sleep(1000);
         } catch(err) {
             if(err) {
                 console.error(err);
