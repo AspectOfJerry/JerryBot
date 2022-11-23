@@ -64,7 +64,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/slowmode'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         }
         // -----END ROLE CHECK-----
@@ -76,7 +76,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_not_text_channel]});
             await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}). [error_not_text_channel]`, 'WARN'); // Logs
-            return;
+            return 10;
         }
 
         // Main
@@ -91,7 +91,7 @@ module.exports = {
                     await interaction.reply({embeds: [disabled_slowmode]});
                     await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
                 });
-            return;
+            return 0;
         }
 
         channel.setRateLimitPerUser(duration, reason)
@@ -105,5 +105,6 @@ module.exports = {
                 await interaction.reply({embeds: [enabled_slowmode]});
                 await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
             });
+        return 0;
     }
 };

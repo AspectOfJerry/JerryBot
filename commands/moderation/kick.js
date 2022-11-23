@@ -61,7 +61,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/kick'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         }
         // -----END ROLE CHECK-----
@@ -129,20 +129,20 @@ module.exports = {
 
         let isOverriddenText = "";
 
+        const now = Math.round(Date.now() / 1000);
+        const auto_cancel_timestamp = now + 10;
+
         const confirm_kick = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
-            .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            .addFields(
+                {name: 'Auto cancel', value: `> Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
         await interaction.reply({embeds: [confirm_kick], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
-
-        const now = Math.round(Date.now() / 1000);
-        const auto_delete_timestamp = now + 10;
-
-        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${auto_delete_timestamp}:R>*.`});
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
@@ -214,8 +214,6 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await autoCancelTimerMessage.delete();
-
             if(collected.size === 0) {
                 // Disabling buttons
                 row.components[0]

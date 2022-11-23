@@ -18,7 +18,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('duration')
-                .setDescription("[REQUIRED] The duration of the timeout.")
+                .setDescription("[REQUIRED] The duration of the timeout (s, m, h, d). Examples: 1s, 1m, 1h, 1d")
                 .setRequired(true))
         .addStringOption((options) =>
             options
@@ -73,7 +73,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/timeout'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         }
         // -----END ROLE CHECK-----
@@ -86,7 +86,7 @@ module.exports = {
 
             interaction.reply({embeds: [error_cannot_timeout_self]});
             await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves. [error_cannot_timeout_self]`, 'WARN'); // Logs
-            return;
+            return 10;
         }
         if(!duration_in_ms) {
             const error_duration = new MessageEmbed()
@@ -94,11 +94,13 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('Invalid duration. Please use a valid duration.')
-                .addField("Examples", "1s *(min)*, 5m, 1h, 30d *(max)*");
+                .addFields(
+                    {name: 'Examples', value: "1s *(minimum)*, 5m, 1h, 30d *(maximum)*", inline: true}
+                );
 
             interaction.reply({embeds: [error_duration]});
             await Log('append', interaction.guild.id, `└─Invalid duration.`); // Logs
-            return;
+            return 10;
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
@@ -110,7 +112,7 @@ module.exports = {
 
             interaction.reply({embeds: [error_role_too_low]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
-            return;
+            return 10;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
@@ -121,7 +123,7 @@ module.exports = {
 
             interaction.reply({embeds: [error_equal_roles]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
-            return;
+            return 10;
         }
         // -----END HIERARCHY CHECK-----
         // Check if memberTarget has the ADMINISTRATOR permission flag
@@ -134,7 +136,7 @@ module.exports = {
 
             await interaction.reply({embeds: [member_not_moderatable]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'FATAL'); // Logs
-            return;
+            return 10;
         }
 
         // Main
@@ -147,7 +149,10 @@ module.exports = {
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("User timeout")
-                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                        .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
+                        .addFields(
+                            {value: 'Timeout expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
+                        )
                         .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
                     interaction.reply({embeds: [success_timeout]});
@@ -171,33 +176,33 @@ module.exports = {
 
             let isOverriddenText = "";
 
+            const now = Math.round(Date.now() / 1000);
+            const auto_cancel_timestamp = now + 15;
+
             const confirm_override = new MessageEmbed()
                 .setColor('YELLOW')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Overrite timeout`)
                 .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
-                .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                .addFields(
+                    {name: 'Auto cancel', value: `> Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+                ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
             await interaction.reply({embeds: [confirm_override], components: [row]});
             await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
-
-            const now = Math.round(Date.now() / 1000);
-            const auto_delete_timestamp = now + 15;
-
-            let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${auto_delete_timestamp}:R>*.`});
 
             // Creating a filter for the collector
             const filter = async (buttonInteraction) => {
                 if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                     isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
                     await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
-                    return true;
+                    return true; // Reserved return, no return code
                 } else if(buttonInteraction.user.id == interaction.user.id) {
-                    return true;
+                    return true; // Reserved return, no return code
                 } else {
                     await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
                     await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
-                    return;
+                    return; // Reserved return, no return code
                 }
             };
 
@@ -250,8 +255,6 @@ module.exports = {
             });
 
             button_collector.on('end', async collected => {
-                await autoCancelTimerMessage.delete();
-
                 if(collected.size === 0) {
                     // Disabling buttons
                     row.components[0]
@@ -271,5 +274,6 @@ module.exports = {
                 }
             });
         }
+        return 0;
     }
 };

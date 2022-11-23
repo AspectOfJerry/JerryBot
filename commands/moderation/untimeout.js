@@ -47,6 +47,7 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
 
         let reason = interaction.options.getString('reason');
+
         // Checks
         // -----BEGIN ROLE CHECK-----
         if(MINIMUM_EXECUTION_ROLE !== null) {
@@ -60,7 +61,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/untimeout'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 5;
             }
         }
         // -----END ROLE CHECK-----
@@ -72,7 +73,7 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             await interaction.reply({embeds: [error_target_self]});
-            return;
+            return 5;
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
@@ -83,7 +84,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low]});
-            return;
+            return 5;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
@@ -93,23 +94,34 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles]});
-            return;
+            return 5;
         }
         // -----END HIERARCHY CHECK-----
         // Main
+        reason = reason ? ` \n**Reason:** ${reason}` : "";
+
         if(!memberTarget.isCommunicationDisabled()) {
             const member_not_timed_out = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<@${memberTarget.user.id}> is not timed out.`)
-                .setFooter({text: "Attempting to remove timeout anyway..."})
+                .setFooter({text: "Clearing timeout anyway..."})
 
             await interaction.reply({embeds: [member_not_timed_out]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to remove timeout anyway.`, 'WARN'); // Logs
-            return;
-        }
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to clear timeout anyway.`, 'WARN'); // Logs
 
-        reason = reason ? ` \n**Reason:** ${reason}` : "";
+            memberTarget.timeout(null, reason)
+                .then(async timeoutResult => {
+                    const success_untimeout = new MessageEmbed()
+                        .setColor('GREEN')
+                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                        .setTitle("User untimeout")
+                        .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
+
+                    await interaction.editReply({embeds: [success_untimeout]});
+                });
+            return 0;
+        }
 
         memberTarget.timeout(null, reason)
             .then(async timeoutResult => {
@@ -119,7 +131,8 @@ module.exports = {
                     .setTitle("User untimeout")
                     .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
 
-                await interaction.editReply({embeds: [success_untimeout]});
+                await interaction.reply({embeds: [success_untimeout]});
             });
+        return 0;
     }
 };
