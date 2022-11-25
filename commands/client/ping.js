@@ -33,7 +33,7 @@ module.exports = {
 
         // Declaring variables
         let clientLatency = null;
-        let WebSocketLatency = null;
+        let webSocketLatency = null;
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -54,23 +54,24 @@ module.exports = {
 
         // Main
         const ping = new MessageEmbed()
-            .setColor('YELLOW')
             .setDescription('ping...');
 
-        interaction.channel.send({embeds: [ping]}).then(async pingMessage => {
+        interaction.channel.send({embeds: [ping]}).then(pingMessage => {
             clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
-            WebSocketLatency = client.ws.ping;
+            webSocketLatency = client.ws.ping;
 
             const pong = new MessageEmbed()
                 .setColor('GREEN')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
-                .addField(`Bot latency`, `~${clientLatency}ms`, true)
-                .addField(`DiscordJS API latency`, `~${WebSocketLatency}ms`, true);
+                .addFields(
+                    {name: 'Bot latency', value: `~${clientLatency}`, inline: true},
+                    {name: 'DiscordJS latency', value: `~${webSocketLatency}`, inline: true}
+                );
 
-            pingMessage.delete().catch(console.error);
             interaction.reply({embeds: [pong]});
-            await Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
+            pingMessage.delete().catch(console.error);
+            Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${WebSocketLatency}ms;`, 'INFO'); // Logs
         });
     }
 };

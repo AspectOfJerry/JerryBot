@@ -133,6 +133,5 @@ module.exports = {
 
                 await interaction.reply({embeds: [success_untimeout]});
             });
-        return 0;
     }
 };

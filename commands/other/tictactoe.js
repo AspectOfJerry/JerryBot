@@ -76,7 +76,9 @@ module.exports = {
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Restart?')
-            .setDescription(`Do you want to have a rematch with ${opponent}`)
+            .addFields(
+                {name: "Auto cancel", value: ``, inline: true})
+            .setDescription(`Do you want to have a rematch with ${opponent}?`)
 
         await interaction.followUp({embeds: [restart_message], components: [row]});
     }

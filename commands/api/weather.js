@@ -67,6 +67,9 @@ module.exports = {
         } // -----END ROLE CHECK-----
 
         // Main
+        await interaction.editReply({content: "This command is currently under rework."});
+        return 5;
+
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {
             if(error) {
                 console.error(error);

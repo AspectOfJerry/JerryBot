@@ -85,7 +85,7 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_timeout_self]});
-            await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves. [error_cannot_timeout_self]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves.`, 'WARN'); // Logs
             return 10;
         }
         if(!duration_in_ms) {
@@ -95,7 +95,7 @@ module.exports = {
                 .setTitle('Error')
                 .setDescription('Invalid duration. Please use a valid duration.')
                 .addFields(
-                    {name: 'Examples', value: "1s *(minimum)*, 5m, 1h, 30d *(maximum)*", inline: true}
+                    {name: 'Valid examples', value: "1s *(minimum)*, 5m, 1h, 30d *(maximum)*", inline: true}
                 );
 
             interaction.reply({embeds: [error_duration]});
@@ -126,7 +126,6 @@ module.exports = {
             return 10;
         }
         // -----END HIERARCHY CHECK-----
-        // Check if memberTarget has the ADMINISTRATOR permission flag
         if(!memberTarget.moderatable) {
             const member_not_moderatable = new MessageEmbed()
                 .setColor('FUCHSIA')
@@ -135,7 +134,7 @@ module.exports = {
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
 
             await interaction.reply({embeds: [member_not_moderatable]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'FATAL'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'ERROR'); // Logs
             return 10;
         }
 
@@ -155,11 +154,11 @@ module.exports = {
                         )
                         .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                    interaction.reply({embeds: [success_timeout]});
+                    await interaction.reply({embeds: [success_timeout]});
                     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                 });
         } else {
-            // Add an override option if the member is already timed out
+            // Override option if the member is already timed out
             let row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
@@ -230,9 +229,12 @@ module.exports = {
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                                 .setTitle("User timeout override")
                                 .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                                .addFields(
+                                    {value: 'Time out expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
+                                )
                                 .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                            interaction.editReply({embeds: [success_timeout], components: [row]});
+                            await interaction.editReply({embeds: [success_timeout], components: [row]});
                             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
                         });
                 } else {
@@ -274,6 +276,5 @@ module.exports = {
                 }
             });
         }
-        return 0;
     }
 };

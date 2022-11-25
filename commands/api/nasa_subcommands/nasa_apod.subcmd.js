@@ -61,7 +61,7 @@ module.exports = async function (client, interaction) {
     // API request
     await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
         .then(res => res.json())
-        .then(res => {
+        .then(async res => {
             if(res.error) {
                 const request_error = new MessageEmbed()
                     .setColor('RED')
@@ -71,7 +71,7 @@ module.exports = async function (client, interaction) {
                     .addField(`Error code:`, `${res.error.code}`, false)
                     .addField(`Description`, `${res.error.message}`, false);
 
-                interaction.editReply({embeds: [request_error]});
+                await interaction.editReply({embeds: [request_error]});
                 return;
             }
 
@@ -104,5 +104,5 @@ module.exports = async function (client, interaction) {
         .setFooter({text: "NASA Open APIs", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
         .setImage(`${apod_image_url}`);
 
-    interaction.editReply({embeds: [nasa_apod]});
+    await interaction.editReply({embeds: [nasa_apod]});
 };

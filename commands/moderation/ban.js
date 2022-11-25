@@ -86,7 +86,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -97,7 +97,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -109,7 +109,7 @@ module.exports = {
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)
 
             await interaction.reply({embeds: [member_not_bannable]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'FATAL'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'ERROR'); // Logs
             return;
         }
 
@@ -131,7 +131,7 @@ module.exports = {
         let isOverriddenText = "";
 
         const now = Math.round(Date.now() / 1000);
-        const timeout = now + 10;
+        const auto_cancel_timestamp = now + 10;
 
         const confirm_ban = new MessageEmbed()
             .setColor('YELLOW')

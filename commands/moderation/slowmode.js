@@ -100,11 +100,10 @@ module.exports = {
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully enabled a **${duration}** second rate limit per user in <#${channel.id}>.`)
-                    .setFooter({text: "Setting the rate limit to 0 will disable it."})
+                    .setFooter({text: "Set the rate limit to 0 to disable it."})
 
                 await interaction.reply({embeds: [enabled_slowmode]});
                 await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
             });
-        return 0;
     }
 };
