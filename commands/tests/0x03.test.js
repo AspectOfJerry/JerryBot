@@ -11,6 +11,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)
         .setDescription(`[TEST/${test_label}] embed emoji color test`)
+        .addUserOption((options) =>
+            options
+                .setName('user')
+                .setDescription("[OPTIONAL] User to test")
+                .setRequired(false))
     // .addStringOption((options) =>
     //     options
     //         .setName('OPTION_NAME')
