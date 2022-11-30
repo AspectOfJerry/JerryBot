@@ -60,7 +60,7 @@ module.exports = {
         await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO'); // Logs
         game.handleInteraction(interaction);
 
-        const opponent = interaction.options.getUser('opponent').id || "the bot"
+        const opponent = interaction.options.getUser('opponent').id ?? "the bot"
 
         let row = new MessageActionRow()
             .addComponents(

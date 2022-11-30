@@ -47,8 +47,8 @@ module.exports = {
 
         // Declaring variables
         const duration = interaction.options.getInteger('duration');
-        const channel = interaction.options.getChannel('channel') || interaction.channel;
-        const reason = interaction.options.getString('reason') || "No reason provided.";
+        const channel = interaction.options.getChannel('channel') ?? interaction.channel;
+        const reason = interaction.options.getString('reason') ?? "No reason provided.";
 
         // Checks
         // -----BEGIN ROLE CHECK-----
