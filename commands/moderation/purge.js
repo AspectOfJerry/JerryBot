@@ -42,7 +42,7 @@ module.exports = {
 
         // Declaring variables
         const amount = interaction.options.getInteger('amount');
-        const channel = interaction.options.getChannel('channel') || interaction.channel;
+        const channel = interaction.options.getChannel('channel') ?? interaction.channel;
 
         // Checks
         // -----BEGIN ROLE CHECK-----

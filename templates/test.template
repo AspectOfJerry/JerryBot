@@ -11,6 +11,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)
         .setDescription(`[TEST/${test_label}] CMD_DESCRIPTION`)
+        .addUserOption((options) =>
+            options
+                .setName('user')
+                .setDescription("[OPTIONAL] User to test")
+                .setRequired(false))
     // .addStringOption((options) =>
     //     options
     //         .setName('OPTION_NAME')
@@ -40,7 +45,7 @@ module.exports = {
         // Declaring variables
         let testFailureCount = 0;
 
-        let target = interaction.options.getUser('user') || interaction.member;
+        let target = interaction.options.getUser('user') ?? interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks

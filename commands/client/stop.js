@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // Declaring variables
-        const reason = interaction.options.getString('reason') || "No reason provided.";
+        const reason = interaction.options.getString('reason') ?? "No reason provided.";
         await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
 
         // Checks
