@@ -11,77 +11,56 @@ JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecess
 ├─ commands                     -> command files
 │  ├─ api                       <-
 │  │  ├─ hypixel_subcommands
-│  │  │  ├─ hypixel.subcmd_hdlr.js
-│  │  │  ├─ [...] .subcmd.js
+│  │  │  └─ [.js]
 │  │  ├─ nasa_subcommands
-│  │  │  ├─ nasa.subcmd_hdlr.js
-│  │  │  ├─ [...] .subcmd.js
-│  │  ├─ [...] .js
+│  │  │  └─ [.js]
+│  │  └─ [.js]
 │  ├─ client                    <-
-│  │  ├─ info.js
-│  │  ├─ ping.js
-│  │  ├─ status.js
-│  │  └─ stop.js
+│  │  └─ [.js]
 │  ├─ config                    <-
 │  │  └─ config_subcommands
-│  │     ├─ config.subcmd_hdlr.js
-│  │     ├─ [...] .subcmd.js
+│  │     └─ [.js]
 │  ├─ dev                       <-
 │  │  └─ dev_subcommands
-│  │     ├─ dev.subcmd_hdlr.js
-│  │     ├─ [...] .subcmd.js
+│  │     └─ [.js]
 │  ├─ local
 │  │  ├─ log_subcommands
-│  │  │  ├─ logs.subcmd_hdlr.js
-│  │  │  ├─ [...] .subcmd.js
-│  │  ├─ stats_subcommand
-│  │  │  ├─ stats.subcmd_hdlr.js
-│  │  │  ├─ [...] .subcmd.js
-│  │  ├─ [...] .js
+│  │  │  └─ [.js]
+│  │  └─ stats_subcommand
+│  │     └─ [.js]
 │  ├─ moderation
-│  ├─ [...] .js
+│  │  └─ [.js] 
 │  ├─ other                     <-
 │  │  ├─ 311                    -> exclusive commands
 │  │  │  ├─ database
-│  │  │  │  ├─ dbms.js
-│  │  │  │  ├─ [...] .json
-│  │  │  ├─ 311.subcmd_hdlr.js
-│  │  │  ├─ [...] .subcmd.js
-│  │  ├─ [...] .js
+│  │  │  │  └─ [.json]
+│  │  │  └─ [.js]
+│  │  └─ [.js] 
 │  ├─ tests                     <-
-│  │  ├─ [...] .test.js
+│  │  └─ [.test.js]
 │  └─ utility                   <-
 │     ├─ voice_subcommands
-│     │  ├─ voice.subcmd_hdlr.js
-│     │  ├─ voice_deaf.subcmd.js
-│     │  ├─ voice_join.subcmd.js
-│     │  ├─ voice_leave.subcmd.js
-│     │  └─ voice_mute.subcmd.js
-│     ├─ [...] .js
+│     │  └─ [.js]
+│     └─ [.js]
 ├─ events                       -> event files
-│  ├─ [...] .js
+│  └─ [.js] 
 ├─ jobs                         -> cron jobs
-│  ├─ heartbeat.js
-│  ├─ [...] .js
+│   └─ [.js] 
 ├─ logs                         -> logs output directory
 │  ├─ digest
 │  │  ├─ .gitignore
-│  │  ├─ [...] .log
+│  │  └─ [.log]
 │  ├─ .gitignore
-│  ├─ [...] .log
+│  └─ [.log]
 ├─ modules                      -> custom functions "modules"
-│  ├─ get_files.js
-│  ├─ logger.js
-│  ├─ sleep.js
-│  ├─ start_jobs.js
-│  └─ system_monitor.js
+│  └─ [.js]
 ├─ templates                    -> code template files
-│  ├─ [...] .template.js
+│  └─ [.template]
 ├─ .env.template                -> empty .env template file
 ├─ .gitignore
 ├─ README.md
-├─ index.js                     -> entrypoint
-├─ package-lock.json
-├─ package.json
+├─ index                     -> entrypoint
+├─ package-lockon
+├─ packageon
 └─ run.cmd
 ```

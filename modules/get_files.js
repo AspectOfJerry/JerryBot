@@ -12,7 +12,7 @@ const GetCurrentDirectoryFiles = (dir, file_suffix, command_files, ignored_files
         } else if(file.name.endsWith('.todo')) {
             ignored_files.push(`${dir}/${file.name} => todo`);
             continue;
-        } else if(file.name.endsWith('.template.js')) {
+        } else if(file.name.endsWith('.template')) {
             ignored_files.push(`${dir}/${file.name} => template file`);
             continue;
         } else if(file.name.endsWith('.subcmd_hdlr.js')) {

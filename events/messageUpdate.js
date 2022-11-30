@@ -16,17 +16,21 @@ module.exports = {
 
         // Check if .cleanContent is the same as .content in the old message
         if(oldMessage.content === oldMessage.cleanContent) {
-            oldContent = oldMessage.content;
+            oldContent = `oldMessage.content: "${oldMessage.content}",`;
         } else {
-            oldContent = `${oldMessage.content} (cleanContent: ${oldMessage.cleanContent})`;
+            oldContent = `oldMessage.content: "${oldMessage.content}",
+            oldMessage.cleanContent: "${oldMessage.cleanContent}".`;
         }
         // Check if .cleanContent is the same as .content in the new message
         if(newMessage.content === newMessage.cleanContent) {
-            newContent = newMessage.content;
+            newContent = `newMessage.content: ${newMessage.content}.`;
         } else {
-            newContent = `${newMessage.content} (cleanContent: ${newMessage.cleanContent})`;
+            newContent = `newMessage.content: "${newMessage.content}",
+            newMessage.cleanContent: "${newMessage.cleanContent}".`;
         }
 
-        await Log('append', 'messageUpdate', `<@${newMessage.author.tag}> edited a message: "${oldContent}" -> "${newContent}" in <#${newMessage.channel.name}> in <${newMessage.guild.name}>`, 'WARN'); // Logs
+        await Log('append', 'messageUpdate', `<@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
+            ${oldContent}
+            ${newContent}".`, 'WARN'); // Logs
     }
 };
