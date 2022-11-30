@@ -184,7 +184,7 @@ module.exports = {
                 .setTitle(`Overrite timeout`)
                 .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 .addFields(
-                    {name: 'Auto cancel', value: `> Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+                    {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
                 ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
             await interaction.reply({embeds: [confirm_override], components: [row]});

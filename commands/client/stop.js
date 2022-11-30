@@ -83,8 +83,8 @@ module.exports = {
             .setTitle('Confirm Stop')
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
             .addFields(
-                {name: 'Auto cancel', value: `> Canceling <t:${auto_cancel_timestamp}:R>*`, inline: true})
-            .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
         interaction.reply({embeds: [confirm_stop], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
