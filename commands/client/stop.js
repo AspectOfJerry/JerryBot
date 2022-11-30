@@ -150,7 +150,6 @@ module.exports = {
         });
 
         button_collector.on('end', async collected => {
-            await autoCancelTimerMessage.delete();
             // Disabling buttons
             row.components[0]
                 .setDisabled(true);
