@@ -1,7 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 
-const Sleep = require('./sleep'); // dedlayInMilliseconds;
-const Log = require('./logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('./JerryUtils');
 
 var nukeCheckTimerState = false;
 var counterChannelDelete = 0;

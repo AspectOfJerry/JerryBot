@@ -3,8 +3,7 @@ const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 require('dotenv').config();
 const process = require('process');
 
-const Sleep = require('./modules/sleep.js'); // delayInMilliseconds
-const Log = require('./modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('./modules/JerryUtils');
 const GetFiles = require('./modules/get_files');
 
 

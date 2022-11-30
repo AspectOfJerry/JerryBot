@@ -1,8 +1,7 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
-const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('../modules/JerryUtils');
 const {ChecklistBotReady, InitSystemMonitor} = require('../modules/system_monitor');
 const InitNukeNotifier = require('../modules/nuking_notifier');
 const StartJobs = require('../modules/start_jobs');

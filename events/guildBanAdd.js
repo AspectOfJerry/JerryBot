@@ -1,5 +1,4 @@
-const Sleep = require('../modules/sleep.js'); // delayInMilliseconds
-const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('../modules/JerryUtils');
 
 module.exports = {
     name: "guildBanAdd",

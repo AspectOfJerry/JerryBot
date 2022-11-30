@@ -3,8 +3,8 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
 
-const Sleep = require('../modules/sleep.js'); // dedlayInMilliseconds;
-const Log = require('../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('../modules/JerryUtils');
+
 const {ChecklistHeartbeatSynced, UpdateHeartbeat} = require('../modules/system_monitor');
 
 once = false;

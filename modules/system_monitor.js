@@ -3,8 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
 
-const Sleep = require('./sleep'); // dedlayInMilliseconds;
-const Log = require('./logger'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('./JerryUtils');
 
 var updateFailCount = 0;
 

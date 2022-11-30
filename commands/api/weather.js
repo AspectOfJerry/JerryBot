@@ -3,8 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const weather = require('weather-js');
 
-const Sleep = require('../../modules/sleep.js'); // delayInMilliseconds
-const Log = require('../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('../../modules/JerryUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()

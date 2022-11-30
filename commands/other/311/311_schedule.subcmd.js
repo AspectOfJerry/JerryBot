@@ -2,8 +2,7 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const Sleep = require('../../../modules/sleep.js'); // delayInMilliseconds
-const Log = require('../../../modules/logger.js'); // DEBUG, ERROR, FATAL, INFO, LOG, WARN; │, ─, ├─, └─
+const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 const date = require('date-and-time');
 const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
