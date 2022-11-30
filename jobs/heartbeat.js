@@ -30,9 +30,9 @@ module.exports = async function (client) {
                 console.error(err);
             }
 
-            Log('append', 'Heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 5 seconds.`, 'ERROR'); // Logs
-            await Sleep(5000);
-            await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+            Log('append', 'Heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.`, 'ERROR'); // Logs
+            await Sleep(6000);
+            await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`, {method: 'POST'})
                 .then(async () => {
                     await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to status page.`, 'DEBUG'); // Logs
                     const now = Math.round(Date.now() / 1000);

@@ -53,12 +53,33 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/tictactoe'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         } // -----END ROLE CHECK-----
 
         // Main
         await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO'); // Logs
         game.handleInteraction(interaction);
+
+        const opponent = interaction.options.getUser('opponent').id || "the bot"
+
+        let row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('restart_match')
+                    .setLabel(`Restart`)
+                    .setStyle('SUCCESS')
+                    .setDisabled(false)
+            );
+
+        const restart_message = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('Restart?')
+            .addFields(
+                {name: "Auto cancel", value: ``, inline: true})
+            .setDescription(`Do you want to have a rematch with ${opponent}?`)
+
+        await interaction.followUp({embeds: [restart_message], components: [row]});
     }
 };

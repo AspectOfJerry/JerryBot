@@ -62,7 +62,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/disconnect'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         } // -----END ROLE CHECK-----
         if(!memberTarget.voice.channel) {

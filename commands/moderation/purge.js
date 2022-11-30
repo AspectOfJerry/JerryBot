@@ -58,7 +58,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/purge'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         }
         // -----END ROLE CHECK-----
@@ -79,20 +79,20 @@ module.exports = {
 
         let isOverriddenText = "";
 
+        const now = Math.round(Date.now() / 1000);
+        const auto_cancel_timestamp = now + 10;
+
         const confirm_purging = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Confirm purging')
             .setDescription(`Are you sure you want to delete __${amount}__ messages?\n*Messages older than two weeks are not bulk-deletable.*`)
-            .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            .addFields(
+                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-        await interaction.reply({embeds: [confirm_purging], components: [row]});
+        await interaction.reply({embeds: [confirm_purging], components: [row], ephemeral: true});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
-
-        const now = Math.round(Date.now() / 1000);
-        const auto_cancel_timestamp = now + 10;
-
-        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${auto_cancel_timestamp}:R>*.`});
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
@@ -126,15 +126,16 @@ module.exports = {
 
                 await Sleep(250);
 
-                channel.bulkDelete(amount + 1, true)
+                channel.bulkDelete(amount, true)
                     .then(async msgs => {
                         const success_purge = new MessageEmbed()
                             .setColor('GREEN')
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Message purging")
-                            .setDescription(`<@${interaction.user.id}> purged __${msgs.size - 1}__ *(+2 bot-sent message)* messages in <#${channel.id}>${isOverriddenText}.`);
+                            .setDescription(`Successfully purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
+                        // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
 
-                        await interaction.followUp({embeds: [success_purge], ephemeral: true, components: [row]});
+                        await interaction.followUp({embeds: [success_purge], components: [row], ephemeral: true});
                         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
@@ -149,25 +150,16 @@ module.exports = {
                 const cancel_purge = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> cancelled the purge${isOverriddenText}.`)
+                    .setDescription(`Successfully cancelled${isOverriddenText}.`)
+                    // .setDescription(`<@${interaction.user.id}> cancelled the purge${isOverriddenText}.`)
                     .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                const message = await interaction.editReply({embeds: [cancel_purge], components: [row]});
+                await interaction.followUp({embeds: [cancel_purge], components: [row], ephemeral: true});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, 'INFO'); // Logs
-
-                const now = Math.round(Date.now() / 1000);
-                const auto_delete_timestamp = now + 5;
-
-                let autoDeleteTimerMessage = await interaction.channel.send({content: `> Auto deleting bot-sent messages: <t:${auto_delete_timestamp}:R>*.`});
-                await Sleep(5000);
-                await autoDeleteTimerMessage.delete();
-                await message.delete();
             }
         });
 
         button_collector.on('end', async collected => {
-            await autoCancelTimerMessage.delete();
-
             if(collected.size === 0) {
                 // Disabling buttons
                 row.components[0]
@@ -183,16 +175,8 @@ module.exports = {
                     .setDescription(`Auto aborted.`)
                     .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-                const message = await interaction.editReply({embeds: [auto_abort], ephemeral: true, components: [row]});
+                await interaction.followUp({embeds: [auto_abort], components: [row], ephemeral: true});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
-
-                const now = Math.round(Date.now() / 1000);
-                const auto_delete_timestamp = now + 5;
-
-                let autoDeleteTimerMessage = await interaction.channel.send({content: `> Auto deleting bot-sent messages: <t:${auto_delete_timestamp}:R>*.`});
-                await Sleep(5000);
-                await autoDeleteTimerMessage.delete();
-                await message.delete();
             }
         });
     }

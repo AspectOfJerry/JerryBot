@@ -10,7 +10,7 @@ const test_label = "0x00";
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('test')
+        .setName(`test-${test_label}`)
         .setDescription(`[TEST/${test_label}] CMD_DESCRIPTION`)
     // .addStringOption((options) =>
     //     options
@@ -25,7 +25,7 @@ module.exports = {
         // Permission check
         const whitelist_ids = ['611633988515266562'];
 
-        if(whitelist_ids.includes(interaction.user.id)) {
+        if(!whitelist_ids.includes(interaction.user.id)) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

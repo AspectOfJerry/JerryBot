@@ -62,11 +62,14 @@ module.exports = {
 
                 await interaction.editReply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/weather'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         } // -----END ROLE CHECK-----
 
         // Main
+        await interaction.editReply({content: "This command is currently under rework."});
+        return 5;
+
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {
             if(error) {
                 console.error(error);

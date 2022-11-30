@@ -53,7 +53,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/stop'. [error_permissions]`, 'WARN'); // Logs
-                return;
+                return 10;
             }
         } // -----END ROLE CHECK-----
 
@@ -74,19 +74,20 @@ module.exports = {
 
         let isOverriddenText = "";
 
+        const now = Math.round(Date.now() / 1000);
+        const auto_cancel_timestamp = now + 10;
+
         const confirm_stop = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Confirm Stop')
-            .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.");
+            .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
+            .addFields(
+                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
         interaction.reply({embeds: [confirm_stop], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
-
-        const now = Math.round(Date.now() / 1000);
-        const timeout = now + 10;
-
-        let autoCancelTimerMessage = await interaction.channel.send({content: `> Canceling <t:${timeout}:R>.`});
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {

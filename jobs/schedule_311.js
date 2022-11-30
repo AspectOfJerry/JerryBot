@@ -13,7 +13,7 @@ module.exports = async function (client) {
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        channel.send("<@611633988515266562>, ersiohjjnkuytfyguguyi");
+        channel.send("Otmane et Nam sont très smart (nam stole my computer and wrote this message!)");
     });
 
     schedule_311.start();

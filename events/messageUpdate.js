@@ -27,6 +27,6 @@ module.exports = {
             newContent = `${newMessage.content} (cleanContent: ${newMessage.cleanContent})`;
         }
 
-        await Log('append', 'messageUpdate', `'${newMessage.author.tag}' edited a message: "${oldContent}" -> "${newContent}" in "${newMessage.channel.name}" in "${newMessage.guild.name}"`, 'WARN'); // Logs
+        await Log('append', 'messageUpdate', `<@${newMessage.author.tag}> edited a message: "${oldContent}" -> "${newContent}" in <#${newMessage.channel.name}> in <${newMessage.guild.name}>`, 'WARN'); // Logs
     }
 };
