@@ -6,10 +6,6 @@ module.exports = {
     name: "messageDelete",
     once: false, // Whether or not this event should only be triggered once
     async execute(message) {
-        if(message.author.bot) {
-            return;
-        }
-
         // Check if .cleanContent is the same as .content
         if(message.content === message.cleanContent) {
             await Log('append', 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
