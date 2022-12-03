@@ -65,7 +65,7 @@ module.exports = {
                 await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs read'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const line_offset = interaction.options.getInteger('offset') || 0;
+                const line_offset = interaction.options.getInteger('offset') ?? 0;
                 await Log('append', interaction.guild.id, `  └─offset: ${line_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
@@ -77,7 +77,7 @@ module.exports = {
                 await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs get'.`, 'INFO'); // Logs
 
                 // Declaring variables
-                const day_offset = interaction.options.getInteger('offset') || 0;
+                const day_offset = interaction.options.getInteger('offset') ?? 0;
                 await Log('append', interaction.guild.id, `  └─offset: ${day_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
