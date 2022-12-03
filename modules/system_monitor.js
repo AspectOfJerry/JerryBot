@@ -42,7 +42,11 @@ async function InitSystemMonitor(_client) {
     guilds.push(await client.guilds.fetch('1014278986135781438'));
     channels.push(await guilds[1].channels.fetch('1031014002093981746'));
 
-    // if(!channels[0].lastMessage) {
+    // Delete previous messages if any
+    for(const _channel of channels) {
+        await _channel.bulkDelete(50, true)
+    }
+
     // Calculate next Heartbeat timestamp
     const now = Math.floor(Date.now() / 1000);
     const next_heartbeat_timestamp = Math.floor(now + 60);
@@ -60,11 +64,7 @@ async function InitSystemMonitor(_client) {
     messages.push(await channels[0].send({embeds: [embed]}));
     messages.push(await channels[1].send({embeds: [embed]}));
     embedMessage = messages[0].embeds[0];
-    // } else {
-    //     if(channels[0].lastMessage.embeds[0].title == "JerryBot System Monitor") {
-    //         embedMessage = channels[0].lastMessage.embeds[0];
-    //     }
-    // }
+
     ready = true;
 }
 

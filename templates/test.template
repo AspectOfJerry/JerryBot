@@ -10,7 +10,7 @@ const test_label = "0x00";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)
-        .setDescription(`[TEST/${test_label}] CMD_DESCRIPTION`)
+        .setDescription(`[TEST/${test_label}]`)
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -24,6 +24,7 @@ module.exports = {
     ,
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferUpdate()
 
         // Permission check
@@ -51,7 +52,6 @@ module.exports = {
         // Checks
 
         // Main
-        await interaction.reply(`Executing Test ${test_label}...`);
-
+        await interaction.followUp("Hello, World!")
     }
 };

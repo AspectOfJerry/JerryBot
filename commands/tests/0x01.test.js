@@ -20,7 +20,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
-        await interaction.channel.send(`Executing Test ${test_label}...`);
+        await interaction.reply(`Executing Test ${test_label}...`);
         await Sleep(100);
         // Declaring variables 
         let testFailureCount = 0;
@@ -60,8 +60,6 @@ module.exports = {
             if(modalInteraction.customId == 'test_modal') {
                 const input_name = modalInteraction.fields.getTextInputValue('input_name')
                 const input_description = modalInteraction.fields.getTextInputValue('input_description')
-
-                console.log(input_name, input_description)
 
                 await modalInteraction.reply(`Your name is ${input_name}. Description: ${input_description}`);
             }

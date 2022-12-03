@@ -6,37 +6,37 @@ const fetch = require('node-fetch');
 const {Log, Sleep} = require('../modules/JerryUtils');
 
 module.exports = async function (client) {
-    const schedule_311 = new CronJob('45 06 * * *', async () => { // Interval of 1 day, at 06h45
+    const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
         await Log('append', 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG'); // Logs
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        channel.send("Otmane et Nam sont très smart (nam stole my computer and wrote this message!)");
+        channel.send("Hello, World!");
     });
 
     schedule_311.start();
 
-    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`, 'DEBUG'); // Logs
+    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, 'DEBUG'); // Logs
     console.log(`[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
 
     const guild = await client.guilds.fetch("1014278986135781438");
     const channel = await guild.channels.fetch("1015060767403421696");
 
+    const now = Math.round(Date.now() / 1000);
+    const auto_delete_timestamp = now + 10;
+
     const attached = new MessageEmbed()
         .setColor('GREEN')
         .setDescription("Successfully attached the schedule announcer to this channel!")
-        .setFooter({text: "Announcement time: 06h45"});
+        .addFields(
+            {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false},
+            {name: 'Auto cancel', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
+        ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-    const delay_ms = 10000;
-    const now = Math.round(Date.now() / 1000);
-    const delay_timestamp = now + (delay_ms / 1000);
-
-    const embed = await channel.send({embeds: [attached]});
-    channel.send(`> Auto deleting: <t:${delay_timestamp}:R>`)
-        .then(async message => {
-            await Sleep(delay_ms);
-            message.delete();
-            embed.delete();
+    await channel.send({embeds: [attached]})
+        .then(async (msg) => {
+            await Sleep(10000);
+            msg.delete();
         });
 };

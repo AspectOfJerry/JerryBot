@@ -19,6 +19,7 @@ module.exports = {
     ,
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferUpdate()
 
         // Permission check
@@ -44,7 +45,8 @@ module.exports = {
         // Checks
 
         // Main
-        await interaction.reply(`Executing Test ${test_label}...`);
+        interaction.channel.send("This command is currently disabled.");
+        return;
 
         const category_id = '1042989616921313341';
         const channel_count = 3;

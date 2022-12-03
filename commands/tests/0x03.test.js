@@ -24,6 +24,7 @@ module.exports = {
     ,
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferUpdate()
 
         // Permission check
@@ -51,8 +52,6 @@ module.exports = {
         // Checks
 
         // Main
-        await interaction.reply(`Executing Test ${test_label}...`);
-
         const now = Math.round(Date.now() / 1000);
         const auto_cancel_timestamp = now + 10;
 
@@ -71,9 +70,27 @@ module.exports = {
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
             .addFields(
-                {name: 'Auto cancel', value: `> :yellow_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+                {name: 'Auto cancel', value: `:red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
             ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-        interaction.channel.send({embeds: [embed1, embed2]});
+        const embed3 = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle(`Confirm Kick`)
+            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
+            .addFields(
+                {name: 'Auto cancel', value: `> :red_circle: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+
+        const embed4 = new MessageEmbed()
+            .setColor('YELLOW')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle(`Confirm Kick`)
+            .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
+            .addFields(
+                {name: 'Auto cancel', value: `:red_circle: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+
+        interaction.channel.send({embeds: [embed1, embed2, embed3, embed4]});
     }
 };
