@@ -12,7 +12,7 @@ const test_label = "0x01";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)
-        .setDescription(`[TEST/${test_label}] models test`)
+        .setDescription(`[TEST/${test_label}] modals test`)
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -20,7 +20,7 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
-        await interaction.reply(`Executing Test ${test_label}...`);
+        await interaction.channel.send(`Executing Test ${test_label}...`);
         await Sleep(100);
         // Declaring variables 
         let testFailureCount = 0;
