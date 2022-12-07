@@ -22,7 +22,7 @@ module.exports = {
         }
         // Check if .cleanContent is the same as .content in the new message
         if(newMessage.content === newMessage.cleanContent) {
-            newContent = `newMessage.content: "${newMessage.content}.`;
+            newContent = `newMessage.content: "${newMessage.content}".`;
         } else {
             newContent = `newMessage.content: "${newMessage.content}",
             newMessage.cleanContent: "${newMessage.cleanContent}".`;
@@ -30,6 +30,6 @@ module.exports = {
 
         await Log('append', 'messageUpdate', `<@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
             ${oldContent}
-            ${newContent}".`, 'WARN'); // Logs
+            ${newContent}`, 'WARN'); // Logs
     }
 };
