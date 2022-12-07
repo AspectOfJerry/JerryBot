@@ -22,7 +22,7 @@ module.exports = {
         }
         // Check if .cleanContent is the same as .content in the new message
         if(newMessage.content === newMessage.cleanContent) {
-            newContent = `newMessage.content: ${newMessage.content}.`;
+            newContent = `newMessage.content: "${newMessage.content}.`;
         } else {
             newContent = `newMessage.content: "${newMessage.content}",
             newMessage.cleanContent: "${newMessage.cleanContent}".`;
