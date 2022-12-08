@@ -126,9 +126,10 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('Stopping the bot')
                     .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)
-                    .addField('Reason', `${reason}`, false)
-                    .addField('Requested at', `${interaction.createdAt}`, false)
-                    .setFooter({text: "The process will exit after this message."});
+                    .addFields(
+                        {name: 'Reason', value: `${reason}`, inline: false},
+                        {nane: 'Requested at', value: `${interaction.createdAt}`, inline: false}
+                    ).setFooter({text: "The process will exit after this message."});
 
                 await interaction.editReply({embeds: [stopping_bot]});
                 await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO'); // Logs

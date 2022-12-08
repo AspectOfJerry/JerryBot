@@ -6,19 +6,19 @@ const date = require('date-and-time');
 async function GetFullSchedule() {
     const file = require('./schedule.json');
     return file;
-};
+}
 
 // './schedule_exceptions.json'
 async function GetExceptions() {
     const file = require('./schedule_exceptions.json');
     return file;
-};
+}
 
 // Main
 async function GetDate() {
     const now = new Date();
     return now;
-};
+}
 
 async function GetJourByDate() {
     const now = await GetDate();
@@ -38,7 +38,7 @@ async function GetJourByDate() {
         if(day.toString().toLowerCase().startsWith('sat') || day.toString().toLowerCase().startsWith('sun')) {
             day = date.addDays(day, 1);
             dayType = "WEKN";
-            await Sleep(10);
+            await Sleep(5);
             continue main;
         }
         for(let [key, value] of Object.entries(exceptions)) {
@@ -46,7 +46,7 @@ async function GetJourByDate() {
             if(date.isSameDay(key, day)) {
                 day = date.addDays(day, 1);
                 dayType = value;
-                await Sleep(10);
+                await Sleep(5);
                 continue main;
             }
         }
@@ -58,7 +58,7 @@ async function GetJourByDate() {
             jour = 1;
         }
 
-        await Sleep(10);
+        await Sleep(5);
     }
 
     dayType = "SCO";
@@ -78,7 +78,7 @@ async function GetJourByDate() {
     if(dayType == "SCO") {
         return jour;
     }
-};
+}
 
 async function GetScheduleByJour(jour) {
     const full_schedule = await GetFullSchedule();
@@ -88,7 +88,7 @@ async function GetScheduleByJour(jour) {
             return value;
         }
     }
-};
+}
 
 module.exports = {
     GetFullSchedule,

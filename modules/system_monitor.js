@@ -23,12 +23,12 @@ async function ChecklistBotReady() {
     await UpdateTimestamp();
 }
 async function ChecklistJobsStarted() {
-    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Jobs inactive.*/i, `:white_check_mark: Jobs started;`);
+    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Jobs inactive.*/i, `:white_check_mark: Jobs running;`);
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
 async function ChecklistHeartbeatSynced() {
-    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Heartbeat not synced;.*/i, `:white_check_mark: Heartbeat synced (every 1min + 10s max);`)
+    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Heartbeat not synced;.*/i, `:white_check_mark: Heartbeat synced (1min + 10s);`)
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
@@ -48,17 +48,18 @@ async function InitSystemMonitor(_client) {
     }
 
     // Calculate next Heartbeat timestamp
-    const now = Math.floor(Date.now() / 1000);
-    const next_heartbeat_timestamp = Math.floor(now + 60);
+    // const now = Math.floor(Date.now() / 1000);
+    // const next_heartbeat_timestamp = Math.floor(now + 60);
 
     const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle('JerryBot System Monitor')
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
-        .addField('Checklist', `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, false)
-        .addField('Last Heartbeat', `:green_heart: N/A;`, true)
-        .addField('Next expected Heartbeat', `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`, true)
-        .setFooter({text: "Relative timestamps can look out of sync depending on your timezone;"})
+        .addFields(
+            {name: 'Checklist', value: `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, inline: false},
+            {name: 'Last Heartbeat', value: `:black_heart: ---;`, inline: true},
+            {name: 'Next expected Heartbeat', value: `:black_heart: ---;`, inline: true}
+        ).setFooter({text: "Relative timestamps can look out of sync depending on your timezone;"})
         .setTimestamp();
 
     messages.push(await channels[0].send({embeds: [embed]}));
@@ -115,8 +116,8 @@ async function UpdateHeartbeat(_client, timestamp) {
     const now = Math.floor(Date.now() / 1000);
     const next_heartbeat_timestamp = Math.floor(now + 60);
 
-    embedMessage.fields[1].value = `:heartbeat: <t:${timestamp}:R>;`;
-    embedMessage.fields[2].value = `:green_heart: <t:${next_heartbeat_timestamp}:R>;`;
+    embedMessage.fields[1].value = `:green_heart: <t:${timestamp}:R>;`;
+    embedMessage.fields[2].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
 
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();

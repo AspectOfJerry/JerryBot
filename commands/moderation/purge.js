@@ -150,8 +150,6 @@ module.exports = {
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully cancelled${isOverriddenText}.`)
-                    // .setDescription(`<@${interaction.user.id}> cancelled the purge${isOverriddenText}.`)
-                    .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
                 await interaction.followUp({embeds: [cancel_purge], components: [row], ephemeral: true});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, 'INFO'); // Logs
@@ -172,7 +170,6 @@ module.exports = {
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`)
-                    .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
                 await interaction.followUp({embeds: [auto_abort], components: [row], ephemeral: true});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs

@@ -32,7 +32,7 @@ const file_suffix = '.js';
 const command_files = GetFiles('./commands', file_suffix);
 
 console.log(`Queued ${command_files.length} files:`);
-console.log(command_files)
+console.log(command_files);
 const commands = [];
 
 client.commands = new Collection();

@@ -50,7 +50,7 @@ module.exports = async function (client) {
     await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
     console.log(`[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
 
-    fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+    await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
         .then(async () => {
             await Log('append', 'Heartbeat', `[Heartbeat] The first Heartbeat was sent to the status page.`, 'DEBUG'); // Logs
             const now = Math.round(Date.now() / 1000);

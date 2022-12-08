@@ -11,7 +11,11 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('schedule')
-                .setDescription("Get's today's schedule or select another day."))
+                .setDescription("Get the schedule for 311.")
+                .addStringOption(options =>
+                    options
+                        .setName('day')
+                        .setDescription("Get the schedule for today or next Jour. Defaults to automatic.")))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('weather')

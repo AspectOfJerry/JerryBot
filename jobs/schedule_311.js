@@ -2,8 +2,10 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
+const date = require('date-and-time');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
+const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
@@ -13,6 +15,62 @@ module.exports = async function (client) {
         const channel = await guild.channels.fetch("1015060767403421696");
 
         channel.send("Hello, World!");
+
+        let jour = await GetJourByDate();
+        let _day = await GetDate();
+        const day = date.format(_day, 'dddd, MMMM DD, YYYY');
+
+        if(isNaN(jour)) {
+            const schedule_message = `${jour} No school`;
+
+            const schedule_embed = new MessageEmbed()
+                .setColor('YELLOW')
+                .setTitle(`[${jour}] ${day}`)
+                .setDescription("No school today!");
+
+            await channel.send({content: `Here's **today's** schedule!`});
+            await channel.send({content: schedule_message, embeds: [schedule_embed]});
+            return;
+        }
+
+        const schedule = await GetScheduleByJour(jour);
+        jour = jour.toString();
+
+        if(jour.length == 1) {
+            jour = "0".toString() + jour;
+        }
+
+        const schedule_message = `Jour ${jour}:` +
+            ` ${schedule.period1.className},` +
+            ` ${schedule.period2.className},` +
+            ` ${schedule.period3.className},` +
+            ` ${schedule.period4.className},` +
+            ` ${schedule.period6.className}`;
+
+        const schedule_embed = new MessageEmbed()
+            .setColor('GREEN')
+            .setTitle(`[Jour ${jour}] ${day}`)
+            .setDescription(`This is the schedule for Jour ${jour} (**today**).`)
+            .addFields(
+                {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
+                {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
+                {name: `P3 ${schedule.period3.className}`, value: `• Classroom: ${schedule.period3.classroom}${schedule.period3.notes}`, inline: false},
+                {name: `P4 ${schedule.period4.className}`, value: `• Classroom: ${schedule.period4.classroom}${schedule.period4.notes}`, inline: false},
+                {name: `P5 ${schedule.period5.className}`, value: `• Classroom: ${schedule.period5.classroom}${schedule.period5.notes}`, inline: false},
+                {name: `P6 ${schedule.period6.className}`, value: `• Classroom: ${schedule.period6.classroom}${schedule.period6.notes}`, inline: false}
+            ).setFooter({
+                text: `Jour ${jour}:` +
+                    ` ${schedule.period1.className},` +
+                    ` ${schedule.period2.className},` +
+                    ` ${schedule.period3.className},` +
+                    ` ${schedule.period4.className},` +
+                    ` ${schedule.period5.className},` +
+                    ` ${schedule.period6.className}`
+            });
+
+        await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule!`});
+        await channel.send({embeds: [schedule_embed]});
+        await channel.send({content: schedule_message});
     });
 
     schedule_311.start();
@@ -31,12 +89,11 @@ module.exports = async function (client) {
         .setDescription("Successfully attached the schedule announcer to this channel!")
         .addFields(
             {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false},
-            {name: 'Auto cancel', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
+            {name: 'Auto delete', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
         ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-    await channel.send({embeds: [attached]})
-        .then(async (msg) => {
-            await Sleep(10000);
-            msg.delete();
-        });
+    const msg = await channel.send({embeds: [attached]})
+
+    await Sleep(10000);
+    msg.delete();
 };

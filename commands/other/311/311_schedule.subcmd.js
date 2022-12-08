@@ -3,9 +3,9 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
 
 const date = require('date-and-time');
-const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
 
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
@@ -64,10 +64,11 @@ module.exports = async function (client, interaction) {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setDescription("No school today!");
 
-        await interaction.editReply({content: `Here's today's schedule!`});
+        await interaction.editReply({content: `Here's **today's** schedule!`});
         await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]});
         return;
     }
+
     const schedule = await GetScheduleByJour(jour);
     jour = jour.toString();
 
@@ -75,34 +76,36 @@ module.exports = async function (client, interaction) {
         jour = "0".toString() + jour;
     }
 
-    const schedule_message = `<@${interaction.user.id}>; J${jour}:` +
-        ` ${schedule.period1.classcode} (${schedule.period1.classroom}),` +
-        ` ${schedule.period2.classcode} (${schedule.period2.classroom}),` +
-        ` ${schedule.period3.classcode} (${schedule.period3.classroom}),` +
-        ` ${schedule.period4.classcode} (${schedule.period4.classroom}),` +
-        ` ${schedule.period6.classcode} (${schedule.period6.classroom})`;
+    const schedule_message = `Jour ${jour}:` +
+        ` ${schedule.period1.className},` +
+        ` ${schedule.period2.className},` +
+        ` ${schedule.period3.className},` +
+        ` ${schedule.period4.className},` +
+        ` ${schedule.period6.className}`;
 
     const schedule_embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle(`[Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setDescription(`This is the schedule for Jour ${jour}.`)
-        .addField(`Period 1: `, `• Classcode: ${schedule.period1.classcode}\n• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, false)
-        .addField(`Period 2: `, `• Classcode: ${schedule.period2.classcode}\n• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, false)
-        .addField(`Period 3: `, `• Classcode: ${schedule.period3.classcode}\n• Classroom: ${schedule.period3.classroom}${schedule.period3.notes}`, false)
-        .addField(`Period 4: `, `• Classcode: ${schedule.period4.classcode}\n• Classroom: ${schedule.period4.classroom}${schedule.period4.notes}`, false)
-        .addField(`Period 5: `, `• Classcode: ${schedule.period5.classcode}\n• Classroom: ${schedule.period5.classroom}${schedule.period5.notes}`, false)
-        .addField(`Period 6: `, `• Classcode: ${schedule.period6.classcode}\n• Classroom: ${schedule.period6.classroom}${schedule.period6.notes}`, false)
-        .setFooter({
+        .addFields(
+            {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
+            {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
+            {name: `P3 ${schedule.period3.className}`, value: `• Classroom: ${schedule.period3.classroom}${schedule.period3.notes}`, inline: false},
+            {name: `P4 ${schedule.period4.className}`, value: `• Classroom: ${schedule.period4.classroom}${schedule.period4.notes}`, inline: false},
+            {name: `P5 ${schedule.period5.className}`, value: `• Classroom: ${schedule.period5.classroom}${schedule.period5.notes}`, inline: false},
+            {name: `P6 ${schedule.period6.className}`, value: `• Classroom: ${schedule.period6.classroom}${schedule.period6.notes}`, inline: false}
+        ).setFooter({
             text: `Jour ${jour}:` +
-                ` ${schedule.period1.classcode},` +
-                ` ${schedule.period2.classcode},` +
-                ` ${schedule.period3.classcode},` +
-                ` ${schedule.period4.classcode},` +
-                ` ${schedule.period5.classcode},` +
-                ` ${schedule.period6.classcode}`
+                ` ${schedule.period1.className},` +
+                ` ${schedule.period2.className},` +
+                ` ${schedule.period3.className},` +
+                ` ${schedule.period4.className},` +
+                ` ${schedule.period5.className},` +
+                ` ${schedule.period6.className}`
         });
 
-    await interaction.editReply({content: `Here's today's schedule!`});
-    await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]});
+    await interaction.editReply({content: `Here's **today's** schedule!`});
+    await interaction.channel.send({embeds: [schedule_embed]});
+    await interaction.channel.send({content: schedule_message});
 };
