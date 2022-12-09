@@ -20,6 +20,12 @@ async function GetDate() {
     return now;
 }
 
+async function GetDateString() {
+    let _day = await GetDate();
+    const day = date.format(_day, 'dddd, MMMM DD, YYYY');
+    return day;
+}
+
 async function GetJourByDate() {
     const now = await GetDate();
     const full_schedule = await GetFullSchedule();
@@ -94,6 +100,7 @@ module.exports = {
     GetFullSchedule,
     GetExceptions,
     GetDate,
+    GetDateString,
     GetJourByDate,
     GetScheduleByJour
 };

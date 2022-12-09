@@ -47,10 +47,7 @@ async function InitSystemMonitor(_client) {
         await _channel.bulkDelete(50, true)
     }
 
-    // Calculate next Heartbeat timestamp
-    // const now = Math.floor(Date.now() / 1000);
-    // const next_heartbeat_timestamp = Math.floor(now + 60);
-
+    // Create the system monitor embed
     const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle('JerryBot System Monitor')

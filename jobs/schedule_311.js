@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const date = require('date-and-time');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
@@ -14,11 +14,12 @@ module.exports = async function (client) {
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        channel.send("Hello, World!");
+        const waiting_schedule = await channel.send("Fetching the schedule...");
+        channel.sendTyping();
+
 
         let jour = await GetJourByDate();
-        let _day = await GetDate();
-        const day = date.format(_day, 'dddd, MMMM DD, YYYY');
+        const day = await GetDateString();
 
         if(isNaN(jour)) {
             const schedule_message = `${jour} No school`;
@@ -34,6 +35,7 @@ module.exports = async function (client) {
         }
 
         const schedule = await GetScheduleByJour(jour);
+
         jour = jour.toString();
 
         if(jour.length == 1) {
@@ -68,9 +70,14 @@ module.exports = async function (client) {
                     ` ${schedule.period6.className}`
             });
 
+        waiting_schedule.detele();
         await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule!`});
         await channel.send({embeds: [schedule_embed]});
-        await channel.send({content: schedule_message});
+        await channel.send({content: schedule_message})
+            .then((msg) => {
+                msg.react(':white_check_mark');
+            });
+        await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO'); // Logs
     });
 
     schedule_311.start();
@@ -93,7 +100,6 @@ module.exports = async function (client) {
         ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
     const msg = await channel.send({embeds: [attached]})
-
     await Sleep(10000);
-    msg.delete();
+    await msg.delete();
 };

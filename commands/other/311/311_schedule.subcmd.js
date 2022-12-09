@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {Log, Sleep} = require('../../../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('./database/dbms');
 
 const date = require('date-and-time');
 
@@ -52,8 +52,7 @@ module.exports = async function (client, interaction) {
 
     // Main
     let jour = await GetJourByDate();
-    let _day = await GetDate();
-    const day = date.format(_day, 'dddd, MMMM DD, YYYY');
+    const day = await GetDateString();
 
     if(isNaN(jour)) {
         const schedule_message = `${jour} No school`;
@@ -70,6 +69,7 @@ module.exports = async function (client, interaction) {
     }
 
     const schedule = await GetScheduleByJour(jour);
+
     jour = jour.toString();
 
     if(jour.length == 1) {
