@@ -64,7 +64,8 @@ module.exports = async function (client, interaction) {
             .setDescription("No school today!");
 
         await interaction.editReply({content: `Here's **today's** schedule!`});
-        await interaction.channel.send({content: schedule_message, embeds: [schedule_embed]});
+        await interaction.channel.send({embeds: [schedule_embed]});
+        await interaction.channel.send({content: schedule_message});
         return;
     }
 
