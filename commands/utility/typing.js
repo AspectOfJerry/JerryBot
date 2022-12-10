@@ -11,7 +11,7 @@ module.exports = {
         .setDescription("Send the typing indicator to a channel."),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/typing'.`, 'INFO'); // Logs
-        // interaction.deferUpdate()
+        // interaction.deferReply()
 
         // Set minimum execution role
         switch(interaction.guild.id) {

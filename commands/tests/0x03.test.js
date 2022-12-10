@@ -1,16 +1,57 @@
+const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
+const {SlashCommandBuilder} = require("@discordjs/builders");
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const CronJob = require('cron').CronJob;
-const fetch = require('node-fetch');
-const date = require('date-and-time');
+const {Log, Sleep} = require('../../modules/JerryUtils');
+const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('../other/311/database/dbms');
 
-const {Log, Sleep} = require('../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
+const test_label = "0x03";
 
-module.exports = async function (client) {
-    const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
-        await Log('append', 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG'); // Logs
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName(`test-${test_label}`)
+        .setDescription(`[TEST/${test_label}]`)
+        .addUserOption((options) =>
+            options
+                .setName('user')
+                .setDescription("[OPTIONAL] User to test")
+                .setRequired(false))
+    // .addStringOption((options) =>
+    //     options
+    //         .setName('OPTION_NAME')
+    //         .setDescription("[OPTIONAL] OPTION_DESCRIPTION")
+    //         .setRequired(false))
+    ,
+    async execute(client, interaction) {
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        interaction.deferReply();
 
+        // Permission check
+        const whitelist_ids = ['611633988515266562'];
+
+        if(!whitelist_ids.includes(interaction.user.id)) {
+            const error_permissions = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('PermissionError')
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setFooter({text: "You must be whitelisted to use this command."});
+
+            await interaction.reply({embeds: [error_permissions]});
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use this test command (${test_label}). [error_permissions]`, 'WARN'); // Logs
+            return;
+        }
+
+        // Declaring variables
+        let testFailureCount = 0;
+
+        let target = interaction.options.getUser('user') ?? interaction.member;
+        let memberTarget = interaction.guild.members.cache.get(target.id);
+
+        // Checks
+
+        // Main
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
@@ -77,35 +118,12 @@ module.exports = async function (client) {
             });
 
         waiting_schedule.detele();
-        await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!`});
+        await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
         await channel.send({embeds: [schedule_embed]});
         await channel.send({content: schedule_message})
             .then((msg) => {
                 msg.react('✅');
             });
-        await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO'); // Logs
-    });
-
-    schedule_311.start();
-
-    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, 'DEBUG'); // Logs
-    console.log(`[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
-
-    const guild = await client.guilds.fetch("1014278986135781438");
-    const channel = await guild.channels.fetch("1015060767403421696");
-
-    const now = Math.round(Date.now() / 1000);
-    const auto_delete_timestamp = now + 10;
-
-    const attached = new MessageEmbed()
-        .setColor('GREEN')
-        .setDescription("Successfully attached the schedule announcer to this channel!")
-        .addFields(
-            {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false},
-            {name: 'Auto delete', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
-        ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
-
-    const msg = await channel.send({embeds: [attached]})
-    await Sleep(10000);
-    await msg.delete();
+    }
 };
+

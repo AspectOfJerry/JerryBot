@@ -4,6 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const {Log, Sleep} = require('../../modules/JerryUtils');
+const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('../other/311/database/dbms');
 
 const test_label = "0x00";
 
@@ -25,7 +26,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
         await interaction.reply(`Executing Test ${test_label}...`);
-        // interaction.deferUpdate()
+        // interaction.deferReply()
 
         // Permission check
         const whitelist_ids = ['611633988515266562'];

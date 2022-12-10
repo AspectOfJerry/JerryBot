@@ -7,7 +7,7 @@ module.exports = {
     once: false,
     async execute(interaction) {
         await Log('append', 'interactionCreate', `An interaction was created.`, 'DEBUG'); // Logs
-        if(!interaction.isCommand()) {  // Only managing application commands in this file
+        if(!interaction.isCommand()) {
             return;
         }
 

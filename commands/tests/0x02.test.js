@@ -20,7 +20,7 @@ module.exports = {
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
         await interaction.reply(`Executing Test ${test_label}...`);
-        // interaction.deferUpdate()
+        // interaction.deferReply()
 
         // Permission check
         const whitelist_ids = ['611633988515266562'];

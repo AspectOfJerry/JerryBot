@@ -16,7 +16,7 @@ module.exports = {
                 .setRequired(true/false)),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME'.`, 'INFO'); // Logs
-        // interaction.deferUpdate()
+        // interaction.deferReply()
 
         // Set minimum execution role
         switch(interaction.guild.id) {
