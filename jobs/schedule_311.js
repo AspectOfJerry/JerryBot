@@ -14,7 +14,7 @@ module.exports = async function (client) {
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        const waiting_schedule = await channel.send("Fetching the schedule...");
+        const waiting_schedule = await channel.send({content: "Fetching the schedule..."});
         channel.sendTyping();
 
 
@@ -22,14 +22,14 @@ module.exports = async function (client) {
         const day = await GetDateString();
 
         if(isNaN(jour)) {
-            const schedule_message = `${jour} No school`;
+            const schedule_message = `${jour}: No school`;
 
             const schedule_embed = new MessageEmbed()
                 .setColor('YELLOW')
                 .setTitle(`[${jour}] ${day}`)
                 .setDescription("No school today!");
 
-            waiting_schedule.detele();
+            waiting_schedule.delete();
             await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
             await channel.send({embeds: [schedule_embed]});
             await channel.send({content: schedule_message})
@@ -76,7 +76,7 @@ module.exports = async function (client) {
                     ` ${schedule.period6.className}`
             });
 
-        waiting_schedule.detele();
+        waiting_schedule.delete();
         await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!`});
         await channel.send({embeds: [schedule_embed]});
         await channel.send({content: schedule_message})
