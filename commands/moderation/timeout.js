@@ -149,7 +149,7 @@ module.exports = {
                         .setTitle("User timeout")
                         .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
                         .addFields(
-                            {value: 'Timeout expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
+                            {name: 'Timeout expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`, inline: false}
                         )
                         .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
