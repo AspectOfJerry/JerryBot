@@ -85,7 +85,7 @@ module.exports = {
                 {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
             ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-        interaction.reply({embeds: [confirm_stop], components: [row]});
+        await interaction.reply({embeds: [confirm_stop], components: [row]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
@@ -112,15 +112,8 @@ module.exports = {
                 .setDisabled(true);
             row.components[1]
                 .setDisabled(true);
-            await interaction.editReply({embeds: [confirm_stop], components: [row]});
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
-                const destroying_voice_connections = new MessageEmbed()
-                    .setColor('YELLOW')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription("Destroying all active voice connections...");
-
-                await interaction.editReply({embeds: [destroying_voice_connections]});
                 const stopping_bot = new MessageEmbed()
                     .setColor('FUCHSIA')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -128,15 +121,14 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)
                     .addFields(
                         {name: 'Reason', value: `${reason}`, inline: false},
-                        {nane: 'Requested at', value: `${interaction.createdAt}`, inline: false}
+                        {name: 'Requested at', value: `${interaction.createdAt}`, inline: false}
                     ).setFooter({text: "The process will exit after this message."});
 
-                await interaction.editReply({embeds: [stopping_bot]});
+                await interaction.editReply({embeds: [stopping_bot], components: [row]});
                 await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO'); // Logs
                 await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL'); // Logs
-                await Sleep(100);
-                await client.destroy(); // Destroying the Discord client
                 await Sleep(250);
+                await client.destroy(); // Destroying the Discord client
                 process.exit(0); // Exiting here
             } else {
                 const cancel_stop = new MessageEmbed()

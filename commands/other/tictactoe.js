@@ -63,11 +63,9 @@ module.exports = {
         const opponent = (interaction.options.getUser('opponent'))?.id ?? null
         const opponent_text = opponent ? ` opponent: <@${(interaction.options.getUser('opponent'))?.id}>` : ""
 
-        const restart_message = new MessageEmbed()
-            .setColor('GREEN')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+        const restart_embed = new MessageEmbed()
             .setDescription(`:clipboard: </${interaction.commandName}:${interaction.commandId}>${opponent_text}`)
 
-        await interaction.channel.send({embeds: [restart_message]});
+        await interaction.channel.send({embeds: [restart_embed]});
     }
 };
