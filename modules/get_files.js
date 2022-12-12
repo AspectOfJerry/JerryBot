@@ -15,7 +15,7 @@ const GetCurrentDirectoryFiles = (dir, file_suffix, command_files, ignored_files
         } else if(file.name.endsWith('.template')) {
             ignored_files.push(`${dir}/${file.name} => template file`);
             continue;
-        } else if(file.name.endsWith('.subcmd_hdlr.js')) {
+        } else if(file.name.endsWith('.hdlr.js')) {
             skipped_files.push(`${dir}/${file.name} => subcommand handler`);
             // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
         } else if(file.name.endsWith('dbms.js')) {
