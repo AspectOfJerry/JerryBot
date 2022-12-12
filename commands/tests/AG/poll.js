@@ -89,7 +89,7 @@ module.exports = {
                 collector.on('collect', async (reaction, user) => {
                     if(reaction.emoji.name === '✅') {
                         await maybe_reaction.users.remove(user.id);
-                        awaitno_reaction.users.remove(user.id)
+                        await no_reaction.users.remove(user.id);
 
                         yesCount += 1;
                     } else if(reaction.emoji.name === '🤔') {
