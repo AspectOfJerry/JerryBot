@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
@@ -58,10 +58,11 @@ module.exports = {
             }
 
             if(modalInteraction.customId == 'test_modal') {
-                const input_name = modalInteraction.fields.getTextInputValue('input_name')
-                const input_description = modalInteraction.fields.getTextInputValue('input_description')
+                const input_name = modalInteraction.fields.getTextInputValue('input_name');
+                const input_description = modalInteraction.fields.getTextInputValue('input_description');
 
                 await modalInteraction.reply(`Your name is ${input_name}. Description: ${input_description}`);
+                return;
             }
         });
     }
