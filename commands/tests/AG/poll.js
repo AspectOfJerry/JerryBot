@@ -11,7 +11,7 @@ module.exports = {
         .setDescription("Create a new poll")
         .addStringOption((options) =>
             options
-                .setName('message')
+                .setName('title')
                 .setDescription("The question of the survey")
                 .setRequired(true))
         .addIntegerOption((options) =>
@@ -44,6 +44,7 @@ module.exports = {
 
         // Declaring variables
         const time = interaction.options.getInteger('time');
+        const title = interaction.options.getString('title');
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -66,44 +67,62 @@ module.exports = {
         const test = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('Test')
-            .setDescription("Test Concluded")
+            .setTitle('Poll')
+            .setDescription(`Subject: ${title}`)
+            .addFields(
+                {name: "Time", value: `${time} seconds`, inline: false}
+            )
 
-        await interaction.reply({embeds: [test]})
+        await interaction.reply({embeds: [test], fetchReply: true})
             .then(async (msg) => {
-                let yesCount;
-                let maybeCount;
-                let noCount;
+                let yesCount = 0;
+                let maybeCount = 0;
+                let noCount = 0;
 
-                await msg.react('✅')
-                await msg.react('🤔')
-                await msg.react('❌')
+                const yes_reaction = await msg.react('✅');
+                const maybe_reaction = await msg.react('🤔');
+                const no_reaction = await msg.react('❌');
 
                 const filter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '🤔' || reaction.emoji.name === '❌';
-                const collector = msg.createReactionCollector({filter, time: time * 1000});
+                const collector = msg.createReactionCollector({filter, time: time * 1000, dispose: true});
 
-                collector.on('collect', user, (collected) => {
-                    if(collected.reaction.name === '✅') {
+                collector.on('collect', async (reaction, user) => {
+                    if(reaction.emoji.name === '✅') {
+                        await maybe_reaction.users.remove(user.id);
+                        awaitno_reaction.users.remove(user.id)
+
                         yesCount += 1;
-                    } else if(collected.reaction.name === '🤔') {
+                    } else if(reaction.emoji.name === '🤔') {
+                        await yes_reaction.users.remove(user.id);
+                        await no_reaction.users.remove(user.id);
+
                         maybeCount += 1;
-                    } else if(collected.reaction.name === '❌') {
+                    } else if(reaction.emoji.name === '❌') {
+                        await yes_reaction.users.remove(user.id);
+                        await maybe_reaction.users.remove(user.id);
+
                         noCount += 1;
                     }
-                    console.log(`Collected ${collected.emoji.name} by ${user}`);
                 });
-                collector.on('remove', user, (collected) => {
-                    if(collected.reaction.name === '✅') {
+
+                collector.on('remove', (reaction, user) => {
+                    if(reaction.emoji.name === '✅') {
                         yesCount -= 1;
-                    } else if(collected.reaction.name === '🤔') {
+                    } else if(reaction.emoji.name === '🤔') {
                         maybeCount -= 1;
-                    } else if(collected.reaction.name === '❌') {
+                    } else if(reaction.emoji.name === '❌') {
                         noCount -= 1;
                     }
-                    console.log(`Removed ${collected.emoji.name} by ${user}`);
                 });
+
                 collector.on('end', (collected) => {
-                    interaction.channel.send({content: `:white_check_mark:: ${yesCount}, INSERT MAYBE EMOJI:x:: ${maybeCount}, :x:: ${noCount}`});
+                    const result = new MessageEmbed()
+                        .setColor('GREEN')
+                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                        .setTitle('Poll results')
+                        .setDescription("Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}")
+
+                    interaction.followUp({embeds: [result]});
                 });
             });
     }
