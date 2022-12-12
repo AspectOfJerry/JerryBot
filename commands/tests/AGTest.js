@@ -30,7 +30,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = Admin;
+                var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
                 await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
