@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -61,10 +61,10 @@ module.exports = {
 
         // Main
         const test = new MessageEmbed()
-                    .setColor('Green')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('Test')
-                    .setDescription("Test Concluded")
-                    .setFooter({text: `Test worked`});
+            .setColor('Green')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('Test')
+            .setDescription("Test Concluded")
+            .setFooter({text: `Test worked`});
     }
 };
