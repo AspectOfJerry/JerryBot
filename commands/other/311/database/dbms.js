@@ -96,11 +96,24 @@ async function GetScheduleByJour(jour) {
     }
 }
 
+async function GetFRCRemainingDays() {
+    const schedule = await GetFullSchedule();
+
+    const now = date.parse((await GetDate()), 'YYYY-MM-DD');
+
+    const day = schedule.metadata.frcStartDate;
+    const target_day = date.parse(day, 'YYYY-MM-DD');
+
+    const delta = date.subtract(target_day, now).toDays();
+    return delta;
+}
+
 module.exports = {
     GetFullSchedule,
     GetExceptions,
     GetDate,
     GetDateString,
+    GetFRCRemainingDays,
     GetJourByDate,
     GetScheduleByJour
 };

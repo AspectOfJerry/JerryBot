@@ -3,9 +3,10 @@
         "firstJourDate": "2022-08-30",
         "lastJourDate": "2023-06-22",
         "jour": {
-            "starttime": "8h10",
-            "endtime": "14h50"
-        }
+            "startTime": "8h10",
+            "endTime": "14h50"
+        },
+        "frcStartDate": "2023-01-07"
     },
     "jour1": {
         "period1": {
