@@ -138,7 +138,7 @@ module.exports = {
             .setTitle(`Confirm Ban`)
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?`)
             .addFields(
-                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
             ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
         await interaction.reply({embeds: [confirm_ban], components: [row]});
