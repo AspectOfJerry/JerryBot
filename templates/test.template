@@ -4,7 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const {Log, Sleep} = require('../../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetJourByDate, GetScheduleByJour} = require('../other/311/database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../other/311/database/dbms');
 
 const test_label = "0x00";
 
