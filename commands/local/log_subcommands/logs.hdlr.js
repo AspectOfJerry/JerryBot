@@ -48,7 +48,7 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'append': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/logs append'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/logs append'.`, 'INFO'); // Logs
 
                 // Declaring variables
                 const string = interaction.options.getString('string');
@@ -57,7 +57,7 @@ module.exports = {
                 const object = Log('append', interaction.guild.id, string, 'LOG', true);
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./logs_append.subcmd')(client, interaction, string, object);
             }
                 break;
@@ -69,7 +69,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  └─offset: ${line_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./logs_read.subcmd')(client, interaction, line_offset);
             }
                 break;
@@ -81,7 +81,7 @@ module.exports = {
                 await Log('append', interaction.guild.id, `  └─offset: ${day_offset}`, 'INFO'); // Logs
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./logs_get.subcmd')(client, interaction, day_offset);
             }
                 break;

@@ -1,5 +1,127 @@
 {
     "metadata": {
         "name": "Translate from Spanish to french"
-    }
+    },
+    "words": [
+        {
+            "ayudar": "aider"
+        },
+        {
+            "comprar": "acheter"
+        },
+        {
+            "viajar": "voyager"
+        },
+        {
+            "vailar": "danser"
+        },
+        {
+            "cocinar": "cuisiner"
+        },
+        {
+            "invitar": "inviter"
+        },
+        {
+            "limpiar": "nettoyer"
+        },
+        {
+            "regresar": "revenir"
+        },
+        {
+            "dibujar": "dessinr"
+        },
+        {
+            "aprender": "apprendre"
+        },
+        {
+            "creer": "croire"
+        },
+        {
+            "leer": "lire"
+        },
+        {
+            "beber": "boire"
+        },
+        {
+            "partir": "partir"
+        },
+        {
+            "trabajar": "travailler"
+        },
+        {
+            "practicar": "pratiquer"
+        },
+        {
+            "virir": "vivre"
+        },
+        {
+            "ganar": "gagner"
+        },
+        {
+            "llorar": "pleurer"
+        },
+        {
+            "pagar": "payer"
+        },
+        {
+            "visitar": "visiter"
+        },
+        {
+            "terminar": " terminer"
+        },
+        {
+            "presentar": "présenter"
+        },
+        {
+            "preparar": "préparer"
+        },
+        {
+            "olvidar": " oublier"
+        },
+        {
+            "caminar": "marcher"
+        },
+        {
+            "correr": "courir"
+        },
+        {
+            "comprender": "comprendre"
+        },
+        {
+            "comer": "manger"
+        },
+        {
+            "vender": "vendre"
+        },
+        {
+            "Recibir": " Recevoir"
+        },
+        {
+            "estudiar": "étudier"
+        },
+        {
+            "hablar": "parler"
+        },
+        {
+            "escuchar": "écouter"
+        },
+        {
+            "admirar": "admirer"
+        },
+        {
+            "tocar": "toucher"
+        },
+        {
+            "cantar": "chanter"
+        },
+        {
+            "mirar": "regarder"
+        },
+        {
+            "responder": "répondre"
+        },
+        {
+            "aAmar": "aimer"
+        }
+    ]
 }

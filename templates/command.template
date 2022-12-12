@@ -9,11 +9,12 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('CMD_NAME')
         .setDescription("CMD_DESCRIPTION")
-        .addStringOption((options) =>
-            options
-                .setName('OPTION_NAME')
-                .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
-                .setRequired(true/false)),
+    // .addStringOption((options) =>
+    //     options
+    //         .setName('OPTION_NAME')
+    //         .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
+    //         .setRequired(true/false))
+    ,
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME'.`, 'INFO'); // Logs
         // interaction.deferReply()

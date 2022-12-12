@@ -37,22 +37,22 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/quiz ${quiz_1_name}'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/quiz ${quiz_1_name}'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require(`./${quiz_1_name}.subcmd.js`)(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./FILE.subcmd.js')(client, interaction);
             }
                 break;

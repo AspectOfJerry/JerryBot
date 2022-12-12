@@ -38,22 +38,22 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'stop': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./dev_stop.subcmd')(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./DIRECTORY_subcommands')(client, interaction);
             }
                 break;

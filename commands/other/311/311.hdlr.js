@@ -40,22 +40,22 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'schedule': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./311_schedule.subcmd')(client, interaction);
             }
                 break;
             case 'weather': {
-                await Log('append', "subcmd_hdlr", `├─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "subcmd_hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./311_weather.subcmd')(client, interaction);
             }
                 break;
