@@ -7,15 +7,20 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ArnaudTest')
-        .setDescription("Arnaud's test")
+        .setName('poll')
+        .setDescription("Create a new poll")
         .addStringOption((options) =>
             options
-                .setName('ArnaudTest')
-                .setDescription("[OPTIONAL] Arnaud's test")
+                .setName('message')
+                .setDescription("The question of the survey")
+                .setRequired(true))
+        .addIntegerOption((options) =>
+            options
+                .setName('time')
+                .setDescription("The duration of the colector in seconds")
                 .setRequired(true)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/AGTest'.`, 'a test command for arnaud'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/poll'.`, 'INFO'); // Logs
         // interaction.deferReply()
 
         // Set minimum execution role
@@ -38,9 +43,7 @@ module.exports = {
         }
 
         // Declaring variables
-        // const target = interaction.options.getUser('user') || interaction.user;
-        // const memberTarget = interaction.guild.members.cache.get(target.id);
-        // await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        const time = interaction.options.getInteger('time');
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -61,10 +64,47 @@ module.exports = {
 
         // Main
         const test = new MessageEmbed()
-            .setColor('Green')
+            .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Test')
             .setDescription("Test Concluded")
-            .setFooter({text: `Test worked`});
+
+        await interaction.reply({embeds: [test]})
+            .then(async (msg) => {
+                let yesCount;
+                let maybeCount;
+                let noCount;
+
+                await msg.react('✅')
+                await msg.react('🤔')
+                await msg.react('❌')
+
+                const filter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '🤔' || reaction.emoji.name === '❌';
+                const collector = msg.createReactionCollector({filter, time: time * 1000});
+
+                collector.on('collect', user, (collected) => {
+                    if(collected.reaction.name === '✅') {
+                        yesCount += 1;
+                    } else if(collected.reaction.name === '🤔') {
+                        maybeCount += 1;
+                    } else if(collected.reaction.name === '❌') {
+                        noCount += 1;
+                    }
+                    console.log(`Collected ${collected.emoji.name} by ${user}`);
+                });
+                collector.on('remove', user, (collected) => {
+                    if(collected.reaction.name === '✅') {
+                        yesCount -= 1;
+                    } else if(collected.reaction.name === '🤔') {
+                        maybeCount -= 1;
+                    } else if(collected.reaction.name === '❌') {
+                        noCount -= 1;
+                    }
+                    console.log(`Removed ${collected.emoji.name} by ${user}`);
+                });
+                collector.on('end', (collected) => {
+                    interaction.channel.send({content: `:white_check_mark:: ${yesCount}, INSERT MAYBE EMOJI:x:: ${maybeCount}, :x:: ${noCount}`});
+                });
+            });
     }
 };
