@@ -8,11 +8,16 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('poll')
-        .setDescription("Create a new poll")
+        .setDescription("[TEST] Create a new poll")
         .addStringOption((options) =>
             options
                 .setName('title')
-                .setDescription("The question of the survey")
+                .setDescription("The title of the poll")
+                .setRequired(true))
+        .addStringOption((options) =>
+            options
+                .setName('description')
+                .setDescription("The description of the poll")
                 .setRequired(true))
         .addIntegerOption((options) =>
             options
@@ -45,6 +50,7 @@ module.exports = {
         // Declaring variables
         const time = interaction.options.getInteger('time');
         const title = interaction.options.getString('title');
+        const description = interaction.options.getString('description');
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -67,11 +73,11 @@ module.exports = {
         const test = new MessageEmbed()
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('Poll')
-            .setDescription(`Subject: ${title}`)
+            .setTitle(`:ballot_box: Poll: ${title}`)
+            .setDescription(`${description}`)
             .addFields(
                 {name: "Time", value: `${time} seconds`, inline: false}
-            )
+            ).setFooter({text: "Open to everyone. Do not spam the buttons."});
 
         await interaction.reply({embeds: [test], fetchReply: true})
             .then(async (msg) => {
@@ -115,14 +121,24 @@ module.exports = {
                     }
                 });
 
-                collector.on('end', (collected) => {
+                collector.on('end', async (collected) => {
+                    if(yesCount < 0) {
+                        yesCount = 0;
+                    }
+                    if(maybeCount < 0) {
+                        maybeCount = 0;
+                    }
+                    if(noCount < 0) {
+                        noCount = 0;
+                    }
+
                     const result = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                        .setTitle('Poll results')
+                        .setTitle(':bar_chart: Poll results')
                         .setDescription(`Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}`)
 
-                    interaction.followUp({embeds: [result]});
+                    await interaction.followUp({embeds: [result]});
                 });
             });
     }

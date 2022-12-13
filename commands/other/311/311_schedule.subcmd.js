@@ -53,6 +53,8 @@ module.exports = async function (client, interaction) {
     let jour = await GetJourByDate();
     const day = await GetDateString();
 
+    const days_to_frc = await GetFRCRemainingDays();
+
     if(isNaN(jour)) {
         const schedule_message = `${jour} No school`;
 
@@ -85,9 +87,9 @@ module.exports = async function (client, interaction) {
 
     const schedule_embed = new MessageEmbed()
         .setColor('GREEN')
-        .setTitle(`[Jour ${jour}] ${day}`)
+        .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setDescription(`This is the schedule for Jour ${jour}.`)
+        .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: This is the schedule for Jour ${jour}.`)
         .addFields(
             {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
             {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
