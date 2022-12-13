@@ -120,7 +120,7 @@ module.exports = {
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle('Poll results')
-                        .setDescription("Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}")
+                        .setDescription(`Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}`)
 
                     interaction.followUp({embeds: [result]});
                 });
