@@ -6,7 +6,8 @@
             "startTime": "8h10",
             "endTime": "14h50"
         },
-        "frcStartDate": "2023-01-07"
+        "frcStartDate": "2023-01-07",
+        "frcEndDate": "NaN"
     },
     "jour1": {
         "period1": {

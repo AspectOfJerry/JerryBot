@@ -99,12 +99,13 @@ async function GetScheduleByJour(jour) {
 async function GetFRCRemainingDays() {
     const schedule = await GetFullSchedule();
 
-    const now = date.parse((await GetDate()), 'YYYY-MM-DD');
+    const now = await GetDate();
 
     const day = schedule.metadata.frcStartDate;
+    // const day = schedule.metadata.frcEndDate;
     const target_day = date.parse(day, 'YYYY-MM-DD');
 
-    const delta = date.subtract(target_day, now).toDays();
+    const delta = Math.floor(date.subtract(target_day, now).toDays());
     return delta;
 }
 

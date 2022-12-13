@@ -59,8 +59,8 @@ module.exports = async function (client) {
 
         const schedule_embed = new MessageEmbed()
             .setColor('GREEN')
-            .setTitle(`[Jour ${jour}] ${day}`)
-            .setDescription(`This is the schedule for Jour ${jour} (**today**).`)
+            .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
+            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
             .addFields(
                 {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
                 {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
