@@ -79,9 +79,7 @@ module.exports = {
                 let maybeCount = 0;
                 let noCount = 0;
 
-                const yes_reaction = await msg.react('✅');
-                const maybe_reaction = await msg.react('🤔');
-                const no_reaction = await msg.react('❌');
+
 
                 const filter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '🤔' || reaction.emoji.name === '❌';
                 const collector = msg.createReactionCollector({filter, time: time * 1000, dispose: true});
@@ -115,12 +113,16 @@ module.exports = {
                     }
                 });
 
+                const yes_reaction = await msg.react('✅');
+                const maybe_reaction = await msg.react('🤔');
+                const no_reaction = await msg.react('❌');
+
                 collector.on('end', (collected) => {
                     const result = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle('Poll results')
-                        .setDescription(`Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}`)
+                        .setDescription(`Here are the results:\n\n:white_check_mark: : ${yesCount -1}\n :thinking: : ${maybeCount -1}\n :x: : ${noCount -1}`)
 
                     interaction.followUp({embeds: [result]});
                 });
