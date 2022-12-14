@@ -105,7 +105,7 @@ async function GetFRCRemainingDays() {
     // const day = schedule.metadata.frcEndDate;
     const target_day = date.parse(day, 'YYYY-MM-DD');
 
-    const delta = Math.ceil(date.subtract(target_day, now).toDays());
+    const delta = Math.floor(date.subtract(target_day, now).toDays());
     return delta;
 }
 
