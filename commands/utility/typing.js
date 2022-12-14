@@ -8,7 +8,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('typing')
-        .setDescription("Send the typing indicator to a channel."),
+        .setDescription("Sends the typing indicator."),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/typing'.`, 'INFO'); // Logs
         // interaction.deferReply()
@@ -33,7 +33,6 @@ module.exports = {
         }
 
         // Declaring variables
-        const channel = interaction.options.getChannel('channel');
         await Log('append', interaction.guild.id, `├─channel: '${channel}'`, 'INFO'); // Logs
 
         // Checks
@@ -54,7 +53,7 @@ module.exports = {
         } // -----END ROLE CHECK-----
 
         // Main
-        await channel.sendTyping();
-        await Log('append', interaction.guild.id, `Typing in <#${channel.name}>`, 'INFO'); // Logs
+        await interaction.channel.sendTyping();
+        await Log('append', interaction.guild.id, `Typing in <#${interaction.channel.name}>`, 'INFO'); // Logs
     }
 };
