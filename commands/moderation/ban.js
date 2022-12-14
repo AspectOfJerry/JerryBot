@@ -159,7 +159,7 @@ module.exports = {
             }
         }
 
-        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+        const button_collector = interaction.channel.createMessageComponentCollector({filter, componentType: "BUTTON", time: 30000});
 
         button_collector.on('collect', async buttonInteraction => {
             await buttonInteraction.deferUpdate();

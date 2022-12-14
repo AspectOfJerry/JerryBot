@@ -83,7 +83,7 @@ module.exports = {
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Math random ${min} to ${max}`)
-            .setDescription(`Random number: **${Math.floor((Math.random() * (max - min)) + min)}**`)
+            .setDescription(`Random number: **${Math.floor((Math.random() * (max - min)) + min)}**`);
 
         await interaction.reply({embeds: [random_embed], components: [row]});
 
