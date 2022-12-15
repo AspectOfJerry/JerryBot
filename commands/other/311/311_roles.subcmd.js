@@ -54,8 +54,8 @@ module.exports = async function (client, interaction) {
                 .setMinValues(1)
                 .addOptions([
                     {
-                        lablel: "311_schedule",
-                        description: "This role is mentioned in the schedule announcer.",
+                        label: "311 schedule",
+                        description: "Pinged by the schedule announcer.",
                         value: "schedule"
                     }
                 ])
@@ -81,22 +81,60 @@ module.exports = async function (client, interaction) {
         .setTitle('Self-toggle roles')
         .setDescription('Select the roles you want to toggle in the dropdown menu.');
 
-    await interaction.reply({embeds: [prompt_roles], components: [select_menu]})
+    await interaction.reply({embeds: [prompt_roles], components: [select_menu], fetchReply: true})
         .then(async (msg) => {
             const select_menu_collector = await msg.createMessageComponentCollector({filter, componentType: "SELECT_MENU", time: 15000});
 
             select_menu_collector.on('collect', async (selectMenuInteraction) => {
                 if(selectMenuInteraction.customId == "select_menu") {
                     const selected = selectMenuInteraction.values;
+                    let rolesAdded = [];
+                    let rolesRemoved = [];
+                    let addedRolesString = "";
+                    let removedRolesString = "";
+                    let roleOrRoles = "role";
+                    let isAnd = "";
 
                     if(selected.includes('schedule')) {
-                        await selectMenuInteraction.member.roles.add('');
+                        if(!selectMenuInteraction.member.roles.cache.has('1016500157480706191')) {
+                            await selectMenuInteraction.member.roles.add('1016500157480706191');
+                            rolesAdded.push('schedule');
+                        } else {
+                            await selectMenuInteraction.member.roles.remove('1016500157480706191');
+                            rolesRemoved.push('schedule');
+                        }
                     }
 
-                    const added_embed = new MessageEmbed()
+
+                    if(rolesAdded.length > 0) {
+                        if(rolesAdded.length > 1) {
+                            roleOrRoles = "roles";
+                        }
+
+                        addedRolesString = ` added the ${rolesAdded} ${roleOrRoles}` || "";
+                    }
+
+                    if(rolesRemoved.length > 0) {
+                        if(rolesAdded.length > 1) {
+                            isAnd = " and";
+                        }
+
+                        if(rolesAdded.length > 1) {
+                            roleOrRoles = "roles";
+                        }
+
+                        removedRolesString = `${isAnd} removed the ${rolesRemoved} ${roleOrRoles}` || "";
+                    }
+
+                    const embed_description = `Successfully${addedRolesString}${removedRolesString}.`;
+
+                    const success_embed = new MessageEmbed()
                         .setColor('GREEN')
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                        .setTitle('Self-toggled roles')
+                        .setDescription(`${embed_description}`);
 
+                    await interaction.editReply({embeds: [success_embed], components: []});
                 }
             });
         });

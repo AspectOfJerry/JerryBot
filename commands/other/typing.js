@@ -33,7 +33,6 @@ module.exports = {
         }
 
         // Declaring variables
-        await Log('append', interaction.guild.id, `├─channel: '${channel}'`, 'INFO'); // Logs
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -53,7 +52,14 @@ module.exports = {
         } // -----END ROLE CHECK-----
 
         // Main
-        await interaction.channel.sendTyping();
+        const typing = new MessageEmbed()
+            .setColor('GREEN')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+            .setDescription("Typing...");
+
+        await interaction.reply({embeds: [typing], ephemeral: true});
         await Log('append', interaction.guild.id, `Typing in <#${interaction.channel.name}>`, 'INFO'); // Logs
+
+        await interaction.channel.sendTyping();
     }
 };

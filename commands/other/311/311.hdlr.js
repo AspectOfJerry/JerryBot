@@ -18,7 +18,11 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('weather')
-                .setDescription("Get today's weather.")),
+                .setDescription("Get today's weather."))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('roles')
+                .setDescription("Self add/remove some roles.")),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/311 [...]'.`, 'INFO'); // Logs
 
@@ -56,6 +60,16 @@ module.exports = {
                 // Calling the subcommand file
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 require('./311_weather.subcmd')(client, interaction);
+            }
+                break;
+            case 'roles': {
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 roles'.`, 'INFO'); // Logs
+
+                // Prep
+
+                // Calling the subcommand file
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                require('./311_roles.subcmd')(client, interaction);
             }
                 break;
             default:

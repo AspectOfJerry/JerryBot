@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const date = require('date-and-time');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
@@ -19,9 +19,9 @@ module.exports = async function (client) {
 
 
         let jour = await GetJourByDate();
-        const day = await GetDateString();
+        const day = await GetFullDateString();
 
-        const days_to_frc = GetFRCRemainingDays();
+        const days_to_frc = await GetFRCRemainingDays(await GetDate());
 
         if(isNaN(jour)) {
             const schedule_message = `${jour}: No school`;
@@ -107,7 +107,7 @@ module.exports = async function (client) {
             {name: 'Auto delete', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
         ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-    const msg = await channel.send({embeds: [attached]})
+    const msg = await channel.send({embeds: [attached]});
     await Sleep(10000);
     await msg.delete();
 };

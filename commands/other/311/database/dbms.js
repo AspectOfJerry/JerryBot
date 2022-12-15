@@ -20,7 +20,7 @@ async function GetDate() {
     return now;
 }
 
-async function GetDateString() {
+async function GetFullDateString() {
     let _day = await GetDate();
     const day = date.format(_day, 'dddd, MMMM DD, YYYY');
     return day;
@@ -96,16 +96,14 @@ async function GetScheduleByJour(jour) {
     }
 }
 
-async function GetFRCRemainingDays() {
+async function GetFRCRemainingDays(startJour) {
     const schedule = await GetFullSchedule();
 
-    const now = await GetDate();
+    const target_day = schedule.metadata.frcStartDate;
+    // const target = schedule.metadata.frcEndDate;
+    const target = date.parse(target_day, 'YYYY-MM-DD');
 
-    const day = schedule.metadata.frcStartDate;
-    // const day = schedule.metadata.frcEndDate;
-    const target_day = date.parse(day, 'YYYY-MM-DD');
-
-    const delta = Math.floor(date.subtract(target_day, now).toDays());
+    const delta = Math.floor(date.subtract(target, startJour).toDays());
     return delta;
 }
 
@@ -113,7 +111,7 @@ module.exports = {
     GetFullSchedule,
     GetExceptions,
     GetDate,
-    GetDateString,
+    GetFullDateString,
     GetFRCRemainingDays,
     GetJourByDate,
     GetScheduleByJour
