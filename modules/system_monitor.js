@@ -5,6 +5,8 @@ const fetch = require('node-fetch');
 
 const {Log, Sleep} = require('./JerryUtils');
 
+const os = require('node:os');
+
 var updateFailCount = 0;
 
 var ready;
@@ -13,6 +15,7 @@ var guilds = [];
 var channels = [];
 var messages = [];
 var embedMessage;
+var isDeployed = false;
 
 async function BotStop(_client, timestamp) {
 }
@@ -35,6 +38,10 @@ async function ChecklistHeartbeatSynced() {
 
 
 async function InitSystemMonitor(_client) {
+    if(os.version().toLowerCase().includes('server')) {
+        isDeployed = true;
+    }
+
     client = _client;
     guilds.push(await client.guilds.fetch('631939549332897842')); // devServer guild
     channels.push(await guilds[0].channels.fetch('1030988308202922084')); // system-monitor channel in devServer guild
@@ -53,6 +60,7 @@ async function InitSystemMonitor(_client) {
         .setTitle('JerryBot System Monitor')
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addFields(
+            {name: 'Deployed', value: `${isDeployed}`, inline: false},
             {name: 'Checklist', value: `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, inline: false},
             {name: 'Last Heartbeat', value: `:black_heart: ---;`, inline: true},
             {name: 'Next expected Heartbeat', value: `:black_heart: ---;`, inline: true}

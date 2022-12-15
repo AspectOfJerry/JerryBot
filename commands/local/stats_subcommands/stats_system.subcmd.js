@@ -3,6 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 const os = require('node:os');
+
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats system'.`, 'INFO'); // Logs
     await interaction.deferReply();

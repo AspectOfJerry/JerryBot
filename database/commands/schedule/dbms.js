@@ -1,16 +1,16 @@
-const {Log, Sleep} = require('../../../../modules/JerryUtils');
+const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 const date = require('date-and-time');
 
 // './schedule.json'
 async function GetFullSchedule() {
-    const file = require('./schedule.json');
+    const file = require('./schedule_311.json');
     return file;
 }
 
 // './schedule_exceptions.json'
 async function GetExceptions() {
-    const file = require('./schedule_exceptions.json');
+    const file = require('./schedule_311_exceptions.json');
     return file;
 }
 
