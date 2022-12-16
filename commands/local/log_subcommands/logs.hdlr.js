@@ -54,7 +54,7 @@ module.exports = {
                 const string = interaction.options.getString('string');
                 await Log('append', interaction.guild.id, `  └─string: ${string}`, 'INFO'); // Logs
 
-                const object = Log('append', interaction.guild.id, string, 'LOG', true);
+                const object = Log('append', interaction.guild.id, string, 'INFO', true);
 
                 // Calling the subcommand file
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs

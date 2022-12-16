@@ -60,6 +60,6 @@ module.exports = async function (client, interaction, string, object) {
         .addField('Target Directory', `../logs/${(await object).fileName}`, false);
 
     await interaction.editReply({embeds: [writing_to_logs]});
-    await Log('append', interaction.guild.id, string, 'LOG'); // Logs
+    await Log('append', interaction.guild.id, string, 'INFO'); // Logs
     await interaction.editReply({embeds: [_writing_to_logs]});
 };
