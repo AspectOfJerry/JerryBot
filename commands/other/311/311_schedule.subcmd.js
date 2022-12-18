@@ -62,7 +62,7 @@ module.exports = async function (client, interaction) {
             .setColor('YELLOW')
             .setTitle(`[${jour}] ${day}`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setDescription("No school today!");
+            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\nNo school today!`);
 
         await interaction.editReply({content: `Here's **today's** schedule!`});
         await interaction.channel.send({embeds: [schedule_embed]});
