@@ -6,23 +6,21 @@ hello
 
 # Command list
 
-*Parameters<br>
+\*Parameters<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*italic* = Optional parameter<br>
 &nbsp;&nbsp;&nbsp;&nbsp;@ = User mention<br>
 &nbsp;&nbsp;&nbsp;&nbsp;# = Channel mention<br>
 &nbsp;&nbsp;&nbsp;&nbsp;? = Boolean<br>
 
 
-*PL: Permission Level<br>
+\*PL: Permission Level<br>
 &nbsp;&nbsp;&nbsp;&nbsp;-1 = Superuser<br>
 &nbsp;&nbsp;&nbsp;&nbsp;0 = Highest<br>
 &nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
 
-— = None
-
 <br>
 
-> ## Client
+## Client
 
 |  PL*  | Command | Parameters* | Description                            |
 | :---: | ------- | ----------- | -------------------------------------- |
@@ -32,27 +30,29 @@ hello
 <br>
 <br>
 
-> ## Config
+## Config
 
 |  PL*  | Command | Parameters* | Description |
 | :---: | ------- | ----------- | ----------- |
+|   —   | —       | —           | —           |
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 <br>
 <br>
 
-> ## Dev
+## Dev
 
 |  PL*  | Command | Parameters* | Description |
 | :---: | ------- | ----------- | ----------- |
+|   —   | —       | —           | —           |
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 <br>
 <br>
 
-> ## Moderation 
+## Moderation 
 
 |  PL*  | Command    | Parameters*                             | Description                                                        |
 | :---: | ---------- | --------------------------------------- | ------------------------------------------------------------------ |
@@ -66,7 +66,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <br>
 <br>
 
-> ## Utility
+## Utility
 
 |  PL*  | Command        | Parameters*                         | Description                                         |
 | :---: | -------------- | ----------------------------------- | --------------------------------------------------- |
@@ -80,7 +80,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <br>
 
-> ## Utility - Subcommands
+## Utility - Subcommands
 
 <br>
 
@@ -103,11 +103,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <br>
 
-> ## Other
+## Other
 
 |  PL*  | Command | Parameters* | Description |
 | :---: | ------- | ----------- | ----------- |
+|   —   | —       | —           | —           |
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
+<br>
 <br>
