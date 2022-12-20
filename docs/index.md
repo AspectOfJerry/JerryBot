@@ -28,7 +28,6 @@ hello
 |   3   | /stop   | —           | Stops the bot. Use as **last** resort. |
 
 <br>
-<br>
 
 ## Config
 
@@ -39,7 +38,6 @@ hello
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 <br>
-<br>
 
 ## Dev
 
@@ -49,7 +47,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-<br>
 <br>
 
 ## Moderation 
@@ -63,7 +60,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 |   3   | /timeout   | \<@user\> \<duration\> *\<reason\>*     | Times out a member for `<duration>`. e.g., 3**s**, 2**m**, 1**h**. |
 |   3   | /untimeout | \<@user\> *\<reason\>*                  | Removes the time out from a member.                                |
 
-<br>
 <br>
 
 ## Utility
@@ -111,5 +107,4 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-<br>
 <br>
