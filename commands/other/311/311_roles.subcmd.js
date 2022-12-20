@@ -142,7 +142,7 @@ module.exports = async function (client, interaction) {
                     }
 
                     if(rolesRemoved.length > 0) {
-                        if(rolesAdded.length > 1) {
+                        if(rolesAdded.length + rolesRemoved.length > 1) {
                             isAnd = " and";
                         }
 
