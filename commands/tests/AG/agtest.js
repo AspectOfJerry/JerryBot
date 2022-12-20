@@ -3,19 +3,19 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ArnaudTest')
-        .setDescription("Arnaud's test")
+        .setName('agtest')
+        .setDescription("[TEST] agtest")
         .addStringOption((options) =>
             options
-                .setName('ArnaudTest')
-                .setDescription("[OPTIONAL] Arnaud's test")
+                .setName('option1')
+                .setDescription("[OPTIONAL] AG test")
                 .setRequired(true)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/AGTest'.`, 'a test command for arnaud'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/agtest'.`, 'a test command for arnaud'); // Logs
         // interaction.deferReply()
 
         // Set minimum execution role
@@ -54,17 +54,19 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/AGTest'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/agtest'. [error_permissions]`, 'WARN'); // Logs
                 return 10;
             }
         } // -----END ROLE CHECK-----
 
         // Main
         const test = new MessageEmbed()
-                    .setColor('Green')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('Test')
-                    .setDescription("Test Concluded")
-                    .setFooter({text: `Test worked`});
+            .setColor('Green')
+            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+            .setTitle('Test')
+            .setDescription("Test Concluded")
+            .setFooter({text: `Test worked`});
+
+        interaction.reply({embeds: [test]});
     }
 };

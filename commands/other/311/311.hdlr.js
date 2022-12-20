@@ -36,7 +36,7 @@ module.exports = {
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("This command is not available in this guild!");
 
-            await interaction.editReply({embeds: [cmd_not_avail_in_guild]});
+            await interaction.reply({embeds: [cmd_not_avail_in_guild]});
             return;
         }
 

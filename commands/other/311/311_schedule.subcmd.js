@@ -60,9 +60,9 @@ module.exports = async function (client, interaction) {
 
         const schedule_embed = new MessageEmbed()
             .setColor('YELLOW')
-            .setTitle(`[${jour}] ${day}`)
+            .setTitle(`:newspaper: [${jour}] ${day}`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\nNo school today!`);
+            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: No school today!`);
 
         await interaction.editReply({content: `Here's **today's** schedule!`});
         await interaction.channel.send({embeds: [schedule_embed]});

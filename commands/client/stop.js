@@ -57,7 +57,7 @@ module.exports = {
         } // -----END ROLE CHECK-----
 
         // Main
-        let row = new MessageActionRow()
+        let buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('stop_confirm_button')
@@ -85,7 +85,7 @@ module.exports = {
                 {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
             ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
 
-        await interaction.reply({embeds: [confirm_stop], components: [row]});
+        await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
         await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
 
         const filter = async (buttonInteraction) => {
@@ -108,9 +108,9 @@ module.exports = {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
             // Disabling buttons
-            row.components[0]
+            buttonRow.components[0]
                 .setDisabled(true);
-            row.components[1]
+            buttonRow.components[1]
                 .setDisabled(true);
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
@@ -124,7 +124,7 @@ module.exports = {
                         {name: 'Requested at', value: `${interaction.createdAt}`, inline: false}
                     ).setFooter({text: "The process will exit after this message."});
 
-                await interaction.editReply({embeds: [stopping_bot], components: [row]});
+                await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
                 await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO'); // Logs
                 await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL'); // Logs
                 await Sleep(250);
@@ -143,18 +143,18 @@ module.exports = {
 
         button_collector.on('end', async collected => {
             // Disabling buttons
-            row.components[0]
+            buttonRow.components[0]
                 .setDisabled(true);
-            row.components[1]
+            buttonRow.components[1]
                 .setDisabled(true);
 
             if(collected.size === 0) {
                 const auto_abort = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor('DARK_GREY')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`);
 
-                await interaction.editReply({embeds: [auto_abort], components: [row]});
+                await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
                 return;
             }
