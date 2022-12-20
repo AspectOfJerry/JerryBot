@@ -6,7 +6,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription("Help is here!"),
+        .setDescription("Help is on the way!"),
     async execute(client, interaction) {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/help'.`, 'INFO'); // Logs
 
@@ -30,7 +30,7 @@ module.exports = {
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("Need help?")
-            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev) or [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)!")
+            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev) or [here](https://www.youtube.com/watch?v=xvFZjo5PgG0)!");
 
         await interaction.reply({embeds: [help], components: [row]});
     }
