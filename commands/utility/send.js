@@ -6,7 +6,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('send')
-        .setDescription("Sends a private message to a guild member.")
+        .setDescription("Talk privately with a guild member through the bot.")
         .addUserOption((options) =>
             options
                 .setName('user')
@@ -39,6 +39,8 @@ module.exports = {
                 await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
                 throw `Error: Bad permission configuration.`;
         }
+
+        await interaction.reply('This command is currently disabled.');
 
         // Declaring variables
         const target = interaction.options.getUser('user');

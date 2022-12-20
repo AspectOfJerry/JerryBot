@@ -128,17 +128,18 @@ module.exports = {
 
         let isOverriddenText = "";
 
-        const now = Math.round(Date.now() / 1000);
-        const auto_cancel_timestamp = now + 10;
+        // const now = Math.round(Date.now() / 1000);
+        // const auto_cancel_timestamp = now + 10;
 
         const confirm_kick = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
-            .addFields(
-                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
-            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            // .addFields(
+            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
+            // ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_kick], components: [buttonRow]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs

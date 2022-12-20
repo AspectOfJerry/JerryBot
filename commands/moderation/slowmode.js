@@ -9,7 +9,7 @@ module.exports = {
         .setDescription("Enables slowmode in a guild text channel.")
         .addIntegerOption((options) =>
             options
-                .setName('duration')
+                .setName('interval')
                 .setDescription("[REQUIRED] The rate limit in seconds.")
                 .setRequired(true))
         .addChannelOption((options) =>
@@ -46,7 +46,7 @@ module.exports = {
         }
 
         // Declaring variables
-        const duration = interaction.options.getInteger('duration');
+        const interval = interaction.options.getInteger('interval');
         const channel = interaction.options.getChannel('channel') ?? interaction.channel;
         const reason = interaction.options.getString('reason') ?? "No reason provided.";
 
@@ -79,7 +79,7 @@ module.exports = {
         }
 
         // Main
-        if(duration === 0) {
+        if(interval === 0) {
             channel.setRateLimitPerUser(0, reason)
                 .then(async () => {
                     const disabled_slowmode = new MessageEmbed()
@@ -93,16 +93,16 @@ module.exports = {
             return 0;
         }
 
-        channel.setRateLimitPerUser(duration, reason)
+        channel.setRateLimitPerUser(interval, reason)
             .then(async () => {
                 const enabled_slowmode = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Successfully enabled a **${duration}** second rate limit per user in <#${channel.id}>.`)
+                    .setDescription(`Successfully enabled a **${interval}** second rate limit per user in <#${channel.id}>.`)
                     .setFooter({text: "Set the rate limit to 0 to disable it."})
 
                 await interaction.reply({embeds: [enabled_slowmode]});
-                await Log('append', interaction.guild.id, `└─Successfully enabled a '${duration}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Successfully enabled a '${interval}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
             });
     }
 };
