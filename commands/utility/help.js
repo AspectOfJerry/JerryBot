@@ -30,7 +30,7 @@ module.exports = {
             .setColor('GREEN')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("Need help?")
-            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev)!")
+            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev) or [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ)!")
 
         await interaction.reply({embeds: [help], components: [row]});
     }
