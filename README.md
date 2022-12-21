@@ -1,5 +1,10 @@
 # Discord-JerryBot
 Do not contribute (unless you have been invited to).
+
+You can find the documentation for the bot [here](https://bot.aspectofjerry.dev).
+
+[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/kct3.svg)](https://betteruptime.com/?utm_source=status_badge)
+
 ## JerryBot
 JerryBot is a Discord bot for personal use built on DiscordJS v13. Its predecessor, built on DiscordJS v12, can be found in [this repository](https://github.com/AspectOfJerry/DiscordBot-OBSOLETE).
 ## Repository file structure summary
