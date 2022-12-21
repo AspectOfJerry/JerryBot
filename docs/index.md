@@ -5,6 +5,18 @@
 <br>
 
 # Command list
+- [Client](#client)
+- [Config](#config)
+- [Dev](#dev)
+- [Moderation](#moderation)
+- [Utility](#utility)
+  - [Math](#utilitymath---subcommands)
+  - [Voice](#utilityvoice---subcommands)
+- [Other](#other)
+  - [311](#other311---subcommands-guild-specific)
+  - [Quiz](#otherquiz---subcommands-guild-specific)
+
+<br>
 
 \*Parameters<br>
 &nbsp;&nbsp;&nbsp;&nbsp;? = Optional parameter<br>
@@ -101,7 +113,7 @@
 
 <br>
 
-### Utility/311 - Subcommands (Guild specific)
+### Other/311 - Subcommands (Guild specific)
 
 |  PL*  | Command             | Parameters* | Description                      |
 | :---: | ------------------- | ----------- | -------------------------------- |
@@ -112,7 +124,7 @@
 
 <br>
 
-### Utility/quiz - Subcommands (Guild specific)
+### Other/quiz - Subcommands (Guild specific)
 
 |  PL*  | Command | Parameters* | Description |
 | :---: | ------- | ----------- | ----------- |
