@@ -28,8 +28,8 @@ module.exports = async function (client) {
 
             const schedule_embed = new MessageEmbed()
                 .setColor('YELLOW')
-                .setTitle(`[${jour}] ${day}`)
-                .setDescription("No school today!");
+                .setTitle(`:newspaper: [${jour}] ${day}`)
+                .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: No school today!`);
 
             waiting_schedule.delete();
             await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});

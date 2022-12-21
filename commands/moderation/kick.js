@@ -112,7 +112,7 @@ module.exports = {
         }
 
         // Main
-        let row = new MessageActionRow()
+        let buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('kick_confirm_button')
@@ -128,19 +128,20 @@ module.exports = {
 
         let isOverriddenText = "";
 
-        const now = Math.round(Date.now() / 1000);
-        const auto_cancel_timestamp = now + 10;
+        // const now = Math.round(Date.now() / 1000);
+        // const auto_cancel_timestamp = now + 10;
 
         const confirm_kick = new MessageEmbed()
             .setColor('YELLOW')
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
-            .addFields(
-                {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
-            ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            // .addFields(
+            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
+            // ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            .setFooter({text: "🟥 Canceling in 10s"});
 
-        await interaction.reply({embeds: [confirm_kick], components: [row]});
+        await interaction.reply({embeds: [confirm_kick], components: [buttonRow]});
         await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
 
         // Creating a filter for the collector
@@ -166,10 +167,10 @@ module.exports = {
 
             if(buttonInteraction.customId == 'kick_confirm_button') {
                 // Disabling buttons
-                row.components[0]
+                buttonRow.components[0]
                     .setStyle('SUCCESS')
                     .setDisabled(true);
-                row.components[1]
+                buttonRow.components[1]
                     .setStyle('SECONDARY')
                     .setDisabled(true);
 
@@ -190,15 +191,15 @@ module.exports = {
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
-                        await interaction.editReply({embeds: [success_kick], components: [row]});
+                        await interaction.editReply({embeds: [success_kick], components: [buttonRow]});
                         await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
                     });
             } else {
                 // Disabling buttons
-                row.components[0]
+                buttonRow.components[0]
                     .setStyle('SECONDARY')
                     .setDisabled(true);
-                row.components[1]
+                buttonRow.components[1]
                     .setStyle('SUCCESS')
                     .setDisabled(true);
 
@@ -207,7 +208,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the kick${isOverriddenText}.`);
 
-                await interaction.editReply({embeds: [cancel_kick], components: [row]});
+                await interaction.editReply({embeds: [cancel_kick], components: [buttonRow]});
                 await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO'); // Logs
             }
         });
@@ -215,19 +216,19 @@ module.exports = {
         button_collector.on('end', async collected => {
             if(collected.size === 0) {
                 // Disabling buttons
-                row.components[0]
+                buttonRow.components[0]
                     .setStyle('SECONDARY')
                     .setDisabled(true);
-                row.components[1]
+                buttonRow.components[1]
                     .setStyle('SECONDARY')
                     .setDisabled(true);
 
                 const auto_abort = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor('DARK_GREY')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`);
 
-                await interaction.editReply({embeds: [auto_abort], components: [row]});
+                await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
                 await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
             }
         });

@@ -6,7 +6,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('profile')
-        .setDescription("Sends information about a user.")
+        .setDescription("Shows information about a user.")
         .addUserOption((options) =>
             options
                 .setName('user')

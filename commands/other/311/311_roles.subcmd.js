@@ -46,7 +46,7 @@ module.exports = async function (client, interaction) {
     // -----END ROLE CHECK-----
 
     // Main
-    const select_menu = new MessageActionRow()
+    let select_menu = new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()
                 .setCustomId('select_menu')
@@ -54,9 +54,16 @@ module.exports = async function (client, interaction) {
                 .setMinValues(1)
                 .addOptions([
                     {
+                        label: "announcement",
+                        description: "[Recommended] Receive announcement pings.",
+                        value: 'announcement',
+                        emoji: '📢'
+                    },
+                    {
                         label: "311 schedule",
                         description: "Pinged by the schedule announcer.",
-                        value: "schedule"
+                        value: 'schedule',
+                        emoji: '🗓️'
                     }
                 ])
         );
@@ -86,7 +93,14 @@ module.exports = async function (client, interaction) {
             const select_menu_collector = await msg.createMessageComponentCollector({filter, componentType: "SELECT_MENU", time: 15000});
 
             select_menu_collector.on('collect', async (selectMenuInteraction) => {
-                if(selectMenuInteraction.customId == "select_menu") {
+                await selectMenuInteraction.deferUpdate();
+                await select_menu_collector.stop();
+
+                // Disabling select menu
+                select_menu.components[0]
+                    .setDisabled(true);
+
+                if(selectMenuInteraction.customId == 'select_menu') {
                     const selected = selectMenuInteraction.values;
                     let rolesAdded = [];
                     let rolesRemoved = [];
@@ -95,12 +109,25 @@ module.exports = async function (client, interaction) {
                     let roleOrRoles = "role";
                     let isAnd = "";
 
+                    const announcement_role_id = '1054158881586155560';
+                    const schedule_role_id = '1016500157480706191';
+
+                    if(selected.includes('announcement')) {
+                        if(!selectMenuInteraction.member.roles.cache.has(announcement_role_id)) {
+                            await selectMenuInteraction.member.roles.add(announcement_role_id);
+                            rolesAdded.push('announcement');
+                        } else {
+                            await selectMenuInteraction.member.roles.remove(announcement_role_id);
+                            rolesRemoved.push('announcement');
+                        }
+                    }
+
                     if(selected.includes('schedule')) {
-                        if(!selectMenuInteraction.member.roles.cache.has('1016500157480706191')) {
-                            await selectMenuInteraction.member.roles.add('1016500157480706191');
+                        if(!selectMenuInteraction.member.roles.cache.has(schedule_role_id)) {
+                            await selectMenuInteraction.member.roles.add(schedule_role_id);
                             rolesAdded.push('schedule');
                         } else {
-                            await selectMenuInteraction.member.roles.remove('1016500157480706191');
+                            await selectMenuInteraction.member.roles.remove(schedule_role_id);
                             rolesRemoved.push('schedule');
                         }
                     }
@@ -115,7 +142,7 @@ module.exports = async function (client, interaction) {
                     }
 
                     if(rolesRemoved.length > 0) {
-                        if(rolesAdded.length > 1) {
+                        if(rolesAdded.length + rolesRemoved.length > 1) {
                             isAnd = " and";
                         }
 
@@ -126,7 +153,7 @@ module.exports = async function (client, interaction) {
                         removedRolesString = `${isAnd} removed the ${rolesRemoved} ${roleOrRoles}` || "";
                     }
 
-                    const embed_description = `Successfully${addedRolesString}${removedRolesString}.`;
+                    const embed_description = `Successfully${addedRolesString}${removedRolesString}.`.replace(",", ", ");
 
                     const success_embed = new MessageEmbed()
                         .setColor('GREEN')
@@ -134,7 +161,23 @@ module.exports = async function (client, interaction) {
                         .setTitle('Self-toggled roles')
                         .setDescription(`${embed_description}`);
 
-                    await interaction.editReply({embeds: [success_embed], components: []});
+                    await interaction.editReply({embeds: [success_embed], components: [select_menu]});
+                }
+            });
+
+            select_menu_collector.on('end', async (collected) => {
+                if(collected.size === 0) {
+                    // Disabling buttons
+                    select_menu.components[0]
+                        .setDisabled(true);
+
+                    const expired = new MessageEmbed()
+                        .setColor('DARK_GREY')
+                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                        .setTitle('Self-toggle roles')
+                        .setDescription('Select the roles you want to toggle in the dropdown menu.');
+
+                    await interaction.editReply({embeds: [expired], components: [select_menu]});
                 }
             });
         });
