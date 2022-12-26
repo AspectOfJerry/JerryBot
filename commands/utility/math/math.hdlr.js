@@ -11,7 +11,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('average')
-                .setDescription("Calculate the average of real numbers.")
+                .setDescription("Calculate the average of rational numbers.")
             // .addStringOption((options) =>
             //     options
             //         .setName('SUBCMD_OPTION_NAME')
