@@ -9,6 +9,7 @@ const date = require('date-and-time');
 
 const test_label = "0x01";
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)

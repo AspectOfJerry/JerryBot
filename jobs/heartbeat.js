@@ -5,7 +5,8 @@ const fetch = require('node-fetch');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
 
-const {ChecklistHeartbeatSynced, UpdateHeartbeat} = require('../modules/system_monitor');
+const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/system_monitor');
+
 
 once = false;
 
@@ -21,7 +22,7 @@ module.exports = async function (client) {
                     const now = Math.round(Date.now() / 1000);
                     UpdateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeatSynced();
+                        ChecklistHeartbeat();
                         once = true;
                     }
                 });
@@ -38,7 +39,7 @@ module.exports = async function (client) {
                     const now = Math.round(Date.now() / 1000);
                     UpdateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeatSynced();
+                        ChecklistHeartbeat();
                         once = true;
                     }
                 });

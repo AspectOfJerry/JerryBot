@@ -6,6 +6,7 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 const quiz_1_name = "esp_translate"
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('quiz')

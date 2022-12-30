@@ -4,6 +4,7 @@ var lastGuildId;
 var latestGuildId;
 var firstTime = true;
 
+
 module.exports = {
     name: "presenceUpdate",
     once: false,

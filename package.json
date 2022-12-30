@@ -6,11 +6,12 @@
     "scripts": {
         "main": "node index.js",
         "premain": "npm install",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "node index.js",
+        "test": "node index.js"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/AspectOfJerry/Discord-JerryBot.git"
+        "url": "https://github.com/AspectOfJerry/Discord-JerryBot"
     },
     "keywords": [],
     "author": "",

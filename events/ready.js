@@ -1,12 +1,11 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const {Log, Sleep} = require('../modules/JerryUtils');
-const {ChecklistBotReady, InitSystemMonitor} = require('../modules/system_monitor');
+const {GetFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require('../modules/JerryUtils');
+const {AddGuild, GetClientGuilds, GetConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
+const {ChecklistBotReady, ChecklistJobs, DeploySystemMonitor} = require('../modules/system_monitor');
 const InitNukeNotifier = require('../modules/nuking_notifier');
-const StartJobs = require('../modules/start_jobs');
 
-require('dotenv').config();
 
 module.exports = {
     name: 'ready',
@@ -15,15 +14,23 @@ module.exports = {
         await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG'); // Logs
         console.log("JerryBot is now online.");
 
-        // System Monitor
-        await InitSystemMonitor(client);
+        await RefreshDataset(client);
 
-        // Jobs
-        await Log('append', 'start_jobs', `[StartJobs] Starting jobs...`, 'DEBUG'); // Logs
-        await StartJobs(client);
+        if(process.env.npm_lifecycle_event == 'test') {
+            return;
+        }
 
-        // Other
-        await InitNukeNotifier(client);
+        if(process.env.npm_lifecycle_event != 'dev') {
+            // System Monitor
+            await DeploySystemMonitor(client);
+
+            // Jobs
+            await StartJobs(client);
+            await ChecklistJobs();
+
+            // Other
+            await InitNukeNotifier(client);
+        }
 
         // Registering commands
         console.log("Registering the commands...");
@@ -36,6 +43,8 @@ module.exports = {
         const group_311_guild_id = process.env.DISCORD_311_GUILD_ID;
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
+
+        let emptyArray = []; // Replace 'body: commands' below to remove all commands. 
 
         try {
             await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
@@ -53,12 +62,16 @@ module.exports = {
             await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
             console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
             await Sleep(1000);
+
+            console.log("Finished deploying the application (/) commands!");
         } catch(err) {
             if(err) {
                 console.error(err);
             }
         }
 
-        await ChecklistBotReady();
+        if(process.env.npm_lifecycle_event != 'dev') {
+            await ChecklistBotReady();
+        }
     }
 };

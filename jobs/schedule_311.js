@@ -5,7 +5,8 @@ const fetch = require('node-fetch');
 const date = require('date-and-time');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../commands/other/311/database/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/schedule/dbms');
+
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
@@ -105,9 +106,13 @@ module.exports = async function (client) {
         .addFields(
             {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false},
             {name: 'Auto delete', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
-        ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+        ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
     const msg = await channel.send({embeds: [attached]});
     await Sleep(10000);
-    await msg.delete();
+    try {
+        await msg.delete();
+    } catch {
+        console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
+    }
 };

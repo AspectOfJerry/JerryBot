@@ -8,6 +8,7 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemaini
 
 const test_label = "0x03";
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)

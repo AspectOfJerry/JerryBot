@@ -5,9 +5,6 @@
 <br>
 
 # Command list
-- [JerryBot#9090](#jerrybot9090)
-    - [👋 Welcome to the documentation page!](#-welcome-to-the-documentation-page)
-- [Command list](#command-list)
   - [Client](#client)
   - [Config](#config)
   - [Dev](#dev)
@@ -83,9 +80,9 @@
 |   3   | /disconnectall | \<?#channel\>                    | Disconnects all members in a channel.                           |
 |   —   | /help          | —                                | Displays help.                                                  |
 |   —   | /move          | \<#channel\> \<?@user\> \<?all\> | Moves a user to a channel. Optionally move all the users along. |
+|  -1   | /msg           | \<@user\> \<message\>            | Talk privately with a guild member through the bot.             |
 |   —   | /profile       | \<@user\>                        | Shows information about a user.                                 |
 |   —   | /say           | \<message\>                      | Sends `<message>` in a channel.                                 |
-|  -1   | /send          | \<@user\> \<message\>            | Talk privately with a guild member through the bot.             |
 
 <br>
 

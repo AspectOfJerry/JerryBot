@@ -3,6 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {Log, Sleep} = require('../../modules/JerryUtils');
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
@@ -138,7 +139,7 @@ module.exports = {
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
             // .addFields(
             //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
-            // ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+            // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_kick], components: [buttonRow]});

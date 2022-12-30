@@ -7,6 +7,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 
 const test_label = "0x02";
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`test-${test_label}`)

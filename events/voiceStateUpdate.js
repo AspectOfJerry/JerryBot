@@ -2,6 +2,7 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 
 const {Log, Sleep} = require('../modules/JerryUtils');
 
+
 module.exports = {
     name: "voiceStateUpdate",
     once: false, // Whether or not this event should only be triggered once

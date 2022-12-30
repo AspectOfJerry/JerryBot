@@ -7,6 +7,7 @@ const {Log, Sleep} = require('./JerryUtils');
 
 const os = require('node:os');
 
+
 var updateFailCount = 0;
 
 var ready;
@@ -21,23 +22,23 @@ async function BotStop(_client, timestamp) {
 }
 
 async function ChecklistBotReady() {
-    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
-async function ChecklistJobsStarted() {
-    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Jobs inactive.*/i, `:white_check_mark: Jobs running;`);
+async function ChecklistJobs() {
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Jobs inactive.*/i, `:white_check_mark: Jobs running;`);
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
-async function ChecklistHeartbeatSynced() {
-    embedMessage.fields[0].value = embedMessage.fields[0].value.replace(/.*:x: Heartbeat not synced;.*/i, `:white_check_mark: Heartbeat synced (1min + 10s);`)
+async function ChecklistHeartbeat() {
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, `:white_check_mark: Heartbeat synced (1min + 10s);`)
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
 
 
-async function InitSystemMonitor(_client) {
+async function DeploySystemMonitor(_client) {
     if(os.version().toLowerCase().includes('server')) {
         isDeployed = true;
     }
@@ -61,10 +62,10 @@ async function InitSystemMonitor(_client) {
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addFields(
             {name: 'Deployed', value: `${isDeployed}`, inline: false},
-            {name: 'Checklist', value: `:x: Bot is not fully ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, inline: false},
+            {name: 'Checklist', value: `:x: Bot is not fully ready;\n:white_check_mark: Event listeners ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;`, inline: false},
             {name: 'Last Heartbeat', value: `:black_heart: ---;`, inline: true},
             {name: 'Next expected Heartbeat', value: `:black_heart: ---;`, inline: true}
-        ).setFooter({text: "Relative timestamps can look out of sync depending on your timezone;"})
+        ).setFooter({text: "Relative timestamps look out of sync depending on your timezone;"})
         .setTimestamp();
 
     messages.push(await channels[0].send({embeds: [embed]}));
@@ -121,8 +122,8 @@ async function UpdateHeartbeat(_client, timestamp) {
     const now = Math.floor(Date.now() / 1000);
     const next_heartbeat_timestamp = Math.floor(now + 60);
 
-    embedMessage.fields[1].value = `:green_heart: <t:${timestamp}:R>;`;
-    embedMessage.fields[2].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
+    embedMessage.fields[2].value = `:green_heart: <t:${timestamp}:R>;`;
+    embedMessage.fields[3].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
 
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
@@ -143,10 +144,10 @@ async function UpdateTimestamp() {
 module.exports = {
     BotStop,
     ChecklistBotReady,
-    ChecklistJobsStarted,
-    ChecklistHeartbeatSynced,
-    InitSystemMonitor,
+    ChecklistHeartbeat,
+    ChecklistJobs,
+    DeploySystemMonitor,
     UpdateEmbeds,
     UpdateHeartbeat,
-    UpdateTimestamp,
+    UpdateTimestamp
 };

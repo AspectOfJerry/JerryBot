@@ -5,6 +5,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 
 const ms = require('ms');
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('timeout')
@@ -151,7 +152,7 @@ module.exports = {
                         .addFields(
                             {name: 'Timeout expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`, inline: false}
                         )
-                        .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                        .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
                     await interaction.reply({embeds: [success_timeout]});
                     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
@@ -184,7 +185,7 @@ module.exports = {
                 .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 // .addFields(
                 //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
-                // ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
                 .setFooter({text: "🟥 Canceling in 10s"});
 
             await interaction.reply({embeds: [confirm_override], components: [buttonRow]});
@@ -232,7 +233,7 @@ module.exports = {
                                 .addFields(
                                     {value: 'Time out expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
                                 )
-                                .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                                .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
                             await interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
                             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs

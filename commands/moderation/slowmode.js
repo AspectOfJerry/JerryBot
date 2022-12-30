@@ -3,6 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {Log, Sleep} = require('../../modules/JerryUtils');
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('slowmode')

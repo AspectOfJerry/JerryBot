@@ -3,6 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {Log, Sleep} = require('../../../modules/JerryUtils');
 
+
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
     await interaction.deferReply();

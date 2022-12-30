@@ -2,6 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const {Log, Sleep} = require('../modules/JerryUtils');
 
+
 module.exports = {
     name: "messageUpdate",
     once: false, // Whether or not this event should only be triggered once

@@ -5,6 +5,7 @@ const {Log, Sleep} = require('../modules/JerryUtils');
 require('dotenv').config();
 const process = require('process');
 
+
 module.exports = {
     name: "guildMemberAdd",
     once: false,

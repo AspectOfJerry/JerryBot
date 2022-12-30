@@ -2,6 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const {Log, Sleep} = require('./JerryUtils');
 
+
 var nukeCheckTimerState = false;
 var counterChannelDelete = 0;
 var counterGuildBanAdd = 0;

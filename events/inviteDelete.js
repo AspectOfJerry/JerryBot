@@ -1,5 +1,6 @@
 const {Log, Sleep} = require('../modules/JerryUtils');
 
+
 module.exports = {
     name: "inviteDelete",
     once: false, // Whether or not this event should only be triggered once

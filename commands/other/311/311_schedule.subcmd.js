@@ -6,6 +6,7 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemaini
 
 const date = require('date-and-time');
 
+
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
     await interaction.deferReply();

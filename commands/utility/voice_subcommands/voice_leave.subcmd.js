@@ -4,6 +4,7 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 
 const {Log, Sleep} = require('../../../modules/JerryUtils');
 
+
 module.exports = async function (client, interaction) {
     await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
     // await interaction.deferReply();

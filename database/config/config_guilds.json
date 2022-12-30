@@ -1,6 +1,28 @@
 {
     "metadata": {
-        "name": "config_permissions"
+        "name": "config_guilds",
+        "description": "guild permission configuration"
     },
-    "guilds": []
+    "guilds": {
+        "631939549332897842": {
+            "id": "631939549332897842",
+            "name": "devServer",
+            "permissions": {}
+        },
+        "890063136193925170": {
+            "id": "890063136193925170",
+            "name": "goldfish",
+            "permissions": {}
+        },
+        "895116233626746940": {
+            "id": "895116233626746940",
+            "name": "NO WAY 207'S DISCORD SERVER",
+            "permissions": {}
+        },
+        "1014278986135781438": {
+            "id": "1014278986135781438",
+            "name": "311",
+            "permissions": {}
+        }
+    }
 }

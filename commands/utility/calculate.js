@@ -37,27 +37,9 @@ module.exports = {
                 .setDescription("[REQUIRED] The second operand.")
                 .setRequired(true)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/calculate'.`, 'INFO'); // Logs
-        await interaction.deferReply();
-
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
-                throw `Error: Bad permission configuration.`;
-        }
+        await interaction.reply("This command is deprecated and will be removed in the next major release.")
+        await interaction.channel.send("This command is disabled.");
+        return;
 
         // Declaring variables
         const operand1 = interaction.options.getInteger('operand1');
