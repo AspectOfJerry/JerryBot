@@ -5,9 +5,15 @@ const fetch = require('node-fetch');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
 
+
+// The first execution of the cron job went terribly (2022-2023)
+// because of a wrong CRON interval('* * 1 1 *' instead of '0 0 1 1 *').
+// The message did not send or maybe so the CRON job was changed to every minute to send the message anyway.
+// Then the bot was not stopped so the @everyone ping happened 3 times in a row.
+// Finally, bot was stopped 3 minutes after 2023 and the big issue was fixed.
+
 module.exports = async function (client) {
-    const new_year = new CronJob('* * 1 1 *', async () => { // Interval of every year on January 1st
-        await Sleep(3000);
+    const new_year = new CronJob('0 0 1 1 *', async () => { // Interval of every year on January 1st
 
         const guilds = [];
         guilds.push(await client.guilds.fetch("631939549332897842"));
