@@ -18,7 +18,7 @@ module.exports = async function (client) {
         try {
             await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`, {method: 'POST'})
                 .then(async () => {
-                    await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to the status page.`, 'DEBUG'); // Logs
+                    await Log('append', 'heartbeat', `[Heartbeat] Heartbeat sent to the status page.`, 'DEBUG'); // Logs
                     const now = Math.round(Date.now() / 1000);
                     UpdateHeartbeat(client, now);
                     if(!once) {
@@ -31,11 +31,11 @@ module.exports = async function (client) {
                 console.error(err);
             }
 
-            Log('append', 'Heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.`, 'ERROR'); // Logs
+            Log('append', 'heartbeat', `[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.`, 'ERROR'); // Logs
             await Sleep(6000);
             await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`, {method: 'POST'})
                 .then(async () => {
-                    await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat sent to status page.`, 'DEBUG'); // Logs
+                    await Log('append', 'heartbeat', `[Heartbeat] Heartbeat sent to status page.`, 'DEBUG'); // Logs
                     const now = Math.round(Date.now() / 1000);
                     UpdateHeartbeat(client, now);
                     if(!once) {
@@ -48,12 +48,12 @@ module.exports = async function (client) {
 
     heartbeat.start();
 
-    await Log('append', 'Heartbeat', `[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
+    await Log('append', 'heartbeat', `[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`, 'DEBUG'); // Logs
     console.log(`[Heartbeat] Heartbeat started! The Heartbeat interval is set to ${heartbeat_interval} with a grace period of ${grace_period}.`);
 
     await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
         .then(async () => {
-            await Log('append', 'Heartbeat', `[Heartbeat] The first Heartbeat was sent to the status page.`, 'DEBUG'); // Logs
+            await Log('append', 'heartbeat', `[Heartbeat] The first Heartbeat was sent to the status page.`, 'DEBUG'); // Logs
             const now = Math.round(Date.now() / 1000);
             UpdateHeartbeat(client, now);
         });

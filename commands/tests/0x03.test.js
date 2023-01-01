@@ -54,27 +54,6 @@ module.exports = {
         // Checks
 
         // Main
-        await interaction.channel.send("Hello, World!");
-        const embed1 = new MessageEmbed()
-            .setColor('LIGHT_GREY')
-            .setDescription('LIGHT_GREY')
-
-        await interaction.channel.send({embeds: [embed1]});
-        const embed2 = new MessageEmbed()
-            .setColor('GREY')
-            .setDescription('GREY')
-
-        await interaction.channel.send({embeds: [embed2]});
-        const embed3 = new MessageEmbed()
-            .setColor('DARKER_GREY')
-            .setDescription('DARKER_GREY')
-
-        await interaction.channel.send({embeds: [embed3]});
-        const embed4 = new MessageEmbed()
-            .setColor('DARK_GREY')
-            .setDescription('DARK_GREY')
-
-        await interaction.channel.send({embeds: [embed4]});
-
+        await interaction.followUp('Nothing here...');
     }
 };
