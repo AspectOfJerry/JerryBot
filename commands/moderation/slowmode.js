@@ -75,7 +75,7 @@ module.exports = {
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
             await interaction.reply({embeds: [error_not_text_channel]});
-            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (${channel.name}). [error_not_text_channel]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (#${channel.name}).`, 'WARN'); // Logs
             return 10;
         }
 
@@ -89,7 +89,7 @@ module.exports = {
                         .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
 
                     await interaction.reply({embeds: [disabled_slowmode]});
-                    await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
+                    await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
                 });
             return 0;
         }
@@ -103,7 +103,7 @@ module.exports = {
                     .setFooter({text: "Set the rate limit to 0 to disable it."})
 
                 await interaction.reply({embeds: [enabled_slowmode]});
-                await Log('append', interaction.guild.id, `└─Successfully enabled a '${interval}' second rate limit per user in '${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, 'INFO'); // Logs
             });
     }
 };

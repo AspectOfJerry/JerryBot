@@ -8,7 +8,7 @@ const {Log, Sleep} = require('./JerryUtils');
 const os = require('node:os');
 
 
-var updateFailCount = 0;
+var globalFailedGuilds = [];
 
 var ready;
 var client;
@@ -38,7 +38,7 @@ async function ChecklistHeartbeat() {
 }
 
 
-async function DeploySystemMonitor(_client) {
+async function StartTelemetry(_client) {
     if(os.version().toLowerCase().includes('server')) {
         isDeployed = true;
     }
@@ -55,10 +55,10 @@ async function DeploySystemMonitor(_client) {
         await _channel.bulkDelete(50, true)
     }
 
-    // Create the system monitor embed
+    // Create the telemetry embed
     const embed = new MessageEmbed()
         .setColor('GREEN')
-        .setTitle('JerryBot System Monitor')
+        .setTitle('JerryBot telemetry')
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addFields(
             {name: 'Deployed', value: `${isDeployed}`, inline: false},
@@ -79,43 +79,29 @@ async function DeploySystemMonitor(_client) {
 async function UpdateEmbeds(newEmbed) {
     // DO NOT CALL UpdateTimestamp() IN THIS FUNCTION
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
+        throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 
-    if(!messages[0]) {
-        return;
-    }
-
-    try {
-        await messages[0].edit({embeds: [newEmbed]});
-    } catch(err) {
-        if(updateFailCount === 3 && updateFailCount < 4) {
-            console.log(`Failed to update embed 3 times. No longer logging error.`);
-        } else {
-            console.log(`Failed to update the embed 0. Fail count: ${updateFailCount}`);
-        }
-    }
-
-    try {
-        if(!messages[1]) {
+    messages.forEach(async (msg) => {
+        if(globalFailedGuilds.includes(msg.guild.id)) {
             return;
         }
 
-        await messages[1].edit({embeds: [newEmbed]});
-    } catch(err) {
-        if(updateFailCount === 3 && updateFailCount < 4) {
-            console.log(`Failed to update embed 3 times. No longer logging error.`);
-        } else {
-            console.log(`Failed to update the embed 0. Fail count: ${updateFailCount}`);
+        try {
+            await msg.edit({embeds: [newEmbed]});
+        } catch {
+            console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
+            await Log('append', 'telemetry', `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, 'ERROR');
+            globalFailedGuilds.push(msg.guild.id);
         }
-    }
+    });
 }
 
 
 async function UpdateHeartbeat(_client, timestamp) {
     client = _client;
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
+        throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 
     // Calculate next Heartbeat timestamp
@@ -132,7 +118,7 @@ async function UpdateHeartbeat(_client, timestamp) {
 
 async function UpdateTimestamp() {
     if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before System Monitor is ready.";
+        throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 
     embedMessage.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
@@ -146,7 +132,7 @@ module.exports = {
     ChecklistBotReady,
     ChecklistHeartbeat,
     ChecklistJobs,
-    DeploySystemMonitor,
+    StartTelemetry,
     UpdateEmbeds,
     UpdateHeartbeat,
     UpdateTimestamp

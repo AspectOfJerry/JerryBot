@@ -2,6 +2,63 @@ const process = require('process');
 const fs = require('fs');
 const date = require('date-and-time');
 
+const {AddGuild, CheckPermission, GetClientGuilds, GetConfigMap, GetCommands, ParseGuild, RefreshDataset, RemoveGuild, SetPermissions} = require('../database/config/dbms');
+
+
+/**
+ * 
+ */
+async function GetCurrentDirectoryFiles(dir, file_suffix, command_files, ignored_files, skipped_files) {
+    const files = fs.readdirSync(dir, {
+        withFileTypes: true
+    });
+
+    for(const file of files) {
+        if(file.name.endsWith('.subcmd.js')) {
+            ignored_files.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
+            continue;
+        } else if(file.name.endsWith('.todo')) {
+            ignored_files.push(`${dir}/${file.name} => todo`);
+            continue;
+        } else if(file.name.endsWith('.template')) {
+            ignored_files.push(`${dir}/${file.name} => template file`);
+            continue;
+        } else if(file.name.endsWith('.hdlr.js')) {
+            skipped_files.push(`${dir}/${file.name} => subcommand handler`);
+            // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
+        } else if(file.name.endsWith('dbms.js')) {
+            skipped_files.push(`${dir}/${file.name} => database manager`);
+            continue;
+        }
+
+        if(file.isDirectory()) {
+            GetCurrentDirectoryFiles(`${dir}/${file.name}`, file_suffix, command_files, ignored_files, skipped_files);
+
+        } else if(file.name.endsWith(file_suffix)) {
+            command_files.push(`${dir}/${file.name}`);
+        }
+    }
+}
+
+
+/**
+ * 
+ */
+async function GetFiles(dir, file_suffix) {
+    let command_files = [];
+    let ignored_files = [];
+    let skipped_files = [];
+
+    GetCurrentDirectoryFiles(dir, file_suffix, command_files, ignored_files, skipped_files);
+
+    console.log(`Ignored ${ignored_files.length} files:`);
+    console.log(ignored_files);
+    console.log(`Skipped ${skipped_files.length} files:`);
+    console.log(skipped_files);
+    return command_files;
+}
+
+
 
 /**
  * @module `Log` A module to interact with log files
@@ -61,7 +118,7 @@ async function Log(method, tag, string, type, returnInfoOnly) {
             }
 
             // Append to file
-            fs.appendFile(`./database/logs/${file_name}`, string + '\n', (err) => {
+            fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {
                 if(err) {
                     throw err;
                 }
@@ -75,58 +132,6 @@ async function Log(method, tag, string, type, returnInfoOnly) {
         default:
             throw "Unknown logging method.";
     }
-}
-
-
-
-/**
- * 
- */
-async function GetCurrentDirectoryFiles(dir, file_suffix, command_files, ignored_files, skipped_files) {
-    const files = fs.readdirSync(dir, {
-        withFileTypes: true
-    });
-
-    for(const file of files) {
-        if(file.name.endsWith('.subcmd.js')) {
-            ignored_files.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
-            continue;
-        } else if(file.name.endsWith('.todo')) {
-            ignored_files.push(`${dir}/${file.name} => todo`);
-            continue;
-        } else if(file.name.endsWith('.template')) {
-            ignored_files.push(`${dir}/${file.name} => template file`);
-            continue;
-        } else if(file.name.endsWith('.hdlr.js')) {
-            skipped_files.push(`${dir}/${file.name} => subcommand handler`);
-            // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
-        } else if(file.name.endsWith('dbms.js')) {
-            skipped_files.push(`${dir}/${file.name} => database manager`);
-            continue;
-        }
-
-        if(file.isDirectory()) {
-            GetCurrentDirectoryFiles(`${dir}/${file.name}`, file_suffix, command_files, ignored_files, skipped_files);
-
-        } else if(file.name.endsWith(file_suffix)) {
-            command_files.push(`${dir}/${file.name}`);
-        }
-    }
-}
-
-
-async function GetFiles(dir, file_suffix) {
-    let command_files = [];
-    let ignored_files = [];
-    let skipped_files = [];
-
-    GetCurrentDirectoryFiles(dir, file_suffix, command_files, ignored_files, skipped_files);
-
-    console.log(`Ignored ${ignored_files.length} files:`);
-    console.log(ignored_files);
-    console.log(`Skipped ${skipped_files.length} files:`);
-    console.log(skipped_files);
-    return command_files;
 }
 
 
@@ -206,5 +211,15 @@ module.exports = {
     Sleep,
     StartJobs,
     StartEventListeners,
-    ToNormalized
+    ToNormalized,
+    // imports
+    AddGuild,
+    CheckPermission,
+    GetClientGuilds,
+    GetConfigMap,
+    GetCommands,
+    ParseGuild,
+    RefreshDataset,
+    RemoveGuild,
+    SetPermissions
 };

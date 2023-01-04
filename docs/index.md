@@ -61,14 +61,14 @@
 
 ## Moderation 
 
-|  PL*  | Command    | Parameters*                           | Description                                                        |
-| :---: | ---------- | ------------------------------------- | ------------------------------------------------------------------ |
-|   1   | /ban       | \<@user\> \<?reason\>                 | Bans a guild member.                                               |
-|   2   | /kick      | \<@user\> \<?reason\>                 | Kicks a guild member.                                              |
-|   3   | /purge     | \<amount\>                            | Deletes `<amount>` messages from a channel.                        |
-|   3   | /slowmode  | \<interval\> \<?channel\> \<?reason\> | Sets the rate limit to `<interval>` seconds in a channel.          |
-|   3   | /timeout   | \<@user\> \<duration\> \<?reason\>    | Times out a member for `<duration>`. e.g., 3**s**, 2**m**, 1**h**. |
-|   3   | /untimeout | \<@user\> \<?reason\>                 | Removes the time out from a member.                                |
+|  PL*  | Command    | Parameters*                           | Description                                                       |
+| :---: | ---------- | ------------------------------------- | ----------------------------------------------------------------- |
+|   1   | /ban       | \<@user\> \<?reason\>                 | Bans a guild member.                                              |
+|   2   | /kick      | \<@user\> \<?reason\>                 | Kicks a guild member.                                             |
+|   3   | /purge     | \<amount\>                            | Deletes `<amount>` messages from a channel.                       |
+|   3   | /slowmode  | \<interval\> \<?channel\> \<?reason\> | Sets the rate limit to `<interval>` seconds in a channel.         |
+|   3   | /timeout   | \<@user\> \<duration\> \<?reason\>    | Times out a member for `<duration>`. e.g. 3**s**, 2**m**, 1**h**. |
+|   3   | /untimeout | \<@user\> \<?reason\>                 | Removes the time out from a member.                               |
 
 <br>
 

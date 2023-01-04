@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
 
-const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/system_monitor');
+const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
 
 
 once = false;

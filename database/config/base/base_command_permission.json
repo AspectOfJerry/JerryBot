@@ -1,0 +1,62 @@
+{
+    "client": {
+        "log": {
+            "append": 1,
+            "get": -1,
+            "read": -1
+        },
+        "stats": {
+            "bot": null,
+            "guild": null,
+            "system": 0
+        },
+        "ping": null,
+        "stop": 3
+    },
+    "dev": {
+        "stop": -1
+    },
+    "moderation": {
+        "ban": 1,
+        "kick": 2,
+        "purge": 3,
+        "slowmode": 3,
+        "timeout": 3,
+        "untimeout": 3
+    },
+    "other": {
+        "311": {
+            "roles": null,
+            "schedule": null,
+            "weather": null
+        },
+        "nasa": {
+            "apod": null
+        },
+        "quiz": {},
+        "tictactoe": null,
+        "typing": null
+    },
+    "utility": {
+        "hypixel_sub": {
+            "api": null
+        },
+        "math_sub": {
+            "average": null
+        },
+        "voice_sub": {
+            "deaf": 3,
+            "join": null,
+            "leave": null,
+            "mute": 3
+        },
+        "disconnect": 3,
+        "disconnectall": 3,
+        "help": null,
+        "move": 3,
+        "msg": -1,
+        "profile": null,
+        "send": null,
+        "weather": null
+    }
+}

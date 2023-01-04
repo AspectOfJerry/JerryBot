@@ -34,7 +34,7 @@ module.exports = {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
                 interaction.reply("This command is currently unavailable.")
                 return;
-                require('./nasa_api.subcmd.js')(client, interaction);
+                require('./nasa_api.subcmd.js.js')(client, interaction);
 
             }
                 break;

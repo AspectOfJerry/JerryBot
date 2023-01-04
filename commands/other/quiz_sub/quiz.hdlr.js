@@ -54,7 +54,7 @@ module.exports = {
 
                 // Calling the subcommand file
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
-                require('./FILE.subcmd.js')(client, interaction);
+                require('./FILE.subcmd.js.js')(client, interaction);
             }
                 break;
             default:

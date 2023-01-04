@@ -97,16 +97,15 @@ module.exports = async function (client) {
     const guild = await client.guilds.fetch("1014278986135781438");
     const channel = await guild.channels.fetch("1015060767403421696");
 
-    const now = Math.round(Date.now() / 1000);
-    const auto_delete_timestamp = now + 10;
+    // const now = Math.round(Date.now() / 1000);
+    // const auto_delete_timestamp = now + 10;
 
     const attached = new MessageEmbed()
         .setColor('GREEN')
         .setDescription("Successfully attached the schedule announcer to this channel!")
         .addFields(
-            {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false},
-            {name: 'Auto delete', value: `> :red_square: Deleting <t:${auto_delete_timestamp}:R>*.`, inline: false}
-        ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
+            {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false})
+        .setFooter({text: "🟥 Deleting in 10s"});
 
     const msg = await channel.send({embeds: [attached]});
     await Sleep(10000);
@@ -114,5 +113,6 @@ module.exports = async function (client) {
         await msg.delete();
     } catch {
         console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
+        await Log('append', 'telemetry', "Failed to delete the schedule announcer attach message. Not re-attempting.", 'ERROR');
     }
 };

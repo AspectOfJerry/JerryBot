@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 const ms = require('ms');
 
@@ -18,7 +18,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName('duration')
-                .setDescription("[REQUIRED] The duration of the timeout (s, m, h, d). Examples: 1s, 1m, 1h, 1d")
+                .setDescription("[REQUIRED] The duration of the timeout e.g. 1s, 1m, 1h, 1d")
                 .setRequired(true))
         .addStringOption((options) =>
             options
@@ -29,23 +29,16 @@ module.exports = {
         await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO'); // Logs
         // await interaction.deferReply();
 
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL3";
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "staff";
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL3";
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL1";
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
-                throw `Error: Bad permission configuration.`;
+        if(await CheckPermission(interaction) === false) {
+            const error_permissions = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('PermissionError')
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+
+            await interaction.reply({embeds: [error_permissions]});
+            await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/kick'. [PermissionError]`, 'WARN'); // Logs
+            return "PermissionError";
         }
 
         // Declaring variables
@@ -61,22 +54,6 @@ module.exports = {
         await Log('append', interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO'); // Logs
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/timeout'. [error_permissions]`, 'WARN'); // Logs
-                return 10;
-            }
-        }
-        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_timeout_self = new MessageEmbed()
                 .setColor('RED')

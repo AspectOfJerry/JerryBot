@@ -105,21 +105,12 @@ module.exports = {
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<@${memberTarget.user.id}> is not timed out.`)
-                .setFooter({text: "Clearing timeout anyway..."})
+                .setFooter({text: "Attempting to clear timeout anyway..."})
 
             await interaction.reply({embeds: [member_not_timed_out]});
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to clear timeout anyway.`, 'WARN'); // Logs
 
-            memberTarget.timeout(null, reason)
-                .then(async timeoutResult => {
-                    const success_untimeout = new MessageEmbed()
-                        .setColor('GREEN')
-                        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                        .setTitle("User untimeout")
-                        .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
-
-                    await interaction.editReply({embeds: [success_untimeout]});
-                });
+            await memberTarget.timeout(null, reason);
             return 0;
         }
 
