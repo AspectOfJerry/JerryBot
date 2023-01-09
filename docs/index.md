@@ -8,7 +8,7 @@
 The bot is currently under maintenance and will be available in the next months.
 This page may be out of date with the latest features of the bot.
 
-Stay updated at: https://status.aspectofjerry.dev and https://github.com/AspectOfJerry/Discord-JerryBot
+Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry.dev) and [https://github.com/AspectOfJerry/Discord-JerryBot](https://github.com/AspectOfJerry/Discord-JerryBot)
 
 <br>
 
