@@ -4,10 +4,16 @@
 
 <br>
 
+## Ongoing maintenance
+---
+The bot is currently under maintenance and will be available in the next months.
+This page may be out of date with the latest features of the bot.
+
+Stay updated at: https://status.aspectofjerry.dev and https://github.com/AspectOfJerry/Discord-JerryBot
+
+<br>
+
 # Command list
-- [JerryBot#9090](#jerrybot9090)
-    - [👋 Welcome to the documentation page!](#-welcome-to-the-documentation-page)
-- [Command list](#command-list)
   - [Client](#client)
   - [Config](#config)
   - [Dev](#dev)
@@ -27,12 +33,14 @@
 &nbsp;&nbsp;&nbsp;&nbsp;@ = User mention<br>
 &nbsp;&nbsp;&nbsp;&nbsp;# = Channel mention<br>
 
+<br>
 
 \*PL: Permission Level<br>
 &nbsp;&nbsp;&nbsp;&nbsp;-1 = Superuser<br>
-&nbsp;&nbsp;&nbsp;&nbsp;0 = Highest<br>
-&nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0 = Elevated user (usually guild owners)<br>
 
+&nbsp;&nbsp;&nbsp;&nbsp;1 = Highest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
 <br>
 
 ## Client
@@ -64,14 +72,14 @@
 
 ## Moderation 
 
-|  PL*  | Command    | Parameters*                           | Description                                                        |
-| :---: | ---------- | ------------------------------------- | ------------------------------------------------------------------ |
-|   1   | /ban       | \<@user\> \<?reason\>                 | Bans a guild member.                                               |
-|   2   | /kick      | \<@user\> \<?reason\>                 | Kicks a guild member.                                              |
-|   3   | /purge     | \<amount\>                            | Deletes `<amount>` messages from a channel.                        |
-|   3   | /slowmode  | \<interval\> \<?channel\> \<?reason\> | Sets the rate limit to `<interval>` seconds in a channel.          |
-|   3   | /timeout   | \<@user\> \<duration\> \<?reason\>    | Times out a member for `<duration>`. e.g., 3**s**, 2**m**, 1**h**. |
-|   3   | /untimeout | \<@user\> \<?reason\>                 | Removes the time out from a member.                                |
+|  PL*  | Command    | Parameters*                           | Description                                                       |
+| :---: | ---------- | ------------------------------------- | ----------------------------------------------------------------- |
+|   1   | /ban       | \<@user\> \<?reason\>                 | Bans a guild member.                                              |
+|   2   | /kick      | \<@user\> \<?reason\>                 | Kicks a guild member.                                             |
+|   3   | /purge     | \<amount\>                            | Deletes `<amount>` messages from a channel.                       |
+|   3   | /slowmode  | \<interval\> \<?channel\> \<?reason\> | Sets the rate limit to `<interval>` seconds in a channel.         |
+|   3   | /timeout   | \<@user\> \<duration\> \<?reason\>    | Times out a member for `<duration>`. e.g. 3**s**, 2**m**, 1**h**. |
+|   3   | /untimeout | \<@user\> \<?reason\>                 | Removes the time out from a member.                               |
 
 <br>
 
@@ -83,9 +91,9 @@
 |   3   | /disconnectall | \<?#channel\>                    | Disconnects all members in a channel.                           |
 |   —   | /help          | —                                | Displays help.                                                  |
 |   —   | /move          | \<#channel\> \<?@user\> \<?all\> | Moves a user to a channel. Optionally move all the users along. |
+|  -1   | /msg           | \<@user\> \<message\>            | Talk privately with a guild member through the bot.             |
 |   —   | /profile       | \<@user\>                        | Shows information about a user.                                 |
-|   —   | /say           | \<message\>                      | Sends `<message>` in a channel.                                 |
-|  -1   | /send          | \<@user\> \<message\>            | Talk privately with a guild member through the bot.             |
+|   —   | /send          | \<message\> <?#channel> <?typing>| Sends `<message>` in a channel.                                 |
 
 <br>
 
@@ -136,8 +144,6 @@
 
 *Coming soon*
 
-<br>
-<br>
 <br>
 <br>
 <br>
