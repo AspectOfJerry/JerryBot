@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The channel to delete the messages from. Defaults to this channel.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/purge'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -37,7 +37,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -57,7 +57,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/purge'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/purge'. [error_permissions]`, 'WARN');
                 return 10;
             }
         }
@@ -93,19 +93,19 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_purging], components: [buttonRow], ephemeral: true});
-        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO');
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN');
                 return true;
             } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
                 return;
             }
         }
@@ -137,7 +137,7 @@ module.exports = {
                         // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
 
                         await interaction.followUp({embeds: [success_purge], components: [buttonRow], ephemeral: true});
-                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, 'WARN');
                     });
             } else {
                 // Disabling buttons
@@ -154,7 +154,7 @@ module.exports = {
                     .setDescription(`Successfully cancelled${isOverriddenText}.`)
 
                 await interaction.followUp({embeds: [cancel_purge], components: [buttonRow], ephemeral: true});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, 'INFO');
             }
         });
 
@@ -174,7 +174,7 @@ module.exports = {
                     .setDescription(`Auto aborted.`)
 
                 await interaction.followUp({embeds: [auto_abort], components: [buttonRow], ephemeral: true});
-                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO');
             }
         });
     }

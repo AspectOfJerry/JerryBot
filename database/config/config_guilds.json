@@ -1,8 +1,13 @@
 {
     "metadata": {
         "name": "config_guilds",
-        "description": "guild permission configuration"
+        "description": "command permission configuration"
     },
+    "superUsers": [
+        "611633988515266562"
+    ],
+    "elevatedUsers": [],
+    "blacklist": [],
     "guilds": {
         "631939549332897842": {
             "id": "631939549332897842",

@@ -14,7 +14,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The channel to disconnect everyone from. Defaults to your voice channel.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -32,7 +32,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -51,7 +51,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/disconnectall'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/disconnectall'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----
@@ -67,8 +67,8 @@ module.exports = {
                 return;
             }
             voice_channel = interaction.member.voice.channel;
-            await Log('append', interaction.guild.id, `├─channel: '${voice_channel.name}'`, 'INFO'); // Logs
-            await Log('append', interaction.guild.id, `├─No channel was provided. Using 'interaction.member.voice.channel' (${voice_channel.name})`, 'INFO'); // Logs
+            await Log('append', interaction.guild.id, `├─channel: '${voice_channel.name}'`, 'INFO');
+            await Log('append', interaction.guild.id, `├─No channel was provided. Using 'interaction.member.voice.channel' (${voice_channel.name})`, 'INFO');
         }
         if(!voice_channel.isVoice) {
             const error_not_voice_channel = new MessageEmbed()
@@ -77,7 +77,7 @@ module.exports = {
                 .setDescription(`<#${voice_channel.channel.id}> is not a voice channel!`);
 
             interaction.reply({embeds: [error_not_voice_channel]});
-            await Log('append', interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.channel.name}).`); // Logs
+            await Log('append', interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.channel.name}).`);
             return;
         }
 
@@ -91,7 +91,7 @@ module.exports = {
                 .setDescription(`The <#${voice_channel.channel.id}> voice channel is empty.`);
 
             interaction.reply({embeds: [empty_voice_channel]});
-            await Log('append', interaction.guild.id, `└─The provided channel was empty.`); // Logs
+            await Log('append', interaction.guild.id, `└─The provided channel was empty.`);
             return;
         }
 
@@ -102,7 +102,7 @@ module.exports = {
             .setDescription(`Disconnecting all ${member_count} members from <#${voice_channel.channel.id}>...`);
 
         await interaction.reply({embeds: [disconnecting_members]});
-        await Log('append', interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`); // Logs
+        await Log('append', interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`);
 
         let failed_member_count = 0;
         let failed_string = "";
@@ -117,7 +117,7 @@ module.exports = {
                         .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
                     await interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                    await Log('append', interaction.guild.id, `  ├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
+                    await Log('append', interaction.guild.id, `  ├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                 }).catch(async () => {
                     const disconnect_error = new MessageEmbed()
                         .setColor('RED')
@@ -125,7 +125,7 @@ module.exports = {
                         .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
                     await interaction.editReply({embeds: [disconnect_error]});
-                    await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`); // Logs
+                    await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                     member_count--
                     failed_member_count++
                 });
@@ -146,6 +146,6 @@ module.exports = {
             .setDescription(`Successfully disconnected ${member_count} members from <#${voice_channel.channel.id}>.${failed_string}`);
 
         await interaction.editReply({embeds: [disconnected]});
-        await Log('append', interaction.guild.id, `  └─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`); // Logs
+        await Log('append', interaction.guild.id, `  └─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
     }
 };

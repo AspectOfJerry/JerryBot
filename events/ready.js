@@ -1,7 +1,7 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const {GetFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require('../modules/JerryUtils');
+const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require('../modules/JerryUtils');
 const {AddGuild, GetClientGuilds, GetConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const InitNukeNotifier = require('../modules/nuking_notifier');
@@ -11,7 +11,7 @@ module.exports = {
     name: 'ready',
     once: true,
     async execute(client, commands) {
-        await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG'); // Logs
+        await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG');
         console.log("JerryBot is now online.");
 
         await RefreshDataset(client);

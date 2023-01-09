@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the ban.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -37,17 +37,17 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         let reason = interaction.options.getString('reason');
-        await Log('append', interaction.guild.id, `├─reason: '${reason}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─reason: '${reason}'`, 'INFO');
 
         // Check
         // -----BEGIN ROLE CHECK-----
@@ -61,7 +61,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/ban'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/ban'. [error_permissions]`, 'WARN');
                 return 10;
             }
         }
@@ -74,7 +74,7 @@ module.exports = {
                 .setDescription('You cannot ban yourself.');
 
             interaction.reply({embeds: [error_target_self]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, 'WARN');
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -86,7 +86,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -97,7 +97,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN');
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -109,7 +109,7 @@ module.exports = {
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)
 
             await interaction.reply({embeds: [member_not_bannable]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, 'ERROR');
             return;
         }
 
@@ -144,19 +144,19 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_ban], components: [buttonRow]});
-        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO');
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN');
                 return true;
             } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
                 return;
             }
         }
@@ -181,7 +181,7 @@ module.exports = {
 
                 await interaction.editReply({embeds: [banning]});
 
-                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, 'INFO');
 
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
 
@@ -194,7 +194,7 @@ module.exports = {
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
                         await interaction.editReply({embeds: [success_ban], components: [buttonRow]});
-                        await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN');
                     });
             } else {
                 const cancel_ban = new MessageEmbed()
@@ -203,7 +203,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> cancelled the ban${isOverriddenText}.`);
 
                 await interaction.editReply({embeds: [cancel_ban], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, 'INFO');
             }
         });
 
@@ -221,7 +221,7 @@ module.exports = {
                     .setDescription(`Auto aborted.`);
 
                 await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO');
                 return;
             }
         });

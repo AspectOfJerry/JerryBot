@@ -7,7 +7,7 @@ module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
-        await Log('append', 'interactionCreate', `An interaction was created.`, 'DEBUG'); // Logs
+        await Log('append', 'interactionCreate', `An interaction was created.`, 'DEBUG');
         if(!interaction.isCommand()) {
             return;
         }
@@ -23,23 +23,23 @@ module.exports = {
         } catch(err) {
             if(err) {
                 console.error(err);
-                const _error = ":\n```\n" + err + "\n```" || ". ```No further information is available.```";
-                const execute_error = new MessageEmbed()
-                    .setColor('#bb20ff')
+                const _err = ":\n```\n" + err + "\n```" || ". ```No further information is available.```";
+                const execution_error = new MessageEmbed()
+                    .setColor('FUCHSIA')
                     .setTitle('Error')
-                    .setDescription(`An error occured while executing the command${_error}`)
+                    .setDescription(`An error occured while executing the command${_err}`)
                     .setFooter({text: `${interaction.createdAt}`});
                 try {
-                    await interaction.reply({embeds: [execute_error]});
+                    await interaction.reply({content: "<@611633988515266562>", embeds: [execution_error]});
                 } catch {
                     try {
-                        await interaction.followUp({embeds: [execute_error]});
+                        await interaction.followUp({embeds: [execution_error]});
                     } catch {
                         try {
-                            await interaction.channel.send({embeds: [execute_error]});
+                            await interaction.channel.send({embeds: [execution_error]});
                         } catch {
                             console.log("All three attempts to send an error message to a text channel failed.");
-                            await Log('append', 'interactionCreate', "All three attempts to send an error message to a text channel failed.", 'ERROR'); // Logs
+                            await Log('append', 'interactionCreate', "All three attempts to send an error message to a text channel failed.", 'ERROR');
                         }
                     }
                 }

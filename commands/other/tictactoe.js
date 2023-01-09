@@ -16,7 +16,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO');
 
         // Set minimum execution role
         switch(interaction.guild.id) {
@@ -33,7 +33,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -52,13 +52,13 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/tictactoe'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/tictactoe'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----
 
         // Main
-        await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, 'INFO');
         game.handleInteraction(interaction);
 
         const opponent = (interaction.options.getUser('opponent'))?.id ?? null

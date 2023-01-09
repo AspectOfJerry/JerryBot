@@ -4,7 +4,7 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 roles'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 roles'.`, 'INFO');
     // interaction.deferReply();
 
     // Set minimum execution role
@@ -22,7 +22,7 @@ module.exports = async function (client, interaction) {
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR');
             throw `Error: Bad permission configuration.`;
     }
 
@@ -40,7 +40,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/311 roles'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/311 roles'. [error_permissions]`, 'WARN');
             return;
         }
     }
@@ -72,13 +72,13 @@ module.exports = async function (client, interaction) {
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${selectMenuInteraction.user.id}>)`;
-            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' overrode the decision.`, 'WARN');
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
             return true;
         } else {
             await selectMenuInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
             return;
         }
     };

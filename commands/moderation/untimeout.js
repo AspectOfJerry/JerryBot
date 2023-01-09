@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the untimeout.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/untimeout'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -37,14 +37,14 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         let reason = interaction.options.getString('reason');
 
@@ -60,7 +60,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/untimeout'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/untimeout'. [error_permissions]`, 'WARN');
                 return 5;
             }
         }
@@ -108,7 +108,7 @@ module.exports = {
                 .setFooter({text: "Attempting to clear timeout anyway..."})
 
             await interaction.reply({embeds: [member_not_timed_out]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to clear timeout anyway.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to clear timeout anyway.`, 'WARN');
 
             await memberTarget.timeout(null, reason);
             return 0;

@@ -12,7 +12,7 @@ module.exports = {
         .setName('hypixel_api')
         .setDescription("Makes an API call to 'api.hypixel.net'."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO');
         await interaction.deferReply();
 
         // Set minimum execution role
@@ -30,7 +30,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -53,7 +53,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/hypixel_api'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/hypixel_api'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----

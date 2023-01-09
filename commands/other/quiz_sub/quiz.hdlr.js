@@ -26,7 +26,7 @@ module.exports = {
     //                 .setRequired(true / false)))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/quiz [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/quiz [...]'.`, 'INFO');
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -38,22 +38,22 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/quiz ${quiz_1_name}'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/quiz ${quiz_1_name}'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(`./${quiz_1_name}.subcmd.js`)(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./FILE.subcmd.js.js')(client, interaction);
             }
                 break;

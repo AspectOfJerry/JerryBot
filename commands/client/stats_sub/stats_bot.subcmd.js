@@ -4,7 +4,7 @@ const {Log, Sleep} = require('../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats bot'.`, 'INFO');
     await interaction.deferReply();
 
     // Checks
@@ -22,7 +22,7 @@ module.exports = async function (client, interaction) {
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR');
             throw `Error: Bad permission configuration.`;
     }
 
@@ -40,7 +40,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/stats bot'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/stats bot'. [error_permissions]`, 'WARN');
             return;
         }
     }

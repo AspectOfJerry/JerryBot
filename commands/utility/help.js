@@ -9,7 +9,7 @@ module.exports = {
         .setName('help')
         .setDescription("Help is on the way!"),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/help'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/help'.`, 'INFO');
 
         // Set minimum execution role
 

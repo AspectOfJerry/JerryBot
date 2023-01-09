@@ -10,11 +10,11 @@ module.exports = {
         // Check if .cleanContent is the same as .content
         if(message.content === message.cleanContent) {
             await Log('append', 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
-            message.content: "${message.content}").`, 'WARN'); // Logs
+            message.content: "${message.content}").`, 'WARN');
         } else {
             await Log('append', 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
                 message.content: "${message.content}",
-                message.cleanContent: "${message.cleanContent}".`, 'WARN'); // Logs
+                message.cleanContent: "${message.cleanContent}".`, 'WARN');
         }
     }
 };

@@ -10,7 +10,7 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemaini
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
-        await Log('append', 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG'); // Logs
+        await Log('append', 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG');
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
@@ -39,7 +39,7 @@ module.exports = async function (client) {
                 .then((msg) => {
                     msg.react('✅');
                 });
-            await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO'); // Logs
+            await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO');
             return;
         }
 
@@ -86,12 +86,12 @@ module.exports = async function (client) {
             .then((msg) => {
                 msg.react('✅');
             });
-        await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO'); // Logs
+        await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO');
     });
 
     schedule_311.start();
 
-    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, 'DEBUG'); // Logs
+    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, 'DEBUG');
     console.log(`[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
 
     const guild = await client.guilds.fetch("1014278986135781438");

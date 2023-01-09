@@ -32,19 +32,19 @@ module.exports = async function (client) {
             const alt_channel = await guilds[i].channels.fetch(alt_channels[i]);
 
             await channel.send({content: `:tada: Happy new year ${guilds[i].roles.everyone}! :tada:`})
-                .then(async (msg) => {
-                    await msg.react('🥳');
+                .then((msg) => {
+                    msg.react('🥳');
                 });
 
             await alt_channel.send({content: ":tada: Happy new year everyone! :partying_face: :fireworks:"})
-                .then(async (msg) => {
-                    await msg.react('🎉');
+                .then((msg) => {
+                    msg.react('🎉');
                 });
         }
     });
 
     new_year.start();
 
-    Log('append', 'new_year', `[NewYear] The new year announcer is ready!`, 'DEBUG'); // Logs
+    Log('append', 'new_year', `[NewYear] The new year announcer is ready!`, 'DEBUG');
     console.log(`[NewYear] The new year announcer is ready!`);
 };

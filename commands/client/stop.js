@@ -14,7 +14,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the stop request.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stop'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -32,13 +32,13 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const reason = interaction.options.getString('reason') ?? "No reason provided.";
-        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO');
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -52,7 +52,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/stop'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/stop'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----
@@ -88,18 +88,18 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
-        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, 'INFO');
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN');
                 return true;
             } else if(buttonInteraction.user.id = interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
                 return;
             }
         };
@@ -127,8 +127,8 @@ module.exports = {
                     ).setFooter({text: "The process will exit after this message."});
 
                 await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO'); // Logs
-                await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL'); // Logs
+                await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO');
+                await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL');
                 await Sleep(250);
                 await client.destroy(); // Destroying the Discord client
                 process.exit(0); // Exiting here
@@ -139,7 +139,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> aborted the stop request${isOverriddenText}.`);
 
                 await interaction.editReply({embeds: [cancel_stop]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' aborted the stop request${isOverriddenText}.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' aborted the stop request${isOverriddenText}.`, 'INFO');
             }
         });
 
@@ -157,7 +157,7 @@ module.exports = {
                     .setDescription(`Auto aborted.`);
 
                 await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO');
                 return;
             }
         });

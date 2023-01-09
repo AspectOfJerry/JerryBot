@@ -25,7 +25,7 @@ module.exports = {
     //         .setRequired(false))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO');
         await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferReply()
 
@@ -41,7 +41,7 @@ module.exports = {
                 .setFooter({text: "You must be whitelisted to use this command."});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use this test command (${test_label}). [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use this test command (${test_label}). [error_permissions]`, 'WARN');
             return;
         }
 

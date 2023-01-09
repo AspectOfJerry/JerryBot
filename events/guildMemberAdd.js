@@ -23,7 +23,7 @@ module.exports = {
             channel.send({embeds: [join_message]});
 
             member.roles.add(member.guild.roles.cache.find(role => role.name == "member"));
-            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO'); // Logs
+            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO');
         } else if(member.guild.id == process.env.DISCORD_CRA_GUILD_ID) {
             const channel = member.guild.channels.cache.find(channel => channel.name == "bienvenue");
 
@@ -37,7 +37,7 @@ module.exports = {
             channel.send({embeds: [join_message]});
 
             member.roles.add(member.guild.roles.cache.find(role => role.name == "Person"));
-            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO'); // Logs
+            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO');
         } else if(member.guild.id == process.env.DISCORD_311_GUILD_ID) {
             const channel = member.guild.channels.cache.find(channel => channel.name == "🌎welcome");
 
@@ -51,7 +51,7 @@ module.exports = {
             channel.send({embeds: [join_message]});
 
             // member.roles.add(member.guild.roles.cache.find(role => role.name == "311"));
-            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO'); // Logs
+            await Log('append', 'guildMemberAdd', `'@${member.user.tag}' joined guild "${member.guild.id}"!`, 'INFO');
         }
     }
 };

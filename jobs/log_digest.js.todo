@@ -12,6 +12,6 @@ module.exports = async function (client) {
 
     JOB_NAME.start();
 
-    Log('append', 'JOB_NAME', `[JOB_NAME] `, 'DEBUG'); // Logs
+    Log('append', 'JOB_NAME', `[JOB_NAME] `, 'DEBUG');
     console.log(`JOB_NAME started!`);
 };

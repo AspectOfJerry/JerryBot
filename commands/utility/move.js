@@ -24,7 +24,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] If you want to move everyone in the user's channel with them. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO'); // Logs        
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO');        
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -42,17 +42,17 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const target = interaction.options.getUser('user') || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         const is_all = interaction.options.getBoolean('all') || false;
-        await Log('append', interaction.guild.id, `├─is_all: ${is_all}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─is_all: ${is_all}`, 'INFO');
         const new_voice_channel = interaction.options.getChannel('channel');
 
         // Checks
@@ -67,7 +67,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/move'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/move'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----
@@ -92,7 +92,7 @@ module.exports = {
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
                     await interaction.reply({embeds: [success_move]});
-                    await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+                    await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -103,7 +103,7 @@ module.exports = {
                 .setDescription(`Moving all ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>...`);
 
             await interaction.reply({embeds: [moving_members]});
-            await Log('append', interaction.guild.id, `└─Attemping to move every member in <#${current_voice_channel.name}> to <#${new_voice_channel.name}>...`); // Logs
+            await Log('append', interaction.guild.id, `└─Attemping to move every member in <#${current_voice_channel.name}> to <#${new_voice_channel.name}>...`);
 
             let failed_member_count = 0;
             let failed_string = "";
@@ -118,7 +118,7 @@ module.exports = {
                             .setDescription(`Successfully moved <@${member.id}> from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.`);
 
                         await interaction.editReply({embeds: [move_success]});
-                        await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+                        await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
                     }).catch(async () => {
                         const move_error = new MessageEmbed()
                             .setColor('RED')
@@ -126,7 +126,7 @@ module.exports = {
                             .setDescription(`An error occurred while moving <@${member.id}>.`);
 
                         await interaction.editReply({embeds: [move_error]});
-                        await Log('append', interaction.guild.id, `  ├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`); // Logs
+                        await Log('append', interaction.guild.id, `  ├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
 
                         member_count--
                         failed_member_count++
@@ -148,7 +148,7 @@ module.exports = {
                 .setDescription(`Successfully moved ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.${failed_string}`);
 
             await interaction.editReply({embeds: [succes_move]});
-            await Log('append', interaction.guild.id, `  └─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`); // Logs
+            await Log('append', interaction.guild.id, `  └─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`);
 
         }
     }

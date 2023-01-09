@@ -6,6 +6,6 @@ module.exports = {
     once: false,
     async execute(error) {
         console.log(error);
-        await Log('append', 'error', error, 'ERROR'); // Logs
+        await Log('append', 'error', error, 'ERROR');
     }
 };

@@ -1,5 +1,6 @@
 const fs = require('fs');
-const path = require('path');
+const Path = require('path');
+
 
 var globalCommands = [];
 
@@ -36,7 +37,7 @@ async function GetClientGuilds(client) {
  * @returns {object} JSON object containing the full configuration file
  */
 async function GetConfig() {
-    const config = fs.readFileSync(path.resolve(__dirname, './config_guilds.json'));
+    const config = fs.readFileSync(Path.resolve(__dirname, './config_guilds.json'));
     return JSON.parse(config);
 }
 
@@ -125,7 +126,7 @@ async function RefreshDataset(client) {
     }
 
     // Update the file
-    fs.writeFileSync(path.resolve(__dirname, './config_guilds.json'), JSON.stringify(config), (err) => {
+    fs.writeFileSync(Path.resolve(__dirname, './config_guilds.json'), JSON.stringify(config), (err) => {
         if(err) {
             throw err;
         }

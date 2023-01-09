@@ -16,7 +16,7 @@ module.exports = {
                 .setName('apod')
                 .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/nasa [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/nasa [...]'.`, 'INFO');
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -26,12 +26,12 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'api': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 interaction.reply("This command is currently unavailable.")
                 return;
                 require('./nasa_api.subcmd.js.js')(client, interaction);
@@ -39,17 +39,17 @@ module.exports = {
             }
                 break;
             case 'apod': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./nasa_apod.subcmd.js')(client, interaction);
             }
                 break;
             default:
-                await Log('append', interaction.guild.id, "Throwing because of an invalid subcommand.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "Throwing because of an invalid subcommand.", 'ERROR');
                 throw "Invalid subcommand.";
         }
     }

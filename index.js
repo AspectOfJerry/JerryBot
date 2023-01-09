@@ -2,11 +2,11 @@ require('dotenv').config();
 const fs = require('fs');
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 
-const {GetCommands, GetFiles, Log, Sleep, StartEventListeners} = require('./modules/JerryUtils');
+const {GetCommands, GetCommandFiles, Log, Sleep, StartEventListeners} = require('./modules/JerryUtils');
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-Log('append', 'index.js', `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, 'DEBUG'); // Logs
+Log('append', 'index.js', `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, 'DEBUG');
 
 const client = new Client({
     intents: [
@@ -27,14 +27,14 @@ const client = new Client({
 (async () => {
     // Getting commands
     console.log("Getting command files...");
-    await Log('append', 'index.js', 'Getting command files...', 'DEBUG'); // Logs
+    await Log('append', 'index.js', 'Getting command files...', 'DEBUG');
 
     const file_suffix = '.js';
-    const command_files = await GetFiles('./commands', file_suffix);
+    const command_files = await GetCommandFiles('./commands', file_suffix);
 
     console.log(`Queued ${command_files.length} files:`);
     console.log(command_files);
-    GetCommands(command_files);
+    GetCommands(command_files); // Save all the commands for the dbms
 
     const commands = [];
 

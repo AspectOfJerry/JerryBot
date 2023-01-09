@@ -6,7 +6,7 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice join'.`, 'INFO');
     // await interaction.deferReply();
 
     // Set minimum execution role
@@ -24,13 +24,13 @@ module.exports = async function (client, interaction) {
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR');
             throw `Error: Bad permission configuration.`;
     }
 
     // Declaring variables
     const voice_channel = interaction.options.getChannel('channel') || interaction.member.voice.channel;
-    await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `  ├─voice_channel: ${voice_channel.name}`, 'INFO');
 
     // Checks
     // -----BEGIN ROLE CHECK-----
@@ -44,7 +44,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/voice join'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/voice join'. [error_permissions]`, 'WARN');
             return;
         }
     }
@@ -84,7 +84,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
         await interaction.editReply({embeds: [connection_connecting]});
-        await Log('append', interaction.guild.id, `  ├─Connecting. Establishing a connection to the voice channel...`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `  ├─Connecting. Establishing a connection to the voice channel...`, 'INFO');
     });
     connection.on(VoiceConnectionStatus.Ready, async () => {
         const connection_ready = new MessageEmbed()
@@ -94,7 +94,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Ready__. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [connection_ready]});
-        await Log('append', interaction.guild.id, `  ├─Ready. The connection to the voice channel has been established.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `  ├─Ready. The connection to the voice channel has been established.`, 'INFO');
 
         await Sleep(500);
 
@@ -105,7 +105,7 @@ module.exports = async function (client, interaction) {
             .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
         await interaction.editReply({embeds: [success_join]});
-        await Log('append', interaction.guild.id, `  └─Successfully joined ${voice_channel.name}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `  └─Successfully joined ${voice_channel.name}`, 'INFO');
 
         const bot = interaction.guild.members.cache.get(client.user.id);
 

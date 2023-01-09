@@ -12,9 +12,9 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('stop')
-                .setDescription("Pauses the Heartbeat monitor and stops the bot.")),
+                .setDescription("[SUDO] Pauses the Heartbeat monitor and stops the bot.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dev [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dev [...]'.`, 'INFO');
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -32,29 +32,29 @@ module.exports = {
                 .setFooter({text: "You must be whitelisted to use this command."});
 
             await interaction.reply({embeds: [error_whitelist]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' was not whitelisted to perform '/dev [...]' subcommands. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' was not whitelisted to perform '/dev [...]' subcommands. [error_permissions]`, 'WARN');
             return;
         }
 
         // Main
         switch(subcommand) {
             case 'stop': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./dev_stop.subcmd')(client, interaction);
             }
                 break;
             case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./DIRECTORY_subcommands')(client, interaction);
             }
                 break;

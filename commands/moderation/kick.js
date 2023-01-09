@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the kick.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/kick'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -37,14 +37,14 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = "PL1";
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
 
         let reason = interaction.options.getString('reason');
 
@@ -60,7 +60,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/kick'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/kick'. [error_permissions]`, 'WARN');
                 return 10;
             }
         }
@@ -85,7 +85,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, 'WARN');
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -96,7 +96,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest roles were equal.`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest roles were equal.`, 'WARN');
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -108,7 +108,7 @@ module.exports = {
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
             await interaction.reply({embeds: [member_not_kickcable]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, 'ERROR');
             return;
         }
 
@@ -143,19 +143,19 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_kick], components: [buttonRow]});
-        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO');
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN');
                 return true;
             } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
                 return;
             }
         };
@@ -193,7 +193,7 @@ module.exports = {
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
                         await interaction.editReply({embeds: [success_kick], components: [buttonRow]});
-                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN'); // Logs
+                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, 'WARN');
                     });
             } else {
                 // Disabling buttons
@@ -210,7 +210,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> cancelled the kick${isOverriddenText}.`);
 
                 await interaction.editReply({embeds: [cancel_kick], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, 'INFO');
             }
         });
 
@@ -230,7 +230,7 @@ module.exports = {
                     .setDescription(`Auto aborted.`);
 
                 await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO');
             }
         });
     }

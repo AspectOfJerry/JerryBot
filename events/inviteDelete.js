@@ -10,6 +10,6 @@ module.exports = {
             maxUses: ${invite.maxUses},
             temporary: ${invite.temporary},
             code: ${invite.code},
-            url: ${invite.url}.`, 'DEBUG'); // Logs
+            url: ${invite.url}.`, 'DEBUG');
     }
 };

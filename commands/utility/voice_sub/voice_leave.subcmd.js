@@ -6,7 +6,7 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO');
     // await interaction.deferReply();
 
     // Set minimum execution role
@@ -24,7 +24,7 @@ module.exports = async function (client, interaction) {
             var MINIMUM_EXECUTION_ROLE = null;
             break;
         default:
-            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR');
             throw `Error: Bad permission configuration.`;
     }
 
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/voice leave'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/voice leave'. [error_permissions]`, 'WARN');
             return;
         }
     }
@@ -75,7 +75,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
         await interaction.editReply({embeds: [connection_destroyed]});
-        await Log('append', interaction.guild.id, `├─Destroyed. The connection to the voice channel has been destroyed.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─Destroyed. The connection to the voice channel has been destroyed.`, 'INFO');
 
         await Sleep(500);
 
@@ -86,7 +86,7 @@ module.exports = async function (client, interaction) {
             .setDescription(`Successfully left the voice channel.`);
 
         await interaction.editReply({embeds: [success_leave]});
-        await Log('append', interaction.guild.id, `└─Successfully left the voice channel.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `└─Successfully left the voice channel.`, 'INFO');
     });
     connection.destroy();
 };

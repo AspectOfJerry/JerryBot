@@ -31,7 +31,7 @@ module.exports = {
                 .setName('deaf')
                 .setDescription("Toggles server-deaf on the bot.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO');
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -39,42 +39,42 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'join': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice join'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice join'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./voice_join.subcmd')(client, interaction);
             }
                 break;
             case 'leave': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./voice_leave.subcmd')(client, interaction);
             }
                 break;
             case 'selfmute': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./voice_selfmute.subcmd')(client, interaction);
             }
                 break;
             case 'selfdeaf': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./voice_selfdeaf.subcmd')(client, interaction);
             }
                 break;

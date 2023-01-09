@@ -4,7 +4,7 @@ const {Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction, string, object) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/logs append'.`, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/logs append'.`, 'INFO');
     await interaction.deferReply();
 
     // Set minimum execution role
@@ -22,7 +22,7 @@ module.exports = async function (client, interaction, string, object) {
             var MINIMUM_EXECUTION_ROLE = "PL2";
             break;
         default:
-            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+            await Log('append', interaction.guild.id, "  └─Throwing because of bad permission configuration.", 'ERROR');
             throw `Error: Bad permission configuration.`;
     }
 
@@ -40,7 +40,7 @@ module.exports = async function (client, interaction, string, object) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/logs append'. [error_permissions]`, 'WARN'); // Logs
+            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/logs append'. [error_permissions]`, 'WARN');
             return;
         }
     }
@@ -61,6 +61,6 @@ module.exports = async function (client, interaction, string, object) {
         .addField('Target Directory', `../logs/${(await object).fileName}`, false);
 
     await interaction.editReply({embeds: [writing_to_logs]});
-    await Log('append', interaction.guild.id, string, 'INFO'); // Logs
+    await Log('append', interaction.guild.id, string, 'INFO');
     await interaction.editReply({embeds: [_writing_to_logs]});
 };

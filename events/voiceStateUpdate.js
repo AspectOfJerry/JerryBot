@@ -8,11 +8,11 @@ module.exports = {
     once: false, // Whether or not this event should only be triggered once
     async execute(oldState, newState) {
         if(oldState.channel && newState.channel) {
-            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> from <#${oldState.channel.name}> in <${newState.guild.name}>.`, 'INFO'); // Logs
+            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> from <#${oldState.channel.name}> in <${newState.guild.name}>.`, 'INFO');
         } else if(!newState.channel) {
-            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> left <#${oldState.channel.name}> in <${newState.guild.name}>.`, 'INFO'); // Logs
+            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> left <#${oldState.channel.name}> in <${newState.guild.name}>.`, 'INFO');
         } else if(!oldState.channel) {
-            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> in <${newState.guild.name}>.`, 'INFO'); // Logs
+            await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> in <${newState.guild.name}>.`, 'INFO');
         }
     }
 };

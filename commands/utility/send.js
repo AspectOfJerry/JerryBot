@@ -24,7 +24,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Whether you want the bot to type before sending the message (dynamic typing speed).")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/send'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -42,17 +42,17 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
+                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
                 throw `Error: Bad permission configuration.`;
         }
 
         // Declaring variables
         const channel = interaction.options.getChannel('channel') || interaction.channel;
-        await Log('append', interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─channel: '#${channel.name}'`, 'INFO');
         const message = interaction.options.getString('message') || true;
-        await Log('append', interaction.guild.id, `├─message: "${message}"`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─message: "${message}"`, 'INFO');
         const send_typing = interaction.options.getBoolean('typing') || false;
-        await Log('append', interaction.guild.id, `├─send_typing: ${send_typing}`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `├─send_typing: ${send_typing}`, 'INFO');
 
         // Checks
         // -----BEGIN ROLE CHECK-----
@@ -66,7 +66,7 @@ module.exports = {
                     .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
                 await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/send'. [error_permissions]`, 'WARN'); // Logs
+                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/send'. [error_permissions]`, 'WARN');
                 return 10;
             }
         } // -----END ROLE CHECK-----

@@ -10,6 +10,6 @@ module.exports = {
             large: ${guild.large},
             memberCount: ${guild.memberCount},
             ownerId: ${guild.ownerId},
-            preferredLocale: '${guild.preferredLocale}'.`, 'INFO'); // Logs
+            preferredLocale: '${guild.preferredLocale}'.`, 'INFO');
     }
 };

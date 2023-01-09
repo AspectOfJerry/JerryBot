@@ -25,7 +25,7 @@ module.exports = {
                 .setName('roles')
                 .setDescription("Self add/remove some roles.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/311 [...]'.`, 'INFO'); // Logs
+        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/311 [...]'.`, 'INFO');
 
         // Declaring variables
         const subcommand = interaction.options.getSubcommand();
@@ -44,32 +44,32 @@ module.exports = {
         // Main
         switch(subcommand) {
             case 'schedule': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 schedule'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./311_schedule.subcmd')(client, interaction);
             }
                 break;
             case 'weather': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./311_weather.subcmd')(client, interaction);
             }
                 break;
             case 'roles': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 roles'.`, 'INFO'); // Logs
+                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/311 roles'.`, 'INFO');
 
                 // Prep
 
                 // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG'); // Logs
+                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require('./311_roles.subcmd')(client, interaction);
             }
                 break;
