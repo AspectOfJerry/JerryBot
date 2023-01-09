@@ -4,6 +4,15 @@
 
 <br>
 
+## Ongoing maintenance
+---
+The bot is currently under maintenance and will be available in the next months.
+This page may be out of date with the latest features of the bot.
+
+Stay updated at: https://status.aspectofjerry.dev and https://github.com/AspectOfJerry/Discord-JerryBot
+
+<br>
+
 # Command list
   - [Client](#client)
   - [Config](#config)
@@ -24,12 +33,14 @@
 &nbsp;&nbsp;&nbsp;&nbsp;@ = User mention<br>
 &nbsp;&nbsp;&nbsp;&nbsp;# = Channel mention<br>
 
+<br>
 
 \*PL: Permission Level<br>
 &nbsp;&nbsp;&nbsp;&nbsp;-1 = Superuser<br>
-&nbsp;&nbsp;&nbsp;&nbsp;0 = Highest<br>
-&nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0 = Elevated user (usually guild owners)<br>
 
+&nbsp;&nbsp;&nbsp;&nbsp;1 = Highest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
 <br>
 
 ## Client
@@ -82,7 +93,7 @@
 |   —   | /move          | \<#channel\> \<?@user\> \<?all\> | Moves a user to a channel. Optionally move all the users along. |
 |  -1   | /msg           | \<@user\> \<message\>            | Talk privately with a guild member through the bot.             |
 |   —   | /profile       | \<@user\>                        | Shows information about a user.                                 |
-|   —   | /say           | \<message\>                      | Sends `<message>` in a channel.                                 |
+|   —   | /send          | \<message\> <?#channel> <?typing>| Sends `<message>` in a channel.                                 |
 
 <br>
 
@@ -133,8 +144,6 @@
 
 *Coming soon*
 
-<br>
-<br>
 <br>
 <br>
 <br>
