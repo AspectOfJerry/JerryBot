@@ -5,7 +5,6 @@
 <br>
 
 ## Ongoing maintenance
----
 The bot is currently under maintenance and will be available in the next months.
 This page may be out of date with the latest features of the bot.
 
