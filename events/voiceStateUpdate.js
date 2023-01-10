@@ -1,6 +1,8 @@
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const {Log, Sleep} = require('../modules/JerryUtils');
+const {HandleJoin} = require('../modules/voice_channel_hub');
 
 
 module.exports = {
@@ -14,5 +16,6 @@ module.exports = {
         } else if(!oldState.channel) {
             await Log('append', 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> in <${newState.guild.name}>.`, 'INFO');
         }
+        await HandleJoin(newState);
     }
 };

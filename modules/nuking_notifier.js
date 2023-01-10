@@ -96,4 +96,7 @@ async function NukeAnalyzer(client, member) {
 async function NukeTimer(client) {
 
 }
-module.exports = InitNukeNotifier;
+
+module.exports = {
+    InitNukeNotifier
+};
