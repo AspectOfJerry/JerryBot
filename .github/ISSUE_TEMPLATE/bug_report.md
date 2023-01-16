@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Version(s)**
- - v.
+ - v.x.x.x / current
 
 **To Reproduce**
 Steps to reproduce the behavior:
