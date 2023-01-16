@@ -2,10 +2,10 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
+
 
 const quiz_1_name = "esp_translate"
-
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,39 +26,20 @@ module.exports = {
     //                 .setRequired(true / false)))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/quiz [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
 
         // Checks
-        await interaction.reply('This command is currently under development and will be available soon.');
+        await interaction.reply('This feature is currently under development and will be available soon.');
         return;
 
         // Main
-        switch(subcommand) {
-            case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/quiz ${quiz_1_name}'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Prep
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require(`./${quiz_1_name}.subcmd.js`)(client, interaction);
+                require(file)(client, interaction);
             }
-                break;
-            case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./FILE.subcmd.js.js')(client, interaction);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

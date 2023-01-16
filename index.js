@@ -29,8 +29,8 @@ const client = new Client({
     console.log("Getting command files...");
     await Log('append', 'index.js', 'Getting command files...', 'DEBUG');
 
-    const file_suffix = '.js';
-    const command_files = await GetCommandFiles('./commands', file_suffix);
+    const suffix = '.js';
+    const command_files = await GetCommandFiles('./commands', suffix);
 
     console.log(`Queued ${command_files.length} files:`);
     console.log(command_files);

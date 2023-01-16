@@ -1,4 +1,4 @@
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 const date = require('date-and-time');
 

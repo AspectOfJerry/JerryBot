@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = {
@@ -17,35 +17,18 @@ module.exports = {
                 .setName('system')
                 .setDescription("Shows statistics about the system running the bot.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/stats [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
+
+        // Checks
 
         // Main
-        switch(subcommand) {
-            case 'bot': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/stats bot'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Declaring variables
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./stats_bot.subcmd')(client, interaction);
+                require(file)(client, interaction);
             }
-                break;
-            case 'system': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/stats system'.`, 'INFO');
-
-                // Declaring variables
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./stats_system.subcmd')(client, interaction);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

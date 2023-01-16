@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] If you want to move everyone in the user's channel with them. Defaults to false.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/move'.`, 'INFO');        
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');        
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -92,7 +92,7 @@ module.exports = {
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
                     await interaction.reply({embeds: [success_move]});
-                    await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                    await Log('append', interaction.guild.id, `├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
@@ -118,7 +118,7 @@ module.exports = {
                             .setDescription(`Successfully moved <@${member.id}> from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.`);
 
                         await interaction.editReply({embeds: [move_success]});
-                        await Log('append', interaction.guild.id, `  ├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                        await Log('append', interaction.guild.id, `├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
                     }).catch(async () => {
                         const move_error = new MessageEmbed()
                             .setColor('RED')
@@ -126,7 +126,7 @@ module.exports = {
                             .setDescription(`An error occurred while moving <@${member.id}>.`);
 
                         await interaction.editReply({embeds: [move_error]});
-                        await Log('append', interaction.guild.id, `  ├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                        await Log('append', interaction.guild.id, `├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
 
                         member_count--
                         failed_member_count++
@@ -148,7 +148,7 @@ module.exports = {
                 .setDescription(`Successfully moved ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.${failed_string}`);
 
             await interaction.editReply({embeds: [succes_move]});
-            await Log('append', interaction.guild.id, `  └─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`);
+            await Log('append', interaction.guild.id, `└─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`);
 
         }
     }

@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the ban.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ban'.`, 'INFO');
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -194,7 +194,7 @@ module.exports = {
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
                         await interaction.editReply({embeds: [success_ban], components: [buttonRow]});
-                        await Log('append', interaction.guild.id, `  └─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN');
+                        await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, 'WARN');
                     });
             } else {
                 const cancel_ban = new MessageEmbed()

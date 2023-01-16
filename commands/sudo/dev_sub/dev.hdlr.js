@@ -2,7 +2,7 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = {
@@ -14,10 +14,7 @@ module.exports = {
                 .setName('stop')
                 .setDescription("[SUDO] Pauses the Heartbeat monitor and stops the bot.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/dev [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
 
         // Checks
         // Whitelist
@@ -37,29 +34,13 @@ module.exports = {
         }
 
         // Main
-        switch(subcommand) {
-            case 'stop': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev stop'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Prep
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./dev_stop.subcmd')(client, interaction);
+                require(file)(client, interaction);
             }
-                break;
-            case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/dev SUBCMD_NAME'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./DIRECTORY_subcommands')(client, interaction);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

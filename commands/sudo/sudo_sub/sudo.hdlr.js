@@ -28,15 +28,13 @@ module.exports = {
                 .setName('nuke')
                 .setDescription("[SUDO] Nukes the current guild if not in the safe list, effectively deleting most of its content.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/sudo [...]'.`, 'INFO');
-
         // Declaring variables
 
         // Checks
 
         // Main
 
-        const subcommand_files = GetSubCommandFiles()
+        const subcommand_files = await GetSubCommandFiles();
 
         for(const file of subcommand_files) {
             if(file.contains(interaction.commandName)) {

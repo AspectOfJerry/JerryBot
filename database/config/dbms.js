@@ -21,6 +21,19 @@ async function AddGuild(guildObject, setPermissions) {
  */
 async function CheckPermission(interaction) {
     console.log(interaction.commandName);
+    // interaction.options.getSubcommand(false)
+
+    const guild = interaction.guild;
+    const guilds = await GetGuildConfigMap();
+
+    var permissionSet = {};
+
+    for(const [key, value] of guilds) {
+        console.log(key)
+        if(key == interaction.guild.id) {
+            permissionSet = value.commandPermissions;
+        }
+    }
 }
 
 
@@ -53,7 +66,7 @@ async function GetCommands(commands) {
 /**
  * @returns {object} Map containing the guild configs
  */
-async function GetConfigMap() {
+async function GetGuildConfigMap() {
     const config = await GetConfig();
 
     const map = new Map(Object.entries(config.guilds));
@@ -98,11 +111,11 @@ async function RefreshDataset(client) {
     const guilds = await GetClientGuilds(client);
 
     // Temporary storage
-    const permission_roles = [];
+    const permissionRoles = [];
     const command_permissions = [];
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        permission_roles.push(value.commandPermissions);
+        permissionRoles.push(value.permissionRoles);
         command_permissions.push(value.commandPermissions);
     }
 
@@ -120,7 +133,7 @@ async function RefreshDataset(client) {
     let i = 0;
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        value.permission_roles = permission_roles[i];
+        value.permissionRoles = permissionRoles[i];
         value.commandPermissions = command_permissions[i];
         i++;
     }
@@ -148,7 +161,7 @@ module.exports = {
     AddGuild,
     CheckPermission,
     GetClientGuilds,
-    GetConfigMap,
+    GetGuildConfigMap,
     GetCommands,
     ParseGuild,
     RefreshDataset,

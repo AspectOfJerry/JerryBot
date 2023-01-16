@@ -1,7 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,41 +17,18 @@ module.exports = {
                 .setName('apod')
                 .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/nasa [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
 
         // Checks
 
         // Main
-        switch(subcommand) {
-            case 'api': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Prep
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                interaction.reply("This command is currently unavailable.")
-                return;
-                require('./nasa_api.subcmd.js.js')(client, interaction);
-
+                require(file)(client, interaction);
             }
-                break;
-            case 'apod': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./nasa_apod.subcmd.js')(client, interaction);
-            }
-                break;
-            default:
-                await Log('append', interaction.guild.id, "Throwing because of an invalid subcommand.", 'ERROR');
-                throw "Invalid subcommand.";
         }
     }
-}
+};

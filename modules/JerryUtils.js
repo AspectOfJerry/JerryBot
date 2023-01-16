@@ -2,13 +2,13 @@ const process = require('process');
 const fs = require('fs');
 const date = require('date-and-time');
 
-const {AddGuild, CheckPermission, GetClientGuilds, GetConfigMap, GetCommands, ParseGuild, RefreshDataset, RemoveGuild, SetPermissions} = require('../database/config/dbms');
+const {AddGuild, CheckPermission, GetClientGuilds, GetGuildConfigMap, GetCommands, ParseGuild, RefreshDataset, RemoveGuild, SetPermissions} = require('../database/config/dbms');
 
 
 /**
  * 
  */
-async function GetDirCommandFiles(dir, file_suffix, command_files, ignored_files, skipped_files) {
+async function GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
@@ -32,8 +32,8 @@ async function GetDirCommandFiles(dir, file_suffix, command_files, ignored_files
         }
 
         if(file.isDirectory()) {
-            GetDirCommandFiles(`${dir}/${file.name}`, file_suffix, command_files, ignored_files, skipped_files);
-        } else if(file.name.endsWith(file_suffix)) {
+            GetDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
+        } else if(file.name.endsWith(suffix)) {
             command_files.push(`${dir}/${file.name}`);
         }
     }
@@ -43,12 +43,12 @@ async function GetDirCommandFiles(dir, file_suffix, command_files, ignored_files
 /**
  * 
  */
-async function GetCommandFiles(dir, file_suffix) {
+async function GetCommandFiles(dir, suffix) {
     let command_files = [];
     let ignored_files = [];
     let skipped_files = [];
 
-    GetDirCommandFiles(dir, file_suffix, command_files, ignored_files, skipped_files);
+    GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
 
     console.log(`Ignored ${ignored_files.length} files:`);
     console.log(ignored_files);
@@ -138,19 +138,15 @@ async function Log(method, tag, string, type, returnInfoOnly) {
 /**
  * 
  */
-async function GetDirSubCommandFiles(dir, file_suffix, subcommand_files) {
+async function GetDirSubCommandFiles(dir, suffix, subcommand_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
 
     for(const file of files) {
-        if(!file.name.endsWith('.subcmd.js')) {
-            continue;
-        }
-
         if(file.isDirectory()) {
-            GetDirSubCommandFiles(`${dir}/${file.name}`, file_suffix, subcommand_files);
-        } else if(file.name.endsWith(file_suffix)) {
+            GetDirSubCommandFiles(`${dir}/${file.name}`, suffix, subcommand_files);
+        } else if(file.name.endsWith(suffix)) {
             subcommand_files.push(`${dir}/${file.name}`);
         }
     }
@@ -160,10 +156,10 @@ async function GetDirSubCommandFiles(dir, file_suffix, subcommand_files) {
 /**
  * 
  */
-async function GetSubCommandFiles(dir, file_suffix) {
+async function GetSubCommandFiles(dir, suffix) {
     let subcommand_files = [];
 
-    GetDirSubCommandFiles(dir, file_suffix, subcommand_files);
+    GetDirSubCommandFiles(dir, suffix, subcommand_files);
 
     return subcommand_files;
 }
@@ -251,7 +247,7 @@ module.exports = {
     AddGuild,
     CheckPermission,
     GetClientGuilds,
-    GetConfigMap,
+    GetGuildConfigMap,
     GetCommands,
     ParseGuild,
     RefreshDataset,

@@ -5,14 +5,14 @@ require('dotenv').config();
 
 const fetch = require('node-fetch');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('hypixel_api')
         .setDescription("Makes an API call to 'api.hypixel.net'."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/hypixel_api'.`, 'INFO');
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         await interaction.deferReply();
 
         // Set minimum execution role

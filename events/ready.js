@@ -2,7 +2,7 @@ const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
 const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require('../modules/JerryUtils');
-const {AddGuild, GetClientGuilds, GetConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
+const {AddGuild, GetClientGuilds, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const {InitNukeNotifier} = require('../modules/nuking_notifier');
 const {FetchHubs} = require('../modules/voice_channel_hub');
@@ -56,17 +56,17 @@ module.exports = {
             console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
             await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
+            // await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
+            // await Sleep(1000);
 
-            await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
-            await Sleep(1000);
+            // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+            // console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
+            // await Sleep(1000);
 
             console.log("Finished deploying the application (/) commands!");
         } catch(err) {

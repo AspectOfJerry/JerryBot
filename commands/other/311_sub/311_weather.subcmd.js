@@ -1,11 +1,11 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/311 weather'.`, 'INFO');
+    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
     await interaction.deferReply();
 
     // Set minimum execution role
@@ -41,7 +41,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/311 weather'. [error_permissions]`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/311 weather'. [error_permissions]`, 'WARN');
             return;
         }
     }

@@ -30,18 +30,15 @@ module.exports = {
             //         .setRequired(true / false))
         ),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/CMD_NAME [...]'.`, 'INFO');
-
         // Declaring variables
 
         // Checks
 
         // Main
-
-        const subcommand_files = GetSubCommandFiles()
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
         for(const file of subcommand_files) {
-            if(file.contains(interaction.commandName)) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
             }

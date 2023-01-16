@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 const TicTacToe = require('discord-tictactoe');
 
@@ -16,7 +16,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/tictactoe'.`, 'INFO');
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
 
         // Set minimum execution role
         switch(interaction.guild.id) {

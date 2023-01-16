@@ -2,11 +2,11 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO');
+    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
     // await interaction.deferReply();
 
     // Set minimum execution role

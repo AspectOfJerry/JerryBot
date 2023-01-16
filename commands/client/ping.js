@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 
 module.exports = {
@@ -9,26 +9,19 @@ module.exports = {
         .setName('ping')
         .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO');
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
-                throw `Error: Bad permission configuration.`;
+        if(await CheckPermission(interaction) === false) {
+            const error_permissions = new MessageEmbed()
+                .setColor('RED')
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                .setTitle('PermissionError')
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+
+            await interaction.reply({embeds: [error_permissions]});
+            await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/kick'. [PermissionError]`, 'WARN');
+            return "PermissionError";
         }
 
         // Declaring variables
@@ -36,21 +29,6 @@ module.exports = {
         let webSocketLatency = null;
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/ping'. [error_permissions]`, 'WARN');
-                return 10;
-            }
-        } // -----END ROLE CHECK-----
 
         // Main
         const ping = new MessageEmbed()

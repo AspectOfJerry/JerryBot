@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = {
@@ -41,53 +41,18 @@ module.exports = {
                         .setDescription("[OPTIONAL] Whether you want the bot to send the log files in DMs or not. Defaults to false.")
                         .setRequired(false))),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/logs [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
+
+        // Checks
 
         // Main
-        switch(subcommand) {
-            case 'append': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/logs append'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Declaring variables
-                const string = interaction.options.getString('string');
-                await Log('append', interaction.guild.id, `  └─string: ${string}`, 'INFO');
-
-                const object = Log('append', interaction.guild.id, string, 'INFO', true);
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./logs_append.subcmd')(client, interaction, string, object);
+                require(file)(client, interaction);
             }
-                break;
-            case 'read': {
-                await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs read'.`, 'INFO');
-
-                // Declaring variables
-                const line_offset = interaction.options.getInteger('offset') ?? 0;
-                await Log('append', interaction.guild.id, `  └─offset: ${line_offset}`, 'INFO');
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./logs_read.subcmd')(client, interaction, line_offset);
-            }
-                break;
-            case 'get': {
-                await Log('append', "subcmd_handler", `└─'${interaction.user.tag}' executed '/logs get'.`, 'INFO');
-
-                // Declaring variables
-                const day_offset = interaction.options.getInteger('offset') ?? 0;
-                await Log('append', interaction.guild.id, `  └─offset: ${day_offset}`, 'INFO');
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./logs_get.subcmd')(client, interaction, day_offset);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

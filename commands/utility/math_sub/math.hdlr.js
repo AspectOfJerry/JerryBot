@@ -2,7 +2,7 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = {
@@ -30,37 +30,18 @@ module.exports = {
     //             .setRequired(true / false)))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/math [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
 
         // Checks
 
         // Main
-        switch(subcommand) {
-            case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/math average'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Prep
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./math_average.subcmd.js')(client, interaction);
+                require(file)(client, interaction);
             }
-                break;
-            case 'SUBCMD_NAME': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/CMD_NAME SUBCMD_NAME'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./FILE.subcmd.js')(client, interaction);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

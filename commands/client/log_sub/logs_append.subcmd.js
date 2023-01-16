@@ -1,11 +1,11 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction, string, object) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/logs append'.`, 'INFO');
-    await interaction.deferReply();
+    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
+    // await interaction.deferReply();
 
     // Set minimum execution role
     switch(interaction.guild.id) {
@@ -40,7 +40,7 @@ module.exports = async function (client, interaction, string, object) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.editReply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/logs append'. [error_permissions]`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/logs append'. [error_permissions]`, 'WARN');
             return;
         }
     }
@@ -51,16 +51,18 @@ module.exports = async function (client, interaction, string, object) {
         .setColor('YELLOW')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setTitle('Writing to logs...')
-        .addField('String', `${string}`, false)
-        .addField('Target Directory', `../logs/`, false);
-    const _writing_to_logs = new MessageEmbed()
+        .addFields(
+            {name: 'String', value: `${string}`, inline: false},
+            {name: 'Target directory', value: "../logs/", inline: false})
+    const write_to_logs = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-        .setTitle('Writing to logs')
-        .addField('String', `${(await object).parsedString}`, false)
-        .addField('Target Directory', `../logs/${(await object).fileName}`, false);
+        .setTitle('Write to logs')
+        .addFields(
+            {name: 'String', value: `${(await object).parsedString}`, inline: false},
+            {name: 'Target directory', value: `../logs/${(await object).fileName}`, inline: false})
 
-    await interaction.editReply({embeds: [writing_to_logs]});
+    interaction.reply({embeds: [writing_to_logs]});
     await Log('append', interaction.guild.id, string, 'INFO');
-    await interaction.editReply({embeds: [_writing_to_logs]});
+    await interaction.editReply({embeds: [write_to_logs]});
 };

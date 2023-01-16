@@ -2,11 +2,11 @@ const fs = require('fs');
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/math average'.`, 'INFO');
+    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
     // interaction.deferReply();
 
     // Set minimum execution role
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction) {
                 .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `  └─'${interaction.user.id}' did not have the required role to perform '/math average'. [error_permissions]`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/math average'. [error_permissions]`, 'WARN');
             return;
         }
     }

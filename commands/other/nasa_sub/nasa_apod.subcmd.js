@@ -3,12 +3,12 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const fetch = require('node-fetch');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../../modules/JerryUtils');
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' executed '/nasa apod'.`, 'INFO');
+    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
     await interaction.deferReply();
 
     // Set minimum execution role

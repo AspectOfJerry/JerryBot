@@ -1,8 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const Path = require('path');
 
-const {Log, Sleep} = require('../../../modules/JerryUtils');
+const {GetSubCommandFiles, Log, Sleep} = require('../../../modules/JerryUtils');
 
 
 module.exports = {
@@ -31,55 +32,18 @@ module.exports = {
                 .setName('deaf')
                 .setDescription("Toggles server-deaf on the bot.")),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/voice [...]'.`, 'INFO');
-
         // Declaring variables
-        const subcommand = interaction.options.getSubcommand();
+
+        // Checks
 
         // Main
-        switch(subcommand) {
-            case 'join': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice join'.`, 'INFO');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
-                // Prep
-
-                // Calling the subcommand file
+        for(const file of subcommand_files) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./voice_join.subcmd')(client, interaction);
+                require(file)(client, interaction);
             }
-                break;
-            case 'leave': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice leave'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./voice_leave.subcmd')(client, interaction);
-            }
-                break;
-            case 'selfmute': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice mute'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./voice_selfmute.subcmd')(client, interaction);
-            }
-                break;
-            case 'selfdeaf': {
-                await Log('append', "hdlr", `├─'${interaction.user.tag}' executed '/voice deaf'.`, 'INFO');
-
-                // Prep
-
-                // Calling the subcommand file
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
-                require('./voice_selfdeaf.subcmd')(client, interaction);
-            }
-                break;
-            default:
-                throw "Invalid subcommand.";
         }
     }
 };

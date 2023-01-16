@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] The channel to disconnect everyone from. Defaults to your voice channel.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/disconnectall'.`, 'INFO');
+        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
         // Set minimum execution role
@@ -117,7 +117,7 @@ module.exports = {
                         .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
                     await interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                    await Log('append', interaction.guild.id, `  ├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
+                    await Log('append', interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                 }).catch(async () => {
                     const disconnect_error = new MessageEmbed()
                         .setColor('RED')
@@ -125,7 +125,7 @@ module.exports = {
                         .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
                     await interaction.editReply({embeds: [disconnect_error]});
-                    await Log('append', interaction.guild.id, `  ├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
+                    await Log('append', interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                     member_count--
                     failed_member_count++
                 });
@@ -146,6 +146,6 @@ module.exports = {
             .setDescription(`Successfully disconnected ${member_count} members from <#${voice_channel.channel.id}>.${failed_string}`);
 
         await interaction.editReply({embeds: [disconnected]});
-        await Log('append', interaction.guild.id, `  └─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
+        await Log('append', interaction.guild.id, `└─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
     }
 };

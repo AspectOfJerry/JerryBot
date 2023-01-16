@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../../database/commands/schedule/dbms');
 
 const test_label = "0x03";
