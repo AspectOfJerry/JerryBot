@@ -1,6 +1,6 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require('../modules/JerryUtils');
+const {Log, Sleep} = require("../modules/JerryUtils");
 
 require('dotenv').config();
 const process = require('process');

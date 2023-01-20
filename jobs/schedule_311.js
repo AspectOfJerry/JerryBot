@@ -1,10 +1,10 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const CronJob = require('cron').CronJob;
 const fetch = require('node-fetch');
 const date = require('date-and-time');
 
-const {Log, Sleep} = require('../modules/JerryUtils');
+const {Log, Sleep} = require("../modules/JerryUtils");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/schedule/dbms');
 
 

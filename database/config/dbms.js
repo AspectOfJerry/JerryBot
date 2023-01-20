@@ -1,8 +1,6 @@
-const fs = require('fs');
-const Path = require('path');
+const fs = require("fs");
+const Path = require("path");
 
-
-var globalCommands = [];
 
 
 /**
@@ -16,29 +14,9 @@ async function AddGuild(guildObject, setPermissions) {
 }
 
 
-/**
- * @param {object} interaction The Discord interaction object
- */
-async function CheckPermission(interaction) {
-    console.log(interaction.commandName);
-    // interaction.options.getSubcommand(false)
-
-    const guild = interaction.guild;
-    const guilds = await GetGuildConfigMap();
-
-    var permissionSet = {};
-
-    for(const [key, value] of guilds) {
-        console.log(key)
-        if(key == interaction.guild.id) {
-            permissionSet = value.commandPermissions;
-        }
-    }
-}
-
 
 /**
- * @param {object} client
+ * @param {object} clientglobalCommands
  * @returns {object} Guilds that the client is in, mapped by their ids (`client.guilds.cache`)
  */
 async function GetClientGuilds(client) {
@@ -50,17 +28,10 @@ async function GetClientGuilds(client) {
  * @returns {object} JSON object containing the full configuration file
  */
 async function GetConfig() {
-    const config = fs.readFileSync(Path.resolve(__dirname, './config_guilds.json'));
+    const config = fs.readFileSync(Path.resolve(__dirname, "./config_guilds.json"));
     return JSON.parse(config);
 }
 
-
-/**
- * 
- */
-async function GetCommands(commands) {
-    globalCommands = commands;
-}
 
 
 /**
@@ -85,7 +56,7 @@ async function ParseGuild(guildObject, setPermissions) {
         const parsed_guild = {
             id: guildObject.id,
             name: guildObject.name,
-            permissionRoleIds: {},
+            permissionRoles: {},
             commandPermissions: {}
         };
         return parsed_guild;
@@ -94,11 +65,59 @@ async function ParseGuild(guildObject, setPermissions) {
     const parsed_guild = {
         id: guildObject.id,
         name: guildObject.name,
-        permissionRoleIds: {},
+        permissionRoles: {},
         commandPermissions: {}
     };
     return parsed_guild;
 }
+
+
+
+/**
+ * @param {object} interaction The Discord interaction object
+ * @returns {boolean} Whether or not the execution is authorized
+ */
+async function PermissionCheck(interaction) {
+    const guilds = await GetGuildConfigMap();
+    let commandName = interaction.commandName;
+    const subcommand_name = await interaction.options.getSubcommand(false);
+
+    var permissionSet = {};
+
+    for(const [key, value] of guilds) {
+        if(key == interaction.guild.id) {
+            permissionSet = value.commandPermissions;
+        }
+    }
+
+    if(Object.keys(permissionSet).length === 0) {
+        throw `Failed to find a permission set for guild ${interaction.guild.id} (${interaction.guild.name})`;
+    }
+
+    let permissionValue;
+
+    if(subcommand_name) {
+        commandName = commandName + "_sub";
+    }
+
+    for(const value of Object.values(permissionSet)) {
+        const cmd = value[commandName];
+
+        if(cmd !== undefined) {
+            if(!subcommand_name) {
+                permissionValue = cmd
+                break;
+            } else {
+                const subcmd = cmd[subcommand_name];
+                permissionValue = subcmd
+                break;
+            }
+        }
+    }
+
+    return;
+}
+
 
 
 /**
@@ -111,11 +130,11 @@ async function RefreshDataset(client) {
     const guilds = await GetClientGuilds(client);
 
     // Temporary storage
-    const permissionRoles = [];
+    const permission_roles = [];
     const command_permissions = [];
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        permissionRoles.push(value.permissionRoles);
+        permission_roles.push(value.permissionRoles);
         command_permissions.push(value.commandPermissions);
     }
 
@@ -133,13 +152,13 @@ async function RefreshDataset(client) {
     let i = 0;
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        value.permissionRoles = permissionRoles[i];
+        value.permissionRoles = permission_roles[i];
         value.commandPermissions = command_permissions[i];
         i++;
     }
 
     // Update the file
-    fs.writeFileSync(Path.resolve(__dirname, './config_guilds.json'), JSON.stringify(config), (err) => {
+    fs.writeFileSync(Path.resolve(__dirname, "./config_guilds.json"), JSON.stringify(config), (err) => {
         if(err) {
             throw err;
         }
@@ -159,11 +178,10 @@ async function SetPermissions() {
 
 module.exports = {
     AddGuild,
-    CheckPermission,
     GetClientGuilds,
     GetGuildConfigMap,
-    GetCommands,
     ParseGuild,
+    PermissionCheck,
     RefreshDataset,
     RemoveGuild,
     SetPermissions

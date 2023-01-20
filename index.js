@@ -1,8 +1,8 @@
 require('dotenv').config();
-const fs = require('fs');
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const fs = require("fs");
+const {Client, Intents, Collection, MessageEmbed} = require("discord.js");
 
-const {GetCommands, GetCommandFiles, Log, Sleep, StartEventListeners} = require('./modules/JerryUtils');
+const {GetCommandFiles, Log, Sleep, StartEventListeners} = require('./modules/JerryUtils');
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
@@ -34,7 +34,6 @@ const client = new Client({
 
     console.log(`Queued ${command_files.length} files:`);
     console.log(command_files);
-    GetCommands(command_files); // Save all the commands for the dbms
 
     const commands = [];
 

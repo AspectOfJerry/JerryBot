@@ -1,4 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const {Log, Sleep} = require('./JerryUtils');
 
@@ -13,6 +13,7 @@ var counterRoleDelete = 0;
 // Main
 // Monitoring
 async function InitNukeNotifier(client) {
+    return;
     // const guild_ids = ['631939549332897842'];
     // await NukingEventMonitor(client, guild_ids);
 }

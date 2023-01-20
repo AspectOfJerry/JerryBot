@@ -1,7 +1,7 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require('../modules/JerryUtils');
+const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require("../modules/JerryUtils");
 const {AddGuild, GetClientGuilds, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const {InitNukeNotifier} = require('../modules/nuking_notifier');
@@ -12,8 +12,37 @@ module.exports = {
     name: 'ready',
     once: true,
     async execute(client, commands) {
-        await Log('append', 'DiscordBot', `[JerryBot] JerryBot is now online.`, 'DEBUG');
         console.log("JerryBot is now online.");
+        await Log("append", "JerryBot", `[JerryBot] JerryBot is now online.`, "DEBUG");
+
+        const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
+
+        const client_id = client.user.id;
+
+        const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
+        const goldfish_guild_id = process.env.DISCORD_GOLDFISH_GUILD_ID;
+        const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
+        const group_311_guild_id = process.env.DISCORD_311_GUILD_ID;
+
+        if(process.env.npm_lifecycle_event == "clearcommands") {
+            await Log("append", "JerryBot", `[JerryBot/clearcommands] Clearing the application (/) commands...`, "DEBUG");
+            console.log("Clearing global commands...");
+
+            await rest.put(Routes.applicationCommands(client_id), {body: []});
+
+            await Sleep(2500);
+            console.log("Clearing local commands...");
+
+            for(const [key, guild] of client.guilds.cache) {
+                await rest.put(Routes.applicationGuildCommands(client_id, guild.id), {body: []});
+                console.log(`Successfully cleared local commands in ${guild.name} (${guild.id}).`);
+                await Sleep(500);
+            }
+
+            console.log("Sucessfully cleared all registered application (/) commands!");
+            await Log("append", "JerryBot", `[JerryBot/clearcommands] Successfully cleared the application (/) commands!`, "DEBUG");
+            process.exit(0);
+        }
 
         await RefreshDataset(client);
 
@@ -28,55 +57,73 @@ module.exports = {
 
             // Jobs
             await StartJobs(client);
-            await ChecklistJobs();
+            ChecklistJobs();
 
             // Other
-            await InitNukeNotifier(client);
+            await InitNukeNotifier(client); // Currently disabled
 
             // Reresh Voice Channel Hubs
-            await FetchHubs(client);
+            FetchHubs(client);
         }
 
         // Registering commands
-        console.log("Registering the commands...");
+        console.log("Registering the application (/) commands...");
+        await Log("append", "JerryBot", `[JerryBot] Registering the application (/) commands...`, "DEBUG");
 
-        const client_id = client.user.id;
 
-        const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
-        const goldfish_guild_id = process.env.DISCORD_GOLDFISH_GUILD_ID;
-        const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
-        const group_311_guild_id = process.env.DISCORD_311_GUILD_ID;
+        if(process.env.npm_lifecycle_event == "prod") {
+            // Register commands globally
+            console.log("Deploying commands globally...");
 
-        const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
+            await rest.put(Routes.applicationCommands(client_id), {body: commands});
 
-        const emptyArray = []; // Replace 'body: commands' by emptyArray below to remove all commands. 
+            console.log("Finished refreshing the application (/) commands globally!");
+            Log("append", "JerryBot", `[JerryBot/prod] Successfully refreshed the application (/) commands globally!`, "DEBUG");
+        } else if(process.env.npm_lifecycle_event == "dev") {
+            try {
+                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
+                await Sleep(750);
 
-        try {
-            await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-            console.log(`Successfully registered commands locally in ${jerry_guild_id}.`);
-            await Sleep(1000);
+                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${goldfish_guild_id}.`);
-            // await Sleep(1000);
+                console.log("Successfully refreshed the application (/) commands locally!");
+                Log("append", "JerryBot", `[JerryBot/dev] Successfully refreshed the application (/) commands locally!`, "DEBUG");
+            } catch(err) {
+                if(err) {
+                    console.error(err);
+                }
+            }
+        } else {
+            try {
+                // Register commands locally to all guilds
+                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
+                await Sleep(1000);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${cra_guild_id}.`);
-            // await Sleep(1000);
+                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${goldfish_guild_id}.`);
+                await Sleep(1000);
 
-            // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-            // console.log(`Successfully registered commands locally in ${group_311_guild_id}.`);
-            // await Sleep(1000);
+                await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${cra_guild_id}.`);
+                await Sleep(1000);
 
-            console.log("Finished deploying the application (/) commands!");
-        } catch(err) {
-            if(err) {
-                console.error(err);
+                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+
+                console.log("Successfully refreshed the application (/) commands locally!");
+                Log("append", "JerryBot", `[JerryBot] Successfully refreshed the application (/) commands locally!`, "DEBUG");
+            } catch(err) {
+                if(err) {
+                    console.error(err);
+                }
             }
         }
 
         if(process.env.npm_lifecycle_event != 'dev') {
-            await ChecklistBotReady();
+            ChecklistBotReady();
         }
     }
 };

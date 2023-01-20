@@ -11,7 +11,7 @@ async function CheckAnswer(input, answer) {
  * @returns {[question: string, answer: string]} `return_array`
  */
 async function GetNewQuestion() {
-    const words = require('./ESP-quiz-define.json').words;
+    const words = require('./temp/ESP-quiz-define.json').words;
 
     const random_number = Math.floor(Math.random() * words.length - 1);
 

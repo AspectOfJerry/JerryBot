@@ -1,8 +1,18 @@
 const process = require('process');
-const fs = require('fs');
+const fs = require("fs");
 const date = require('date-and-time');
 
-const {AddGuild, CheckPermission, GetClientGuilds, GetGuildConfigMap, GetCommands, ParseGuild, RefreshDataset, RemoveGuild, SetPermissions} = require('../database/config/dbms');
+// Import relaying
+const {
+    AddGuild,
+    GetClientGuilds,
+    GetGuildConfigMap,
+    ParseGuild,
+    PermissionCheck,
+    RefreshDataset,
+    RemoveGuild,
+    SetPermissions
+} = require('../database/config/dbms');
 
 
 /**
@@ -243,13 +253,12 @@ module.exports = {
     StartJobs,
     StartEventListeners,
     ToNormalized,
-    // imports
+    // Import relaying
     AddGuild,
-    CheckPermission,
     GetClientGuilds,
     GetGuildConfigMap,
-    GetCommands,
     ParseGuild,
+    PermissionCheck,
     RefreshDataset,
     RemoveGuild,
     SetPermissions

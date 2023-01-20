@@ -1,7 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils");
 
 
 module.exports = {

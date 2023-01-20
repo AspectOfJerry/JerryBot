@@ -6,11 +6,11 @@
             "read": -1
         },
         "stats": {
-            "bot": null,
-            "guild": null,
-            "system": 0
+            "bot": 0,
+            "guild": 0,
+            "system": -1
         },
-        "ping": null,
+        "ping": 0,
         "stop": 3
     },
     "dev": {
@@ -26,37 +26,37 @@
     },
     "other": {
         "311": {
-            "roles": null,
-            "schedule": null,
-            "weather": null
+            "roles": 0,
+            "schedule": 0,
+            "weather": 0
         },
         "nasa": {
-            "apod": null
+            "apod": 0
         },
         "quiz": {},
-        "tictactoe": null,
-        "typing": null
+        "tictactoe": 0,
+        "typing": 0
     },
     "utility": {
         "hypixel_sub": {
-            "api": null
+            "api": 0
         },
         "math_sub": {
-            "average": null
+            "average": 0
         },
         "voice_sub": {
             "deaf": 3,
-            "join": null,
-            "leave": null,
+            "join": 0,
+            "leave": 0,
             "mute": 3
         },
         "disconnect": 3,
         "disconnectall": 3,
-        "help": null,
+        "help": 0,
         "move": 3,
         "msg": -1,
-        "profile": null,
-        "send": null,
-        "weather": null
+        "profile": 0,
+        "send": 0,
+        "weather": 0
     }
 }

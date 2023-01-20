@@ -1,9 +1,9 @@
-const fs = require('fs');
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const fs = require("fs");
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {CheckPermission, Log, Sleep} = require('../../modules/JerryUtils');
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils");
 
 const test_label = "0x02";
 
@@ -35,7 +35,7 @@ module.exports = {
                 .setFooter({text: "You must be whitelisted to use this command."});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use this test command. [error_permissions]`, 'WARN');
+            await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
             return;
         }
 

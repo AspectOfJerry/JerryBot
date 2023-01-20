@@ -4,10 +4,14 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "clearcommands": "node index.js",
+        "dev": "node index.js",
         "main": "node index.js",
         "premain": "npm install",
-        "dev": "node index.js",
-        "test": "node index.js"
+        "prod": "node index.js",
+        "preprod": "npm install",
+        "test": "node index.js",
+        "pretest": "npm install"
     },
     "repository": {
         "type": "git",
@@ -19,7 +23,7 @@
     "bugs": {
         "url": "https://github.com/AspectOfJerry/Discord-JerryBot/issues"
     },
-    "homepage": "https://github.com/AspectOfJerry/Discord-JerryBot#readme",
+    "homepage": "https://bot.aspectofjerry.dev",
     "type": "commonjs",
     "dependencies": {
         "@discordjs/builders": "^0.12.0",
