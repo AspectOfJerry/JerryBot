@@ -22,7 +22,6 @@ module.exports = {
                 .addChoice("F", 'F')
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         await interaction.deferReply();
 
         // Set minimum execution role
@@ -61,13 +60,13 @@ module.exports = {
 
                 await interaction.editReply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return 10;
+                return;
             }
         } // -----END ROLE CHECK-----
 
         // Main
         await interaction.editReply({content: "This command is currently under rework."});
-        return 5;
+        return;
 
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {
             if(error) {

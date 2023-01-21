@@ -19,7 +19,6 @@ module.exports = {
     //         .setRequired(false))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO');
         await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferReply()
 

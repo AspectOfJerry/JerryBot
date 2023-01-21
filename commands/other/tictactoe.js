@@ -16,7 +16,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
 
         if(await PermissionCheck(interaction) === false) {
             const error_permissions = new MessageEmbed()
@@ -28,7 +27,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-            return "PermissionError";
+            return;
         }
 
         // Declaring variables

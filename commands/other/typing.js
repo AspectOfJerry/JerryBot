@@ -11,7 +11,6 @@ module.exports = {
         .setName('typing')
         .setDescription("Sends the typing indicator."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // interaction.deferReply()
 
         if(await PermissionCheck(interaction) === false) {
@@ -24,7 +23,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-            return "PermissionError";
+            return;
         }
 
         // Declaring variables

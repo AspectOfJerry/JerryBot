@@ -11,11 +11,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bot')
-                .setDescription("Shows statistics about the bot."))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('system')
-                .setDescription("Shows statistics about the system running the bot.")),
+                .setDescription("Shows statistics about the bot.")),
     async execute(client, interaction) {
         // Declaring variables
 

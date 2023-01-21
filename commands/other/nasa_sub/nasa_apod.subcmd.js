@@ -8,7 +8,6 @@ const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction) {
-    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
     await interaction.deferReply();
 
     if(await PermissionCheck(interaction) === false) {
@@ -21,7 +20,7 @@ module.exports = async function (client, interaction) {
 
         await interaction.reply({embeds: [error_permissions]});
         await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-        return "PermissionError";
+        return;
     }
 
     // Declaring variables

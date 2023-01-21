@@ -20,7 +20,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] User to test")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO');
         await interaction.channel.send(`Executing Test ${test_label}...`);
         await Sleep(100);
         // Declaring variables 

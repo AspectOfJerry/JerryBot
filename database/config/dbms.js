@@ -2,10 +2,9 @@ const fs = require("fs");
 const Path = require("path");
 
 
-
 /**
- * @param {object} guildObject
- * @param {boolean} setPermissions
+ * @param {object} guildObject A Discord guild object.
+ * @param {boolean} setPermissions Whether the base permissions should be added into the object. Defaults to `true`.
  */
 async function AddGuild(guildObject, setPermissions) {
     const new_guild = await ParseGuild(guildObject, setPermissions);
@@ -14,18 +13,8 @@ async function AddGuild(guildObject, setPermissions) {
 }
 
 
-
 /**
- * @param {object} clientglobalCommands
- * @returns {object} Guilds that the client is in, mapped by their ids (`client.guilds.cache`)
- */
-async function GetClientGuilds(client) {
-    return await client.guilds.cache;
-}
-
-
-/**
- * @returns {object} JSON object containing the full configuration file
+ * @returns {object} A JSON object containing the full configuration file.
  */
 async function GetConfig() {
     const config = fs.readFileSync(Path.resolve(__dirname, "./config_guilds.json"));
@@ -33,9 +22,8 @@ async function GetConfig() {
 }
 
 
-
 /**
- * @returns {object} Map containing the guild configs
+ * @returns {object} A map containing the guild configs.
  */
 async function GetGuildConfigMap() {
     const config = await GetConfig();
@@ -46,8 +34,17 @@ async function GetGuildConfigMap() {
 
 
 /**
- * @param {object} guildObject The Guild to parse
- * @param {boolean} setPermissions Whether a basic permission configuration with default roles should be set. Defaults to true
+ * 
+ */
+async function GetHighestPL(member) {
+
+}
+
+
+/**
+ * @param {object} guildObject The Guild to parse.
+ * @param {boolean} setPermissions Whether a basic permission configuration with default roles should be set. Defaults to true.
+ * @returns {object} The parsed guild, adapted for storing.
  */
 async function ParseGuild(guildObject, setPermissions) {
     const doSetPermissions = setPermissions ?? true;
@@ -72,10 +69,9 @@ async function ParseGuild(guildObject, setPermissions) {
 }
 
 
-
 /**
- * @param {object} interaction The Discord interaction object
- * @returns {boolean} Whether or not the execution is authorized
+ * @param {object} interaction The Discord interaction object.
+ * @returns {boolean} Whether or not the execution is authorized.
  */
 async function PermissionCheck(interaction) {
     const guilds = await GetGuildConfigMap();
@@ -119,15 +115,14 @@ async function PermissionCheck(interaction) {
 }
 
 
-
 /**
- * @param {object} client The active Discord client
+ * @param {object} client The active Discord client.
  */
 async function RefreshDataset(client) {
     const new_config = new Map();
 
     const config = await GetConfig();
-    const guilds = await GetClientGuilds(client);
+    const guilds = client.guilds.cache;
 
     // Temporary storage
     const permission_roles = [];
@@ -178,8 +173,8 @@ async function SetPermissions() {
 
 module.exports = {
     AddGuild,
-    GetClientGuilds,
     GetGuildConfigMap,
+    GetHighestPL,
     ParseGuild,
     PermissionCheck,
     RefreshDataset,

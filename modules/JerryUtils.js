@@ -5,11 +5,9 @@ const date = require('date-and-time');
 // Import relaying
 const {
     AddGuild,
-    GetClientGuilds,
     GetGuildConfigMap,
-    ParseGuild,
+    GetHighestPL,
     PermissionCheck,
-    RefreshDataset,
     RemoveGuild,
     SetPermissions
 } = require('../database/config/dbms');
@@ -49,7 +47,6 @@ async function GetDirCommandFiles(dir, suffix, command_files, ignored_files, ski
     }
 }
 
-
 /**
  * 
  */
@@ -68,17 +65,16 @@ async function GetCommandFiles(dir, suffix) {
 }
 
 
-
 /**
- * @module `Log` A module to interact with log files
- * @param {string} method The method to use {`append`, `read`}
- * @param {string} tag The tag at the beginning of the line
- * @param {string} string The main content
- * @param {string} type The type of the message {`DEBUG`, `ERROR`, `FATAL`, `INFO`, `WARN`}
- * @param {boolean} returnInfoOnly If the module should only return the object without performing any actions
- * @returns {object} `return_object`
+ * Log is a module to interact with log files.
+ * @param {string} method The method to use {`append`, `read`}.
+ * @param {string} tag The tag at the beginning of the line.
+ * @param {string} body The main content.
+ * @param {string} type The type of the message {`DEBUG`, `ERROR`, `FATAL`, `INFO`, `WARN`}.
+ * @param {boolean} returnInfoOnly If the module should only return the object without performing any actions.
+ * @returns {object} `return_object`.
  */
-async function Log(method, tag, string, type, returnInfoOnly) {
+async function Log(method, tag, body, type, returnInfoOnly) {
     switch(method) {
         case "append": {
             // Declaring variables
@@ -118,16 +114,16 @@ async function Log(method, tag, string, type, returnInfoOnly) {
                 typeExtraIndent = typeExtraIndent + " ";
             }
 
-            string = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${string}`;
+            body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
 
             // Only return info
-            const return_object = {fileName: file_name, parsedString: string};
+            const return_object = {fileName: file_name, parsedString: body};
             if(returnInfoOnly) {
                 return return_object;
             }
 
             // Append to file
-            fs.appendFile(`./logs/${file_name}`, string + '\n', (err) => {
+            fs.appendFile(`./logs/${file_name}`, body + '\n', (err) => {
                 if(err) {
                     throw err;
                 }
@@ -142,7 +138,6 @@ async function Log(method, tag, string, type, returnInfoOnly) {
             throw "Unknown logging method.";
     }
 }
-
 
 
 /**
@@ -162,7 +157,6 @@ async function GetDirSubCommandFiles(dir, suffix, subcommand_files) {
     }
 }
 
-
 /**
  * 
  */
@@ -175,12 +169,11 @@ async function GetSubCommandFiles(dir, suffix) {
 }
 
 
-
 /**
- * @module Sleep Sleep module
- * @async `await` must be used
- * @param {integer} delayInMsec The delay to wait for in milliseconds
- * @throws {TypeError} Throws if `delayInMsec` is `NaN`
+ * Sleep
+ * @async `await` must be used.
+ * @param {integer} delayInMsec The delay to wait for in milliseconds.
+ * @throws {TypeError} Throws if `delayInMsec` is `NaN`.
  */
 async function Sleep(delayInMsec) {
     if(isNaN(delayInMsec)) {
@@ -188,7 +181,6 @@ async function Sleep(delayInMsec) {
     }
     await new Promise(resolve => setTimeout(resolve, delayInMsec));
 }
-
 
 
 /**
@@ -215,9 +207,9 @@ async function StartEventListeners(client, commands) {
 }
 
 
-
 /**
- * 
+ * StartJobs starts the jobs located in `root/jobs`.
+ * @param {object} client The Discord client.
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
@@ -234,11 +226,10 @@ async function StartJobs(client) {
 }
 
 
-
 /**
- * @module `ToNormalized` Removes accents from a string
- * @param {string} string The string to remove the accents from
- * @return {string} The normalized string
+ * ToNormalized removes accents from a string.
+ * @param {string} string The string to remove the accents from.
+ * @return {string} The normalized string.
  */
 async function ToNormalized(string) {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -255,11 +246,9 @@ module.exports = {
     ToNormalized,
     // Import relaying
     AddGuild,
-    GetClientGuilds,
     GetGuildConfigMap,
-    ParseGuild,
+    GetHighestPL,
     PermissionCheck,
-    RefreshDataset,
     RemoveGuild,
     SetPermissions
 };

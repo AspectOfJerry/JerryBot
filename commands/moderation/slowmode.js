@@ -24,7 +24,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for enabling the rate limit.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
         if(await PermissionCheck(interaction) === false) {
@@ -37,7 +36,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-            return "PermissionError";
+            return;
         }
 
         // Declaring variables
@@ -54,7 +53,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_not_text_channel]});
             await Log('append', interaction.guild.id, `└─The provided channel was not a text channel (#${channel.name}).`, 'WARN');
-            return 10;
+            return;
         }
 
         // Main
@@ -69,7 +68,7 @@ module.exports = {
                     await interaction.reply({embeds: [disabled_slowmode]});
                     await Log('append', interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, 'INFO');
                 });
-            return 0;
+            return;
         }
 
         channel.setRateLimitPerUser(interval, reason)

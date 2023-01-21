@@ -2,7 +2,7 @@ const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
 const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require("../modules/JerryUtils");
-const {AddGuild, GetClientGuilds, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
+const {AddGuild, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const {InitNukeNotifier} = require('../modules/nuking_notifier');
 const {FetchHubs} = require('../modules/voice_channel_hub');

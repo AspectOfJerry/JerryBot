@@ -14,9 +14,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] The user to search for. Defaults to yourself.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
-        // await interaction.deferReply();
-
         // Set minimum execution role
         switch(interaction.guild.id) {
             case process.env.DISCORD_JERRY_GUILD_ID:
@@ -54,7 +51,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return 10;
+                return;
             }
         } // -----END ROLE CHECK-----
 

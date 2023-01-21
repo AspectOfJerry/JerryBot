@@ -26,7 +26,6 @@ module.exports = {
                 .setDescription("The duration of the colector in seconds")
                 .setRequired(true)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // interaction.deferReply()
 
         // Set minimum execution role
@@ -66,7 +65,7 @@ module.exports = {
 
                 await interaction.reply({embeds: [error_permissions]});
                 await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return 10;
+                return;
             }
         } // -----END ROLE CHECK-----
 

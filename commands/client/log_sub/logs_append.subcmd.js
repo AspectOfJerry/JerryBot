@@ -4,8 +4,7 @@ const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 
 
 module.exports = async function (client, interaction, string, object) {
-    await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
-    // await interaction.deferReply();
+    await interaction.deferReply();
 
     if(await PermissionCheck(interaction) === false) {
         const error_permissions = new MessageEmbed()
@@ -17,7 +16,7 @@ module.exports = async function (client, interaction, string, object) {
 
         await interaction.reply({embeds: [error_permissions]});
         await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-        return "PermissionError";
+        return;
     }
 
     // Declaring variables
@@ -30,17 +29,17 @@ module.exports = async function (client, interaction, string, object) {
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setTitle('Writing to logs...')
         .addFields(
-            {name: 'String', value: `${string}`, inline: false},
+            {name: 'Body string', value: `${string}`, inline: false},
             {name: 'Target directory', value: "../logs/", inline: false})
     const write_to_logs = new MessageEmbed()
         .setColor('GREEN')
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setTitle('Write to logs')
         .addFields(
-            {name: 'String', value: `${(await object).parsedString}`, inline: false},
+            {name: 'Body string', value: `${(await object).parsedString}`, inline: false},
             {name: 'Target directory', value: `../logs/${(await object).fileName}`, inline: false})
 
-    interaction.reply({embeds: [writing_to_logs]});
+    await interaction.reply({embeds: [writing_to_logs]});
     await Log('append', interaction.guild.id, string, 'INFO');
     await interaction.editReply({embeds: [write_to_logs]});
 };

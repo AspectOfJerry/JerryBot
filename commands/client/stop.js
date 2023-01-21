@@ -14,7 +14,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the stop request.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
         if(await PermissionCheck(interaction) === false) {
@@ -27,7 +26,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-            return "PermissionError";
+            return;
         }
 
         // Declaring variables
@@ -108,8 +107,8 @@ module.exports = {
                 await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
                 await Log('append', interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, 'INFO');
                 await Log('append', interaction.guild.id, `└─Stopping the bot...`, 'FATAL');
-                await Sleep(250);
                 await client.destroy(); // Destroying the Discord client
+                await Sleep(250);
                 process.exit(0); // Exiting here
             } else {
                 const cancel_stop = new MessageEmbed()

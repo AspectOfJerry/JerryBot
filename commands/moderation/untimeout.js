@@ -19,7 +19,6 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the untimeout.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, 'INFO');
         // await interaction.deferReply();
 
         if(await PermissionCheck(interaction) === false) {
@@ -32,7 +31,7 @@ module.exports = {
 
             await interaction.reply({embeds: [error_permissions]});
             await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-            return "PermissionError";
+            return;
         }
 
         // Declaring variables
@@ -51,7 +50,7 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             await interaction.reply({embeds: [error_target_self]});
-            return 5;
+            return;
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
@@ -62,7 +61,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low]});
-            return 5;
+            return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
@@ -72,7 +71,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles]});
-            return 5;
+            return;
         }
         // -----END HIERARCHY CHECK-----
         // Main
@@ -89,7 +88,7 @@ module.exports = {
             await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not timed out. Attempting to clear timeout anyway.`, 'WARN');
 
             await memberTarget.timeout(null, reason);
-            return 0;
+            return;
         }
 
         memberTarget.timeout(null, reason)
