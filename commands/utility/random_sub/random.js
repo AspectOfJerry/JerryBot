@@ -21,25 +21,8 @@ module.exports = {
                 .setDescription("The maximum number. Defaults to 100")
                 .setRequired(false)),
     async execute(client, interaction) {
-        // interaction.deferReply()
-
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
-                throw `Error: Bad permission configuration.`;
+        if(await PermissionCheck(interaction) === false) {
+            return;
         }
 
         // Declaring variables
@@ -47,21 +30,6 @@ module.exports = {
         const max = interaction.options.getInteger('max') ?? 100;
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                    .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return;
-            }
-        } // -----END ROLE CHECK-----
 
         // Main
 
@@ -70,17 +38,17 @@ module.exports = {
                 new MessageButton()
                     .setCustomId('random_restart_button')
                     .setLabel(`Restart`)
-                    .setStyle('PRIMARY')
+                    .setStyle("PRIMARY")
                     .setDisabled(false),
                 new MessageButton()
                     .setCustomId('random_cancel_button')
                     .setLabel('Cancel')
-                    .setStyle('SECONDARY')
+                    .setStyle("SECONDARY")
                     .setDisabled(false)
             );
 
         const random_embed = new MessageEmbed()
-            .setColor('GREEN')
+            .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`Math random ${min} to ${max}`)
             .setDescription(`Random number: **${Math.floor((Math.random() * (max - min)) + min)}**`);
@@ -102,7 +70,7 @@ module.exports = {
         async function Restart() {
             const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
 
-            button_collector.on('collect', async (buttonInteraction) => {
+            button_collector.on("collect", async (buttonInteraction) => {
                 await buttonInteraction.deferUpdate();
                 await button_collector.stop();
 
@@ -115,10 +83,10 @@ module.exports = {
 
                 if(buttonInteraction.customId == 'random_cancel_button') {
                     row.components[0]
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(true);
                     row.components[1]
-                        .setStyle('SUCCESS')
+                        .setStyle("SUCCESS")
                         .setDisabled(true);
 
                     await interaction.editReply({embeds: [random_embed], components: [row]});

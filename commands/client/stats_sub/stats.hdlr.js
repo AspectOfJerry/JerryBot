@@ -22,7 +22,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.includes(interaction.options.getSubcommand())) {
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
+                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
             }
         }

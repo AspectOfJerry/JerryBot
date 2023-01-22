@@ -28,50 +28,16 @@ module.exports = {
     async execute(client, interaction) {
         // interaction.deferReply()
 
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
-                throw `Error: Bad permission configuration.`;
-        }
-
         // Declaring variables
         const time = interaction.options.getInteger('time');
         const title = interaction.options.getString('title');
         const description = interaction.options.getString('description');
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                    .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return;
-            }
-        } // -----END ROLE CHECK-----
 
         // Main
         const test = new MessageEmbed()
-            .setColor('GREEN')
+            .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`:ballot_box: Poll: ${title}`)
             .setDescription(`${description}`)
@@ -92,7 +58,7 @@ module.exports = {
                 const filter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '🤔' || reaction.emoji.name === '❌';
                 const collector = msg.createReactionCollector({filter, time: time * 1000, dispose: true});
 
-                collector.on('collect', async (reaction, user) => {
+                collector.on("collect", async (reaction, user) => {
                     if(reaction.emoji.name === '✅') {
                         await maybe_reaction.users.remove(user.id);
                         await no_reaction.users.remove(user.id);
@@ -121,7 +87,7 @@ module.exports = {
                     }
                 });
 
-                collector.on('end', async (collected) => {
+                collector.on("end", async (collected) => {
                     if(yesCount < 0) {
                         yesCount = 0;
                     }
@@ -133,7 +99,7 @@ module.exports = {
                     }
 
                     const result = new MessageEmbed()
-                        .setColor('GREEN')
+                        .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle(':bar_chart: Poll results')
                         .setDescription(`Here are the results:\n\n:white_check_mark: : ${yesCount}\n :thinking: : ${maybeCount}\n :x: : ${noCount}`)

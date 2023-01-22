@@ -10,7 +10,7 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemaini
 
 module.exports = async function (client) {
     const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
-        await Log('append', 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG');
+        await Log("append", 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG');
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
@@ -28,7 +28,7 @@ module.exports = async function (client) {
             const schedule_message = `${jour}: No school`;
 
             const schedule_embed = new MessageEmbed()
-                .setColor('YELLOW')
+                .setColor("YELLOW")
                 .setTitle(`:newspaper: [${jour}] ${day}`)
                 .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: No school today!`);
 
@@ -39,7 +39,7 @@ module.exports = async function (client) {
                 .then((msg) => {
                     msg.react('✅');
                 });
-            await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO');
+            await Log("append", 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
             return;
         }
 
@@ -59,7 +59,7 @@ module.exports = async function (client) {
             ` ${schedule.period6.className}`;
 
         const schedule_embed = new MessageEmbed()
-            .setColor('GREEN')
+            .setColor("GREEN")
             .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
             .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
             .addFields(
@@ -86,7 +86,7 @@ module.exports = async function (client) {
             .then((msg) => {
                 msg.react('✅');
             });
-        await Log('append', 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, 'INFO');
+        await Log("append", 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
     });
 
     schedule_311.start();
@@ -101,7 +101,7 @@ module.exports = async function (client) {
     // const auto_delete_timestamp = now + 10;
 
     const attached = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setDescription("Successfully attached the schedule announcer to this channel!")
         .addFields(
             {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false})
@@ -113,6 +113,6 @@ module.exports = async function (client) {
         await msg.delete();
     } catch {
         console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
-        await Log('append', 'telemetry', "Failed to delete the schedule announcer attach message. Not re-attempting.", 'ERROR');
+        await Log("append", 'telemetry', "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
     }
 };

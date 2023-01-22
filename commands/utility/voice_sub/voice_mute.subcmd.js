@@ -7,15 +7,6 @@ const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 
 module.exports = async function (client, interaction) {
     if(await PermissionCheck(interaction) === false) {
-        const error_permissions = new MessageEmbed()
-            .setColor('RED')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('PermissionError')
-            .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-        await interaction.reply({embeds: [error_permissions]});
-        await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
         return;
     }
 
@@ -25,7 +16,7 @@ module.exports = async function (client, interaction) {
     const _connection = getVoiceConnection(interaction.guild.id);
     if(!_connection) {
         const error_not_in_vc = new MessageEmbed()
-            .setColor('RED')
+            .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
@@ -44,7 +35,7 @@ module.exports = async function (client, interaction) {
     }
 
     const self_mute = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Voice selfMute")
         .setDescription("Successfully toggled mute.");

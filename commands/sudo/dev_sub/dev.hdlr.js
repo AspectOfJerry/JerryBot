@@ -22,14 +22,14 @@ module.exports = {
 
         if(!whitelist_ids.includes(interaction.user.id)) {
             const error_whitelist = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                 .setFooter({text: "You must be whitelisted to use this command."});
 
             await interaction.reply({embeds: [error_whitelist]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' was not whitelisted to perform '/dev [...]' subcommands. [error_permissions]`, 'WARN');
+            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' was not whitelisted to perform '/dev [...]' subcommands. [error_permissions]`, "WARN");
             return;
         }
 
@@ -38,7 +38,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.includes(interaction.options.getSubcommand())) {
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
+                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
             }
         }

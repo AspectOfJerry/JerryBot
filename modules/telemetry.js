@@ -57,7 +57,7 @@ async function StartTelemetry(_client) {
 
     // Create the telemetry embed
     const embed = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setTitle('JerryBot telemetry')
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
         .addFields(
@@ -91,7 +91,7 @@ async function UpdateEmbeds(newEmbed) {
             await msg.edit({embeds: [newEmbed]});
         } catch {
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
-            await Log('append', 'telemetry', `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, 'ERROR');
+            await Log("append", 'telemetry', `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
             globalFailedGuilds.push(msg.guild.id);
         }
     });

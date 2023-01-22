@@ -19,23 +19,8 @@ module.exports = {
                 .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true)),
     async execute(client, interaction) {
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL0";
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "Admin";
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL0";
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL0";
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
-                throw `Error: Bad permission configuration.`;
+        if(await PermissionCheck(interaction) === false) {
+            return;
         }
 
         await interaction.reply('This command is currently disabled.');
@@ -43,31 +28,16 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser('user');
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO');
+        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
         const message = interaction.options.getString('message');
 
         let DMChannel;
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                    .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return;
-            }
-        } // -----END ROLE CHECK-----
         if(memberTarget.user.bot) {
             const error_cannot_message_bot = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle('Error')
                 .setDescription("You cannot message a bot.");
@@ -78,7 +48,7 @@ module.exports = {
 
         // Main
         const messaging_user = new MessageEmbed()
-            .setColor('YELLOW')
+            .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Sending "${message}" to <@${memberTarget.id}>...`);
 
@@ -88,7 +58,7 @@ module.exports = {
             .then(async messageResult => {
                 DMChannel = await messageResult.channel;
                 const message_sent = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("Message sent!")
                     .setDescription(`Creating a message collector in the DM channel. You will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
@@ -102,7 +72,7 @@ module.exports = {
                 const receive_collector = DMChannel.createMessageCollector({idle: 300000});
                 const send_collector = interaction.channel.createMessageCollector({filter, idle: 300000});
 
-                receive_collector.on('collect', msg => {
+                receive_collector.on("collect", msg => {
                     if(msg.author.id != client.user.id) {
                         const message_embed = new MessageEmbed()
                             .setColor('BLURPLE')
@@ -114,10 +84,10 @@ module.exports = {
                     }
                 })
 
-                send_collector.on('collect', msg => {
+                send_collector.on("collect", msg => {
                     if(msg.content.toUpperCase() == 'MSG.STOP') {
                         const stopping_collector = new MessageEmbed()
-                            .setColor('RED')
+                            .setColor("RED")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle('Stopping Collector')
                             .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
@@ -128,7 +98,7 @@ module.exports = {
                         send_collector.stop();
                     } else {
                         const sending_message = new MessageEmbed()
-                            .setColor('YELLOW')
+                            .setColor("YELLOW")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setDescription(`Sending "${msg.content}" to <@${memberTarget.id}>...`);
 
@@ -137,7 +107,7 @@ module.exports = {
                                 memberTarget.send({content: `${msg.content}`})
                                     .then(async messageResult => {
                                         const message_sent = new MessageEmbed()
-                                            .setColor('GREEN')
+                                            .setColor("GREEN")
                                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                                             .setAuthor({name: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL({dynamic: true})}`})
                                             .setDescription(`*Send:* ${msg.content}`);

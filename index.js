@@ -27,7 +27,7 @@ const client = new Client({
 (async () => {
     // Getting commands
     console.log("Getting command files...");
-    await Log('append', 'index.js', 'Getting command files...', 'DEBUG');
+    await Log("append", 'index.js', 'Getting command files...', 'DEBUG');
 
     const suffix = '.js';
     const command_files = await GetCommandFiles('./commands', suffix);

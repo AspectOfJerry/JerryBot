@@ -11,18 +11,7 @@ module.exports = {
         .setName('typing')
         .setDescription("Sends the typing indicator."),
     async execute(client, interaction) {
-        // interaction.deferReply()
-
         if(await PermissionCheck(interaction) === false) {
-            const error_permissions = new MessageEmbed()
-                .setColor('RED')
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-            await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
             return;
         }
 
@@ -32,13 +21,13 @@ module.exports = {
 
         // Main
         const typing = new MessageEmbed()
-            .setColor('GREEN')
+            .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription("Typing...");
 
-        await interaction.reply({embeds: [typing], ephemeral: true});
-        await Log('append', interaction.guild.id, `Typing in <#${interaction.channel.name}>`, 'INFO');
+        interaction.reply({embeds: [typing], ephemeral: true});
+        Log('append', interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
 
-        await interaction.channel.sendTyping();
+        interaction.channel.sendTyping();
     }
 };

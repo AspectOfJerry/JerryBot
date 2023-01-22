@@ -11,15 +11,6 @@ module.exports = async function (client, interaction) {
     await interaction.deferReply();
 
     if(await PermissionCheck(interaction) === false) {
-        const error_permissions = new MessageEmbed()
-            .setColor('RED')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('PermissionError')
-            .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-        await interaction.reply({embeds: [error_permissions]});
-        await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
         return;
     }
 
@@ -37,7 +28,7 @@ module.exports = async function (client, interaction) {
         const schedule_message = `${jour} No school`;
 
         const schedule_embed = new MessageEmbed()
-            .setColor('YELLOW')
+            .setColor("YELLOW")
             .setTitle(`:newspaper: [${jour}] ${day}`)
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: No school today!`);
@@ -64,7 +55,7 @@ module.exports = async function (client, interaction) {
         ` ${schedule.period6.className}`;
 
     const schedule_embed = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: This is the schedule for Jour ${jour}.`)

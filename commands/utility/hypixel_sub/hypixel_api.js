@@ -29,7 +29,7 @@ module.exports = {
                 var MINIMUM_EXECUTION_ROLE = null;
                 break;
             default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
+                await Log("append", interaction.guild.id, "└─Throwing because of bad permission configuration.", "ERROR");
                 throw `Error: Bad permission configuration.`;
         }
 
@@ -45,14 +45,14 @@ module.exports = {
         if(MINIMUM_EXECUTION_ROLE !== null) {
             if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
                 const error_permissions = new MessageEmbed()
-                    .setColor('RED')
+                    .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('PermissionError')
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                     .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
 
                 await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
+                await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
                 return;
             }
         } // -----END ROLE CHECK-----
@@ -73,7 +73,7 @@ module.exports = {
 
                     if(error_response_cause == "Invalid API key") {
                         const error_response_invalid_api_key = new MessageEmbed()
-                            .setColor('RED')
+                            .setColor("RED")
                             .setTitle("Error")
                             .setDescription("The API key is invalid.")
                             .addField("Success", `${response_success}`, true)
@@ -84,7 +84,7 @@ module.exports = {
                         return;
                     } else if(error_response_cause == "Key throttle") {
                         const error_response_key_throttle = new MessageEmbed()
-                            .setColor('RED')
+                            .setColor("RED")
                             .setTitle("Error")
                             .setDescription("The API key is throttled. Please try again in a minute.")
                             .addField("Success", `${response_success}`, true)
@@ -98,7 +98,7 @@ module.exports = {
 
                 let remainingQueries = response_record_limit - response_record_queriesInPastMin;
                 const success_response = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor("GREEN")
                     .setTitle("Success")
                     .setDescription("A successful response was returned.\n" +
                         "<@611633988515266562> (AspectOfJerry) is the owner of the API key.")

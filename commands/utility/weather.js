@@ -24,23 +24,8 @@ module.exports = {
     async execute(client, interaction) {
         await interaction.deferReply();
 
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR');
-                throw `Error: Bad permission configuration.`;
+        if(await PermissionCheck(interaction) === false) {
+            return;
         }
 
         // Declaring variables
@@ -48,21 +33,6 @@ module.exports = {
         const search_unit = interaction.options.getString('unit') || "C";
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                    .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-                await interaction.editReply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
-                return;
-            }
-        } // -----END ROLE CHECK-----
 
         // Main
         await interaction.editReply({content: "This command is currently under rework."});
@@ -74,7 +44,7 @@ module.exports = {
             }
             if(result.length === 0) {
                 const search_error = new MessageEmbed()
-                    .setColor('RED')
+                    .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('Error')
                     .setDescription(`Could not find weather for "${search_location}".`)
@@ -133,7 +103,7 @@ module.exports = {
             const day5_precipitations = result[0].forecast[4].precip || "0";
 
             const weather = new MessageEmbed()
-                .setColor('GREEN')
+                .setColor("GREEN")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Weather search results for ${search_location}`)
                 .setDescription(`Location: ${location}${zip_code}\n` +

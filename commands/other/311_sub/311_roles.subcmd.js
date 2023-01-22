@@ -4,18 +4,7 @@ const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 
 
 module.exports = async function (client, interaction) {
-    // interaction.deferReply();
-
     if(await PermissionCheck(interaction) === false) {
-        const error_permissions = new MessageEmbed()
-            .setColor('RED')
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('PermissionError')
-            .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-        await interaction.reply({embeds: [error_permissions]});
-        await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
         return;
     }
 
@@ -49,19 +38,19 @@ module.exports = async function (client, interaction) {
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${selectMenuInteraction.user.id}>)`;
-            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' overrode the decision.`, 'WARN');
+            await Log("append", interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
             return true;
         } else {
             await selectMenuInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log('append', interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, 'WARN');
+            await Log("append", interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
             return;
         }
     };
 
     const prompt_roles = new MessageEmbed()
-        .setColor('YELLOW')
+        .setColor("YELLOW")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('Self-toggle roles')
         .setDescription('Select the roles you want to toggle in the dropdown menu.');
@@ -70,7 +59,7 @@ module.exports = async function (client, interaction) {
         .then(async (msg) => {
             const select_menu_collector = await msg.createMessageComponentCollector({filter, componentType: "SELECT_MENU", time: 15000});
 
-            select_menu_collector.on('collect', async (selectMenuInteraction) => {
+            select_menu_collector.on("collect", async (selectMenuInteraction) => {
                 await selectMenuInteraction.deferUpdate();
                 await select_menu_collector.stop();
 
@@ -134,7 +123,7 @@ module.exports = async function (client, interaction) {
                     const embed_description = `Successfully${addedRolesString}${removedRolesString}.`.replace(",", ", ");
 
                     const success_embed = new MessageEmbed()
-                        .setColor('GREEN')
+                        .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle('Self-toggled roles')
                         .setDescription(`${embed_description}`);
@@ -143,14 +132,14 @@ module.exports = async function (client, interaction) {
                 }
             });
 
-            select_menu_collector.on('end', async (collected) => {
+            select_menu_collector.on("end", async (collected) => {
                 if(collected.size === 0) {
                     // Disabling buttons
                     select_menu.components[0]
                         .setDisabled(true);
 
                     const expired = new MessageEmbed()
-                        .setColor('DARK_GREY')
+                        .setColor("DARK_GREY")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle('Self-toggle roles')
                         .setDescription('Select the roles you want to toggle in the dropdown menu.');

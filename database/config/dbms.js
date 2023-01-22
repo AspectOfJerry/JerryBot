@@ -2,8 +2,8 @@ const {Collection, MessageEmbed} = require("discord.js");
 const fs = require("fs");
 const Path = require("path");
 
-const {Log, Sleep} = require("../../modules/JerryUtils");
-
+const Log = require('../../modules/Log');
+const Sleep = require('../../modules/Sleep');
 
 /**
  * @param {object} guildObject A Discord guild object.
@@ -20,8 +20,8 @@ async function AddGuild(guildObject, setPermissions) {
  * @returns {object} A JSON object containing the full configuration file.
  */
 async function GetConfig() {
-    const config = fs.readFileSync(Path.resolve(__dirname, "./config_guilds.json"));
-    return JSON.parse(config);
+    const config = require('./config_guilds.json');
+    return config;
 }
 
 
@@ -99,29 +99,54 @@ async function PermissionCheck(interaction) {
     const config = await GetConfig();
 
     if(config.userBlacklist.includes(interaction.member.id)) {
-        const blacklisted = new MessageEmbed()
+        const user_blacklisted = new MessageEmbed()
             .setColor('FUCHSIA')
-            .setTitle("Blacklisted")
+            .setTitle("User Blacklisted")
             .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
             .setFooter({text: `Contact Jerry#3756 for help.`});
 
         try {
-            interaction.reply({embeds: [blacklisted]});
+            interaction.reply({embeds: [user_blacklisted]});
         } catch {
-            interaction.editReply({embeds: [blacklisted]});
+            interaction.editReply({embeds: [user_blacklisted]});
         }
 
-        await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [Blacklist]`, 'WARN');
-        return;
+        await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [UserBlacklist]`, "WARN");
+        return false;
     } else if(config.superUsers.includes(interaction.member.id)) {
-        await Log('append', interaction.guild.id, `├─'@${interaction.user.tag}' is a Super User. Execution authorized.`, 'INFO');
+        if(config.guildBlacklist.includes(interaction.guild.id)) {
+            const guild_blacklisted_warning = new MessageEmbed()
+                .setColor('FUCHSIA')
+                .setTitle("Guild Blacklisted Warning")
+                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
+
+            interaction.channel.send({embeds: [guild_blacklisted_warning]});
+            Log('append', interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
+        }
+
+        await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' is a super user. Execution authorized.`, "INFO");
         return true;
+    } else if(config.guildBlacklist.includes(interaction.guild.id)) {
+        const guild_blacklisted = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle("Guild Blacklisted")
+            .setDescription("I'm sorry but this Guild is in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
+            .setFooter({text: `Contact Jerry#3756 for help.`});
+
+        try {
+            interaction.reply({embeds: [guild_blacklisted]});
+        } catch {
+            interaction.editReply({embeds: [guild_blacklisted]});
+        }
+
+        await Log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
+        return false;
     }
 
     const guilds = await GetGuildConfigMap();
 
     let commandName = interaction.commandName;
-    const subcommand_name = await interaction.options.getSubcommand(false);
+    const subcommand_name = interaction.options.getSubcommand(false);
 
     var permissionSet = {};
 
@@ -156,8 +181,8 @@ async function PermissionCheck(interaction) {
         }
     }
 
-    if(!permissionValue) {
-        await Log('append', interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, 'FATAL');
+    if(permissionValue === undefined || permissionValue === null) {
+        await Log("append", interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, "FATAL");
         throw `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`;
     }
 
@@ -165,6 +190,20 @@ async function PermissionCheck(interaction) {
         return true;
     }
 
+    const error_permissions = new MessageEmbed()
+        .setColor("RED")
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setTitle('PermissionError')
+        .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
+        .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
+
+    try {
+        await interaction.reply({embeds: [error_permissions]});
+    } catch {
+        await interaction.editReply({embeds: [error_permissions]});
+    }
+
+    await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
     return false;
 }
 

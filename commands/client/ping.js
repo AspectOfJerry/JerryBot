@@ -10,15 +10,6 @@ module.exports = {
         .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
         if(await PermissionCheck(interaction) === false) {
-            const error_permissions = new MessageEmbed()
-                .setColor('RED')
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-                .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-            await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, 'WARN');
             return;
         }
 
@@ -33,21 +24,22 @@ module.exports = {
             .setDescription('ping...');
 
         interaction.channel.send({embeds: [ping]}).then(pingMessage => {
-            clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
             webSocketLatency = client.ws.ping;
+            clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
 
             const pong = new MessageEmbed()
-                .setColor('GREEN')
+                .setColor("GREEN")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
                 .addFields(
                     {name: 'Bot latency', value: `~${clientLatency}`, inline: true},
-                    {name: 'DiscordJS latency', value: `~${webSocketLatency}`, inline: true}
+                    {name: 'DiscordJS latency', value: `~${webSocketLatency}`, inline: true},
+                    {name: "WebSocket status", value: `code ${client.ws.status}`, inline: false}
                 );
 
             interaction.reply({embeds: [pong]});
             pingMessage.delete().catch(console.error);
-            Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, 'INFO');
+            Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
         });
     }
 };

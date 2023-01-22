@@ -31,7 +31,7 @@ module.exports = {
         // Whitelist
         if(interaction.guild.id != '1014278986135781438') {
             const cmd_not_avail_in_guild = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("This command is not available in this guild!");
 
@@ -44,7 +44,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.includes(interaction.options.getSubcommand())) {
-                await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
+                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
             }
         }
