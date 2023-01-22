@@ -1,5 +1,8 @@
+const {Collection, MessageEmbed} = require("discord.js");
 const fs = require("fs");
 const Path = require("path");
+
+const {Log, Sleep} = require("../../modules/JerryUtils");
 
 
 /**
@@ -33,15 +36,33 @@ async function GetGuildConfigMap() {
 }
 
 
-/**
- * 
+/** 
+ * @async
+ * @param {object} member The GuildMember to check
+ * @returns {number} The highest PL
  */
 async function GetHighestPL(member) {
+    const roles = member.roles.cache;
 
+    const guilds = await GetGuildConfigMap();
+    const guild = await guilds.get(member.guild.id);
+
+    const role_config = guild.permissionRoles;
+
+    if(!role_config) {
+        throw `Missing permissionRoles configuration`;
+    }
+
+    for(let i = 1; i < Object.keys(role_config).length + 1; i++) {
+        if(roles.has(role_config[`PL${i}`])) {
+            return i;
+        }
+    }
 }
 
 
 /**
+ * @async
  * @param {object} guildObject The Guild to parse.
  * @param {boolean} setPermissions Whether a basic permission configuration with default roles should be set. Defaults to true.
  * @returns {object} The parsed guild, adapted for storing.
@@ -70,11 +91,35 @@ async function ParseGuild(guildObject, setPermissions) {
 
 
 /**
+ * @async
  * @param {object} interaction The Discord interaction object.
  * @returns {boolean} Whether or not the execution is authorized.
  */
 async function PermissionCheck(interaction) {
+    const config = await GetConfig();
+
+    if(config.userBlacklist.includes(interaction.member.id)) {
+        const blacklisted = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle("Blacklisted")
+            .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
+            .setFooter({text: `Contact Jerry#3756 for help.`});
+
+        try {
+            interaction.reply({embeds: [blacklisted]});
+        } catch {
+            interaction.editReply({embeds: [blacklisted]});
+        }
+
+        await Log('append', interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [Blacklist]`, 'WARN');
+        return;
+    } else if(config.superUsers.includes(interaction.member.id)) {
+        await Log('append', interaction.guild.id, `├─'@${interaction.user.tag}' is a Super User. Execution authorized.`, 'INFO');
+        return true;
+    }
+
     const guilds = await GetGuildConfigMap();
+
     let commandName = interaction.commandName;
     const subcommand_name = await interaction.options.getSubcommand(false);
 
@@ -87,7 +132,7 @@ async function PermissionCheck(interaction) {
     }
 
     if(Object.keys(permissionSet).length === 0) {
-        throw `Failed to find a permission set for guild ${interaction.guild.id} (${interaction.guild.name})`;
+        throw `Failed to find a permissionSet for guild ${interaction.guild.id} (${interaction.guild.name})`;
     }
 
     let permissionValue;
@@ -97,25 +142,35 @@ async function PermissionCheck(interaction) {
     }
 
     for(const value of Object.values(permissionSet)) {
-        const cmd = value[commandName];
+        const command = value[commandName];
 
-        if(cmd !== undefined) {
+        if(command !== undefined) {
             if(!subcommand_name) {
-                permissionValue = cmd
+                permissionValue = command;
                 break;
             } else {
-                const subcmd = cmd[subcommand_name];
-                permissionValue = subcmd
+                const sub_command = command[subcommand_name];
+                permissionValue = sub_command
                 break;
             }
         }
     }
 
-    return;
+    if(!permissionValue) {
+        await Log('append', interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, 'FATAL');
+        throw `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`;
+    }
+
+    if(permissionValue === 0 || await GetHighestPL(interaction.member) <= permissionValue) {
+        return true;
+    }
+
+    return false;
 }
 
 
 /**
+ * @async
  * @param {object} client The active Discord client.
  */
 async function RefreshDataset(client) {

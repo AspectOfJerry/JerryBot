@@ -34,10 +34,10 @@ module.exports = {
 
         // Main
 
-        const subcommand_files = await GetSubCommandFiles();
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
 
         for(const file of subcommand_files) {
-            if(file.contains(interaction.commandName)) {
+            if(file.includes(interaction.options.getSubcommand())) {
                 await Log('append', "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
             }

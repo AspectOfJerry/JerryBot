@@ -31,7 +31,7 @@ module.exports = {
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                 .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
 
             await interaction.reply({embeds: [error_permissions]});

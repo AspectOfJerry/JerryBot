@@ -9,14 +9,12 @@ module.exports = {
         .setName('ping')
         .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
-        // await interaction.deferReply();
-
         if(await PermissionCheck(interaction) === false) {
             const error_permissions = new MessageEmbed()
                 .setColor('RED')
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                 .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
 
             await interaction.reply({embeds: [error_permissions]});

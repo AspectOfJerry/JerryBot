@@ -102,16 +102,16 @@ module.exports = {
                 console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
                 await Sleep(1000);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
+                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+                await Sleep(1000);
+
                 console.log(`Successfully deployed commands locally in ${goldfish_guild_id}.`);
+                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
                 await Sleep(1000);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
                 console.log(`Successfully deployed commands locally in ${cra_guild_id}.`);
-                await Sleep(1000);
-
-                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 Log("append", "JerryBot", `[JerryBot] Successfully refreshed the application (/) commands locally!`, "DEBUG");
