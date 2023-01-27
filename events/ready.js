@@ -44,7 +44,10 @@ module.exports = {
             process.exit(0);
         }
 
+        console.log("Refreshing the database...");
+        Log("append", "Database", "Refreshing the database...", "DEBUG");
         await RefreshDataset(client);
+
 
         if(process.env.npm_lifecycle_event == 'test') {
             // Test content here

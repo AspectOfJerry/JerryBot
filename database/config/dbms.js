@@ -2,10 +2,9 @@ const {Collection, MessageEmbed} = require("discord.js");
 const fs = require("fs");
 const Path = require("path");
 
-const Log = require('../../modules/Log');
-const Sleep = require('../../modules/Sleep');
 
 /**
+ * @async
  * @param {object} guildObject A Discord guild object.
  * @param {boolean} setPermissions Whether the base permissions should be added into the object. Defaults to `true`.
  */
@@ -17,15 +16,25 @@ async function AddGuild(guildObject, setPermissions) {
 
 
 /**
- * @returns {object} A JSON object containing the full configuration file.
+ * @async
+ * @returns {object} A JSON object containing the base command permissions
  */
-async function GetConfig() {
-    const config = require('./config_guilds.json');
-    return config;
+async function GetBasePermissions() {
+    return require('../base/base_permission_set.json');
 }
 
 
 /**
+ * @async
+ * @returns {object} A JSON object containing the full configuration file.
+ */
+async function GetConfig() {
+    return require('./config_guilds.json');
+}
+
+
+/**
+ * @async
  * @returns {object} A map containing the guild configs.
  */
 async function GetGuildConfigMap() {
@@ -92,139 +101,27 @@ async function ParseGuild(guildObject, setPermissions) {
 
 /**
  * @async
- * @param {object} interaction The Discord interaction object.
- * @returns {boolean} Whether or not the execution is authorized.
- */
-async function PermissionCheck(interaction) {
-    const config = await GetConfig();
-
-    if(config.userBlacklist.includes(interaction.member.id)) {
-        const user_blacklisted = new MessageEmbed()
-            .setColor('FUCHSIA')
-            .setTitle("User Blacklisted")
-            .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Contact Jerry#3756 for help.`});
-
-        try {
-            interaction.reply({embeds: [user_blacklisted]});
-        } catch {
-            interaction.editReply({embeds: [user_blacklisted]});
-        }
-
-        await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [UserBlacklist]`, "WARN");
-        return false;
-    } else if(config.superUsers.includes(interaction.member.id)) {
-        if(config.guildBlacklist.includes(interaction.guild.id)) {
-            const guild_blacklisted_warning = new MessageEmbed()
-                .setColor('FUCHSIA')
-                .setTitle("Guild Blacklisted Warning")
-                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
-
-            interaction.channel.send({embeds: [guild_blacklisted_warning]});
-            Log('append', interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
-        }
-
-        await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' is a super user. Execution authorized.`, "INFO");
-        return true;
-    } else if(config.guildBlacklist.includes(interaction.guild.id)) {
-        const guild_blacklisted = new MessageEmbed()
-            .setColor('FUCHSIA')
-            .setTitle("Guild Blacklisted")
-            .setDescription("I'm sorry but this Guild is in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Contact Jerry#3756 for help.`});
-
-        try {
-            interaction.reply({embeds: [guild_blacklisted]});
-        } catch {
-            interaction.editReply({embeds: [guild_blacklisted]});
-        }
-
-        await Log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
-        return false;
-    }
-
-    const guilds = await GetGuildConfigMap();
-
-    let commandName = interaction.commandName;
-    const subcommand_name = interaction.options.getSubcommand(false);
-
-    var permissionSet = {};
-
-    for(const [key, value] of guilds) {
-        if(key == interaction.guild.id) {
-            permissionSet = value.commandPermissions;
-        }
-    }
-
-    if(Object.keys(permissionSet).length === 0) {
-        throw `Failed to find a permissionSet for guild ${interaction.guild.id} (${interaction.guild.name})`;
-    }
-
-    let permissionValue;
-
-    if(subcommand_name) {
-        commandName = commandName + "_sub";
-    }
-
-    for(const value of Object.values(permissionSet)) {
-        const command = value[commandName];
-
-        if(command !== undefined) {
-            if(!subcommand_name) {
-                permissionValue = command;
-                break;
-            } else {
-                const sub_command = command[subcommand_name];
-                permissionValue = sub_command
-                break;
-            }
-        }
-    }
-
-    if(permissionValue === undefined || permissionValue === null) {
-        await Log("append", interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, "FATAL");
-        throw `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`;
-    }
-
-    if(permissionValue === 0 || await GetHighestPL(interaction.member) <= permissionValue) {
-        return true;
-    }
-
-    const error_permissions = new MessageEmbed()
-        .setColor("RED")
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('PermissionError')
-        .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-        .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
-
-    try {
-        await interaction.reply({embeds: [error_permissions]});
-    } catch {
-        await interaction.editReply({embeds: [error_permissions]});
-    }
-
-    await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
-    return false;
-}
-
-
-/**
- * @async
  * @param {object} client The active Discord client.
  */
 async function RefreshDataset(client) {
     const new_config = new Map();
+    const base_permissions = (await GetBasePermissions()).commandPermissions;
 
     const config = await GetConfig();
     const guilds = client.guilds.cache;
 
     // Temporary storage
-    const permission_roles = [];
     const command_permissions = [];
+    const permission_roles = [];
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        permission_roles.push(value.permissionRoles);
+        if(!value.commandPermissions && !value.permissionRoles) {
+            command_permissions.push(base_permissions.commandPermissions);
+            permission_roles.push(base_permissions.permissionRoles);
+            continue;
+        }
         command_permissions.push(value.commandPermissions);
+        permission_roles.push(value.permissionRoles);
     }
 
     // Main
@@ -237,12 +134,18 @@ async function RefreshDataset(client) {
 
     config.guilds = Object.fromEntries(new_config);
 
+    // Check if superusers have mfa
+    // for(const userId of config.superUsers) {
+    //     const user = client.users.resolve(userId);
+
+    // }
+
     // Restore data from temporary storage
     let i = 0;
 
     for(const [key, value] of Object.entries(config.guilds)) {
-        value.permissionRoles = permission_roles[i];
         value.commandPermissions = command_permissions[i];
+        value.permissionRoles = permission_roles[i];
         i++;
     }
 
@@ -268,9 +171,9 @@ async function SetPermissions() {
 module.exports = {
     AddGuild,
     GetGuildConfigMap,
+    GetConfig,
     GetHighestPL,
     ParseGuild,
-    PermissionCheck,
     RefreshDataset,
     RemoveGuild,
     SetPermissions

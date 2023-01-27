@@ -2,18 +2,14 @@ const process = require('process');
 const fs = require("fs");
 const date = require('date-and-time');
 
-// Import relaying
 const {
     AddGuild,
+    GetConfig,
     GetGuildConfigMap,
     GetHighestPL,
-    PermissionCheck,
     RemoveGuild,
     SetPermissions
 } = require('../database/config/dbms');
-
-const Log = require('./Log');
-const Sleep = require('./Sleep');
 
 
 /**
@@ -100,6 +96,220 @@ async function GetSubCommandFiles(dir, suffix) {
 /**
  * 
  */
+async function IsSuperUser(client, userResolvable) {
+    const config = await GetConfig();
+    const userId = client.users.resolveId(userResolvable);
+
+    if(config.superUsers.includes(userId)) {
+        return true;
+    }
+    return false;
+}
+/**
+ * @async
+ * @param {string} method The method to use {`append`, `read`}.
+ * @param {string} tag The tag at the beginning of the line.
+ * @param {string} body The main content.
+ * @param {string} type The type of the message {`DEBUG`, `ERROR`, `FATAL`, `INFO`, `WARN`}.
+ * @returns {object} `return_object`.
+ */
+async function Log(method, tag, body, type) {
+    switch(method) {
+        case "append": {
+            // Declaring variables
+            const now = new Date();
+
+            let tagLenght = 0;
+            let tagExtraIndentNum = 0;
+            let tagExtraIndent = "";
+            let typeLenght = 0;
+            let typeExtraIndentNum = 0;
+            let typeExtraIndent = "";
+
+            // Get current date
+            const now_date = date.format(now, 'YYYY-MM-DD');
+            const now_time = date.format(now, 'HH:mm:ss.SSS');
+
+            // Generate the log file name
+            const file_name = `${now_date}_Discord-JerryBot.log`;
+
+            // Generate the new line content
+            if(tag == null) {
+                tag = "------------------"
+            }
+            tagLenght = tag.length;
+            tagExtraIndentNum = 19 - tagLenght;
+            for(let i = 0; i < tagExtraIndentNum; i++) {
+                tagExtraIndent = tagExtraIndent + " ";
+            }
+
+            // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
+            if(!type) {
+                type = "NULL";
+            }
+            typeLenght = type.length;
+            typeExtraIndentNum = 5 - typeLenght;
+            for(let i = 0; i < typeExtraIndentNum; i++) {
+                typeExtraIndent = typeExtraIndent + " ";
+            }
+
+            body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
+
+            const return_object = {fileName: file_name, parsedString: body};
+
+            // Append to file
+            fs.appendFile(`./logs/${file_name}`, body + "\n", (err) => {
+                if(err) {
+                    throw err;
+                }
+            });
+            return return_object;
+        }
+        case "read": {
+            // Read stuff
+        }
+            break;
+        default:
+            throw "Unknown logging method.";
+    }
+}
+
+
+/**
+ * @async
+ * @param {object} interaction The Discord interaction object.
+ * @returns {boolean} Whether or not the execution is authorized.
+ */
+async function PermissionCheck(interaction) {
+    const config = await GetConfig();
+
+    if(config.userBlacklist.includes(interaction.member.id)) {
+        const user_blacklisted = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle("User Blacklisted")
+            .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
+            .setFooter({text: `Contact Jerry#3756 for help.`});
+
+        try {
+            interaction.reply({embeds: [user_blacklisted]});
+        } catch {
+            interaction.editReply({embeds: [user_blacklisted]});
+        }
+
+        await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [UserBlacklist]`, "WARN");
+        return false;
+    } else if(config.superUsers.includes(interaction.member.id)) {
+        if(config.guildBlacklist.includes(interaction.guild.id)) {
+            const guild_blacklisted_warning = new MessageEmbed()
+                .setColor('FUCHSIA')
+                .setTitle("Guild Blacklisted Warning")
+                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
+
+            interaction.channel.send({embeds: [guild_blacklisted_warning]});
+            Log('append', interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
+        }
+
+        await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' is a super user. Execution authorized.`, "INFO");
+        return true;
+    } else if(config.guildBlacklist.includes(interaction.guild.id)) {
+        const guild_blacklisted = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle("Guild Blacklisted")
+            .setDescription("I'm sorry but this Guild is in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
+            .setFooter({text: `Contact Jerry#3756 for help.`});
+
+        try {
+            interaction.reply({embeds: [guild_blacklisted]});
+        } catch {
+            interaction.editReply({embeds: [guild_blacklisted]});
+        }
+
+        await Log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
+        return false;
+    }
+
+    const guilds = await GetGuildConfigMap();
+
+    let commandName = interaction.commandName;
+    const subcommand_name = interaction.options.getSubcommand(false);
+
+    var permissionSet = {};
+
+    for(const [key, value] of guilds) {
+        if(key == interaction.guild.id) {
+            permissionSet = value.commandPermissions;
+        }
+    }
+
+    if(Object.keys(permissionSet).length === 0) {
+        throw `Failed to find a permissionSet for guild ${interaction.guild.id} (${interaction.guild.name})`;
+    }
+
+    let permissionValue;
+
+    if(subcommand_name) {
+        commandName = commandName + "_sub";
+    }
+
+    for(const value of Object.values(permissionSet)) {
+        const command = value[commandName];
+
+        if(command !== undefined) {
+            if(!subcommand_name) {
+                permissionValue = command;
+                break;
+            } else {
+                const sub_command = command[subcommand_name];
+                permissionValue = sub_command
+                break;
+            }
+        }
+    }
+
+    if(permissionValue === undefined || permissionValue === null) {
+        await Log("append", interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, "FATAL");
+        throw `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`;
+    }
+
+    if(permissionValue === 0 || await GetHighestPL(interaction.member) <= permissionValue) {
+        return true;
+    }
+
+    const error_permissions = new MessageEmbed()
+        .setColor("RED")
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setTitle('PermissionError')
+        .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
+        .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
+
+    try {
+        await interaction.reply({embeds: [error_permissions]});
+    } catch {
+        await interaction.editReply({embeds: [error_permissions]});
+    }
+
+    await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
+    return false;
+}
+
+
+/**
+ * Sleep
+ * @async `await` must be used.
+ * @param {integer} delayInMsec The delay to wait for in milliseconds.
+ * @throws {TypeError} Throws if `delayInMsec` is `NaN`.
+ */
+async function Sleep(delayInMsec) {
+    if(isNaN(delayInMsec)) {
+        throw TypeError("delayInMsec is not a number", 'sleep.js', 8);
+    }
+    await new Promise(resolve => setTimeout(resolve, delayInMsec));
+}
+
+
+/**
+ * 
+ */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
     await Log("append", 'JerryUtils', "Starting event listeners...", 'DEBUG');
@@ -153,6 +363,9 @@ async function ToNormalized(string) {
 module.exports = {
     GetCommandFiles,
     GetSubCommandFiles,
+    IsSuperUser,
+    Log,
+    Sleep,
     StartJobs,
     StartEventListeners,
     ToNormalized,
@@ -163,6 +376,4 @@ module.exports = {
     PermissionCheck,
     RemoveGuild,
     SetPermissions,
-    Log,
-    Sleep
 };

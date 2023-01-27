@@ -1,4 +1,9 @@
 {
+    "permissionRoles": {
+        "PL1": "",
+        "PL2": "",
+        "PL3": ""
+    },
     "commandPermissions": {
         "client": {
             "log": {

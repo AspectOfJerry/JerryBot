@@ -1,4 +1,5 @@
-const {Log, Sleep} = require("../modules/JerryUtils");
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {GetConfig, Log, Sleep} = require("../modules/JerryUtils");
 
 var lastGuildId;
 var latestGuildId;
@@ -75,4 +76,7 @@ module.exports = {
         lastGuildId = newPresence.guild.id;
         firstTime = false;
     }
+
+    // Message all superUsers when another superUser goes online
+
 };
