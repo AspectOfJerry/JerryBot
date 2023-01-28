@@ -371,6 +371,7 @@ module.exports = {
     ToNormalized,
     // Import relaying
     AddGuild,
+    GetConfig,
     GetGuildConfigMap,
     GetHighestPL,
     PermissionCheck,

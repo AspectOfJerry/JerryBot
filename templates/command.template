@@ -6,13 +6,13 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('CMD_NAME')
+        .setName("CMD_NAME")
         .setDescription("CMD_DESCRIPTION")
-    // .addStringOption((options) =>
-    //     options
-    //         .setName('OPTION_NAME')
-    //         .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
-    //         .setRequired(true/false))
+        // .addStringOption((options) =>
+        //     options
+        //         .setName("OPTION_NAME")
+        //         .setDescription("[OPTIONAL/REQUIRED] OPTION_DESCRIPTION")
+        //         .setRequired(true / false))
     ,
     async execute(client, interaction) {
         // interaction.deferReply()
@@ -21,9 +21,9 @@ module.exports = {
         }
 
         // Declaring variables
-        // const target = interaction.options.getUser('user') || interaction.user;
+        // const target = interaction.options.getUser("user") || interaction.user;
         // const memberTarget = interaction.guild.members.cache.get(target.id);
-        // await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        // await Log("append", interaction.guild.id, `├─memberTarget: "${memberTarget.user.tag}"`, "INFO");
 
         // Checks
 

@@ -10,6 +10,7 @@
     "userBlacklist": [],
     "guildBlacklist": [],
     "guildProtection": [],
+    "voiceChannelHubs": [],
     "guilds": {
         "631939549332897842": {
             "id": "631939549332897842",
@@ -138,6 +139,15 @@
                     "tictactoe": 0,
                     "typing": 0
                 },
+                "sudo": {
+                    "dev_sub": {
+                        "stop": -1
+                    },
+                    "sudo_sub": {
+                        "blacklist": -2,
+                        "nuke": -2
+                    }
+                },
                 "utility": {
                     "hypixel_sub": {
                         "api": 0
@@ -211,6 +221,15 @@
                     "quiz": {},
                     "tictactoe": 0,
                     "typing": 0
+                },
+                "sudo": {
+                    "dev_sub": {
+                        "stop": -1
+                    },
+                    "sudo_sub": {
+                        "blacklist": -2,
+                        "nuke": -2
+                    }
                 },
                 "utility": {
                     "hypixel_sub": {
@@ -291,8 +310,8 @@
                         "stop": -1
                     },
                     "sudo_sub": {
-                        "blacklist": -1,
-                        "nuke": -1
+                        "blacklist": -2,
+                        "nuke": -2
                     }
                 },
                 "utility": {
