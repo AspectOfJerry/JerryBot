@@ -1,27 +1,29 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
+const {GetConfig, Log, Sleep} = require('../modules/JerryUtils');
 
-const hub_channels = [];
+
+var channels = [];
 const active_channels = [];
 
 
-async function CreateChannel(guild) {
-
-}
-
-
-async function CreateHub() {
+async function AddHub() {
 
 }
 
 
 async function FetchHubs(client) {
-    for(const channel of hub_channels) {
+    channels = GetConfig();
+    channels = channels.voiceChannelHubs;
+
+    for(const channel of channels) {
         if(!client.channels.has(channel)) {
-            const index = hub_channels.indexOf(channel)
-            hub_channels.splice(index, 1);
+            const index = channels.indexOf(channel)
+            channels.splice(index, 1);
+            continue;
         }
+        channels.push(channel);
     }
 }
 
@@ -40,9 +42,8 @@ async function RemoveHub(guild) {
 
 
 module.exports = {
-    CreateChannel,
-    CreateHub,
+    AddHub,
     FetchHubs,
     HandleJoin,
     RemoveHub
-}
+};

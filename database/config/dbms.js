@@ -170,6 +170,7 @@ async function SetPermissions() {
 
 module.exports = {
     AddGuild,
+    GetConfig,
     GetGuildConfigMap,
     GetConfig,
     GetHighestPL,
