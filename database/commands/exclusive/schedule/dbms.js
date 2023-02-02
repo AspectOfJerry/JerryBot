@@ -1,4 +1,4 @@
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils");
 
 const date = require('date-and-time');
 
@@ -39,21 +39,19 @@ async function GetJourByDate() {
 
     await Sleep(500);
 
-    main: while(!date.isSameDay(day, now)) {
+    outer: while(!date.isSameDay(day, now)) {
         dayType = "SCO";
         if(day.toString().toLowerCase().startsWith('sat') || day.toString().toLowerCase().startsWith('sun')) {
             day = date.addDays(day, 1);
             dayType = "WEKN";
-            await Sleep(5);
-            continue main;
+            continue outer;
         }
         for(let [key, value] of Object.entries(exceptions)) {
             key = date.parse(key, 'YYYY-MM-DD');
             if(date.isSameDay(key, day)) {
                 day = date.addDays(day, 1);
                 dayType = value;
-                await Sleep(5);
-                continue main;
+                continue outer;
             }
         }
 
@@ -63,8 +61,6 @@ async function GetJourByDate() {
         if(jour > 18) {
             jour = 1;
         }
-
-        await Sleep(5);
     }
 
     dayType = "SCO";
@@ -96,14 +92,14 @@ async function GetScheduleByJour(jour) {
     }
 }
 
-async function GetFRCRemainingDays(startJour) {
+async function GetFRCDays(startJour) {
     const schedule = await GetFullSchedule();
 
-    const target_day = schedule.metadata.frcStartDate;
+    const target_day = schedule.metadata.frcEndDate;
     // const target = schedule.metadata.frcEndDate;
     const target = date.parse(target_day, 'YYYY-MM-DD');
 
-    const delta = Math.floor(date.subtract(target, startJour).toDays());
+    const delta = Math.floor(date.subtract(startJour, target).toDays());
     return delta;
 }
 
@@ -112,7 +108,7 @@ module.exports = {
     GetExceptions,
     GetDate,
     GetFullDateString,
-    GetFRCRemainingDays,
+    GetFRCDays,
     GetJourByDate,
     GetScheduleByJour
 };

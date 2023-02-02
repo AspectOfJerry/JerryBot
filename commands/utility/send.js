@@ -54,17 +54,17 @@ module.exports = {
                 const message_lenght = message.lenght;
                 const duration_in_ms = Math.round(message_lenght / 14 * 1000);
 
-                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
+                interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
 
-                await channel.sendTyping();
+                channel.sendTyping();
                 await Sleep(duration_in_ms);
 
-                await channel.send({content: `${message}`, ephe});
+                channel.send({content: `${message}`, ephe});
                 break;
             case false:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+                interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
-                await channel.send({content: `${message}`});
+                channel.send({content: `${message}`});
                 break;
         }
     }

@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const date = require('date-and-time');
 
 const {Log, Sleep} = require("../modules/JerryUtils");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/schedule/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/exclusive/schedule/dbms');
 
 
 module.exports = async function (client) {
@@ -22,7 +22,7 @@ module.exports = async function (client) {
         let jour = await GetJourByDate();
         const day = await GetFullDateString();
 
-        const days_to_frc = await GetFRCRemainingDays(await GetDate());
+        const days_to_frc = await GetFRCDays(await GetDate());
 
         if(isNaN(jour)) {
             const schedule_message = `${jour}: No school`;

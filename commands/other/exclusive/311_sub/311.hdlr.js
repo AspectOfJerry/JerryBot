@@ -1,7 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const Path = require('path');
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils");
+const {GetSubCommandFiles, Log, Sleep} = require("../../../../modules/JerryUtils");
 
 
 module.exports = {
@@ -23,7 +24,11 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('roles')
-                .setDescription("Self add/remove some roles.")),
+                .setDescription("Self add/remove some roles."))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('verify')
+                .setDescription("Identify yourself")),
     async execute(client, interaction) {
         // Declaring variables
 

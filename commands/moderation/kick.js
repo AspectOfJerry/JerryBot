@@ -82,18 +82,16 @@ module.exports = {
         let buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('kick_confirm_button')
-                    .setLabel(`Kick`)
+                    .setCustomId("kick_confirm_button")
+                    .setLabel("Kick")
                     .setStyle("DANGER")
                     .setDisabled(false),
                 new MessageButton()
-                    .setCustomId('kick_cancel_button')
-                    .setLabel('Cancel')
+                    .setCustomId("kick_cancel_button")
+                    .setLabel("Cancel")
                     .setStyle("SECONDARY")
                     .setDisabled(false)
             );
-
-        let isOverriddenText = "";
 
         // const now = Math.round(Date.now() / 1000);
         // const auto_cancel_timestamp = now + 10;
@@ -112,6 +110,7 @@ module.exports = {
         await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
 
         // Creating a filter for the collector
+        let isOverriddenText = "";
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
@@ -160,6 +159,7 @@ module.exports = {
 
                         await interaction.editReply({embeds: [success_kick], components: [buttonRow]});
                         await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, "WARN");
+                        return;
                     });
             } else {
                 // Disabling buttons

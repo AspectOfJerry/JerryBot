@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils");
 
 
 module.exports = async function (client, interaction) {
@@ -49,15 +49,15 @@ module.exports = async function (client, interaction) {
         }
     };
 
-    const prompt_roles = new MessageEmbed()
+    const prompt = new MessageEmbed()
         .setColor("YELLOW")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('Self-toggle roles')
         .setDescription('Select the roles you want to toggle in the dropdown menu.');
 
-    await interaction.reply({embeds: [prompt_roles], components: [select_menu], fetchReply: true})
+    await interaction.reply({embeds: [prompt], components: [select_menu], fetchReply: true})
         .then(async (msg) => {
-            const select_menu_collector = await msg.createMessageComponentCollector({filter, componentType: "SELECT_MENU", time: 15000});
+            const select_menu_collector = await msg.createMessageComponentCollector({filter, componentType: "SELECT_MENU", time: 20000});
 
             select_menu_collector.on("collect", async (selectMenuInteraction) => {
                 await selectMenuInteraction.deferUpdate();
@@ -71,62 +71,36 @@ module.exports = async function (client, interaction) {
                     const selected = selectMenuInteraction.values;
                     let rolesAdded = [];
                     let rolesRemoved = [];
-                    let addedRolesString = "";
-                    let removedRolesString = "";
-                    let roleOrRoles = "role";
-                    let isAnd = "";
 
-                    const announcement_role_id = '1054158881586155560';
-                    const schedule_role_id = '1016500157480706191';
+                    const roles = new Map();
 
-                    if(selected.includes('announcement')) {
-                        if(!selectMenuInteraction.member.roles.cache.has(announcement_role_id)) {
-                            await selectMenuInteraction.member.roles.add(announcement_role_id);
-                            rolesAdded.push('announcement');
-                        } else {
-                            await selectMenuInteraction.member.roles.remove(announcement_role_id);
-                            rolesRemoved.push('announcement');
+                    roles.set("1054158881586155560", "announcement");
+                    roles.set("1016500157480706191", "schedule");
+
+                    for(const [id, name] of Object.entries(roles)) {
+                        if(selected.includes(name)) {
+                            if(!selectMenuInteraction.member.roles.cache.has(id)) {
+                                await selectMenuInteraction.member.roles.add(id);
+                                rolesAdded.push(name);
+                            } else {
+                                await selectMenuInteraction.member.roles.remove(id);
+                                rolesRemoved.push(name);
+                            }
                         }
                     }
-
-                    if(selected.includes('schedule')) {
-                        if(!selectMenuInteraction.member.roles.cache.has(schedule_role_id)) {
-                            await selectMenuInteraction.member.roles.add(schedule_role_id);
-                            rolesAdded.push('schedule');
-                        } else {
-                            await selectMenuInteraction.member.roles.remove(schedule_role_id);
-                            rolesRemoved.push('schedule');
-                        }
-                    }
-
-
-                    if(rolesAdded.length > 0) {
-                        if(rolesAdded.length > 1) {
-                            roleOrRoles = "roles";
-                        }
-
-                        addedRolesString = ` added the ${rolesAdded} ${roleOrRoles}` || "";
-                    }
-
-                    if(rolesRemoved.length > 0) {
-                        if(rolesAdded.length + rolesRemoved.length > 1) {
-                            isAnd = " and";
-                        }
-
-                        if(rolesAdded.length > 1) {
-                            roleOrRoles = "roles";
-                        }
-
-                        removedRolesString = `${isAnd} removed the ${rolesRemoved} ${roleOrRoles}` || "";
-                    }
-
-                    const embed_description = `Successfully${addedRolesString}${removedRolesString}.`.replace(",", ", ");
 
                     const success_embed = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle('Self-toggled roles')
-                        .setDescription(`${embed_description}`);
+                        .addFields(
+                            {
+                                name: "Roles added", value: `${() => {if(!rolesAdded) {return "None"} return rolesAdded;}}`, inline: false
+                            },
+                            {
+                                name: "Roles removed", value: `${() => {if(!rolesRemoved) {return "None"} return rolesRemoved;}}`, inline: false
+                            }
+                        );
 
                     await interaction.editReply({embeds: [success_embed], components: [select_menu]});
                 }

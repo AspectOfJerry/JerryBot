@@ -1,4 +1,4 @@
-# Discord-JerryBot
+# JerryBot
 Do not contribute (unless you have been invited to).
 
 You can find the documentation for the bot [here](https://bot.aspectofjerry.dev).

@@ -131,7 +131,7 @@ async function Log(method, tag, body, type) {
             const now_time = date.format(now, 'HH:mm:ss.SSS');
 
             // Generate the log file name
-            const file_name = `${now_date}_Discord-JerryBot.log`;
+            const file_name = `${now_date}_JerryBot.log`;
 
             // Generate the new line content
             if(tag == null) {
