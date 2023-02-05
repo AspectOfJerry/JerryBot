@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
-const Path = require('path');
+const Path = require("path");
 
 const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils");
 
@@ -37,12 +37,13 @@ module.exports = {
         // Checks
 
         // Main
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
-            if(file.includes(interaction.options.getSubcommand())) {
+            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
                 await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
+                break;
             }
         }
     }

@@ -34,12 +34,13 @@ module.exports = {
         }
 
         // Main
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
-            if(file.includes(interaction.options.getSubcommand())) {
+            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
                 await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
+                break;
             }
         }
     }

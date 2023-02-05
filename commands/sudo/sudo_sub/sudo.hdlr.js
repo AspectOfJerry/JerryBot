@@ -1,45 +1,101 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const Path = require('path');
+const Path = require("path");
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils");
+const {GetConfig, GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('sudo')
+        .setName("sudo")
         .setDescription("SuperUser commands.")
-        .addSubcommand(subcommand =>
+        .addSubcommand((subcommand) => // blacklist
             subcommand
-                .setName('blacklist')
+                .setName("blacklist")
                 .setDescription("[SUDO] Adds a user to the bot's blacklist preventing them to interact with it.")
-                .addUserOption((options) =>
-                    options
-                        .setName('user')
+                .addUserOption((option) =>
+                    option
+                        .setName("user")
                         .setDescription("[REQUIRED] The user to blacklist. If you wish to use an ID, put anything here and use the id option.")
                         .setRequired(true))
-                .addIntegerOption(options =>
-                    options
-                        .setName('id')
+                .addIntegerOption((option) =>
+                    option
+                        .setName("id")
                         .setDescription("[OPTIONAL] The user id to blacklist. This option OVERWRITES the user option.").
                         setRequired(false)))
-        .addSubcommand(subcommand =>
+        .addSubcommand((subcommand) => // nuke
             subcommand
-                .setName('nuke')
-                .setDescription("[SUDO] Nukes the current guild if not in the safe list, effectively deleting most of its content.")),
+                .setName("nuke")
+                .setDescription("[SUDO] Nukes the current guild if not in the safe list, effectively deleting most of its content."))
+        .addSubcommand((subcommand) => // status
+            subcommand
+                .setName("status")
+                .setDescription("[SUDO] Edit the bot's presence.")
+                .addStringOption((option) =>
+                    option
+                        .setName("type")
+                        .setDescription("[REQUIRED] The type of presence.")
+                        .setRequired(true)
+                        .addChoices([
+                            ["Playing", "PLAYING"],
+                            ["Streaming", "STREAMING"],
+                            ["Listening to", "LISTENING"],
+                            ["Watching", "WATCHING"],
+                            ["Competing in", "COMPETING"]
+                        ]
+                            // Bots cannot use the "CUSTOM" type
+                        ))
+                .addStringOption((option) =>
+                    option
+                        .setName("text")
+                        .setDescription("[REQUIRED] The text to show after the type.")
+                        .setRequired(true))
+                .addStringOption((option) =>
+                    option
+                        .setName("status")
+                        .setDescription("[REQUIRED] The status of the bot.")
+                        .setRequired(true)
+                        .addChoices([
+                            ["Online", "online"],
+                            ["Idle", "idle"],
+                            ["Do not disturb", "dnd"]
+                        ])).addStringOption((option) =>
+                            option
+                                .setName("url")
+                                .setDescription("[OPTIONAL] A YouTube or Twitch URL, required if the type is Streaming.")
+                                .setRequired(false)))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("status_clear")
+                .setDescription("Clears the bot's presence.")),
     async execute(client, interaction) {
         // Declaring variables
 
         // Checks
-
         // Main
+        // Notify all super users when a super user command is executed
+        const super_users = (await GetConfig()).superUsers;
 
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, './'), '.subcmd.js');
+        const notify = new MessageEmbed()
+            .setColor('FUCHSIA')
+            .setTitle(":warning: SuperUser command execution alert")
+            .addFields(
+                {name: "User", value: `<@${interaction.user.id}>`, inline: true},
+                {name: "Command", value: `</${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}:${interaction.commandId}>`, inline: true},
+                {name: "Location", value: `${interaction.guild.name}/<#${interaction.channel.id}>`, inline: false},
+            )
+
+        for(const user of super_users) {
+            client.users.send(user, {embeds: [notify]});
+        }
+
+        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
-            if(file.includes(interaction.options.getSubcommand())) {
+            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
                 await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
                 require(file)(client, interaction);
+                break;
             }
         }
     }

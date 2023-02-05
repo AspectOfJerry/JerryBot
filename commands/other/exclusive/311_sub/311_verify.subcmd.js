@@ -1,8 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const weatherJs = require("weather-js");
 
 const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils");
-const {execute} = require("../../../tests/0x01.test");
 
 
 let collectedModal = false;
@@ -25,24 +23,40 @@ module.exports = async function (client, interaction) {
                     {
                         label: "311",
                         value: "311",
-                    },
-                    {
+                    }, {
+                        label: "301",
+                        value: "301",
+                    }, {
+                        label: "302",
+                        value: "302",
+                    }, {
+                        label: "303",
+                        value: "303",
+                    }, {
+                        label: "304",
+                        value: "304",
+                    }, {
+                        label: "305",
+                        value: "305",
+                    }, {
+                        label: "306",
+                        value: "306",
+                    }, {
+                        label: "307",
+                        value: "307",
+                    }, {
                         label: "308",
                         value: "308",
-                    },
-                    {
+                    }, {
                         label: "309",
                         value: "309",
-                    },
-                    {
+                    }, {
                         label: "310",
                         value: "310",
-                    },
-                    {
+                    }, {
                         label: "312",
                         value: "312",
-                    },
-                    {
+                    }, {
                         label: "313",
                         value: "313",
                     }
@@ -166,45 +180,60 @@ module.exports = async function (client, interaction) {
 
                 componentInteraction.showModal(prompt_name)
 
-                await AwaitModal();
-                console.log("AWAIT")
+                const filter = (newInteraction) => {
+                    if(newInteraction.user.id === interaction.user.id && newInteraction.channel.id === interaction.channel.id && newInteraction.customId === "prompt_name") {
+                        return true;
+                    }
+                    return false;
+                }
+
+                componentInteraction.awaitModalSubmit({filter, time: 60000})
+                    .then((modalInteraction) => {
+                        modalInteraction.deferUpdate();
+                        buttonRow.components[1]
+                            .setDisabled(false);
+
+                        name = modalInteraction.fields.getTextInputValue("name");
+
+                        const confirm_selection = new MessageEmbed()
+                            .setColor("YELLOW")
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                            .setTitle("Confirm your input")
+                            .setDescription(`Please confirm the following data:`)
+                            .addFields(
+                                {
+                                    name: "Name", value: `${name}`, inline: false
+                                },
+                                {
+                                    name: "Group", value: `${group}`, inline: false
+                                }
+                            );
+
+                        interaction.editReply({embeds: [confirm_selection], components: [selectMenu, buttonRow]});
+                    }).catch((err) => {
+                        console.error(err);
+                        component_collector.stop();
+                        // Disable components
+                        buttonRow.components[0]
+                            .setDisabled(true);
+                        buttonRow.components[1]
+                            .setDisabled(true);
+                        selectMenu.components[0]
+                            .setDisabled(true);
+
+                        const expired = new MessageEmbed()
+                            .setColor("DARK_GREY")
+                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+                            .setTitle('Verify')
+                            .setDescription(`The command has expired. Please execute </311 verify:${interaction.commandId}> again.`);
+
+                        interaction.editReply({embeds: [expired], components: [selectMenu, buttonRow]});
+                    });
             }
         } else {
             throw "Unknown component interaction";
         }
     });
-
-    async function AwaitModal() {
-        client.once("interactionCreate", async (newInteraction) => {
-            if(!newInteraction.isModalSubmit()) {
-                await AwaitModal();
-                console.log("RETURN");
-                return;
-            }
-
-            newInteraction.deferUpdate();
-            buttonRow.components[1]
-                .setDisabled(false);
-
-            name = newInteraction.fields.getTextInputValue("name");
-
-            const confirm_selection = new MessageEmbed()
-                .setColor("YELLOW")
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("Confirm your input")
-                .setDescription(`Please confirm the following data:`)
-                .addFields(
-                    {
-                        name: "Name", value: `${name}`, inline: false
-                    },
-                    {
-                        name: "Group", value: `${group}`, inline: false
-                    }
-                );
-
-            interaction.editReply({embeds: [confirm_selection], components: [selectMenu, buttonRow]});
-        });
-    }
 
     component_collector.on("end", (collected, reason) => {
         if(reason === "time") {

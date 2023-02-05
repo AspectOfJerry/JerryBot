@@ -52,7 +52,7 @@ module.exports = {
             const prompt_verify = new MessageEmbed()
                 .setColor("YELLOW")
                 .setTitle("Identify")
-                .setDescription("Please identify yourself by running </311 verify:1066510229619089469>")
+                .setDescription("Please identify yourself by running </311 verify:1066510229619089469>");
 
             channel.send({embeds: [join_message, prompt_verify]});
 
