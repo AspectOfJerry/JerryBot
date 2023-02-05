@@ -238,6 +238,7 @@ async function PermissionCheck(interaction) {
 
     for(const [key, value] of guilds) {
         if(key == interaction.guild.id) {
+            // get guild commandPermissions
             permissionSet = value.commandPermissions;
         }
     }
@@ -252,8 +253,8 @@ async function PermissionCheck(interaction) {
         commandName = commandName + "_sub";
     }
 
-    for(const value of Object.values(permissionSet)) {
-        const command = value[commandName];
+    for(const category of Object.values(permissionSet)) {
+        const command = category[commandName];
 
         if(command !== undefined) {
             if(!subcommand_name) {

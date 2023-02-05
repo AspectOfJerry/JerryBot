@@ -45,8 +45,10 @@
                 "stop": -1
             },
             "sudo_sub": {
-                "blacklist": -1,
-                "nuke": -1
+                "blacklist": -2,
+                "nuke": -2,
+                "status_clear": -2,
+                "stauts": -2
             }
         },
         "utility": {

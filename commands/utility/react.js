@@ -16,7 +16,7 @@ module.exports = {
         .addStringOption((options) =>
             options
                 .setName("emoji")
-                .setDescription("[REQUIRED] An EmojiIdentifierResolvable (EmojiResolvable, Unicode emoji)")
+                .setDescription("[REQUIRED] The Unicode emoji")
                 .setRequired(true)),
     async execute(client, interaction) {
         // interaction.deferReply()
@@ -24,13 +24,16 @@ module.exports = {
             return;
         }
 
-        // PreMain
+        interaction.reply("This command is currently disabled. Reactions are weird and the command doesn't really work.");
+        return;
         // Declaring variables
-
-        const snowflake = interaction.options.getString("message");
+        const snowflake = await interaction.options.getString("message");
+        console.log(snowflake)
         const message = await interaction.channel.messages.resolve(snowflake);
         console.log(message)
+        const emoji = interaction.options.getString("emoji");
 
+        // Checks
         if(!message) {
             const invalid_snowflake = new MessageEmbed()
                 .setColor('RED')
@@ -41,30 +44,24 @@ module.exports = {
             interaction.reply({embeds: [invalid_snowflake], ephemeral: true});
             return;
         }
-        const emoji = client.emojis.resolve(await interaction.options.getString("emoji"));
-
-        // Checks
-
-        if(!emoji) {
-            const invalid_emoji = new MessageEmbed()
-                .setColor('RED')
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("Error")
-                .setDescription(`The ${emoji} emoji is non-existant or inaccessible by the bot.`);
-
-            interaction.reply({embeds: [invalid_emoji], ephemeral: true});
-            return;
-        }
 
         // Main
         interaction.channel.messages.react(message, emoji)
-            .then(async (msg) => {
+            .then((msg) => {
                 const reacted = new MessageEmbed()
                     .setColor('GREEN')
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Successfully reacted () to [this message](${msg.url}).`);
+                    .setDescription(`Successfully reacted to [this message](${msg.url}).`);
 
                 interaction.reply({embeds: [reacted]});
+            }).catch(() => {
+                const invalid_emoji = new MessageEmbed()
+                    .setColor('RED')
+                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                    .setTitle("Error")
+                    .setDescription("Could not react `" + emoji + "` to the message.");
+
+                interaction.reply({embeds: [invalid_emoji], ephemeral: true});
             });
     }
 };

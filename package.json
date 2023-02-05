@@ -10,8 +10,7 @@
         "premain": "npm install",
         "prod": "node index.js",
         "preprod": "npm install",
-        "test": "node index.js",
-        "pretest": "npm install"
+        "test": "node index.js"
     },
     "repository": {
         "type": "git",

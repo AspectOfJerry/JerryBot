@@ -19,8 +19,8 @@ async function AddGuild(guildObject, setPermissions) {
  * @async
  * @returns {object} A JSON object containing the base command permissions
  */
-async function GetBasePermissions() {
-    return require('../base/base_permission_set.json');
+async function GetBaseConfig() {
+    return require('../base/base_guild_config.json');
 }
 
 
@@ -105,7 +105,7 @@ async function ParseGuild(guildObject, setPermissions) {
  */
 async function RefreshDataset(client) {
     const new_config = new Map();
-    const base_permissions = (await GetBasePermissions()).commandPermissions;
+    const base_config = (await GetBaseConfig());
 
     const config = await GetConfig();
     const guilds = client.guilds.cache;
@@ -114,14 +114,14 @@ async function RefreshDataset(client) {
     const command_permissions = [];
     const permission_roles = [];
 
-    for(const [key, value] of Object.entries(config.guilds)) {
-        if(!value.commandPermissions && !value.permissionRoles) {
-            command_permissions.push(base_permissions.commandPermissions);
-            permission_roles.push(base_permissions.permissionRoles);
+    for(const guild of Object.values(config.guilds)) {
+        if(!guild.commandPermissions && !guild.permissionRoles) {
+            command_permissions.push(base_config.commandPermissions);
+            permission_roles.push(base_config.permissionRoles);
             continue;
         }
-        command_permissions.push(value.commandPermissions);
-        permission_roles.push(value.permissionRoles);
+        command_permissions.push(guild.commandPermissions);
+        permission_roles.push(guild.permissionRoles);
     }
 
     // Main
@@ -143,11 +143,14 @@ async function RefreshDataset(client) {
     // Restore data from temporary storage
     let i = 0;
 
-    for(const [key, value] of Object.entries(config.guilds)) {
-        value.commandPermissions = command_permissions[i];
-        value.permissionRoles = permission_roles[i];
+    for(const guild of Object.values(config.guilds)) {
+        guild.commandPermissions = command_permissions[i];
+        guild.permissionRoles = permission_roles[i];
+
+        Object.assign(guild.commandPermissions, base_config.commandPermissions);
         i++;
     }
+
 
     // Update the file
     fs.writeFileSync(Path.resolve(__dirname, "./config_guilds.json"), JSON.stringify(config), (err) => {
