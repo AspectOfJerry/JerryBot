@@ -19,7 +19,6 @@ module.exports = {
     //         .setRequired(false))
     ,
     async execute(client, interaction) {
-        await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferReply()
 
         // Permission check
@@ -45,23 +44,6 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.channel.send("This command is currently disabled.");
-        return;
-
-        const category_id = '1042989616921313341';
-        const channel_count = 3;
-
-        let channelName;
-
-        for(let i = 1; i <= channel_count; i++) {
-            if(i.toString(16).length <= 1) {
-                channelName = "0x0" + i.toString(16).toUpperCase();
-            } else {
-                channelName = "0x" + i.toString(16).toUpperCase();
-            }
-
-            interaction.guild.channels.create("t-" + channelName, {parent: category_id});
-            await Sleep(50);
-        }
+        interaction.reply("Nothing here...")
     }
 };
