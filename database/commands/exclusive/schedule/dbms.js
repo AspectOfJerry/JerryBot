@@ -99,7 +99,8 @@ async function GetFRCDays(startJour) {
     // const target = schedule.metadata.frcEndDate;
     const target = date.parse(target_day, 'YYYY-MM-DD');
 
-    const delta = Math.floor(date.subtract(startJour, target).toDays());
+    const delta = Math.floor(date.subtract(target, startJour).toDays());
+    return "*requires confirmation*";
     return delta;
 }
 
