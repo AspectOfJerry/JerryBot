@@ -1,18 +1,18 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const CronJob = require('cron').CronJob;
-const fetch = require('node-fetch');
+const CronJob = require("cron").CronJob;
+const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils");
 
 
 module.exports = async function (client) {
-    const JOB_NAME = new CronJob('* * * * *', async () => { // Interval of INTERVAL
+    const JOB_NAME = new CronJob("* * * * *", async () => { // Interval of INTERVAL
 
     });
 
     JOB_NAME.start();
 
-    Log('append', 'JOB_NAME', `[JOB_NAME] `, 'DEBUG');
-    console.log(`JOB_NAME started!`);
+    Log("append", "JOB_NAME", "[JOB_NAME] ", "DEBUG");
+    console.log("JOB_NAME started!");
 };

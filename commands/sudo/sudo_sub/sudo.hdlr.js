@@ -27,9 +27,9 @@ module.exports = {
             subcommand
                 .setName("nuke")
                 .setDescription("[SUDO] Nukes the current guild if not in the safe list, effectively deleting most of its content."))
-        .addSubcommand((subcommand) => // status
+        .addSubcommand((subcommand) => // presence
             subcommand
-                .setName("status")
+                .setName("presence")
                 .setDescription("[SUDO] Edit the bot's presence.")
                 .addStringOption((option) =>
                     option
@@ -42,9 +42,8 @@ module.exports = {
                             ["Listening to", "LISTENING"],
                             ["Watching", "WATCHING"],
                             ["Competing in", "COMPETING"]
-                        ]
                             // Bots cannot use the "CUSTOM" type
-                        ))
+                        ]))
                 .addStringOption((option) =>
                     option
                         .setName("text")
@@ -66,8 +65,22 @@ module.exports = {
                                 .setRequired(false)))
         .addSubcommand((subcommand) =>
             subcommand
-                .setName("status_clear")
-                .setDescription("Clears the bot's presence.")),
+                .setName("presence_clear")
+                .setDescription("Clears the bot's presence."))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("status")
+                .setDescription("Edits the bot's status.")
+                .addStringOption((option) =>
+                    option
+                        .setName("status")
+                        .setDescription("[REQUIRED] The status type.")
+                        .setRequired(true)
+                        .addChoices([
+                            ["Online", "online"],
+                            ["Idle", "idle"],
+                            ["Do not disturb", "dnd"]
+                        ]))),
     async execute(client, interaction) {
         // Declaring variables
 
@@ -93,7 +106,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, 'DEBUG');
+                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

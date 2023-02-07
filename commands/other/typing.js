@@ -26,7 +26,7 @@ module.exports = {
             .setDescription("Typing...");
 
         interaction.reply({embeds: [typing], ephemeral: true});
-        Log('append', interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
+        Log("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
 
         interaction.channel.sendTyping();
     }

@@ -24,7 +24,7 @@ async function AntiNuke(client) {
 
 async function NukingEventMonitor(client, guildIds) {
     // Events
-    client.on('channelDelete', async (channel) => {
+    client.on("channelDelete", async (channel) => {
         if(!channel.guild.id in guildIds) {
             return;
         }
@@ -33,7 +33,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('guildBanAdd', async (member) => {
+    client.on("guildBanAdd", async (member) => {
         if(!member.guild.id in guildIds) {
             return;
         }
@@ -42,7 +42,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('guildMemberRemove', async (member) => {
+    client.on("guildMemberRemove", async (member) => {
         if(!member.guild.id in guildIds) {
             return;
         }
@@ -51,7 +51,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('roleDelete', async (role) => {
+    client.on("roleDelete", async (role) => {
         if(!role.guild.id in guildIds) {
             return;
         }

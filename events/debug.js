@@ -5,6 +5,6 @@ module.exports = {
     name: "debug",
     once: false,
     async execute(info) {
-        await Log("append", 'debug', info, 'DEBUG');
+        await Log("append", "DEBUG", info, "DEBUG");
     }
 };

@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 

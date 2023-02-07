@@ -46,7 +46,7 @@ module.exports = {
                 );
 
             interaction.reply({embeds: [pong], components: [row]});
-            Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
+            Log("append", interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
         });
     }
 };

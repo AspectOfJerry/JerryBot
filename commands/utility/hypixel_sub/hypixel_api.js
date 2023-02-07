@@ -3,7 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const process = require('process');
 require('dotenv').config();
 
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
 

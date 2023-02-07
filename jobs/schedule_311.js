@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const CronJob = require('cron').CronJob;
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const date = require('date-and-time');
 
 const {Log, Sleep} = require("../modules/JerryUtils");
@@ -9,8 +9,8 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, G
 
 
 module.exports = async function (client) {
-    const schedule_311 = new CronJob('30 06 * * *', async () => { // Interval of 1 day, at 06h30
-        await Log("append", 'schedule_311', `[Schedule_311] Posting today's schedule...`, 'DEBUG');
+    const schedule_311 = new CronJob("30 06 * * *", async () => { // Interval of 1 day, at 06h30
+        await Log("append", 'schedule_311', `[Schedule_311] Posting today's schedule...`, "DEBUG");
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
@@ -37,9 +37,9 @@ module.exports = async function (client) {
             await channel.send({embeds: [schedule_embed]});
             await channel.send({content: schedule_message})
                 .then((msg) => {
-                    msg.react('✅');
+                    msg.react("✅");
                 });
-            await Log("append", 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+            await Log("append", "schedule_311", `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
             return;
         }
 
@@ -86,12 +86,12 @@ module.exports = async function (client) {
             .then((msg) => {
                 msg.react('✅');
             });
-        await Log("append", 'schedule_311', `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+        await Log("append", "schedule_311", `[Schedule_311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
     });
 
     schedule_311.start();
 
-    Log('append', 'schedule_311', `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, 'DEBUG');
+    Log("append", "schedule_311", `[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, "DEBUG");
     console.log(`[Schedule_311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
 
     const guild = await client.guilds.fetch("1014278986135781438");
@@ -104,7 +104,7 @@ module.exports = async function (client) {
         .setColor("GREEN")
         .setDescription("Successfully attached the schedule announcer to this channel!")
         .addFields(
-            {name: 'Announcement time', value: ":loudspeaker: 06h30", inline: false})
+            {name: "Announcement time", value: ":loudspeaker: 06h30", inline: false})
         .setFooter({text: "🟥 Deleting in 10s"});
 
     const msg = await channel.send({embeds: [attached]});
@@ -113,6 +113,6 @@ module.exports = async function (client) {
         await msg.delete();
     } catch {
         console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
-        await Log("append", 'telemetry', "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
+        await Log("append", "schedule_311", "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
     }
 };

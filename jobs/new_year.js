@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const CronJob = require('cron').CronJob;
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils");
 
@@ -45,6 +45,6 @@ module.exports = async function (client) {
 
     new_year.start();
 
-    Log('append', 'new_year', `[NewYear] The new year announcer is ready!`, 'DEBUG');
+    Log("append", 'new_year', `[NewYear] The new year announcer is ready!`, "DEBUG");
     console.log(`[NewYear] The new year announcer is ready!`);
 };

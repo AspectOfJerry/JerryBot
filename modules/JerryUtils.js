@@ -207,7 +207,7 @@ async function PermissionCheck(interaction) {
                 .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
 
             interaction.channel.send({embeds: [guild_blacklisted_warning]});
-            Log('append', interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
+            Log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
         }
 
         await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' is a super user. Execution authorized.`, "INFO");
@@ -314,7 +314,7 @@ async function Sleep(delayInMsec) {
  */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
-    await Log("append", 'JerryUtils', "Starting event listeners...", 'DEBUG');
+    await Log("append", 'JerryUtils', "Starting event listeners...", "DEBUG");
 
     const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
@@ -339,7 +339,7 @@ async function StartEventListeners(client, commands) {
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    await Log("append", 'JerryUtils', "Starting jobs...", 'DEBUG');
+    await Log("append", 'JerryUtils', "Starting jobs...", "DEBUG");
 
     const job_files = fs.readdirSync('./jobs').filter(file => file.endsWith('.js'));
 
