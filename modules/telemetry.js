@@ -22,7 +22,7 @@ async function BotStop(_client, timestamp) {
 }
 
 async function ChecklistBotReady() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, ":white_check_mark: <@${client.user.id}> is fully ready;")
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
     await UpdateEmbeds(embedMessage);
     await UpdateTimestamp();
 }
