@@ -13,22 +13,23 @@ Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry
 
 <br>
 
-Hello, Saiven!
+👋 Hello, Saiven!
 
 <br>
 
 # Command list
   - [Client](#client)
   - [Config](#config)
-  - [Dev](#dev)
   - [Moderation](#moderation)
   - [Utility](#utility)
-    - [Utility/Math - Subcommands](#utilitymath---subcommands)
-    - [Utility/Voice - Subcommands](#utilityvoice---subcommands)
+    - [Math](#utilitymath---subcommands)
+    - [Voice](#utilityvoice---subcommands)
   - [Other](#other)
-    - [Other/311 - Subcommands (Guild specific)](#other311---subcommands-guild-specific)
-    - [Other/quiz - Subcommands (Guild specific)](#otherquiz---subcommands-guild-specific)
-- [Other unrelated random stuff](#other-unrelated-random-stuff)
+    - [311](#311---subcommands)
+    - [Quiz](#quiz---subcommands)
+  - [Sudo](#sudo)
+    - [Dev](#sudodev)
+    - [Sudo](#sudosudo)
 
 <br>
 
@@ -39,10 +40,12 @@ Hello, Saiven!
 
 <br>
 
-\*PL: Permission Level<br>
-&nbsp;&nbsp;&nbsp;&nbsp;-1 = Superuser<br>
+\*PL: Permission Levels<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-2 = Superuser<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1 = Elevateduser<br>
 &nbsp;&nbsp;&nbsp;&nbsp;0 = None<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1 = Highest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2 = Higher<br>
 &nbsp;&nbsp;&nbsp;&nbsp;3 = Lowest<br>
 <br>
 
@@ -57,50 +60,40 @@ Hello, Saiven!
 
 ## Config
 
-|  PL*  | Command | Parameters* | Description |
-| :---: | ------- | ----------- | ----------- |
-|   —   | —       | —           | —           |
-
-*Coming soon*
-
-<br>
-
-## Dev
-
-|  PL*  | Command   | Parameters* | Description |
-| :---: | --------- | ----------- | ----------- |
-|  -1   | /dev stop | —           | —           |
+|  PL*  | Command       | Parameters* | Description |
+| :---: | ------------- | ----------- | ----------- |
+|   —   | *coming soon* | —           | —           |
 
 <br>
 
 ## Moderation 
 
-|  PL*  | Command    | Parameters*                           | Description                                                       |
-| :---: | ---------- | ------------------------------------- | ----------------------------------------------------------------- |
-|   1   | /ban       | \<@user\> \<?reason\>                 | Bans a guild member.                                              |
-|   2   | /kick      | \<@user\> \<?reason\>                 | Kicks a guild member.                                             |
-|   3   | /purge     | \<amount\>                            | Deletes `<amount>` messages from a channel.                       |
-|   3   | /slowmode  | \<interval\> \<?channel\> \<?reason\> | Sets the rate limit to `<interval>` seconds in a channel.         |
-|   3   | /timeout   | \<@user\> \<duration\> \<?reason\>    | Times out a member for `<duration>`. e.g. 3**s**, 2**m**, 1**h**. |
-|   3   | /untimeout | \<@user\> \<?reason\>                 | Removes the time out from a member.                               |
+|  PL*  | Command    | Parameters*                        | Description                                                       |
+| :---: | ---------- | ---------------------------------- | ----------------------------------------------------------------- |
+|   1   | /ban       | \<@user> \<?reason>                | Bans a guild member.                                              |
+|   2   | /kick      | \<@user> \<?reason>                | Kicks a guild member.                                             |
+|   3   | /purge     | \<amount>                          | Deletes `<amount>` messages from a channel.                       |
+|   3   | /slowmode  | \<interval> \<?channel> \<?reason> | Sets the rate limit to `<interval>` seconds in a channel.         |
+|   3   | /timeout   | \<@user> \<duration> \<?reason>    | Times out a member for `<duration>`. e.g. 3**s**, 2**m**, 1**h**. |
+|   3   | /untimeout | \<@user> \<?reason>                | Removes the time out from a member.                               |
 
 <br>
 
 ## Utility
 
-|  PL*  | Command        | Parameters*                       | Description                                                     |
-| :---: | -------------- | --------------------------------- | --------------------------------------------------------------- |
-|   3   | /disconnect    | \<?@user\> \<?all\>               | Disconnects a member from a channel.                            |
-|   3   | /disconnectall | \<?#channel\>                     | Disconnects all members in a channel.                           |
-|   —   | /help          | —                                 | Displays help.                                                  |
-|   —   | /move          | \<#channel\> \<?@user\> \<?all\>  | Moves a user to a channel. Optionally move all the users along. |
-|  -1   | /msg           | \<@user\> \<message\>             | Talk privately with a guild member through the bot.             |
-|   —   | /profile       | \<@user\>                         | Shows information about a user.                                 |
-|   —   | /send          | \<message\> <?#channel> <?typing> | Sends `<message>` in a channel.                                 |
+|  PL*  | Command        | Parameters*                      | Description                                                     |
+| :---: | -------------- | -------------------------------- | --------------------------------------------------------------- |
+|   3   | /disconnect    | \<?@user> \<?all>                | Disconnects a member from a channel.                            |
+|   3   | /disconnectall | \<?#channel>                     | Disconnects all members in a channel.                           |
+|   —   | /help          | —                                | Displays help.                                                  |
+|   —   | /move          | \<#channel> \<?@user> \<?all>    | Moves a user to a channel. Optionally move all the users along. |
+|  -1   | /msg           | \<@user> \<message>              | Talk privately with a guild member through the bot.             |
+|   —   | /profile       | \<@user>                         | Shows information about a user.                                 |
+|   —   | /send          | \<message> <?#channel> <?typing> | Sends `<message>` in a channel.                                 |
 
 <br>
 
-### Utility/Math - Subcommands
+### Utility/math - subcommands
 
 |  PL*  | Command       | Parameters* | Description                               |
 | :---: | ------------- | ----------- | ----------------------------------------- |
@@ -108,7 +101,7 @@ Hello, Saiven!
 
 <br>
 
-### Utility/Voice - Subcommands
+### Utility/voice - subcommands
 
 |  PL*  | Command      | Parameters* | Description                    |
 | :---: | ------------ | ----------- | ------------------------------ |
@@ -128,21 +121,46 @@ Hello, Saiven!
 
 <br>
 
-### Other/311 - Subcommands (Guild specific)
+## Sudo
 
-|  PL*  | Command             | Parameters* | Description                      |
-| :---: | ------------------- | ----------- | -------------------------------- |
-|   —   | /311 roles          | —           | Self-select roles.               |
-|   —   | /311 schedule       | —           | Shows the schedule for a day.    |
-|   —   | /311 searchschedule | —           | Full schedule utility tool.      |
-|   —   | /311 weather        | —           | Shows the current day's weather. |
+Commands for superusers and elevatedusers
+
+### Sudo/dev
+
+|  PL*  | Command   | Parameters* | Description                              |
+| :---: | --------- | ----------- | ---------------------------------------- |
+|  -2   | /dev stop | —           | Stops the heartbeat monitor and the bot. |
 
 <br>
 
-### Other/quiz - Subcommands (Guild specific)
+### Sudo/sudo
 
-|  PL*  | Command | Parameters* | Description |
-| :---: | ------- | ----------- | ----------- |
-|   —   | —       | —           | —           |
+|  PL*  | Command            | Parameters*                       | Description                         |
+| :---: | ------------------ | --------------------------------- | ----------------------------------- |
+|  -2   | /sudo blacklist    | <@user>                           | Adds a user to the bot's blacklist. |
+|  -2   | /sudo nuke         | *coming soon*                     | Nukes a server (protected command). |
+|  -2   | /sudo status_clear | —                                 | Clears the bot's presence.          |
+|  -2   | /sudo status       | \<type> \<text> \<status> \<?url> | Sets the bot's presence.            |
 
-*Coming soon*
+<br>
+
+## Other exclusive commands (Guild specific)
+
+<br>
+
+### 311 - subcommands
+
+|  PL*  | Command       | Parameters* | Description                      |
+| :---: | ------------- | ----------- | -------------------------------- |
+|   —   | /311 roles    | —           | Self-select roles.               |
+|   —   | /311 schedule | —           | Shows the schedule.              |
+|   —   | /311 verify   | —           | Identify yourself.               |
+|   —   | /311 weather  | —           | Shows the current day's weather. |
+
+<br>
+
+### Quiz - subcommands
+
+|  PL*  | Command       | Parameters* | Description |
+| :---: | ------------- | ----------- | ----------- |
+|   —   | *coming soon* | —           | —           |
