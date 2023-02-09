@@ -24,19 +24,16 @@ async function BotStop(_client, timestamp) {
 async function ChecklistBotReady() {
     embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
     await UpdateEmbeds(embedMessage);
-    await UpdateTimestamp();
 }
 
 async function ChecklistJobs() {
     embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Jobs inactive.*/i, ":white_check_mark: Jobs running;");
     await UpdateEmbeds(embedMessage);
-    await UpdateTimestamp();
 }
 
 async function ChecklistHeartbeat() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (1min + 10s);")
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (2min + jitter);")
     await UpdateEmbeds(embedMessage);
-    await UpdateTimestamp();
 }
 
 
@@ -70,6 +67,7 @@ async function StartTelemetry(_client) {
         ).setFooter({text: "Relative timestamps look out of sync depending on your timezone;"})
         .setTimestamp();
 
+    // Add embeds here
     messages.push(await channels[0].send({embeds: [embed]}));
     messages.push(await channels[1].send({embeds: [embed]}));
     embedMessage = messages[0].embeds[0];
@@ -79,10 +77,11 @@ async function StartTelemetry(_client) {
 
 
 async function UpdateEmbeds(newEmbed) {
-    // DO NOT CALL UpdateTimestamp() IN THIS FUNCTION
     if(ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
+
+    newEmbed.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*;`);
 
     messages.forEach(async (msg) => {
         if(globalFailedGuilds.includes(msg.guild.id)) {
@@ -110,22 +109,10 @@ async function UpdateHeartbeat(_client, timestamp) {
 
     // Calculate next Heartbeat timestamp
     const now = Math.floor(Date.now() / 1000);
-    const next_heartbeat_timestamp = Math.floor(now + 60);
+    const next_heartbeat_timestamp = Math.floor(now + 121);
 
     embedMessage.fields[2].value = `:green_heart: <t:${timestamp}:R>;`;
     embedMessage.fields[3].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
-
-    await UpdateEmbeds(embedMessage);
-    await UpdateTimestamp();
-}
-
-
-async function UpdateTimestamp() {
-    if(ready !== true) {
-        throw "Cannot access HeartbeatNotifier before telemetry is ready.";
-    }
-
-    embedMessage.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`);
 
     await UpdateEmbeds(embedMessage);
 }
@@ -139,5 +126,4 @@ module.exports = {
     StartTelemetry,
     UpdateEmbeds,
     UpdateHeartbeat,
-    UpdateTimestamp
 };
