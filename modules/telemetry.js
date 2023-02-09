@@ -91,7 +91,9 @@ async function UpdateEmbeds(newEmbed) {
 
         try {
             await msg.edit({embeds: [newEmbed]});
-        } catch {
+        } catch(err) {
+            console.err(err);
+
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
             await Log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
             globalFailedGuilds.push(msg.guild.id);
