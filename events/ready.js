@@ -1,11 +1,11 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require("../modules/JerryUtils");
+const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require("../modules/JerryUtils.js");
 const {AddGuild, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const {InitNukeNotifier} = require('../modules/nuking_notifier');
-const {FetchHubs} = require('../modules/voice_channel_hub');
+const {RefreshHubs} = require('../modules/voiceChannelHubManager.js');
 
 
 module.exports = {
@@ -63,10 +63,10 @@ module.exports = {
             ChecklistJobs();
 
             // Other
-            await InitNukeNotifier(client); // Currently disabled
+            // await InitNukeNotifier(client);
 
             // Reresh Voice Channel Hubs
-            // FetchHubs(client);
+            RefreshHubs(client);
         }
 
         // Registering commands

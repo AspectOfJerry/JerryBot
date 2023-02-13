@@ -1,8 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require("../modules/JerryUtils");
-const {HandleJoin} = require('../modules/voice_channel_hub');
+const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {GetVcHubs, HandleJoin, HandleLeave} = require('../modules/voiceChannelHubManager');
 
 
 module.exports = {
@@ -13,9 +13,17 @@ module.exports = {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> from <#${oldState.channel.name}> in <${newState.guild.name}>.`, "INFO");
         } else if(!newState.channel) {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> left <#${oldState.channel.name}> in <${newState.guild.name}>.`, "INFO");
+            HandleLeave(oldState);
+            return;
         } else if(!oldState.channel) {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> in <${newState.guild.name}>.`, "INFO");
         }
-        await HandleJoin(newState);
+
+        return;
+        const hubs = await GetVcHubs(newState);
+
+        if(hubs.includes(newState.channel.id)) {
+            HandleJoin(newState);
+        }
     }
 };

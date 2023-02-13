@@ -2,7 +2,7 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils");
+const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
 
 
 const quiz_1_name = "esp_translate"

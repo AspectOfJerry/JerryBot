@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 const date = require('date-and-time');
 

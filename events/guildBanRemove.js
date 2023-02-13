@@ -1,4 +1,4 @@
-const {Log, Sleep} = require("../modules/JerryUtils");
+const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {

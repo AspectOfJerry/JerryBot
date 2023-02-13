@@ -8,8 +8,8 @@ const Path = require("path");
  * @param {object} guildObject A Discord guild object.
  * @param {boolean} setPermissions Whether the base permissions should be added into the object. Defaults to `true`.
  */
-async function AddGuild(guildObject, setPermissions) {
-    const new_guild = await ParseGuild(guildObject, setPermissions);
+async function AddGuild(guildObject) {
+    const new_guild = await ParseGuild(guildObject);
 
     new_guild.set(guildObject.id, new_guild);
 }
@@ -73,29 +73,15 @@ async function GetHighestPL(member) {
 /**
  * @async
  * @param {object} guildObject The Guild to parse.
- * @param {boolean} setPermissions Whether a basic permission configuration with default roles should be set. Defaults to true.
  * @returns {object} The parsed guild, adapted for storing.
  */
-async function ParseGuild(guildObject, setPermissions) {
-    const doSetPermissions = setPermissions ?? true;
-
-    if(!doSetPermissions) {
-        const parsed_guild = {
-            id: guildObject.id,
-            name: guildObject.name,
-            permissionRoles: {},
-            commandPermissions: {}
-        };
-        return parsed_guild;
-    }
-
-    const parsed_guild = {
+async function ParseGuild(guildObject) {
+    return {
         id: guildObject.id,
         name: guildObject.name,
         permissionRoles: {},
         commandPermissions: {}
     };
-    return parsed_guild;
 }
 
 
@@ -162,12 +148,10 @@ async function RefreshDataset(client) {
 
 
 async function RemoveGuild(guild) {
-
 }
 
 
 async function SetPermissions() {
-
 }
 
 

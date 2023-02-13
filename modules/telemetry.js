@@ -51,7 +51,7 @@ async function StartTelemetry(_client) {
 
     // Delete previous messages if any
     for(const _channel of channels) {
-        await _channel.bulkDelete(50, true)
+        await _channel.bulkDelete(16, true);
     }
 
     // Create the telemetry embed
@@ -62,8 +62,8 @@ async function StartTelemetry(_client) {
         .addFields(
             {name: "Deployed", value: `${isDeployed}`, inline: false},
             {name: "Checklist", value: ":x: Bot is not fully ready;\n:white_check_mark: Event listeners ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;", inline: false},
-            {name: "Last Heartbeat", value: ":black_heart: ---;", inline: true},
-            {name: "Next expected Heartbeat", value: ":black_heart: ---;", inline: true}
+            {name: "Last Heartbeat*", value: ":black_heart: ---;", inline: true},
+            {name: "Next expected Heartbeat*", value: ":black_heart: ---;", inline: true}
         ).setFooter({text: "Relative timestamps look out of sync depending on your timezone;"})
         .setTimestamp();
 
