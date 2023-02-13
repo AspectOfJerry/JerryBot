@@ -66,7 +66,7 @@ module.exports = {
             // await InitNukeNotifier(client);
 
             // Reresh Voice Channel Hubs
-            RefreshHubs(client);
+            // RefreshHubs(client);
         }
 
         // Registering commands
