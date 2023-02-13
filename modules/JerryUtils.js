@@ -357,7 +357,7 @@ async function StartJobs(client) {
  * @param {string} string The string to remove the accents from.
  * @return {string} The normalized string.
  */
-async function ToNormalized(string) {
+function ToNormalized(string) {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 }
 
@@ -365,6 +365,7 @@ async function ToNormalized(string) {
 module.exports = {
     GetCommandFiles,
     GetSubCommandFiles,
+    GetVcHubs,
     IsSuperUser,
     Log,
     Sleep,

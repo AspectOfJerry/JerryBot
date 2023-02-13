@@ -1,4 +1,4 @@
-const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
 
 const date = require('date-and-time');
 
@@ -100,7 +100,6 @@ async function GetFRCDays(startJour) {
     const target = date.parse(target_day, 'YYYY-MM-DD');
 
     const delta = Math.floor(date.subtract(target, startJour).toDays());
-    return "*requires confirmation*";
     return delta;
 }
 

@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../../../../database/commands/exclusive/schedule/dbms');
 
 const date = require('date-and-time');

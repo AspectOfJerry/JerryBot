@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require('cron').CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils");
+const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 
 // The first execution of the cron job went terribly (2022-2023)
@@ -45,6 +45,6 @@ module.exports = async function (client) {
 
     new_year.start();
 
-    Log("append", 'new_year', `[NewYear] The new year announcer is ready!`, "DEBUG");
+    Log("append", 'newYear', `[NewYear] The new year announcer is ready!`, "DEBUG");
     console.log(`[NewYear] The new year announcer is ready!`);
 };

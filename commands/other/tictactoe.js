@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 const TicTacToe = require('discord-tictactoe');
 

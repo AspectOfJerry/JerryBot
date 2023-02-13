@@ -3,7 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const fetch = require("node-fetch");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 

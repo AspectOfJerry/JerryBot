@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const fetch = require("node-fetch");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils");
+const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()

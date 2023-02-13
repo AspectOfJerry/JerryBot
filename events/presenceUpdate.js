@@ -1,5 +1,5 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {GetConfig, Log, Sleep} = require("../modules/JerryUtils");
+const {GetConfig, Log, Sleep} = require("../modules/JerryUtils.js");
 
 var lastGuildId;
 var latestGuildId;
