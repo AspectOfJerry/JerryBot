@@ -365,6 +365,7 @@ function ToNormalized(string) {
 module.exports = {
     GetCommandFiles,
     GetSubCommandFiles,
+    GetVcHubs,
     IsSuperUser,
     Log,
     Sleep,
