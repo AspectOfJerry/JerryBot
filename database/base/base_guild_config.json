@@ -27,7 +27,7 @@
             "untimeout": 3
         },
         "other": {
-            "311": {
+            "311_sub": {
                 "roles": 0,
                 "schedule": 0,
                 "verify": 0,
