@@ -10,6 +10,9 @@ module.exports = async function (client, interaction) {
         return;
     }
 
+    interaction.reply("This command is currently disabled for emergency maintenance. Please try again in a few hours.");
+    return;
+
     // Declaring variables
     collectedModal = false;
     let selectMenu = new MessageActionRow()
