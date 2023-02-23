@@ -12,7 +12,7 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 // Then the bot was not stopped so the @everyone ping happened 3 times in a row.
 // Finally, bot was stopped 3 minutes after 2023 and the big issue was fixed.
 
-module.exports = async function (client) {
+async function Execute(client) {
     const new_year = new CronJob('0 0 1 1 *', async () => { // Interval of every year on January 1st
 
         const guilds = [];
@@ -47,4 +47,9 @@ module.exports = async function (client) {
 
     Log("append", 'newYear', `[NewYear] The new year announcer is ready!`, "DEBUG");
     console.log(`[NewYear] The new year announcer is ready!`);
+};
+
+
+module.exports = {
+    Execute
 };

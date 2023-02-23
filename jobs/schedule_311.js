@@ -8,7 +8,7 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/exclusive/schedule/dbms');
 
 
-module.exports = async function (client) {
+async function Execute(client) {
     const schedule_311 = new CronJob("30 06 * * *", async () => { // Interval of 1 day, at 06h30
         await Log("append", 'schedule311', `[311] Posting today's schedule...`, "DEBUG");
 
@@ -115,4 +115,9 @@ module.exports = async function (client) {
         console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
         await Log("append", "schedule311", "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
     }
+};
+
+
+module.exports = {
+    Execute
 };

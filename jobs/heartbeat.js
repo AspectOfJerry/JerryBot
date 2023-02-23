@@ -9,7 +9,7 @@ const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
 
 once = false;
 
-module.exports = async function (client) {
+async function Execute(client) {
     const heartbeat = new CronJob("*/2 * * * *", async () => { // Interval of 2 minutes
         try {
             await Sleep(await Jitter());
@@ -60,3 +60,8 @@ module.exports = async function (client) {
 async function Jitter() {
     return Math.floor(Math.random() * 1450) + 50;
 }
+
+
+module.exports = {
+    Execute
+};

@@ -146,10 +146,12 @@ async function Log(method, tag, body, type) {
 
             // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
             if(!type) {
-                type = "NULL";
+                throw `Cannot use type of ${type}`;
             }
+
             typeLenght = type.length;
             typeExtraIndentNum = 5 - typeLenght;
+
             for(let i = 0; i < typeExtraIndentNum; i++) {
                 typeExtraIndent = typeExtraIndent + " ";
             }
@@ -347,7 +349,8 @@ async function StartJobs(client) {
     console.log(job_files);
 
     for(const job_file of job_files) {
-        require(`../jobs/${job_file}`)(client);
+        const {execute} = require(`../jobs/${job_file}`);
+        execute(client);
     }
 }
 
