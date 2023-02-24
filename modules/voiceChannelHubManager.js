@@ -38,7 +38,7 @@ async function RefreshHubs(client) {
  * @returns The voice channel hub ids.
  */
 async function GetVcHubs(client) {
-    return await GetConfig().voiceChannelHubs;
+    return (await GetConfig()).voiceChannelHubs;
 }
 
 
@@ -46,7 +46,7 @@ async function GetVcHubs(client) {
  * @param {object} newState The new voiceState provided by the `voiceStateUpdate` even listener.
  */
 function HandleJoin(newState) {
-    newState.guild.channels.create(newState.member.user.tag, {type: "GUILD_VOICE", position: newState.channel.rawPosition + 1, reason: "VoiceChannelHubManager CREATE"})
+    newState.guild.channels.create(newState.member.user.tag, {type: "GUILD_VOICE", position: newState.channel.position + 1, reason: "VoiceChannelHubManager CREATE"})
         .then((voiceChannel) => {
             active_channels.push(voiceChannel.id);
         }).catch((err) => {
@@ -59,7 +59,7 @@ function HandleJoin(newState) {
  * @param {object} oldState The old voiceState provided by the `voiceStateUpdate` even listener.
  */
 function HandleLeave(oldState) {
-    if(oldState.channel.members.size === 0) {
+    if(active_channels.includes(oldState.channel.id) && oldState.channel.members.size <= 1) {
         oldState.channel.delete("VoiceChannelHubManager DELETE (empty)")
             .then((voiceChannel) => {
 

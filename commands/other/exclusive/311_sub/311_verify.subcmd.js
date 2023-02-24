@@ -3,15 +3,10 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
 
 
-let collectedModal = false;
-
 module.exports = async function (client, interaction) {
     if(await PermissionCheck(interaction) === false) {
         return;
     }
-
-    interaction.reply("This command is currently disabled for emergency maintenance. Please try again in a few hours.");
-    return;
 
     // Declaring variables
     collectedModal = false;
@@ -119,16 +114,14 @@ module.exports = async function (client, interaction) {
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Verify")
         .setDescription("Step 1: Select your group number.\nStep 2: Enter your first name.")
-        .setFooter({text: "The command expires in one minute."});
+        .setFooter({text: "The command expires in 30s."});
 
-    const msg = await interaction.reply({embeds: [prompt], components: [selectMenu, buttonRow], fetchReply: true})
-    const component_collector = await msg.createMessageComponentCollector({filter, time: 60000});
+    const msg = await interaction.reply({embeds: [prompt], components: [selectMenu, buttonRow], fetchReply: true});
+    const component_collector = await msg.createMessageComponentCollector({filter, time: 30000});
 
     component_collector.on("collect", async (componentInteraction) => {
         // Button
         if(componentInteraction.isButton()) {
-            // Disable components
-
             if(componentInteraction.customId === "cancel_button") {
                 await componentInteraction.deferUpdate();
                 component_collector.stop();
@@ -181,62 +174,52 @@ module.exports = async function (client, interaction) {
                 interaction.editReply({embeds: [prompt], components: [selectMenu, buttonRow]});
                 group = componentInteraction.values.join("").toString();
 
-                componentInteraction.showModal(prompt_name)
+                await componentInteraction.showModal(prompt_name);
 
-                const filter = (newInteraction) => {
-                    if(newInteraction.user.id === interaction.user.id && newInteraction.channel.id === interaction.channel.id && newInteraction.customId === "prompt_name") {
-                        return true;
-                    }
-                    return false;
-                }
-
-                componentInteraction.awaitModalSubmit({filter, time: 60000})
-                    .then((modalInteraction) => {
-                        modalInteraction.deferUpdate();
-                        buttonRow.components[1]
-                            .setDisabled(false);
-
-                        name = modalInteraction.fields.getTextInputValue("name");
-
-                        const confirm_selection = new MessageEmbed()
-                            .setColor("YELLOW")
-                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setTitle("Confirm your input")
-                            .setDescription(`Please confirm the following data:`)
-                            .addFields(
-                                {
-                                    name: "Name", value: `${name}`, inline: false
-                                },
-                                {
-                                    name: "Group", value: `${group}`, inline: false
-                                }
-                            );
-
-                        interaction.editReply({embeds: [confirm_selection], components: [selectMenu, buttonRow]});
-                    }).catch((err) => {
-                        console.error(err);
-                        component_collector.stop();
-                        // Disable components
-                        buttonRow.components[0]
-                            .setDisabled(true);
-                        buttonRow.components[1]
-                            .setDisabled(true);
-                        selectMenu.components[0]
-                            .setDisabled(true);
-
-                        const expired = new MessageEmbed()
-                            .setColor("DARK_GREY")
-                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                            .setTitle('Verify')
-                            .setDescription(`The command has expired. Please execute </311 verify:${interaction.commandId}> again.`);
-
-                        interaction.editReply({embeds: [expired], components: [selectMenu, buttonRow]});
-                    });
+                AwaitModal();
             }
         } else {
             throw "Unknown component interaction";
         }
     });
+
+    function AwaitModal() {
+        client.once("interactionCreate", async (newInteraction) => {
+            if(!newInteraction.isModalSubmit() && !newInteraction.isButton()) {
+                AwaitModal();
+                return;
+            } else if(newInteraction.isButton() && newInteraction.customId === "cancel_button" && newInteraction.user.id === interaction.user.id && newInteraction.channel.id === interaction.channel.id) {
+                return;
+            }
+
+            if(newInteraction.user.id !== interaction.user.id && newInteraction.channel.id !== interaction.channel.id && newInteraction.customId !== "prompt_name") {
+                throw "Information mismatch. Please try again.";
+            }
+
+            newInteraction.deferUpdate();
+
+            buttonRow.components[1]
+                .setDisabled(false);
+
+            name = newInteraction.fields.getTextInputValue("name");
+
+            const confirm_selection = new MessageEmbed()
+                .setColor("YELLOW")
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setTitle("Confirm your input")
+                .setDescription(`Please confirm the following data:`)
+                .addFields(
+                    {
+                        name: "Name", value: `${name}`, inline: false
+                    },
+                    {
+                        name: "Group", value: `${group}`, inline: false
+                    }
+                );
+
+            interaction.editReply({embeds: [confirm_selection], components: [selectMenu, buttonRow]});
+        });
+    }
 
     component_collector.on("end", (collected, reason) => {
         if(reason === "time") {

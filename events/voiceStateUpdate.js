@@ -13,17 +13,16 @@ module.exports = {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> from <#${oldState.channel.name}> in <${newState.guild.name}>.`, "INFO");
         } else if(!newState.channel) {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> left <#${oldState.channel.name}> in <${newState.guild.name}>.`, "INFO");
-            HandleLeave(oldState);
+            // HandleLeave(oldState);
             return;
         } else if(!oldState.channel) {
             await Log("append", 'voiceStateUpdate', `<@${newState.member?.user.tag}> joined <#${newState.channel.name}> in <${newState.guild.name}>.`, "INFO");
         }
 
-        return;
-        const hubs = await GetVcHubs(newState);
+        // const hubs = await GetVcHubs(newState);
 
-        if(hubs.includes(newState.channel.id)) {
-            HandleJoin(newState);
-        }
+        // if(hubs.includes(newState.channel.id)) {
+        //     HandleJoin(newState);
+        // }
     }
 };

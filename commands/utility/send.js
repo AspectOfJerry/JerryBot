@@ -31,7 +31,7 @@ module.exports = {
         // Declaring variables
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         await Log("append", interaction.guild.id, `├─channel: '#${channel.name}'`, "INFO");
-        const message = interaction.options.getString('message') || true;
+        const message = interaction.options.getString('message');
         await Log("append", interaction.guild.id, `├─message: "${message}"`, "INFO");
         const send_typing = interaction.options.getBoolean('typing') || false;
         await Log("append", interaction.guild.id, `├─send_typing: ${send_typing}`, "INFO");
@@ -51,18 +51,20 @@ module.exports = {
         // Main
         switch(send_typing) {
             case true:
-                const message_lenght = message.lenght;
+                const message_lenght = message.length;
                 const duration_in_ms = Math.round(message_lenght / 14 * 1000);
 
-                interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
+                console.log(duration_in_ms)
+
+                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
 
                 channel.sendTyping();
                 await Sleep(duration_in_ms);
 
-                channel.send({content: `${message}`, ephe});
+                channel.send({content: `${message}`});
                 break;
-            case false:
-                interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+            default:
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
                 channel.send({content: `${message}`});
                 break;

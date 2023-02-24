@@ -39,8 +39,8 @@ module.exports = {
                         try {
                             await interaction.channel.send({embeds: [execution_error]});
                         } catch {
-                            console.log("All three attempts to send an error message to a text channel failed.");
-                            await Log("append", 'interactionCreate', "All three attempts to send an error message to a text channel failed.", "ERROR");
+                            console.log("Failure to send error message (3 attempts).");
+                            await Log("append", 'interactionCreate', "Failure to send error message (3 attempts).", "ERROR");
                         }
                     }
                 }
