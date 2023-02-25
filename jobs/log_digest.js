@@ -16,7 +16,7 @@ async function Execute(client) {
     const digest = new CronJob("0 0 * * *", async () => { // Interval of INTERVAL
         await Sleep(100);
 
-        const now = newDate();
+        const now = new Date();
         const yesterday = date.addDays(now, -1);
 
         const file_name = yesterday.format(yesterday, "YYYY-MMMMM ");
@@ -37,8 +37,8 @@ async function Execute(client) {
 
     digest.start();
 
-    Log("append", "log_digest", "[Digest] started!", "DEBUG");
-    console.log("Digest started!");
+    Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
+    console.log("[Digest] Log digest started!");
 };
 
 
