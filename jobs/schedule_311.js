@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const CronJob = require('cron').CronJob;
 const fetch = require("node-fetch");
-const date = require('date-and-time');
+const date = require("date-and-time");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/exclusive/schedule/dbms');

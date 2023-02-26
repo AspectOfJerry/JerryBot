@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 require('dotenv').config();
-const process = require('process');
+const process = require("process");
 
 
 module.exports = {

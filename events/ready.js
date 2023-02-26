@@ -13,7 +13,7 @@ module.exports = {
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        await Log("append", "JerryBot", `[JerryBot] JerryBot is now online.`, "DEBUG");
+        await Log("append", "JerryBot", `[JerryBot] "@JerryBot#9090" is now online.`, "DEBUG");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
@@ -48,6 +48,9 @@ module.exports = {
         Log("append", "Database", "Refreshing the database...", "DEBUG");
         await RefreshDataset(client);
 
+        // Reresh Voice Channel Hubs
+        console.log("Refreshing the voice channel hubs...");
+        await RefreshHubs(client);
 
         if(process.env.npm_lifecycle_event == 'test') {
             // Test content here
@@ -56,17 +59,16 @@ module.exports = {
 
         if(process.env.npm_lifecycle_event != 'dev') {
             // Telemetry
+            console.log("Starting telemetry...");
             await StartTelemetry(client);
 
             // Jobs
+            console.log("Starting jobs...");
             await StartJobs(client);
             ChecklistJobs();
 
             // Other
             // await InitNukeNotifier(client);
-
-            // Reresh Voice Channel Hubs
-            // RefreshHubs(client);
         }
 
         // Registering commands

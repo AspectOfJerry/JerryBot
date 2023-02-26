@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const process = require('process');
+const process = require("process");
 const fs = require("fs");
-const date = require('date-and-time');
+const date = require("date-and-time");
 
 const {
     AddGuild,
@@ -10,7 +10,7 @@ const {
     GetHighestPL,
     RemoveGuild,
     SetPermissions
-} = require('../database/config/dbms');
+} = require("../database/config/dbms");
 
 
 /**
@@ -128,15 +128,15 @@ async function Log(method, tag, body, type) {
             let typeExtraIndent = "";
 
             // Get current date
-            const now_date = date.format(now, 'YYYY-MM-DD');
-            const now_time = date.format(now, 'HH:mm:ss.SSS');
+            const now_date = date.format(now, "YYYY-MM-DD");
+            const now_time = date.format(now, "HH:mm:ss.SSS");
 
             // Generate the log file name
             const file_name = `${now_date}_JerryBot.log`;
 
             // Generate the new line content
             if(tag == null) {
-                tag = "------------------"
+                tag = "------------------";
             }
             tagLenght = tag.length;
             tagExtraIndentNum = 19 - tagLenght;
@@ -199,7 +199,7 @@ async function PermissionCheck(interaction) {
             interaction.editReply({embeds: [user_blacklisted]});
         }
 
-        await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is blacklisted from the bot. [UserBlacklist]`, "WARN");
+        await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is blacklisted from the bot. [UserBlacklist]`, "WARN");
         return false;
     } else if(config.superUsers.includes(interaction.member.id)) {
         if(config.guildBlacklist.includes(interaction.guild.id)) {
@@ -212,7 +212,7 @@ async function PermissionCheck(interaction) {
             Log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
         }
 
-        await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' is a super user. Execution authorized.`, "INFO");
+        await Log("append", interaction.guild.id, `├─"@${interaction.user.tag}" is a super user. Execution authorized.`, "INFO");
         return true;
     } else if(config.guildBlacklist.includes(interaction.guild.id)) {
         const guild_blacklisted = new MessageEmbed()
@@ -271,8 +271,8 @@ async function PermissionCheck(interaction) {
     }
 
     if(permissionValue === undefined || permissionValue === null) {
-        await Log("append", interaction.guild.id, `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`, "FATAL");
-        throw `Could not find a permissionValue for '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'`;
+        await Log("append", interaction.guild.id, `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`, "FATAL");
+        throw `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`;
     }
 
     if(permissionValue === 0 || await GetHighestPL(interaction.member) <= permissionValue) {
@@ -292,7 +292,7 @@ async function PermissionCheck(interaction) {
         await interaction.editReply({embeds: [error_permissions]});
     }
 
-    await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
+    await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" did not have the required role to execute "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}". [PermissionError]`, "WARN");
     return false;
 }
 
@@ -316,9 +316,9 @@ async function Sleep(delayInMsec) {
  */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
-    await Log("append", 'JerryUtils', "Starting event listeners...", "DEBUG");
+    await Log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
 
-    const event_files = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+    const event_files = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 
     console.log(`Event files (${event_files.length}):`);
     console.log(event_files);

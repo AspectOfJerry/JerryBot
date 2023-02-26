@@ -1,6 +1,6 @@
 const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
 
-const date = require('date-and-time');
+const date = require("date-and-time");
 
 // './schedule.json'
 async function GetFullSchedule() {

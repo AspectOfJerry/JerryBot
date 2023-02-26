@@ -2,42 +2,53 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
 const {GetConfig, Log, Sleep, ToNormalized} = require('./JerryUtils');
+const fs = require('fs');
+const Path = require("path");
 
 
-var channels = [];
 const active_channels = [];
 
 
 /**
- * 
+ * @param {string} id The channel's id
  */
-async function AddHub() {
+async function AddHub(id) {
 
+    Log("append", "voiceChannelHubs", "[voiceChannelHubCreate]", "DEBUG");
 }
 
 
 /**
- * 
+ * @param {object} client The active Discord client.
  */
 async function RefreshHubs(client) {
-    channels = GetConfig();
-    channels = channels.voiceChannelHubs;
+    Log("append", "voiceChannelHubs", "[voiceChannelHubManager] Refreshing the database...", "DEBUG");
+    const config = await GetConfig();
+    const channelList = (await GetConfig()).voiceChannelHubs;
+    const channels = [];
 
-    for(const channel of channels) {
-        if(!client.channels.has(channel)) {
-            const index = channels.indexOf(channel)
-            channels.splice(index, 1);
+    for(const channel of channelList) {
+        if(!client.channels.resolve(channel)) {
             continue;
         }
         channels.push(channel);
     }
+
+    config.voiceChannelHubs = channels;
+
+    fs.writeFileSync(Path.resolve(__dirname, "../database/config/config_guilds.json"), JSON.stringify(config), (err) => {
+        if(err) {
+            throw err;
+        }
+    });
 }
 
 
 /**
- * @returns The voice channel hub ids.
+ * @async
+ * @returns {array} The voice channel hub ids.
  */
-async function GetVcHubs(client) {
+async function GetVcHubs() {
     return (await GetConfig()).voiceChannelHubs;
 }
 
@@ -46,9 +57,11 @@ async function GetVcHubs(client) {
  * @param {object} newState The new voiceState provided by the `voiceStateUpdate` even listener.
  */
 function HandleJoin(newState) {
-    newState.guild.channels.create(newState.member.user.tag, {type: "GUILD_VOICE", position: newState.channel.position + 1, reason: "VoiceChannelHubManager CREATE"})
+    Log("append", "voiceChannelHubs", `[voiceChannelHubJoin] "@${newState.member.user.tag}" joined a hub!`, "DEBUG");
+    newState.guild.channels.create(`🟢${newState.member.user.tag}`, {type: "GUILD_VOICE", parent: newState.channel.parent, position: newState.channel.rawPosition + 1, reason: "VoiceChannelHubManager CREATE"})
         .then((voiceChannel) => {
             active_channels.push(voiceChannel.id);
+            newState.member.voice.setChannel(voiceChannel.id);
         }).catch((err) => {
             console.error(err);
         });
@@ -59,11 +72,9 @@ function HandleJoin(newState) {
  * @param {object} oldState The old voiceState provided by the `voiceStateUpdate` even listener.
  */
 function HandleLeave(oldState) {
-    if(active_channels.includes(oldState.channel.id) && oldState.channel.members.size <= 1) {
+    if(active_channels.includes(oldState.channel.id) && oldState.channel.members.size < 1) {
         oldState.channel.delete("VoiceChannelHubManager DELETE (empty)")
-            .then((voiceChannel) => {
-
-            }).catch((err) => {
+            .catch((err) => {
                 console.error(err);
             });
     }
@@ -75,6 +86,7 @@ function HandleLeave(oldState) {
  */
 async function RemoveHub(id) {
 
+    Log("append", "voiceChannelHubs", "[voiceChannelHubRemove]", "DEBUG");
 }
 
 

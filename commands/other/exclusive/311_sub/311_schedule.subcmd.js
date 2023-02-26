@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../../../../database/commands/exclusive/schedule/dbms');
 
-const date = require('date-and-time');
+const date = require("date-and-time");
 
 
 module.exports = async function (client, interaction) {

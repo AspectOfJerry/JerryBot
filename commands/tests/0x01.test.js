@@ -5,7 +5,7 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, St
 
 const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
-const date = require('date-and-time');
+const date = require("date-and-time");
 
 const test_label = "0x01";
 

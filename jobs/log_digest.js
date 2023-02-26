@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const CronJob = require("cron").CronJob;
 const fs = require("fs");
-const date = require('date-and-time');
+const date = require("date-and-time");
 const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
@@ -19,7 +19,7 @@ async function Execute(client) {
         const now = new Date();
         const yesterday = date.addDays(now, -1);
 
-        const file_name = yesterday.format(yesterday, "YYYY-MMMMM ");
+        const file_name = date.format(yesterday, "YYYY-MMMMM ");
 
         const body = `[${file_name}] The quick brown fox jumps over the lazy dog.`;
 

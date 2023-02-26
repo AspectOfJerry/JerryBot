@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const process = require('process');
+const process = require("process");
 require('dotenv').config();
 
 const fetch = require("node-fetch");
