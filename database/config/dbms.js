@@ -1,6 +1,5 @@
 const {Collection, MessageEmbed} = require("discord.js");
 
-const {Log, Sleep} = require("../../modules/JerryUtils.js");
 const fs = require("fs");
 const Path = require("path");
 

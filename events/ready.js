@@ -1,12 +1,11 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
-const {GetCommandFiles, Log, Sleep, StartJobs, StartEventListeners, ToNormalized} = require("../modules/JerryUtils.js");
+const {Log, Sleep, StartJobs} = require("../modules/JerryUtils.js");
 const {AddGuild, GetGuildConfigMap, ParseGuild, RefreshDataset, RemoveGuild} = require('../database/config/dbms');
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
-const {InitNukeNotifier} = require('../modules/nuking_notifier');
+// const {InitNukeNotifier} = require('../modules/nuking_notifier');
 const {RefreshHubs} = require('../modules/voiceChannelHubManager.js');
-
 
 module.exports = {
     name: 'ready',
@@ -57,6 +56,7 @@ module.exports = {
             return;
         }
 
+        // main
         if(process.env.npm_lifecycle_event != 'dev') {
             // Telemetry
             console.log("Starting telemetry...");

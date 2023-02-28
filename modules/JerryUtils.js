@@ -316,7 +316,7 @@ async function Sleep(delayInMsec) {
  */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
-    await Log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
+    Log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
 
     const event_files = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 

@@ -8,8 +8,12 @@ const fetch = require("node-fetch");
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 
-let logged = {
-
+const counter = {
+    "DEBUG": 0,
+    "ERROR": 0,
+    "FATAL": 0,
+    "INFO": 0,
+    "WARN": 0
 };
 
 async function Execute(client) {
@@ -19,9 +23,16 @@ async function Execute(client) {
         const now = new Date();
         const yesterday = date.addDays(now, -1);
 
-        const file_name = date.format(yesterday, "YYYY-MMMMM ");
+        const file_name = date.format(yesterday, "YYYY-MMMM");
 
-        const body = `[${file_name}] The quick brown fox jumps over the lazy dog.`;
+        const total_events = Object.values(counter).reduce((a, b) => {return a + b}, 0);
+
+        const body = `Total events: ${total_events},
+    DEBUG: ${counter.DEBUG},
+    ERROR: ${counter.ERROR},
+    FATAL: ${counter.FATAL},
+    INFO: ${counter.INFO},
+    WARN: ${counter.WARN}`;
 
         // Append to file
         fs.appendFile(`./logs/digest/${file_name}_JerryBot.log`, body + "\n", (err) => {
@@ -32,7 +43,8 @@ async function Execute(client) {
 
         Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
 
-        logged = {};
+        // Reset counter
+        Object.keys(counter).forEach((key) => {counter[key] = 0});
     });
 
     digest.start();
@@ -42,7 +54,7 @@ async function Execute(client) {
 };
 
 
-async function RegisterEvent(type, amount) {
+function RegisterEvent(type, amount) {
     amount = amount ?? 1;
 
     const types = ["DEBUG", "ERROR", "FATAL", "INFO", "WARN"];
@@ -50,12 +62,10 @@ async function RegisterEvent(type, amount) {
     if(!types.includes(type)) {
         throw `Invalid type tag of ${type}`;
     }
-
-    logged[type]++
-
 }
 
 
 module.exports = {
-    Execute
+    Execute,
+    RegisterEvent
 };

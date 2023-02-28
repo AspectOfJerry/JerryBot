@@ -22,7 +22,7 @@ async function AddHub(id) {
  * @param {object} client The active Discord client.
  */
 async function RefreshHubs(client) {
-    Log("append", "voiceChannelHubs", "[voiceChannelHubManager] Refreshing the database...", "DEBUG");
+    Log("append", "voiceChannelHubs", "[voiceChannelHubManager] Refreshing the hub dataset...", "DEBUG");
     const config = await GetConfig();
     const channelList = (await GetConfig()).voiceChannelHubs;
     const channels = [];
@@ -57,11 +57,11 @@ async function GetVcHubs() {
  * @param {object} newState The new voiceState provided by the `voiceStateUpdate` even listener.
  */
 function HandleJoin(newState) {
-    Log("append", "voiceChannelHubs", `[voiceChannelHubJoin] "@${newState.member.user.tag}" joined a hub!`, "DEBUG");
     newState.guild.channels.create(`🟢${newState.member.user.tag}`, {type: "GUILD_VOICE", parent: newState.channel.parent, position: newState.channel.rawPosition + 1, reason: "VoiceChannelHubManager CREATE"})
         .then((voiceChannel) => {
             active_channels.push(voiceChannel.id);
             newState.member.voice.setChannel(voiceChannel.id);
+            Log("append", "voiceChannelHubs", `[voiceChannelHubCreate] Created "#${newState.channel.name}" (total active hub: ${active_channels.length})!`, "DEBUG");
         }).catch((err) => {
             console.error(err);
         });
@@ -74,7 +74,14 @@ function HandleJoin(newState) {
 function HandleLeave(oldState) {
     if(active_channels.includes(oldState.channel.id) && oldState.channel.members.size < 1) {
         oldState.channel.delete("VoiceChannelHubManager DELETE (empty)")
-            .catch((err) => {
+            .then((voiceChannel) => {
+                const index = active_channels.indexOf(voiceChannel.id);
+
+                if(index > -1) {
+                    active_channels.splice(index, 1);
+                    Log("append", "voiceChannelHubs", `[voiceChannelHubDelete] Deleted "#${voiceChannel.name}" (total active hubs: ${active_channels.length}.`, "DEBUG");
+                }
+            }).catch((err) => {
                 console.error(err);
             });
     }
