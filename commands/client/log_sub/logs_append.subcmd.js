@@ -27,7 +27,7 @@ module.exports = async function (client, interaction, string, object) {
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setTitle('Write to logs')
         .addFields(
-            {name: 'Body string', value: `${(await object).parsedString}`, inline: false},
+            {name: 'Body string', value: `${(await object).parsedBody}`, inline: false},
             {name: 'Target directory', value: `../logs/${(await object).fileName}`, inline: false})
 
     await interaction.reply({embeds: [writing_to_logs]});

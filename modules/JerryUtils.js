@@ -1,4 +1,5 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {RegisterEvent} = require("../jobs/log_digest");
 const process = require("process");
 const fs = require("fs");
 const date = require("date-and-time");
@@ -14,33 +15,33 @@ const {
 
 
 /**
- * 
+ * Private internal function
  */
-async function GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
+async function _GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
 
     for(const file of files) {
-        if(file.name.endsWith('.subcmd.js')) {
+        if(file.name.endsWith(".subcmd.js")) {
             ignored_files.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
             continue;
-        } else if(file.name.endsWith('.todo')) {
+        } else if(file.name.endsWith(".todo")) {
             ignored_files.push(`${dir}/${file.name} => todo`);
             continue;
-        } else if(file.name.endsWith('.template')) {
+        } else if(file.name.endsWith(".template")) {
             ignored_files.push(`${dir}/${file.name} => template file`);
             continue;
-        } else if(file.name.endsWith('.hdlr.js')) {
+        } else if(file.name.endsWith(".hdlr.js")) {
             skipped_files.push(`${dir}/${file.name} => subcommand handler`);
             // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
-        } else if(file.name.endsWith('dbms.js')) {
+        } else if(file.name.endsWith("dbms.js")) {
             skipped_files.push(`${dir}/${file.name} => database manager`);
             continue;
         }
 
         if(file.isDirectory()) {
-            GetDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
+            _GetDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
         } else if(file.name.endsWith(suffix)) {
             command_files.push(`${dir}/${file.name}`);
         }
@@ -48,14 +49,16 @@ async function GetDirCommandFiles(dir, suffix, command_files, ignored_files, ski
 }
 
 /**
- * 
+ * @param {string} dir The directory
+ * @param {string} suffix The file suffix to search for
+ * @returns {array} The list of command files
  */
 async function GetCommandFiles(dir, suffix) {
     let command_files = [];
     let ignored_files = [];
     let skipped_files = [];
 
-    GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
+    _GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
 
     console.log(`Ignored ${ignored_files.length} files:`);
     console.log(ignored_files);
@@ -66,16 +69,17 @@ async function GetCommandFiles(dir, suffix) {
 
 
 /**
- * 
+ * Private internal function
  */
-async function GetDirSubCommandFiles(dir, suffix, subcommand_files) {
+async function _GetDirSubCommandFiles(dir, suffix, subcommand_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
 
     for(const file of files) {
+        // If the file is a folder
         if(file.isDirectory()) {
-            GetDirSubCommandFiles(`${dir}/${file.name}`, suffix, subcommand_files);
+            _GetDirSubCommandFiles(`${dir}/${file.name}`, suffix, subcommand_files);
         } else if(file.name.endsWith(suffix)) {
             subcommand_files.push(`${dir}/${file.name}`);
         }
@@ -83,19 +87,22 @@ async function GetDirSubCommandFiles(dir, suffix, subcommand_files) {
 }
 
 /**
- * 
+ * @param {string} dir The directory
+ * @param {string} suffix The file suffix to search for
+ * @returns {array} The list of subcommand files
  */
 async function GetSubCommandFiles(dir, suffix) {
     let subcommand_files = [];
 
-    GetDirSubCommandFiles(dir, suffix, subcommand_files);
+    _GetDirSubCommandFiles(dir, suffix, subcommand_files);
 
     return subcommand_files;
 }
 
 
 /**
- * 
+ * @param {object} client The active Discord client
+ * @param userResolvable A userResolvable
  */
 async function IsSuperUser(client, userResolvable) {
     const config = await GetConfig();
@@ -106,6 +113,8 @@ async function IsSuperUser(client, userResolvable) {
     }
     return false;
 }
+
+
 /**
  * @async
  * @param {string} method The method to use {`append`, `read`}.
@@ -156,9 +165,13 @@ async function Log(method, tag, body, type) {
                 typeExtraIndent = typeExtraIndent + " ";
             }
 
-            body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
+            const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
 
-            const return_object = {fileName: file_name, parsedString: body};
+            const return_object = {
+                body: body,
+                fileName: file_name,
+                parsedBody: parsed_body
+            };
 
             // Append to file
             fs.appendFile(`./logs/${file_name}`, body + "\n", (err) => {
@@ -166,6 +179,7 @@ async function Log(method, tag, body, type) {
                     throw err;
                 }
             });
+            RegisterEvent(type, 1);
             return return_object;
         }
         case "read": {
@@ -188,10 +202,10 @@ async function PermissionCheck(interaction) {
 
     if(config.userBlacklist.includes(interaction.member.id)) {
         const user_blacklisted = new MessageEmbed()
-            .setColor('FUCHSIA')
+            .setColor("FUCHSIA")
             .setTitle("User Blacklisted")
             .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Contact Jerry#3756 for help.`});
+            .setFooter({text: "Contact Jerry#3756 for help."});
 
         try {
             interaction.reply({embeds: [user_blacklisted]});
@@ -204,7 +218,7 @@ async function PermissionCheck(interaction) {
     } else if(config.superUsers.includes(interaction.member.id)) {
         if(config.guildBlacklist.includes(interaction.guild.id)) {
             const guild_blacklisted_warning = new MessageEmbed()
-                .setColor('FUCHSIA')
+                .setColor("FUCHSIA")
                 .setTitle("Guild Blacklisted Warning")
                 .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
 
@@ -216,10 +230,10 @@ async function PermissionCheck(interaction) {
         return true;
     } else if(config.guildBlacklist.includes(interaction.guild.id)) {
         const guild_blacklisted = new MessageEmbed()
-            .setColor('FUCHSIA')
+            .setColor("FUCHSIA")
             .setTitle("Guild Blacklisted")
             .setDescription("I'm sorry but this Guild is in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: `Contact Jerry#3756 for help.`});
+            .setFooter({text: "Contact Jerry#3756 for help."});
 
         try {
             interaction.reply({embeds: [guild_blacklisted]});
@@ -284,7 +298,7 @@ async function PermissionCheck(interaction) {
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle('PermissionError')
         .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
-        .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
+        .setFooter({text: "Use '/help' to access the documentation on command permissions."});
 
     try {
         await interaction.reply({embeds: [error_permissions]});
@@ -299,20 +313,21 @@ async function PermissionCheck(interaction) {
 
 /**
  * Sleep
- * @async `await` must be used.
+ * @async `await` must be used when calling `Sleep()`.
  * @param {integer} delayInMsec The delay to wait for in milliseconds.
  * @throws {TypeError} Throws if `delayInMsec` is `NaN`.
  */
 async function Sleep(delayInMsec) {
     if(isNaN(delayInMsec)) {
-        throw TypeError("delayInMsec is not a number", 'sleep.js', 8);
+        throw TypeError("delayInMsec is not a number", "sleep.js", 8);
     }
     await new Promise(resolve => setTimeout(resolve, delayInMsec));
 }
 
 
 /**
- * 
+ * @param {object} client The active Discord client
+ * @param {array} commands The application commands to register in the `ready` event
  */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
@@ -341,9 +356,9 @@ async function StartEventListeners(client, commands) {
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    await Log("append", 'JerryUtils', "Starting jobs...", "DEBUG");
+    await Log("append", "JerryUtils", "Starting jobs...", "DEBUG");
 
-    const job_files = fs.readdirSync('./jobs').filter(file => file.endsWith('.js'));
+    const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
     console.log(`Job files (${job_files.length}):`);
     console.log(job_files);
@@ -356,12 +371,12 @@ async function StartJobs(client) {
 
 
 /**
- * ToNormalized removes accents from a string.
- * @param {string} string The string to remove the accents from.
+ * ToNormalized removes irregular characters from a string.
+ * @param {string} string The string to normalize.
  * @return {string} The normalized string.
  */
 function ToNormalized(string) {
-    return string.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 

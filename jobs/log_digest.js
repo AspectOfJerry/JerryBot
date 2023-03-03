@@ -17,17 +17,18 @@ const counter = {
 };
 
 async function Execute(client) {
-    const digest = new CronJob("0 0 * * *", async () => { // Interval of INTERVAL
+    const digest = new CronJob("0 0 * * *", async () => { // Interval of 1 day
         await Sleep(100);
 
         const now = new Date();
         const yesterday = date.addDays(now, -1);
 
         const file_name = date.format(yesterday, "YYYY-MMMM");
+        const prefix = date.format(yesterday, "YYYY-MM-DD");
 
         const total_events = Object.values(counter).reduce((a, b) => {return a + b}, 0);
 
-        const body = `Total events: ${total_events},
+        const body = `[${prefix}] Total events: ${total_events},
     DEBUG: ${counter.DEBUG},
     ERROR: ${counter.ERROR},
     FATAL: ${counter.FATAL},
@@ -62,6 +63,8 @@ function RegisterEvent(type, amount) {
     if(!types.includes(type)) {
         throw `Invalid type tag of ${type}`;
     }
+
+    counter[type]++;
 }
 
 

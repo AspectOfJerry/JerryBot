@@ -84,7 +84,7 @@ module.exports = {
 
             if(buttonInteraction.customId == 'stop_confirm_button') {
                 const stopping_bot = new MessageEmbed()
-                    .setColor('FUCHSIA')
+                    .setColor("FUCHSIA")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle('Stopping the bot')
                     .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)

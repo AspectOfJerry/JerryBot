@@ -94,7 +94,7 @@ module.exports = {
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.moderatable) {
             const member_not_moderatable = new MessageEmbed()
-                .setColor('FUCHSIA')
+                .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)

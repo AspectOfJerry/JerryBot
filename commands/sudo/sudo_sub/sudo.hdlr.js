@@ -90,7 +90,7 @@ module.exports = {
         const super_users = (await GetConfig()).superUsers;
 
         const notify = new MessageEmbed()
-            .setColor('FUCHSIA')
+            .setColor("FUCHSIA")
             .setTitle(":warning: SuperUser command execution alert")
             .addFields(
                 {name: "User", value: `<@${interaction.user.id}>`, inline: true},

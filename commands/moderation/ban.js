@@ -69,7 +69,7 @@ module.exports = {
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.bannable) {
             const member_not_bannable = new MessageEmbed()
-                .setColor('FUCHSIA')
+                .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTilte('Error')
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)

@@ -36,7 +36,7 @@ module.exports = async function (client, interaction) {
     // Main
     connection.on(VoiceConnectionStatus.Destroyed, async () => {
         const connection_destroyed = new MessageEmbed()
-            .setColor('FUCHSIA')
+            .setColor("FUCHSIA")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle('VoiceConnection')
             .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");

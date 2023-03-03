@@ -68,7 +68,7 @@ module.exports = {
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.kickable) {
             const member_not_kickcable = new MessageEmbed()
-                .setColor('FUCHSIA')
+                .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTilte('Error')
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);

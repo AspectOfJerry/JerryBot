@@ -26,7 +26,7 @@ module.exports = {
                 console.error(err);
                 const _err = ":\n```\n" + err + "\n```" || ". ```No further information is available.```";
                 const execution_error = new MessageEmbed()
-                    .setColor('FUCHSIA')
+                    .setColor("FUCHSIA")
                     .setTitle('Error')
                     .setDescription(`An error occured while executing the command${_err}`)
                     .setFooter({text: `${interaction.createdAt}`});
