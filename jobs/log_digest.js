@@ -42,7 +42,7 @@ async function Execute(client) {
             }
         });
 
-        Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
+        // Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
 
         // Reset counter
         Object.keys(counter).forEach((key) => {counter[key] = 0});
@@ -50,7 +50,7 @@ async function Execute(client) {
 
     digest.start();
 
-    Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
+    // Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
     console.log("[Digest] Log digest started!");
 };
 
