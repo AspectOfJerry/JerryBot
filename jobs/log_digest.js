@@ -18,7 +18,7 @@ const counter = {
 
 async function Execute(client) {
     const digest = new CronJob("0 0 * * *", async () => { // Interval of 1 day
-        await Sleep(100);
+        // await Sleep(100);
 
         const now = new Date();
         const yesterday = date.addDays(now, -1);
