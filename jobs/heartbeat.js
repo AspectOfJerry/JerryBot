@@ -54,7 +54,7 @@ async function Execute(client) {
             const now = Math.round(Date.now() / 1000);
             UpdateHeartbeat(client, now);
         });
-};
+}
 
 
 async function Jitter() {

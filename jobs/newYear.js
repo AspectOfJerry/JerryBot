@@ -47,7 +47,7 @@ async function Execute(client) {
 
     Log("append", 'newYear', `[NewYear] The new year announcer is ready!`, "DEBUG");
     console.log(`[NewYear] The new year announcer is ready!`);
-};
+}
 
 
 module.exports = {

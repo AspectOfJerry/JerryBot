@@ -23,7 +23,7 @@ async function Execute(client) {
     idle.start();
 
     console.log("Day/night cycle started!");
-};
+}
 
 
 module.exports = {

@@ -5,7 +5,7 @@ const fs = require("fs");
 const date = require("date-and-time");
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+// const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 
 const counter = {
@@ -52,7 +52,7 @@ async function Execute(client) {
 
     // Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
     console.log("[Digest] Log digest started!");
-};
+}
 
 
 function RegisterEvent(type, amount) {

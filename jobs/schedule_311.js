@@ -115,7 +115,7 @@ async function Execute(client) {
         console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
         await Log("append", "schedule311", "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
     }
-};
+}
 
 
 module.exports = {
