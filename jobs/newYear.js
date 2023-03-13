@@ -5,6 +5,8 @@ const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
+let disabled = false;
+
 
 // The first execution of the cron job went terribly (2022-2023)
 // because of a wrong CRON interval('* * 1 1 *' instead of '0 0 1 1 *').

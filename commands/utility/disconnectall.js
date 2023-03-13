@@ -10,7 +10,7 @@ module.exports = {
         .setDescription("Disconnects everyone in a user's channel.")
         .addChannelOption((options) =>
             options
-                .setName('channel')
+                .setName("channel")
                 .setDescription("[OPTIONAL] The channel to disconnect everyone from. Defaults to your voice channel.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -19,7 +19,7 @@ module.exports = {
         }
 
         // Declaring variables
-        let voice_channel = interaction.options.get('channel');
+        let voice_channel = interaction.options.get("channel");
 
         // Checks
         if(!voice_channel) {
@@ -77,34 +77,34 @@ module.exports = {
         await voice_channel.members.forEach(async (member) => {
             let voice_channel = member.voice.channel;
             await member.voice.setChannel(null)
-                .then(async () => {
+                .then(() => {
                     const disconnect_success = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
-                    await interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                    await Log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
-                }).catch(async () => {
+                    interaction.editReply({embeds: [disconnect_success], ephemeral: true});
+                    Log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
+                }).catch(() => {
                     const disconnect_error = new MessageEmbed()
                         .setColor("RED")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
-                    await interaction.editReply({embeds: [disconnect_error]});
-                    await Log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
+                    interaction.editReply({embeds: [disconnect_error]});
+                    Log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                     member_count--
                     failed_member_count++
                 });
             await Sleep(100);
         });
-        let embed_color = 'GREEN';
+        let embed_color = "GREEN";
         if(failed_member_count !== 0) {
-            embed_color = 'YELLOW';
+            embed_color = "YELLOW";
             failed_string = `\nFailed to disconnect ${failed_member_count} members.`;
         }
         if(failed_member_count !== 0 && member_count === 0) {
-            embed_color = 'RED';
+            embed_color = "RED";
         }
 
         const disconnected = new MessageEmbed()
@@ -112,7 +112,7 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Successfully disconnected ${member_count} members from <#${voice_channel.channel.id}>.${failed_string}`);
 
-        await interaction.editReply({embeds: [disconnected]});
-        await Log("append", interaction.guild.id, `└─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
+        interaction.editReply({embeds: [disconnected]});
+        Log("append", interaction.guild.id, `└─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
     }
 };

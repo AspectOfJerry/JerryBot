@@ -17,9 +17,9 @@ module.exports = async function (client, interaction) {
     client.user.setPresence({activities: null});
 
     const success = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-        .setDescription(`Successfully reset the bot's presence.`)
+        .setDescription(`Successfully reset the bot's presence.`);
 
     interaction.reply({embeds: [success]});
 };

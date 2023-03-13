@@ -19,7 +19,7 @@ module.exports = {
         // interaction.deferReply()
 
         // Declaring variables
-        // const target = interaction.options.getUser('user') || interaction.user;
+        // const target = interaction.options.getUser("user") || interaction.user;
         // const memberTarget = interaction.guild.members.cache.get(target.id);
         // await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 

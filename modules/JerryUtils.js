@@ -9,6 +9,7 @@ const {
     GetConfig,
     GetGuildConfigMap,
     GetHighestPL,
+    RefreshDataset,
     RemoveGuild,
     SetPermissions
 } = require("../database/config/dbms");
@@ -174,7 +175,7 @@ async function Log(method, tag, body, type) {
             };
 
             // Append to file
-            fs.appendFile(`./logs/${file_name}`, body + "\n", (err) => {
+            fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
                 if(err) {
                     throw err;
                 }
@@ -395,6 +396,7 @@ module.exports = {
     GetGuildConfigMap,
     GetHighestPL,
     PermissionCheck,
+    RefreshDataset,
     RemoveGuild,
     SetPermissions,
 };

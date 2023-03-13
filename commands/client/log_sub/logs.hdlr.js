@@ -6,33 +6,33 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('logs')
+        .setName("logs")
         .setDescription("Perform an action with the bot's log files.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('append')
+                .setName("append")
                 .setDescription("Appends a string to the active log file.")
                 .addStringOption((options) =>
                     options
-                        .setName('body')
+                        .setName("body")
                         .setDescription("[REQUIRED] The string to append to the log file.")
                         .setRequired(true)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('read')
+                .setName("read")
                 .setDescription("Read a line from a log file starting with the latest line.")
                 .addIntegerOption((options) =>
                     options
-                        .setName('offset')
+                        .setName("offset")
                         .setDescription("[OPTIONAL] Number of the line to read starting with the latest line. Defaults to 0 (latest line).")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('get')
+                .setName("get")
                 .setDescription("Sends the latest log file.")
                 .addIntegerOption((options) =>
                     options
-                        .setName('offset')
+                        .setName("offset")
                         .setDescription("[OPTIONAL] Number of days to skip starting with the current day going back. Defaults to 0 (today).")
                         .setRequired(false))),
     async execute(client, interaction) {
@@ -45,7 +45,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, "DEBUG");
+                await Log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

@@ -12,7 +12,7 @@ module.exports = {
         .setDescription("Times out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to timeout.")
                 .setRequired(true))
         .addStringOption((options) =>
@@ -22,7 +22,7 @@ module.exports = {
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the timeout.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -31,12 +31,12 @@ module.exports = {
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
         const duration = interaction.options.getString('duration');
-        let reason = interaction.options.getString('reason');
+        let reason = interaction.options.getString("reason");
         await Log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
 
         const duration_in_ms = ms(duration);
@@ -190,7 +190,7 @@ module.exports = {
                     reason = reason ? ` \n**Reason:** ${reason}` : "";
 
                     memberTarget.timeout(duration_in_ms, reason)
-                        .then(async then => {
+                        .then(async (then) => {
                             const success_timeout = new MessageEmbed()
                                 .setColor("GREEN")
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -201,8 +201,8 @@ module.exports = {
                                 )
                                 .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
-                            await interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
-                            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
+                            interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
+                            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
                         });
                 } else {
                     // Disabling buttons
@@ -218,12 +218,12 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`<@${interaction.user.id}> cancelled the timeout${isOverriddenText}.`);
 
-                    await interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
-                    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the timeout timeout${isOverriddenText}.`, "INFO");
+                    interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
+                    Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the timeout timeout${isOverriddenText}.`, "INFO");
                 }
             });
 
-            button_collector.on("end", async collected => {
+            button_collector.on("end", (collected) => {
                 if(collected.size === 0) {
                     // Disabling buttons
                     buttonRow.components[0]
@@ -238,8 +238,8 @@ module.exports = {
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Auto aborted.`);
 
-                    await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                    await Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                    interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
+                    Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
                 }
             });
         }

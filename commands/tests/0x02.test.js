@@ -38,7 +38,7 @@ module.exports = {
         }
 
         // Declaring variables
-        let target = interaction.options.getUser('user') ?? interaction.member;
+        let target = interaction.options.getUser("user") ?? interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks

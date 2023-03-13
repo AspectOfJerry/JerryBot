@@ -6,11 +6,11 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('profile')
+        .setName("profile")
         .setDescription("Shows information about a user.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[OPTIONAL] The user to search for. Defaults to yourself.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -19,7 +19,7 @@ module.exports = {
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user') || interaction.user;
+        const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 

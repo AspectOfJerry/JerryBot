@@ -15,12 +15,12 @@ module.exports = {
                 .setRequired(true))
         .addChannelOption((options) =>
             options
-                .setName('channel')
+                .setName("channel")
                 .setDescription("[OPTIONAL] The text channel to enable slowmode in.")
                 .setRequired(false))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for enabling the rate limit.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -30,8 +30,8 @@ module.exports = {
 
         // Declaring variables
         const interval = interaction.options.getInteger('interval');
-        const channel = interaction.options.getChannel('channel') ?? interaction.channel;
-        const reason = interaction.options.getString('reason') ?? "No reason provided.";
+        const channel = interaction.options.getChannel("channel") ?? interaction.channel;
+        const reason = interaction.options.getString("reason") ?? "No reason provided.";
 
         // Checks
         if(channel.type !== 'GUILD_TEXT') {
@@ -47,29 +47,29 @@ module.exports = {
 
         // Main
         if(interval === 0) {
-            channel.setRateLimitPerUser(0, reason)
-                .then(async () => {
+            await channel.setRateLimitPerUser(0, reason)
+                .then(() => {
                     const disabled_slowmode = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
 
-                    await interaction.reply({embeds: [disabled_slowmode]});
-                    await Log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                    interaction.reply({embeds: [disabled_slowmode]});
+                    Log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
                 });
             return;
         }
 
         channel.setRateLimitPerUser(interval, reason)
-            .then(async () => {
+            .then(() => {
                 const enabled_slowmode = new MessageEmbed()
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully enabled a **${interval}** second rate limit per user in <#${channel.id}>.`)
                     .setFooter({text: "Set the rate limit to 0 to disable it."})
 
-                await interaction.reply({embeds: [enabled_slowmode]});
-                await Log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                interaction.reply({embeds: [enabled_slowmode]});
+                Log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
             });
     }
 };

@@ -18,7 +18,7 @@ module.exports = async function (client, interaction) {
     client.user.setStatus(status);
 
     const success = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("PresenceUpdate")
         .setDescription(`Successfully set the bot's status to ${status}!`)

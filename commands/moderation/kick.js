@@ -6,16 +6,16 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('kick')
+        .setName("kick")
         .setDescription("Kicks a user from the guild.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to kick.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the kick.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -24,11 +24,11 @@ module.exports = {
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
-        let reason = interaction.options.getString('reason');
+        let reason = interaction.options.getString("reason");
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
@@ -36,7 +36,7 @@ module.exports = {
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription('You cannot kick yourself.');
+                .setDescription("You cannot kick yourself.");
 
             await interaction.reply({embeds: [error_target_self]});
             await Log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, "WARN");
@@ -47,7 +47,7 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low]});
@@ -58,7 +58,7 @@ module.exports = {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles]});
@@ -70,7 +70,7 @@ module.exports = {
             const member_not_kickcable = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTilte('Error')
+                .setTilte("Error")
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
             await interaction.reply({embeds: [member_not_kickcable]});
@@ -102,7 +102,7 @@ module.exports = {
             .setTitle(`Confirm Kick`)
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
             // .addFields(
-            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
+            //     {name: "Auto cancel", value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
             // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
@@ -150,16 +150,15 @@ module.exports = {
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
 
                 memberTarget.kick(reason)
-                    .then(async kickResult => {
+                    .then((kickResult) => {
                         const success_kick = new MessageEmbed()
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember kick")
                             .setDescription(`<@${interaction.user.id}> kicked <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
-                        await interaction.editReply({embeds: [success_kick], components: [buttonRow]});
-                        await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, "WARN");
-                        return;
+                        interaction.editReply({embeds: [success_kick], components: [buttonRow]});
+                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' kicked '${memberTarget.user.tag}' from the guild${isOverriddenText}.`, "WARN");
                     });
             } else {
                 // Disabling buttons
@@ -175,12 +174,12 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the kick${isOverriddenText}.`);
 
-                await interaction.editReply({embeds: [cancel_kick], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, "INFO");
+                interaction.editReply({embeds: [cancel_kick], components: [buttonRow]});
+                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the kick${isOverriddenText}.`, "INFO");
             }
         });
 
-        button_collector.on("end", async collected => {
+        button_collector.on("end", (collected) => {
             if(collected.size === 0) {
                 // Disabling buttons
                 buttonRow.components[0]
@@ -195,8 +194,8 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`);
 
-                await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
+                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
             }
         });
     }

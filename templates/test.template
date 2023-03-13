@@ -15,7 +15,7 @@ module.exports = {
         .setDescription(`[TEST/${test_label}]`)
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[OPTIONAL] User to test")
                 .setRequired(false))
     // .addStringOption((options) =>
@@ -47,7 +47,7 @@ module.exports = {
         // Declaring variables
         let testFailureCount = 0;
 
-        let target = interaction.options.getUser('user') ?? interaction.member;
+        let target = interaction.options.getUser("user") ?? interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks

@@ -10,7 +10,7 @@ module.exports = {
         .setDescription("Stops the bot.")
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the stop request.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -19,7 +19,7 @@ module.exports = {
         }
 
         // Declaring variables
-        const reason = interaction.options.getString('reason') ?? "No reason provided.";
+        const reason = interaction.options.getString("reason") ?? "No reason provided.";
         await Log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
 
         // Checks
@@ -89,7 +89,7 @@ module.exports = {
                     .setTitle('Stopping the bot')
                     .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)
                     .addFields(
-                        {name: 'Reason', value: `${reason}`, inline: false},
+                        {name: "reason", value: `${reason}`, inline: false},
                         {name: 'Requested at', value: `${interaction.createdAt}`, inline: false}
                     ).setFooter({text: "The process will exit after this message."});
 

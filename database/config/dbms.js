@@ -92,7 +92,7 @@ async function ParseGuild(guildObject) {
  */
 async function RefreshDataset(client) {
     const new_config = new Map();
-    const base_config = (await GetBaseConfig());
+    const base_config = await GetBaseConfig();
 
     const config = await GetConfig();
     const guilds = client.guilds.cache;
@@ -102,11 +102,6 @@ async function RefreshDataset(client) {
     const permission_roles = [];
 
     for(const guild of Object.values(config.guilds)) {
-        if(!guild.commandPermissions && !guild.permissionRoles) {
-            command_permissions.push(base_config.commandPermissions);
-            permission_roles.push(base_config.permissionRoles);
-            continue;
-        }
         command_permissions.push(guild.commandPermissions);
         permission_roles.push(guild.permissionRoles);
     }
@@ -126,6 +121,15 @@ async function RefreshDataset(client) {
     //     const user = client.users.resolve(userId);
 
     // }
+
+    // Add missing properties
+    for(const guild of Object.values(config.guilds)) {
+        if(!guild.commandPermissions && !guild.permissionRoles) {
+            command_permissions.push(base_config.commandPermissions);
+            permission_roles.push(base_config.permissionRoles);
+            continue;
+        }
+    }
 
     // Restore data from temporary storage
     let i = 0;

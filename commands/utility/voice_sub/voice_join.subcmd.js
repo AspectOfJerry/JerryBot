@@ -11,7 +11,7 @@ module.exports = async function (client, interaction) {
     }
 
     // Declaring variables
-    const voice_channel = interaction.options.getChannel('channel') || interaction.member.voice.channel;
+    const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
     await Log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
 
     // Checks

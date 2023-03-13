@@ -7,9 +7,15 @@ const date = require("date-and-time");
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/exclusive/schedule/dbms');
 
+let disabled = false;
+
 
 async function Execute(client) {
     const schedule_311 = new CronJob("30 06 * * *", async () => { // Interval of 1 day, at 06h30
+        if(disabled) {
+            return;
+        }
+
         await Log("append", 'schedule311', `[311] Posting today's schedule...`, "DEBUG");
 
         const guild = await client.guilds.fetch("1014278986135781438");
@@ -30,7 +36,7 @@ async function Execute(client) {
             const schedule_embed = new MessageEmbed()
                 .setColor("YELLOW")
                 .setTitle(`:newspaper: [${jour}] ${day}`)
-                .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: No school today!`);
+                .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
 
             waiting_schedule.delete();
             await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
@@ -61,7 +67,7 @@ async function Execute(client) {
         const schedule_embed = new MessageEmbed()
             .setColor("GREEN")
             .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
-            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the beginning of the FRC!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
             .addFields(
                 {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
                 {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
@@ -93,28 +99,6 @@ async function Execute(client) {
 
     Log("append", "schedule311", `[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, "DEBUG");
     console.log(`[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
-
-    const guild = await client.guilds.fetch("1014278986135781438");
-    const channel = await guild.channels.fetch("1015060767403421696");
-
-    // const now = Math.round(Date.now() / 1000);
-    // const auto_delete_timestamp = now + 10;
-
-    const attached = new MessageEmbed()
-        .setColor("GREEN")
-        .setDescription("Successfully attached the schedule announcer to this channel!")
-        .addFields(
-            {name: "Announcement time", value: ":loudspeaker: 06h30", inline: false})
-        .setFooter({text: "🟥 Deleting in 10s"});
-
-    const msg = await channel.send({embeds: [attached]});
-    await Sleep(10000);
-    try {
-        await msg.delete();
-    } catch {
-        console.log("Failed to delete the schedule announcer attach message. Not re-attempting.");
-        await Log("append", "schedule311", "Failed to delete the schedule announcer attach message. Not re-attempting.", "ERROR");
-    }
 }
 
 

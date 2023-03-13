@@ -36,7 +36,7 @@ module.exports = {
         // Checks
         if(!message) {
             const invalid_snowflake = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle("Error")
                 .setDescription(`Unable to reference the ${message} Snowflake to a message in <#${interaction.channel.id}>.`);
@@ -49,14 +49,14 @@ module.exports = {
         interaction.channel.messages.react(message, emoji)
             .then((msg) => {
                 const reacted = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully reacted to [this message](${msg.url}).`);
 
                 interaction.reply({embeds: [reacted]});
             }).catch(() => {
                 const invalid_emoji = new MessageEmbed()
-                    .setColor('RED')
+                    .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setTitle("Error")
                     .setDescription("Could not react `" + emoji + "` to the message.");

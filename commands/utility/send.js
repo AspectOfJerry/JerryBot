@@ -6,21 +6,21 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('send')
+        .setName("send")
         .setDescription("Sends a message in a text channel")
         .addStringOption((options) =>
             options
-                .setName('message')
+                .setName("message")
                 .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true))
         .addChannelOption((options) =>
             options
-                .setName('channel')
+                .setName("channel")
                 .setDescription("[OPTIONAL] The channel to send the message to. Defaults to the current channel.")
                 .setRequired(false))
         .addBooleanOption((options) =>
             options
-                .setName('typing')
+                .setName("typing")
                 .setDescription("[OPTIONAL] Whether you want the bot to type before sending the message (dynamic typing speed).")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -29,11 +29,11 @@ module.exports = {
         }
 
         // Declaring variables
-        const channel = interaction.options.getChannel('channel') || interaction.channel;
-        await Log("append", interaction.guild.id, `├─channel: '#${channel.name}'`, "INFO");
-        const message = interaction.options.getString('message');
+        const channel = interaction.options.getChannel("channel") || interaction.channel;
+        await Log("append", interaction.guild.id, `├─channel: "#${channel.name}"`, "INFO");
+        const message = interaction.options.getString("message");
         await Log("append", interaction.guild.id, `├─message: "${message}"`, "INFO");
-        const send_typing = interaction.options.getBoolean('typing') || false;
+        const send_typing = interaction.options.getBoolean("typing") || false;
         await Log("append", interaction.guild.id, `├─send_typing: ${send_typing}`, "INFO");
 
         // Checks

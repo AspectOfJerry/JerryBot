@@ -16,7 +16,7 @@ module.exports = {
         .setDescription(`[TEST/${test_label}] modals test`)
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[OPTIONAL] User to test")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -25,7 +25,7 @@ module.exports = {
         // Declaring variables 
         let testFailureCount = 0;
 
-        let target = interaction.options.getUser('user') ?? interaction.member;
+        let target = interaction.options.getUser("user") ?? interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks

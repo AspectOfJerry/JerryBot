@@ -133,7 +133,7 @@ module.exports = async function (client, interaction) {
                     .setDisabled(true);
 
                 const cancel = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the verify process${isOverriddenText}.`);
 
@@ -153,7 +153,7 @@ module.exports = async function (client, interaction) {
                 await interaction.member.roles.add(role_id);
 
                 const success = new MessageEmbed()
-                    .setColor('GREEN')
+                    .setColor("GREEN")
                     .setTitle(":tada: Welcome to the server!")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setDescription(`You are now identified as ${name} in ${group}.`);

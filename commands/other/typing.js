@@ -20,12 +20,7 @@ module.exports = {
         // Checks
 
         // Main
-        const typing = new MessageEmbed()
-            .setColor("GREEN")
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-            .setDescription("Typing...");
-
-        interaction.reply({embeds: [typing], ephemeral: true});
+        await interaction.reply({content: "Typing...", ephemeral: true});
         Log("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
 
         interaction.channel.sendTyping();

@@ -61,7 +61,7 @@ function HandleJoin(newState) {
         .then((voiceChannel) => {
             active_channels.push(voiceChannel.id);
             newState.member.voice.setChannel(voiceChannel.id);
-            Log("append", "voiceChannelHubs", `[voiceChannelHubCreate] Created "#${voiceChannel.channel.name}" (total active hub: ${active_channels.length})!`, "DEBUG");
+            Log("append", "voiceChannelHubs", `[voiceChannelHubCreate] Created "#${voiceChannel.name}" (total active hub: ${active_channels.length})!`, "DEBUG");
         }).catch((err) => {
             console.error(err);
         });

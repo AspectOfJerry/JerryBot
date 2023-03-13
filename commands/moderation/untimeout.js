@@ -10,12 +10,12 @@ module.exports = {
         .setDescription("Untimes out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to untimeout.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the untimeout.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -24,11 +24,11 @@ module.exports = {
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
-        let reason = interaction.options.getString('reason');
+        let reason = interaction.options.getString("reason");
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
@@ -81,14 +81,14 @@ module.exports = {
         }
 
         memberTarget.timeout(null, reason)
-            .then(async timeoutResult => {
+            .then((timeoutResult) => {
                 const success_untimeout = new MessageEmbed()
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setTitle("User untimeout")
                     .setDescription(`<@${interaction.user.id}> untimed out <@${memberTarget.id}>.${reason}`);
 
-                await interaction.reply({embeds: [success_untimeout]});
+                interaction.reply({embeds: [success_untimeout]});
             });
     }
 };

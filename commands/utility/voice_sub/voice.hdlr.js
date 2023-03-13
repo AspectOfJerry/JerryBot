@@ -16,7 +16,7 @@ module.exports = {
                 .setDescription("Joins a voice channel. Defaults to your current voice channel.")
                 .addChannelOption((options) =>
                     options
-                        .setName('channel')
+                        .setName("channel")
                         .setDescription("[OPTIONAL] The channel to join. Defaults to your current voice channel.")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
@@ -41,7 +41,7 @@ module.exports = {
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", `├─Handing controls to subcommand file...`, "DEBUG");
+                await Log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

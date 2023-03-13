@@ -6,16 +6,16 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ban')
+        .setName("ban")
         .setDescription("Bans a user from the guild.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to ban.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the ban.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -24,11 +24,11 @@ module.exports = {
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
-        let reason = interaction.options.getString('reason');
+        let reason = interaction.options.getString("reason");
         await Log("append", interaction.guild.id, `├─reason: '${reason}'`, "INFO");
 
         // Checks
@@ -37,7 +37,7 @@ module.exports = {
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription('You cannot ban yourself.');
+                .setDescription("You cannot ban yourself.");
 
             interaction.reply({embeds: [error_target_self]});
             await Log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, "WARN");
@@ -48,7 +48,7 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
@@ -59,7 +59,7 @@ module.exports = {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
@@ -71,7 +71,7 @@ module.exports = {
             const member_not_bannable = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTilte('Error')
+                .setTilte("Error")
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`)
 
             await interaction.reply({embeds: [member_not_bannable]});
@@ -83,13 +83,13 @@ module.exports = {
         let buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('ban_confirm_button')
-                    .setLabel(`Ban`)
+                    .setCustomId("ban_confirm_button")
+                    .setLabel("Ban")
                     .setStyle("DANGER")
                     .setDisabled(false),
                 new MessageButton()
-                    .setCustomId('ban_cancel_button')
-                    .setLabel('Cancel')
+                    .setCustomId("ban_cancel_button")
+                    .setLabel("Cancel")
                     .setStyle("SECONDARY")
                     .setDisabled(false),
             );
@@ -105,7 +105,7 @@ module.exports = {
             .setTitle(`Confirm Ban`)
             .setDescription(`Are you sure you want to ban <@${memberTarget.id}>?`)
             // .addFields(
-            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
+            //     {name: "Auto cancel", value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
             // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
@@ -129,7 +129,7 @@ module.exports = {
 
         const button_collector = interaction.channel.createMessageComponentCollector({filter, componentType: "BUTTON", time: 10000});
 
-        button_collector.on("collect", async buttonInteraction => {
+        button_collector.on("collect", async (buttonInteraction) => {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
             // Disabling buttons
@@ -139,7 +139,8 @@ module.exports = {
                 .setDisabled(true);
             await interaction.editReply({embeds: [confirm_ban], components: [buttonRow]});
 
-            if(buttonInteraction.customId == 'ban_confirm_button') {
+            if(buttonInteraction.customId == "ban_confirm_button") {
+                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, "INFO");
                 const banning = new MessageEmbed()
                     .setColor("YELLOW")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -147,20 +148,18 @@ module.exports = {
 
                 await interaction.editReply({embeds: [banning]});
 
-                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, "INFO");
-
                 reason = reason ? ` \n**Reason:** ${reason}` : "";
 
                 memberTarget.ban({reason: reason})
-                    .then(async banResult => {
+                    .then((banResult) => {
                         const success_ban = new MessageEmbed()
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("GuildMember ban")
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverriddenText}.${reason}`);
 
-                        await interaction.editReply({embeds: [success_ban], components: [buttonRow]});
-                        await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, "WARN");
+                        interaction.editReply({embeds: [success_ban], components: [buttonRow]});
+                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverriddenText}.`, "WARN");
                     });
             } else {
                 const cancel_ban = new MessageEmbed()
@@ -168,12 +167,12 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the ban${isOverriddenText}.`);
 
-                await interaction.editReply({embeds: [cancel_ban], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, "INFO");
+                interaction.editReply({embeds: [cancel_ban], components: [buttonRow]});
+                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverriddenText}.`, "INFO");
             }
         });
 
-        button_collector.on("end", async collected => {
+        button_collector.on("end", (collected) => {
             // Disabling buttons
             buttonRow.components[0]
                 .setDisabled(true);
@@ -184,11 +183,10 @@ module.exports = {
                 const auto_abort = new MessageEmbed()
                     .setColor("DARK_GREY")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Auto aborted.`);
+                    .setDescription("Auto aborted.");
 
-                await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
-                return;
+                interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
+                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
             }
         });
     }

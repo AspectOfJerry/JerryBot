@@ -5,6 +5,8 @@ const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
+let disabled = false;
+
 
 async function Execute(client) {
     const JOBNAME = new CronJob("* * * * *", async () => { // Interval of INTERVAL

@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('help')
+        .setName("help")
         .setDescription("Help is on the way!"),
     async execute(client, interaction) {
         if(await PermissionCheck(interaction) === false) {

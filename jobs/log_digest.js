@@ -7,6 +7,8 @@ const fetch = require("node-fetch");
 
 // const {Log, Sleep} = require("../modules/JerryUtils.js");
 
+let disabled = false;
+
 
 const counter = {
     "DEBUG": 0,

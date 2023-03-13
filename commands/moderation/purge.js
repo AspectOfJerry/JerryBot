@@ -15,7 +15,7 @@ module.exports = {
                 .setRequired(true))
         .addChannelOption((options) =>
             options
-                .setName('channel')
+                .setName("channel")
                 .setDescription("[OPTIONAL] The channel to delete the messages from. Defaults to this channel.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -25,7 +25,7 @@ module.exports = {
 
         // Declaring variables
         const amount = interaction.options.getInteger('amount');
-        const channel = interaction.options.getChannel('channel') ?? interaction.channel;
+        const channel = interaction.options.getChannel("channel") ?? interaction.channel;
 
         // Checks
 
@@ -94,7 +94,7 @@ module.exports = {
                 await Sleep(250);
 
                 channel.bulkDelete(amount, true)
-                    .then(async msgs => {
+                    .then((msgs) => {
                         const success_purge = new MessageEmbed()
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -102,8 +102,8 @@ module.exports = {
                             .setDescription(`Successfully purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
                         // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
 
-                        await interaction.followUp({embeds: [success_purge], components: [buttonRow], ephemeral: true});
-                        await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, "WARN");
+                        interaction.followUp({embeds: [success_purge], components: [buttonRow], ephemeral: true});
+                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, "WARN");
                     });
             } else {
                 // Disabling buttons
@@ -119,12 +119,12 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully cancelled${isOverriddenText}.`)
 
-                await interaction.followUp({embeds: [cancel_purge], components: [buttonRow], ephemeral: true});
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, "INFO");
+                interaction.followUp({embeds: [cancel_purge], components: [buttonRow], ephemeral: true});
+                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, "INFO");
             }
         });
 
-        button_collector.on("end", async collected => {
+        button_collector.on("end", (collected) => {
             if(collected.size === 0) {
                 // Disabling buttons
                 buttonRow.components[0]
@@ -139,8 +139,8 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`)
 
-                await interaction.followUp({embeds: [auto_abort], components: [buttonRow], ephemeral: true});
-                await Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                interaction.followUp({embeds: [auto_abort], components: [buttonRow], ephemeral: true});
+                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
             }
         });
     }

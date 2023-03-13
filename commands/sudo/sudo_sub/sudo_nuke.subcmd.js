@@ -10,6 +10,8 @@ module.exports = async function (client, interaction) {
         return;
     }
 
+    interaction.editReply("This command is disabled");
+
     // Declaring variables
 
     // Checks

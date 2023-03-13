@@ -10,12 +10,12 @@ module.exports = {
         .setDescription("Talk privately with a guild member through the bot.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to send the message to.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('message')
+                .setName("message")
                 .setDescription("[REQUIRED] The message to send.")
                 .setRequired(true)),
     async execute(client, interaction) {
@@ -26,7 +26,7 @@ module.exports = {
         await interaction.reply('This command is currently disabled.');
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 

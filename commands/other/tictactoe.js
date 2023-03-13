@@ -26,15 +26,15 @@ module.exports = {
         // Checks
 
         // Main
-        await Log("append", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, "INFO");
+        Log("append", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, "INFO");
         game.handleInteraction(interaction);
 
-        const opponent = (interaction.options.getUser('opponent'))?.id ?? null
-        const opponent_text = opponent ? ` opponent: <@${(interaction.options.getUser('opponent'))?.id}>` : ""
+        const opponent = (interaction.options.getUser('opponent'))?.id ?? null;
+        const opponent_text = opponent ? ` opponent: <@${(interaction.options.getUser('opponent'))?.id}>` : "";
 
         const restart_embed = new MessageEmbed()
-            .setDescription(`:clipboard: </${interaction.commandName}:${interaction.commandId}>${opponent_text}`)
+            .setDescription(`:clipboard: </${interaction.commandName}:${interaction.commandId}>${opponent_text}`);
 
-        await interaction.channel.send({embeds: [restart_embed]});
+        interaction.channel.send({embeds: [restart_embed]});
     }
 };

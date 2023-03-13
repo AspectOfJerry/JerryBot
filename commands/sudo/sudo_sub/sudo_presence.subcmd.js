@@ -26,7 +26,7 @@ module.exports = async function (client, interaction) {
     }
 
     const success = new MessageEmbed()
-        .setColor('GREEN')
+        .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("PresenceUpdate")
         .addFields(
@@ -34,8 +34,7 @@ module.exports = async function (client, interaction) {
             {name: "Activity type", value: `${type}`, inline: true},
             {name: "Activity name", value: `${text}`, inline: false},
             {name: "?Url", value: `${urlText}`, inline: false}
-        )
-        .setFooter({text: "Use '/sudo presence_clear' to remove the presence."});
+        ).setFooter({text: "Use '/sudo presence_clear' to remove the presence."});
 
     interaction.reply({embeds: [success]});
 };

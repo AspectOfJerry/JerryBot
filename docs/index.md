@@ -26,7 +26,6 @@ Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry
     - [Voice](#utilityvoice---subcommands)
   - [Other](#other)
     - [311](#311---subcommands)
-    - [Quiz](#quiz---subcommands)
   - [Sudo](#sudo)
     - [Dev](#sudodev)
     - [Sudo](#sudosudo)
@@ -159,9 +158,3 @@ Commands for superusers and elevatedusers
 |   —   | /311 weather  | —           | Shows the current day's weather. |
 
 <br>
-
-### Quiz - subcommands
-
-|  PL*  | Command       | Parameters* | Description |
-| :---: | ------------- | ----------- | ----------- |
-|   —   | *coming soon* | —           | —           |

@@ -7,7 +7,8 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
 
 
-once = false;
+let disabled = false;
+let once = false;
 
 async function Execute(client) {
     const heartbeat = new CronJob("*/2 * * * *", async () => { // Interval of 2 minutes

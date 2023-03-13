@@ -1,4 +1,4 @@
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {Log, RefreshDataset, Sleep} = require("../modules/JerryUtils.js");
 
 module.exports = {
     name: "guildDelete",
@@ -11,5 +11,7 @@ module.exports = {
             memberCount: ${guild.memberCount},
             ownerId: ${guild.ownerId},
             preferredLocale: '${guild.preferredLocale}'.`, "INFO");
+
+        await RefreshDataset(guild.client);
     }
 };
