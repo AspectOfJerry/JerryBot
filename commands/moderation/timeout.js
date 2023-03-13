@@ -1,9 +1,10 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 const ms = require('ms');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,85 +12,51 @@ module.exports = {
         .setDescription("Times out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[REQUIRED] The user to timeout.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
                 .setName('duration')
-                .setDescription("[REQUIRED] The duration of the timeout (s, m, h, d). Examples: 1s, 1m, 1h, 1d")
+                .setDescription("[REQUIRED] The duration of the timeout e.g. 1s, 1m, 1h, 1d")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('reason')
+                .setName("reason")
                 .setDescription("[OPTIONAL] The reason for the timeout.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/timeout'.`, 'INFO'); // Logs
-        // await interaction.deferReply();
-
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL3";
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "staff";
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL3";
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = "PL1";
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
-                throw `Error: Bad permission configuration.`;
+        if(await PermissionCheck(interaction) === false) {
+            return;
         }
 
         // Declaring variables
-        const target = interaction.options.getUser('user');
+        const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log('append', interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
         const duration = interaction.options.getString('duration');
-        let reason = interaction.options.getString('reason');
-        await Log('append', interaction.guild.id, `├─reason: ${reason}`, 'INFO'); // Logs
+        let reason = interaction.options.getString("reason");
+        await Log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
 
         const duration_in_ms = ms(duration);
-        await Log('append', interaction.guild.id, `├─duration_in_ms: ${duration}`, 'INFO'); // Logs
+        await Log("append", interaction.guild.id, `├─duration_in_ms: ${duration}`, "INFO");
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/timeout'. [error_permissions]`, 'WARN'); // Logs
-                return 10;
-            }
-        }
-        // -----END ROLE CHECK-----
         if(memberTarget.id == interaction.user.id) {
             const error_cannot_timeout_self = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_timeout_self]});
-            await Log('append', interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves.`, 'WARN'); // Logs
-            return 10;
+            await Log("append", interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves.`, "WARN");
+            return;
         }
         if(!duration_in_ms) {
             const error_duration = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription('Invalid duration. Please use a valid duration.')
@@ -98,43 +65,43 @@ module.exports = {
                 );
 
             interaction.reply({embeds: [error_duration]});
-            await Log('append', interaction.guild.id, `└─Invalid duration.`); // Logs
-            return 10;
+            await Log("append", interaction.guild.id, `└─Invalid duration.`);
+            return;
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
             const error_role_too_low = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, 'WARN'); // Logs
-            return 10;
+            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
+            return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, 'WARN'); // Logs
-            return 10;
+            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
+            return;
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.moderatable) {
             const member_not_moderatable = new MessageEmbed()
-                .setColor('FUCHSIA')
+                .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('Error')
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
 
             await interaction.reply({embeds: [member_not_moderatable]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, 'ERROR'); // Logs
-            return 10;
+            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, "ERROR");
+            return;
         }
 
         // Main
@@ -144,17 +111,17 @@ module.exports = {
             memberTarget.timeout(duration_in_ms, reason)
                 .then(async then => {
                     const success_timeout = new MessageEmbed()
-                        .setColor('GREEN')
+                        .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                         .setTitle("User timeout")
                         .setDescription(`<@${interaction.user.id}> timed out <@${memberTarget.id}> for ${duration}.${reason}`)
                         .addFields(
                             {name: 'Timeout expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`, inline: false}
                         )
-                        .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                        .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
                     await interaction.reply({embeds: [success_timeout]});
-                    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
+                    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
                 });
         } else {
             // Override option if the member is already timed out
@@ -163,12 +130,12 @@ module.exports = {
                     new MessageButton()
                         .setCustomId('override_confirm_button')
                         .setLabel(`Override`)
-                        .setStyle('DANGER')
+                        .setStyle("DANGER")
                         .setDisabled(false),
                     new MessageButton()
                         .setCustomId('override_cancel_button')
                         .setLabel('Cancel')
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(false)
                 );
 
@@ -178,101 +145,101 @@ module.exports = {
             // const auto_cancel_timestamp = now + 15;
 
             const confirm_override = new MessageEmbed()
-                .setColor('YELLOW')
+                .setColor("YELLOW")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle(`Overrite timeout`)
                 .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 // .addFields(
                 //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
-                // ).setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
                 .setFooter({text: "🟥 Canceling in 10s"});
 
             await interaction.reply({embeds: [confirm_override], components: [buttonRow]});
-            await Log('append', interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, 'INFO'); // Logs
+            await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
 
             // Creating a filter for the collector
             const filter = async (buttonInteraction) => {
                 if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                     isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                    await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, 'WARN'); // Logs
-                    return true; // Reserved return, no return code
+                    await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                    return true;
                 } else if(buttonInteraction.user.id == interaction.user.id) {
-                    return true; // Reserved return, no return code
+                    return true;
                 } else {
                     await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                    await Log('append', interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, 'WARN'); // Logs
-                    return; // Reserved return, no return code
+                    await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                    return;
                 }
             };
 
             const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 15000});
 
-            button_collector.on('collect', async (buttonInteraction) => {
+            button_collector.on("collect", async (buttonInteraction) => {
                 await buttonInteraction.deferUpdate();
                 await button_collector.stop();
 
                 if(buttonInteraction.customId == 'override_confirm_button') {
                     // Disabling buttons
                     buttonRow.components[0]
-                        .setStyle('SUCCESS')
+                        .setStyle("SUCCESS")
                         .setDisabled(true);
                     buttonRow.components[1]
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(true);
 
                     reason = reason ? ` \n**Reason:** ${reason}` : "";
 
                     memberTarget.timeout(duration_in_ms, reason)
-                        .then(async then => {
+                        .then(async (then) => {
                             const success_timeout = new MessageEmbed()
-                                .setColor('GREEN')
+                                .setColor("GREEN")
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                                 .setTitle("User timeout override")
-                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}\n\n> Timeout expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>.`)
+                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}`)
                                 .addFields(
-                                    {value: 'Time out expiration', value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
+                                    {name: "Time out expiration", value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
                                 )
-                                .setFooter({text: "*Relative timestamps can look out of sync depending on your timezone."});
+                                .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
-                            await interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
-                            await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, 'WARN'); // Logs
+                            interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
+                            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
                         });
                 } else {
                     // Disabling buttons
                     buttonRow.components[0]
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(true);
                     buttonRow.components[1]
-                        .setStyle('SUCCESS')
+                        .setStyle("SUCCESS")
                         .setDisabled(true);
 
                     const cancel_override = new MessageEmbed()
-                        .setColor('GREEN')
+                        .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`<@${interaction.user.id}> cancelled the override${isOverriddenText}.`);
+                        .setDescription(`<@${interaction.user.id}> cancelled the timeout${isOverriddenText}.`);
 
-                    await interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
-                    await Log('append', interaction.guild.id, `└─'${interaction.user.tag}' cancelled the timeout override${isOverriddenText}.`, 'INFO'); // Logs
+                    interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
+                    Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the timeout timeout${isOverriddenText}.`, "INFO");
                 }
             });
 
-            button_collector.on('end', async collected => {
+            button_collector.on("end", (collected) => {
                 if(collected.size === 0) {
                     // Disabling buttons
                     buttonRow.components[0]
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(true);
                     buttonRow.components[1]
-                        .setStyle('SECONDARY')
+                        .setStyle("SECONDARY")
                         .setDisabled(true);
 
                     const auto_abort = new MessageEmbed()
-                        .setColor('DARK_GREY')
+                        .setColor("DARK_GREY")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Auto aborted.`);
 
-                    await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                    await Log('append', interaction.guild.id, `└─Auto aborted.`, 'INFO'); // Logs
+                    interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
+                    Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
                 }
             });
         }

@@ -1,0 +1,696 @@
+{
+    "metadata": {
+        "firstJourDate": "2022-08-30",
+        "lastJourDate": "2023-06-22",
+        "jour": {
+            "startTime": "8h10",
+            "endTime": "14h50"
+        },
+        "frcStartDate": "2023-01-07",
+        "frcEndDate": "2023-03-15"
+    },
+    "jour1": {
+        "period1": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "ROB",
+            "className": "Robotics",
+            "classroom": "030",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        }
+    },
+    "jour2": {
+        "period1": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ROB",
+            "className": "Robotics",
+            "classroom": "30",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C09B",
+            "notes": "\n• Notes: Different classroom (C08 -> C09B)"
+        },
+        "period4": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        }
+    },
+    "jour3": {
+        "period1": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period2": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        }
+    },
+    "jour4": {
+        "period1": {
+            "classCode": "ROB",
+            "className": "Robotics",
+            "classroom": "30",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "100B",
+            "notes": "\n• Notes: Different classroom (C200 -> 100B)"
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        }
+    },
+    "jour5": {
+        "period1": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period3": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        }
+    },
+    "jour6": {
+        "period1": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C09A",
+            "notes": "\n• Notes: Different classroom (C08 -> C09A)"
+        },
+        "period4": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        }
+    },
+    "jour7": {
+        "period1": {
+            "classCode": "EDP",
+            "className": "Sports",
+            "classroom": "G2",
+            "notes": "\n• Uniforme d'éduc"
+        },
+        "period2": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ARP",
+            "className": "Art",
+            "classroom": "157",
+            "notes": ""
+        }
+    },
+    "jour8": {
+        "period1": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        }
+    },
+    "jour9": {
+        "period1": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ROB",
+            "className": "Robotics",
+            "classroom": "30",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        }
+    },
+    "jour10": {
+        "period1": {
+            "classCode": "ARP",
+            "className": "Art",
+            "classroom": "",
+            "notes": "157"
+        },
+        "period2": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C09B",
+            "notes": "\n• Notes: Different classroom (C08 -> C09B)"
+        },
+        "period4": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        }
+    },
+    "jour11": {
+        "period1": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ARP",
+            "className": "Art",
+            "classroom": "157",
+            "notes": ""
+        }
+    },
+    "jour12": {
+        "period1": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C09A",
+            "notes": "\n• Different classroom (C08 -> C09A)"
+        },
+        "period3": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        }
+    },
+    "jour13": {
+        "period1": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C01",
+            "notes": "\n• Different classroom (C08 -> C01)"
+        },
+        "period2": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ROB",
+            "className": "Robotics",
+            "classroom": "30",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "EDP",
+            "className": "Sports",
+            "classroom": "G2",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        }
+    },
+    "jour14": {
+        "period1": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period3": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        }
+    },
+    "jour15": {
+        "period1": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "EDP",
+            "className": "Sports",
+            "classroom": "G2",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C01",
+            "notes": "\n• Different classroom (C08 -> C01)"
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        }
+    },
+    "jour16": {
+        "period1": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "ARP",
+            "className": "Art",
+            "classroom": "157",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "EDP",
+            "className": "Sports",
+            "classroom": "G2",
+            "notes": ""
+        }
+    },
+    "jour17": {
+        "period1": {
+            "classCode": "EDP",
+            "className": "Sports",
+            "classroom": "G1",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "ANE",
+            "className": "English",
+            "classroom": "100B",
+            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+        },
+        "period4": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "HIS",
+            "className": "History",
+            "classroom": "321",
+            "notes": ""
+        }
+    },
+    "jour18": {
+        "period1": {
+            "classCode": "FRA",
+            "className": "French",
+            "classroom": "C100",
+            "notes": ""
+        },
+        "period2": {
+            "classCode": "SCT",
+            "className": "Science",
+            "classroom": "C08",
+            "notes": ""
+        },
+        "period3": {
+            "classCode": "MAT",
+            "className": "Math",
+            "classroom": "C200",
+            "notes": ""
+        },
+        "period4": {
+            "classCode": "ARP",
+            "className": "Art",
+            "classroom": "157",
+            "notes": ""
+        },
+        "period5": {
+            "classCode": "DIN",
+            "className": "Lunch",
+            "classroom": "N/A",
+            "notes": ""
+        },
+        "period6": {
+            "classCode": "ESP",
+            "className": "Spanish",
+            "classroom": "C09A",
+            "notes": ""
+        }
+    }
+}

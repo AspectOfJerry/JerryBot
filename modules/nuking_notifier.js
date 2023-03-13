@@ -1,6 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const {Log, Sleep} = require('./JerryUtils');
+
 
 var nukeCheckTimerState = false;
 var counterChannelDelete = 0;
@@ -12,6 +13,7 @@ var counterRoleDelete = 0;
 // Main
 // Monitoring
 async function InitNukeNotifier(client) {
+    return;
     // const guild_ids = ['631939549332897842'];
     // await NukingEventMonitor(client, guild_ids);
 }
@@ -22,7 +24,7 @@ async function AntiNuke(client) {
 
 async function NukingEventMonitor(client, guildIds) {
     // Events
-    client.on('channelDelete', async (channel) => {
+    client.on("channelDelete", async (channel) => {
         if(!channel.guild.id in guildIds) {
             return;
         }
@@ -31,7 +33,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('guildBanAdd', async (member) => {
+    client.on("guildBanAdd", async (member) => {
         if(!member.guild.id in guildIds) {
             return;
         }
@@ -40,7 +42,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('guildMemberRemove', async (member) => {
+    client.on("guildMemberRemove", async (member) => {
         if(!member.guild.id in guildIds) {
             return;
         }
@@ -49,7 +51,7 @@ async function NukingEventMonitor(client, guildIds) {
         await NukeCounterMonitor();
     });
 
-    client.on('roleDelete', async (role) => {
+    client.on("roleDelete", async (role) => {
         if(!role.guild.id in guildIds) {
             return;
         }
@@ -95,4 +97,7 @@ async function NukeAnalyzer(client, member) {
 async function NukeTimer(client) {
 
 }
-module.exports = InitNukeNotifier;
+
+module.exports = {
+    InitNukeNotifier
+};

@@ -1,33 +1,16 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription("Displays the client latency and the WebSocket server latency."),
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed '/ping'.`, 'INFO'); // Logs
-        // await interaction.deferReply();
-
-        // Set minimum execution role
-        switch(interaction.guild.id) {
-            case process.env.DISCORD_JERRY_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_GOLDFISH_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_CRA_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            case process.env.DISCORD_311_GUILD_ID:
-                var MINIMUM_EXECUTION_ROLE = null;
-                break;
-            default:
-                await Log('append', interaction.guild.id, "└─Throwing because of bad permission configuration.", 'ERROR'); // Logs
-                throw `Error: Bad permission configuration.`;
+        if(await PermissionCheck(interaction) === false) {
+            return;
         }
 
         // Declaring variables
@@ -35,42 +18,35 @@ module.exports = {
         let webSocketLatency = null;
 
         // Checks
-        // -----BEGIN ROLE CHECK-----
-        if(MINIMUM_EXECUTION_ROLE !== null) {
-            if(!interaction.member.roles.cache.find(role => role.name === MINIMUM_EXECUTION_ROLE)) {
-                const error_permissions = new MessageEmbed()
-                    .setColor('RED')
-                    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
-                    .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
-                    .setFooter({text: `You need at least the '${MINIMUM_EXECUTION_ROLE}' role to use this command.`});
-
-                await interaction.reply({embeds: [error_permissions]});
-                await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to perform '/ping'. [error_permissions]`, 'WARN'); // Logs
-                return 10;
-            }
-        } // -----END ROLE CHECK-----
 
         // Main
-        const ping = new MessageEmbed()
-            .setDescription('ping...');
+        interaction.channel.send({content: "ping..."}).then(pingMessage => {
+            pingMessage.delete().catch(console.error);
 
-        interaction.channel.send({embeds: [ping]}).then(pingMessage => {
-            clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
             webSocketLatency = client.ws.ping;
+            clientLatency = pingMessage.createdTimestamp - interaction.createdTimestamp;
+
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setLabel("Learn how the bot connects to Discord")
+                        .setEmoji("📘")
+                        .setStyle("LINK")
+                        .setURL("https://discord.com/developers/docs/topics/gateway#connections")
+                );
 
             const pong = new MessageEmbed()
-                .setColor('GREEN')
+                .setColor("GREEN")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Pong!")
                 .addFields(
-                    {name: 'Bot latency', value: `~${clientLatency}`, inline: true},
-                    {name: 'DiscordJS latency', value: `~${webSocketLatency}`, inline: true}
+                    {name: "Bot latency", value: `~${clientLatency}ms`, inline: true},
+                    {name: "Discord API latency", value: `~${webSocketLatency}ms`, inline: true},
+                    {name: "WebSocket status", value: `code ${client.ws.status}`, inline: false}
                 );
 
-            interaction.reply({embeds: [pong]});
-            pingMessage.delete().catch(console.error);
-            Log('append', interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, 'INFO'); // Logs
+            interaction.reply({embeds: [pong], components: [row]});
+            Log("append", interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
         });
     }
 };

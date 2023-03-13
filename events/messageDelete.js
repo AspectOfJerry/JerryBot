@@ -1,6 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require('../modules/JerryUtils');
+const {Log, Sleep} = require("../modules/JerryUtils.js");
+
 
 module.exports = {
     name: "messageDelete",
@@ -8,12 +9,12 @@ module.exports = {
     async execute(message) {
         // Check if .cleanContent is the same as .content
         if(message.content === message.cleanContent) {
-            await Log('append', 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
-            message.content: "${message.content}").`, 'WARN'); // Logs
+            await Log("append", 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
+            message.content: "${message.content}".`, "WARN");
         } else {
-            await Log('append', 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
+            await Log("append", 'messageDelete', `A message sent by <@${message?.author.tag}> has been deleted:
                 message.content: "${message.content}",
-                message.cleanContent: "${message.cleanContent}".`, 'WARN'); // Logs
+                message.cleanContent: "${message.cleanContent}".`, "WARN");
         }
     }
 };

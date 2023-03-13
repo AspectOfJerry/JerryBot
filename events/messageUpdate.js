@@ -1,6 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require('../modules/JerryUtils');
+const {Log, Sleep} = require("../modules/JerryUtils.js");
+
 
 module.exports = {
     name: "messageUpdate",
@@ -28,8 +29,8 @@ module.exports = {
             newMessage.cleanContent: "${newMessage.cleanContent}".`;
         }
 
-        await Log('append', 'messageUpdate', `<@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
+        await Log("append", 'messageUpdate', `<@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
             ${oldContent}
-            ${newContent}`, 'WARN'); // Logs
+            ${newContent}`, "WARN");
     }
 };

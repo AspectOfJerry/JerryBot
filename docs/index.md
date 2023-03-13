@@ -26,7 +26,6 @@ Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry
     - [Voice](#utilityvoice---subcommands)
   - [Other](#other)
     - [311](#311---subcommands)
-    - [Quiz](#quiz---subcommands)
   - [Sudo](#sudo)
     - [Dev](#sudodev)
     - [Sudo](#sudosudo)
@@ -135,12 +134,13 @@ Commands for superusers and elevatedusers
 
 ### Sudo/sudo
 
-|  PL*  | Command            | Parameters*                       | Description                         |
-| :---: | ------------------ | --------------------------------- | ----------------------------------- |
-|  -2   | /sudo blacklist    | <@user>                           | Adds a user to the bot's blacklist. |
-|  -2   | /sudo nuke         | *coming soon*                     | Nukes a server (protected command). |
-|  -2   | /sudo status_clear | —                                 | Clears the bot's presence.          |
-|  -2   | /sudo status       | \<type> \<text> \<status> \<?url> | Sets the bot's presence.            |
+|  PL*  | Command              | Parameters*                       | Description                         |
+| :---: | -------------------- | --------------------------------- | ----------------------------------- |
+|  -2   | /sudo blacklist      | <@user>                           | Adds a user to the bot's blacklist. |
+|  -2   | /sudo nuke           | *coming soon*                     | Nukes a server (protected command). |
+|  -2   | /sudo presence_clear | —                                 | Clears the bot's presence.          |
+|  -2   | /sudo presence       | \<type> \<text> \<status> \<?url> | Edits the bot's presence.           |
+|  -2   | /sudo status         | \<type>                           | Edits the bot's status.             |
 
 <br>
 
@@ -158,9 +158,3 @@ Commands for superusers and elevatedusers
 |   —   | /311 weather  | —           | Shows the current day's weather. |
 
 <br>
-
-### Quiz - subcommands
-
-|  PL*  | Command       | Parameters* | Description |
-| :---: | ------------- | ----------- | ----------- |
-|   —   | *coming soon* | —           | —           |

@@ -1,1 +1,0 @@
-Fetch API documentation (node-fetch@2): https://github.com/node-fetch/node-fetch/tree/2.x#readme

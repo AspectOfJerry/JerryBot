@@ -1,12 +1,13 @@
-const fs = require('fs');
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require('discord.js');
+const fs = require("fs");
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
 
-const {Log, Sleep} = require('../../modules/JerryUtils');
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCRemainingDays, GetJourByDate, GetScheduleByJour} = require('../other/311/database/dbms');
+const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../../database/commands/exclusive/schedule/dbms');
 
 const test_label = "0x03";
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,7 +15,7 @@ module.exports = {
         .setDescription(`[TEST/${test_label}]`)
         .addUserOption((options) =>
             options
-                .setName('user')
+                .setName("user")
                 .setDescription("[OPTIONAL] User to test")
                 .setRequired(false))
     // .addStringOption((options) =>
@@ -24,7 +25,6 @@ module.exports = {
     //         .setRequired(false))
     ,
     async execute(client, interaction) {
-        await Log('append', interaction.guild.id, `'${interaction.user.tag}' executed a test command (${test_label}).`, 'INFO'); // Logs
         await interaction.reply(`Executing Test ${test_label}...`);
         // interaction.deferReply()
 
@@ -33,47 +33,26 @@ module.exports = {
 
         if(!whitelist_ids.includes(interaction.user.id)) {
             const error_permissions = new MessageEmbed()
-                .setColor('RED')
+                .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle('PermissionError')
-                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the server administrators if you believe that this is an error.")
+                .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                 .setFooter({text: "You must be whitelisted to use this command."});
 
             await interaction.reply({embeds: [error_permissions]});
-            await Log('append', interaction.guild.id, `└─'${interaction.user.id}' did not have the required role to use this test command (${test_label}). [error_permissions]`, 'WARN'); // Logs
+            await Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' did not have the required role to execute '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'. [PermissionError]`, "WARN");
             return;
         }
 
         // Declaring variables
         let testFailureCount = 0;
 
-        let target = interaction.options.getUser('user') ?? interaction.member;
+        let target = interaction.options.getUser("user") ?? interaction.member;
         let memberTarget = interaction.guild.members.cache.get(target.id);
 
         // Checks
 
         // Main
-        await interaction.channel.send("Hello, World!");
-        const embed1 = new MessageEmbed()
-            .setColor('LIGHT_GREY')
-            .setDescription('LIGHT_GREY')
-
-        await interaction.channel.send({embeds: [embed1]});
-        const embed2 = new MessageEmbed()
-            .setColor('GREY')
-            .setDescription('GREY')
-
-        await interaction.channel.send({embeds: [embed2]});
-        const embed3 = new MessageEmbed()
-            .setColor('DARKER_GREY')
-            .setDescription('DARKER_GREY')
-
-        await interaction.channel.send({embeds: [embed3]});
-        const embed4 = new MessageEmbed()
-            .setColor('DARK_GREY')
-            .setDescription('DARK_GREY')
-
-        await interaction.channel.send({embeds: [embed4]});
-
+        await interaction.followUp('Nothing here...');
     }
 };
