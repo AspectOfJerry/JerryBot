@@ -100,7 +100,7 @@ async function GetFRCDays(startJour) {
     const target = date.parse(target_day, 'YYYY-MM-DD');
 
     const delta = Math.floor(date.subtract(target, startJour).toDays());
-    return delta;
+    return delta + 1; // + 1 to add the current day
 }
 
 module.exports = {

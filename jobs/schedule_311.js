@@ -38,6 +38,11 @@ async function Execute(client) {
                 .setTitle(`:newspaper: [${jour}] ${day}`)
                 .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
 
+            if(days_to_frc === 1) {
+                schedule_embed
+                    .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+            }
+
             waiting_schedule.delete();
             await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
             await channel.send({embeds: [schedule_embed]});
