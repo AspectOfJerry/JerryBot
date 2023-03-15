@@ -38,7 +38,7 @@ async function Execute(client) {
                 .setTitle(`:newspaper: [${jour}] ${day}`)
                 .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
 
-            if(days_to_frc === 1) {
+            if(days_to_frc === 1 || days_to_frc === 0) {
                 schedule_embed
                     .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
             }
@@ -89,6 +89,11 @@ async function Execute(client) {
                     ` ${schedule.period5.className},` +
                     ` ${schedule.period6.className}`
             });
+
+        if(days_to_frc === 1 || days_to_frc === 0) {
+            schedule_embed
+                .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+        }
 
         waiting_schedule.delete();
         await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!`});
