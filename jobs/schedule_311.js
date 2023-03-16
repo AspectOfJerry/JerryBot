@@ -11,7 +11,10 @@ let disabled = false;
 
 
 async function Execute(client) {
-    const schedule_311 = new CronJob("30 06 * * *", async () => { // Interval of 1 day, at 06h30
+    /**
+     * Triggers every day, at 06h30
+     */
+    const schedule_311 = new CronJob("30 06 * * *", async () => {
         if(disabled) {
             return;
         }

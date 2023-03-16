@@ -15,7 +15,10 @@ let disabled = false;
 // Finally, bot was stopped 3 minutes after 2023 and the big issue was fixed.
 
 async function Execute(client) {
-    const new_year = new CronJob('0 0 1 1 *', async () => { // Interval of every year on January 1st
+    /**
+     * Triggers every year on January 1st
+     */
+    const new_year = new CronJob('0 0 1 1 *', async () => {
 
         const guilds = [];
         guilds.push(await client.guilds.fetch("631939549332897842"));

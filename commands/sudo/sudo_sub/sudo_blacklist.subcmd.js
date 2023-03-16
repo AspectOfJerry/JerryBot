@@ -10,8 +10,9 @@ module.exports = async function (client, interaction) {
 
     // Declaring variables
 
+
     // Checks
 
     // Main
-    return interaction.reply("This command is under development;");
+    return interaction.reply("This command is under development");
 };

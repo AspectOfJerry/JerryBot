@@ -7,19 +7,19 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('weather')
+        .setName("weather")
         .setDescription("Send the weather for a given location.")
         .addStringOption((options) =>
             options
-                .setName('location')
+                .setName("location")
                 .setDescription("[REQUIRED] City or ZIP code.")
                 .setRequired(true))
         .addStringOption((options) =>
             options
-                .setName('unit')
+                .setName("unit")
                 .setDescription("[OPTIONAL] The unit of measurement for temperatures (C or F). Defaults to 'C'")
-                .addChoice("C", 'C')
-                .addChoice("F", 'F')
+                .addChoice("C", "C")
+                .addChoice("F", "F")
                 .setRequired(false)),
     async execute(client, interaction) {
         await interaction.deferReply();

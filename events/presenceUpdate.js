@@ -72,7 +72,7 @@ module.exports = {
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        await Log("append", 'presenceUpdate', `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldStatus} (${oldClientStatus})" to: "${newClientActivityType}${newStatus} (${newClientStatus})"`, "INFO");
+        await Log("append", "presenceUpdate", `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldStatus} (${oldClientStatus})" to: "${newClientActivityType}${newStatus} (${newClientStatus})"`, "INFO");
         lastGuildId = newPresence.guild.id;
         firstTime = false;
     }

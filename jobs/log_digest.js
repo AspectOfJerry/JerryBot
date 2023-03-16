@@ -19,7 +19,10 @@ const counter = {
 };
 
 async function Execute(client) {
-    const digest = new CronJob("0 0 * * *", async () => { // Interval of 1 day
+    /**
+     * Triggers every day
+     */
+    const digest = new CronJob("0 0 * * *", async () => {
         // await Sleep(100);
 
         const now = new Date();

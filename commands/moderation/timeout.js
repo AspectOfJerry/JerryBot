@@ -134,7 +134,7 @@ module.exports = {
                         .setDisabled(false),
                     new MessageButton()
                         .setCustomId('override_cancel_button')
-                        .setLabel('Cancel')
+                        .setLabel("Cancel")
                         .setStyle("SECONDARY")
                         .setDisabled(false)
                 );
@@ -236,10 +236,10 @@ module.exports = {
                     const auto_abort = new MessageEmbed()
                         .setColor("DARK_GREY")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`Auto aborted.`);
+                        .setDescription("Auto aborted.");
 
                     interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                    Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                    Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
                 }
             });
         }

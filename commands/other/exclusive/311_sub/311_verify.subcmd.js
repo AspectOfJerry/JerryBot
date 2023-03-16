@@ -95,18 +95,17 @@ module.exports = async function (client, interaction) {
 
     // Main
     let isOverriddenText = "";
-    const filter = async (newInteraction) => {
+    const filter = (newInteraction) => {
         if(newInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${newInteraction.user.id}>)`;
-            await Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
+            Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(newInteraction.user.id == interaction.user.id) {
             return true;
-        } else {
-            await newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
-            return;
         }
+        newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+        Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+        return;
     };
 
     const prompt = new MessageEmbed()

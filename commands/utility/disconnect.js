@@ -26,10 +26,10 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
 
         const is_all = interaction.options.getBoolean("all") || false;
-        await Log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
+        Log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
 
         // Checks
         if(!memberTarget.voice.channel) {
@@ -39,7 +39,7 @@ module.exports = {
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc]});
-            await Log("append", interaction.guild.id, `  └─'${memberTarget.tag}' is not in a voice channel.`, "WARN");
+            Log("append", interaction.guild.id, `  └─'${memberTarget.tag}' is not in a voice channel.`, "WARN");
             return;
         }
 

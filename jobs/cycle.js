@@ -7,15 +7,20 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
-
 async function Execute(client) {
-    const online = new CronJob("00 6 * * *", async () => { // Interval of 06h00 everyday
+    /**
+     * Triggers at 06h00 every day
+     */
+    const online = new CronJob("00 6 * * *", async () => {
         client.user.setStatus("online");
 
         Log("append", 'cycle', "[CycleDay] Successfully the bot's status to online.", "DEBUG");
     });
 
-    const idle = new CronJob("45 21 * * *", async () => { // Interval of 29h45 everyday
+    /**
+     * Triggers at 21h45 every day
+     */
+    const idle = new CronJob("45 21 * * *", async () => {
         client.user.setStatus("idle");
 
         Log("append", "cycle", "[CycleNight] Successfully the bot's status to idle.", "DEBUG");

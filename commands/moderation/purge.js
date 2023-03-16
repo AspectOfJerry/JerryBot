@@ -6,11 +6,11 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('purge')
+        .setName("purge")
         .setDescription("Purges a certain amount of messages in this channel.")
         .addIntegerOption((options) =>
             options
-                .setName('amount')
+                .setName("amount")
                 .setDescription("[REQUIRED] The amount of messages to delete.")
                 .setRequired(true))
         .addChannelOption((options) =>
@@ -39,7 +39,7 @@ module.exports = {
                     .setDisabled(false),
                 new MessageButton()
                     .setCustomId('purge_cancel_button')
-                    .setLabel('Cancel')
+                    .setLabel("Cancel")
                     .setStyle("PRIMARY")
             );
 
@@ -59,7 +59,7 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_purging], components: [buttonRow], ephemeral: true});
-        await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
+        Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {

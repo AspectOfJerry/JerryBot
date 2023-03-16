@@ -11,7 +11,11 @@ let disabled = false;
 let once = false;
 
 async function Execute(client) {
-    const heartbeat = new CronJob("*/2 * * * *", async () => { // Interval of 2 minutes
+    /**
+     * Triggers every 2 minutes.
+     * Sends a heartbeat to the status page
+     */
+    const heartbeat = new CronJob("*/2 * * * *", async () => {
         try {
             await Sleep(await Jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})

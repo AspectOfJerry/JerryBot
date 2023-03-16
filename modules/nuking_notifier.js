@@ -1,3 +1,4 @@
+// THIS FEATURE IS DISABLED
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const {Log, Sleep} = require('./JerryUtils');
@@ -11,7 +12,6 @@ var counterTotalMemberRemove = 0;
 var counterRoleDelete = 0;
 
 // Main
-// Monitoring
 async function InitNukeNotifier(client) {
     return;
     // const guild_ids = ['631939549332897842'];
