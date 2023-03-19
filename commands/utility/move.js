@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('move')
+        .setName("move")
         .setDescription("Moves a user to a voice channel.")
         .addChannelOption((options) =>
             options
@@ -31,7 +31,7 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        await Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         const is_all = interaction.options.getBoolean("all") || false;
         await Log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
@@ -52,14 +52,15 @@ module.exports = {
         if(!is_all) {
             const current_voice_channel = memberTarget.voice.channel;
             memberTarget.voice.setChannel(new_voice_channel)
-                .then(async () => {
+                .then(() => {
                     const success_move = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
-                    await interaction.reply({embeds: [success_move]});
-                    await Log("append", interaction.guild.id, `├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                    interaction.reply({embeds: [success_move]});
+                    Log("append", interaction.guild.id, `├─Successfully moved '@${memberTarget.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                    return;
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;

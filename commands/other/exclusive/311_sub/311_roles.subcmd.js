@@ -13,24 +13,24 @@ module.exports = async function (client, interaction) {
     // Checks
 
     // Main
-    let select_menu = new MessageActionRow()
+    const select_menu = new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()
-                .setCustomId('select_menu')
+                .setCustomId("select_menu")
                 .setPlaceholder("Select a role")
                 .setMinValues(1)
                 .addOptions([
                     {
                         label: "announcement",
                         description: "[Recommended] Receive announcement pings.",
-                        value: 'announcement',
-                        emoji: '📢'
+                        value: "announcement",
+                        emoji: "📢"
                     },
                     {
                         label: "311 schedule",
                         description: "Pinged by the schedule announcer.",
-                        value: 'schedule',
-                        emoji: '🗓️'
+                        value: "schedule",
+                        emoji: "🗓️"
                     }
                 ])
         );
@@ -38,13 +38,13 @@ module.exports = async function (client, interaction) {
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${selectMenuInteraction.user.id}>)`;
-            await Log("append", interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
+            await Log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
             return true;
         } else {
             await selectMenuInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log("append", interaction.guild.id, `├─'${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+            await Log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
             return;
         }
     };
@@ -67,7 +67,7 @@ module.exports = async function (client, interaction) {
                 select_menu.components[0]
                     .setDisabled(true);
 
-                if(selectMenuInteraction.customId == 'select_menu') {
+                if(selectMenuInteraction.customId == "select_menu") {
                     const selected = selectMenuInteraction.values;
                     let rolesAdded = [];
                     let rolesRemoved = [];
@@ -92,7 +92,7 @@ module.exports = async function (client, interaction) {
                     const success_embed = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                        .setTitle('Self-toggled roles')
+                        .setTitle("Self-toggled roles")
                         .addFields(
                             {
                                 name: "Roles added", value: `${() => {if(!rolesAdded) {return "None"} return rolesAdded;}}`, inline: false
@@ -102,11 +102,11 @@ module.exports = async function (client, interaction) {
                             }
                         );
 
-                    await interaction.editReply({embeds: [success_embed], components: [select_menu]});
+                    interaction.editReply({embeds: [success_embed], components: [select_menu]});
                 }
             });
 
-            select_menu_collector.on("end", async (collected) => {
+            select_menu_collector.on("end", (collected) => {
                 if(collected.size === 0) {
                     // Disabling buttons
                     select_menu.components[0]
@@ -115,10 +115,10 @@ module.exports = async function (client, interaction) {
                     const expired = new MessageEmbed()
                         .setColor("DARK_GREY")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                        .setTitle('Self-toggle roles')
-                        .setDescription('Select the roles you want to toggle in the dropdown menu.');
+                        .setTitle("Self-toggle roles")
+                        .setDescription("Select the roles you want to toggle in the dropdown menu.");
 
-                    await interaction.editReply({embeds: [expired], components: [select_menu]});
+                    interaction.editReply({embeds: [expired], components: [select_menu]});
                 }
             });
         });

@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('stop')
+        .setName("stop")
         .setDescription("Stops the bot.")
         .addStringOption((options) =>
             options
@@ -28,18 +28,18 @@ module.exports = {
         let buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('stop_confirm_button')
+                    .setCustomId("stop_confirm_button")
                     .setLabel(`Stop`)
                     .setStyle("DANGER")
                     .setDisabled(false),
                 new MessageButton()
-                    .setCustomId('stop_cancel_button')
+                    .setCustomId("stop_cancel_button")
                     .setLabel("Cancel")
                     .setStyle("SECONDARY")
                     .setDisabled(false)
             );
 
-        let isOverriddenText = "";
+        let overrideText = "";
 
         // const now = Math.round(Date.now() / 1000);
         // const auto_cancel_timestamp = now + 10;
@@ -47,26 +47,26 @@ module.exports = {
         const confirm_stop = new MessageEmbed()
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('Confirm Stop')
+            .setTitle("Confirm Stop")
             .setDescription("Are you sure you want to stop the bot? Only the bot owner is able to restart the bot. Please use this command as last resort.")
             // .addFields(
-            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            //     {name: "Auto cancel", value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
             // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
-        await Log("append", interaction.guild.id, `├─Execution authotized. Waiting for the confirmation...`, "INFO");
+        await Log("append", interaction.guild.id, "├─Execution authotized. Waiting for the confirmation...", "INFO");
 
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                overrideText = ` (overriden by <@${buttonInteraction.user.id}>)`;
+                await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
                 return true;
             } else if(buttonInteraction.user.id = interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
             }
         };
@@ -82,19 +82,19 @@ module.exports = {
             buttonRow.components[1]
                 .setDisabled(true);
 
-            if(buttonInteraction.customId == 'stop_confirm_button') {
+            if(buttonInteraction.customId == "stop_confirm_button") {
                 const stopping_bot = new MessageEmbed()
                     .setColor("FUCHSIA")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('Stopping the bot')
-                    .setDescription(`<@${interaction.user.id}> requested the bot to stop${isOverriddenText}.`)
+                    .setTitle("Stopping the bot")
+                    .setDescription(`<@${interaction.user.id}> requested the bot to stop${overrideText}.`)
                     .addFields(
-                        {name: "reason", value: `${reason}`, inline: false},
-                        {name: 'Requested at', value: `${interaction.createdAt}`, inline: false}
+                        {name: "Reason", value: `${reason}`, inline: false},
+                        {name: "Requested at", value: `${interaction.createdAt}`, inline: false}
                     ).setFooter({text: "The process will exit after this message."});
 
                 await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `├─'${interaction.user.tag}' authorized the stop request${isOverriddenText}.`, "INFO");
+                await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' authorized the stop request${overrideText}.`, "INFO");
                 await Log("append", interaction.guild.id, `└─Stopping the bot...`, "FATAL");
                 await client.destroy(); // Destroying the Discord client
                 await Sleep(250);
@@ -103,14 +103,14 @@ module.exports = {
                 const cancel_stop = new MessageEmbed()
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`<@${interaction.user.id}> aborted the stop request${isOverriddenText}.`);
+                    .setDescription(`<@${interaction.user.id}> aborted the stop request${overrideText}.`);
 
-                await interaction.editReply({embeds: [cancel_stop]});
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' aborted the stop request${isOverriddenText}.`, "INFO");
+                interaction.editReply({embeds: [cancel_stop]});
+                Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' aborted the stop request${overrideText}.`, "INFO");
             }
         });
 
-        button_collector.on("end", async collected => {
+        button_collector.on("end", (collected) => {
             // Disabling buttons
             buttonRow.components[0]
                 .setDisabled(true);
@@ -123,8 +123,8 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`);
 
-                await interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                await Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
+                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
                 return;
             }
         });

@@ -30,7 +30,7 @@ module.exports = {
             const join_message = new MessageEmbed()
                 .setColor("GREEN")
                 .setThumbnail(`${member.user.displayAvatarURL({dynamic: true, size: 256})}`)
-                .setTitle('User join')
+                .setTitle("User join")
                 .setDescription(`<@${member.user.id}> joined the guild!`)
                 .setTimestamp();
 

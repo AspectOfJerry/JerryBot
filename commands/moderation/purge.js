@@ -30,7 +30,7 @@ module.exports = {
         // Checks
 
         // Main
-        let buttonRow = new MessageActionRow()
+        const buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('purge_confirm_button')
@@ -51,15 +51,15 @@ module.exports = {
         const confirm_purging = new MessageEmbed()
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('Confirm purging')
+            .setTitle("Confirm purging")
             .setDescription(`Are you sure you want to delete __${amount}__ messages?\n*Messages older than two weeks are not bulk-deletable.*`)
             // .addFields(
-            //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
+            //     {name: "Auto cancel", value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
             // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_purging], components: [buttonRow], ephemeral: true});
-        Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
+        Log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
@@ -82,7 +82,7 @@ module.exports = {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
 
-            if(buttonInteraction.customId == 'purge_confirm_button') {
+            if(buttonInteraction.customId == "purge_confirm_button") {
                 // Disabling buttons
                 buttonRow.components[0]
                     .setStyle("SUCCESS")

@@ -3,16 +3,16 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
-const TicTacToe = require('discord-tictactoe');
+const TicTacToe = require("discord-tictactoe");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('tictactoe')
+        .setName("tictactoe")
         .setDescription("Game of Tic Tac Toe with buttons.")
         .addUserOption((options) =>
             options
-                .setName('opponent')
+                .setName("opponent")
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
@@ -26,7 +26,7 @@ module.exports = {
         // Checks
 
         // Main
-        Log("append", interaction.guild.id, `└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module`, "INFO");
+        Log("append", interaction.guild.id, "└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module", "INFO");
         game.handleInteraction(interaction);
 
         const opponent = (interaction.options.getUser('opponent'))?.id ?? null;

@@ -26,7 +26,7 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         let reason = interaction.options.getString("reason");
 
@@ -51,7 +51,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
+            Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' tried to kick '@${memberTarget.user.tag}' but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -62,7 +62,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to kick '${memberTarget.user.tag}' but their highest roles were equal.`, "WARN");
+            Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' tried to kick '@${memberTarget.user.tag}' but their highest roles were equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -74,12 +74,12 @@ module.exports = {
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
             interaction.reply({embeds: [member_not_kickcable]});
-            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not kickable by the client user.`, "ERROR");
+            Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is not kickable by the client user.`, "ERROR");
             return;
         }
 
         // Main
-        let buttonRow = new MessageActionRow()
+        const buttonRow = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId("kick_confirm_button")
@@ -107,20 +107,20 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         await interaction.reply({embeds: [confirm_kick], components: [buttonRow]});
-        await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
+        await Log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
         // Creating a filter for the collector
         let isOverriddenText = "";
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                 isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
                 return true;
             } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
             }
         };
@@ -131,7 +131,7 @@ module.exports = {
             await buttonInteraction.deferUpdate();
             await button_collector.stop();
 
-            if(buttonInteraction.customId == 'kick_confirm_button') {
+            if(buttonInteraction.customId == "kick_confirm_button") {
                 // Disabling buttons
                 buttonRow.components[0]
                     .setStyle("SUCCESS")

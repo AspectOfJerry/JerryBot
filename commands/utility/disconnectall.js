@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('disconnectall')
+        .setName("disconnectall")
         .setDescription("Disconnects everyone in a user's channel.")
         .addChannelOption((options) =>
             options
@@ -30,7 +30,7 @@ module.exports = {
                     .setDescription("You must be in a voice channel if you are not providing a voice channel.");
 
                 interaction.reply({embeds: [not_in_vc]});
-                await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, 'WARN') // Logs
+                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, "WARN") // Logs
                 return;
             }
             voice_channel = interaction.member.voice.channel;
@@ -44,7 +44,7 @@ module.exports = {
                 .setDescription(`<#${voice_channel.channel.id}> is not a voice channel!`);
 
             interaction.reply({embeds: [error_not_voice_channel]});
-            await Log("append", interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.channel.name}).`);
+            Log("append", interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.channel.name}).`);
             return;
         }
 
@@ -58,7 +58,7 @@ module.exports = {
                 .setDescription(`The <#${voice_channel.channel.id}> voice channel is empty.`);
 
             interaction.reply({embeds: [empty_voice_channel]});
-            await Log("append", interaction.guild.id, `└─The provided channel was empty.`);
+            Log("append", interaction.guild.id, "└─The provided channel was empty.", "WARN");
             return;
         }
 
@@ -68,8 +68,8 @@ module.exports = {
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
             .setDescription(`Disconnecting all ${member_count} members from <#${voice_channel.channel.id}>...`);
 
-        await interaction.reply({embeds: [disconnecting_members]});
-        await Log("append", interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`);
+        interaction.reply({embeds: [disconnecting_members]});
+        await Log("append", interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`, "WARN");
 
         let failed_member_count = 0;
         let failed_string = "";
@@ -84,7 +84,7 @@ module.exports = {
                         .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.channel.id}>.`);
 
                     interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                    Log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
+                    Log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`, "INFO");
                 }).catch(() => {
                     const disconnect_error = new MessageEmbed()
                         .setColor("RED")
@@ -93,8 +93,8 @@ module.exports = {
 
                     interaction.editReply({embeds: [disconnect_error]});
                     Log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from the '${voice_channel.name}' voice channel.`);
-                    member_count--
-                    failed_member_count++
+                    member_count--;
+                    failed_member_count++;
                 });
             await Sleep(100);
         });
@@ -113,6 +113,6 @@ module.exports = {
             .setDescription(`Successfully disconnected ${member_count} members from <#${voice_channel.channel.id}>.${failed_string}`);
 
         interaction.editReply({embeds: [disconnected]});
-        Log("append", interaction.guild.id, `└─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`);
+        Log("append", interaction.guild.id, `└─Successfully disconnected ${member_count} members from '${voice_channel.name}' and failed to disconnect ${failed_member_count} members.`, "INFO");
     }
 };

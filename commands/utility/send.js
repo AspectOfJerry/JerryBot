@@ -54,7 +54,7 @@ module.exports = {
                 const message_lenght = message.length;
                 const duration_in_ms = Math.round(message_lenght / 14 * 1000);
 
-                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms}ms of typing...`, ephemeral: true});
+                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms} ms of typing...`, ephemeral: true});
 
                 channel.sendTyping();
                 await Sleep(duration_in_ms);

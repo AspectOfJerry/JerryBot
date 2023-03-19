@@ -7,34 +7,34 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../../modules/JerryUtils
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('311')
+        .setName("311")
         .setDescription("Commands for 311.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('schedule')
+                .setName("schedule")
                 .setDescription("Get the schedule for 311.")
                 .addStringOption(options =>
                     options
-                        .setName('day')
+                        .setName("day")
                         .setDescription("Get the schedule for today or next Jour. Defaults to automatic.")))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('weather')
+                .setName("weather")
                 .setDescription("Get today's weather."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('roles')
+                .setName("roles")
                 .setDescription("Self add/remove some roles."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('verify')
+                .setName("verify")
                 .setDescription("Identify yourself")),
     async execute(client, interaction) {
         // Declaring variables
 
         // Checks
         // Whitelist
-        if(interaction.guild.id != '1014278986135781438') {
+        if(interaction.guild.id != "1014278986135781438") {
             const cmd_not_avail_in_guild = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

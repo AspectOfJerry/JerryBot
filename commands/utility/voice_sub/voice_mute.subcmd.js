@@ -21,17 +21,17 @@ module.exports = async function (client, interaction) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
 
-        await interaction.reply({embeds: [error_not_in_vc]});
+        interaction.reply({embeds: [error_not_in_vc]});
         return;
     }
 
     // Main
-    const bot = interaction.guild.members.cache.get(client.user.id);
+    const bot = interaction.guild.members.resolve(client.user.id);
 
     if(bot.voice.serverMute) {
-        await bot.voice.setMute(false);
+        bot.voice.setMute(false);
     } else {
-        await bot.voice.setMute(true);
+        bot.voice.setMute(true);
     }
 
     const self_mute = new MessageEmbed()
@@ -40,5 +40,5 @@ module.exports = async function (client, interaction) {
         .setTitle("Voice selfMute")
         .setDescription("Successfully toggled mute.");
 
-    await interaction.reply({embeds: [self_mute]});
+    interaction.reply({embeds: [self_mute]});
 };
