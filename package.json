@@ -14,14 +14,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/AspectOfJerry/JerryBot"
+        "url": "https://github.com/AspectOfJerry/JerryBot.git"
+    },
+    "bugs": {
+        "url": "https://github.com/AspectOfJerry/JerryBot/issues",
+        "email": "jerry@aspectofjerry.dev"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/AspectOfJerry/JerryBot/issues"
-    },
     "homepage": "https://bot.aspectofjerry.dev",
     "type": "commonjs",
     "dependencies": {
