@@ -20,7 +20,7 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.channel.send({content: "ping..."}).then(pingMessage => {
+        await interaction.channel.send({content: "ping..."}).then(pingMessage => {
             pingMessage.delete().catch(console.error);
 
             webSocketLatency = client.ws.ping;
