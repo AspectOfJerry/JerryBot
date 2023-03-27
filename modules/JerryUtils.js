@@ -1,6 +1,5 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {RegisterEvent} = require("../jobs/log_digest");
-const process = require("process");
 const fs = require("fs");
 const date = require("date-and-time");
 
