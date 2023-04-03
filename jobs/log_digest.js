@@ -74,6 +74,6 @@ function RegisterEvent(type, amount) {
 
 
 module.exports = {
-    Execute,
+    execute,
     RegisterEvent
 };
