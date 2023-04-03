@@ -51,7 +51,7 @@ module.exports = {
                 .setDescription('You cannot timeout yourself.');
 
             interaction.reply({embeds: [error_cannot_timeout_self]});
-            await Log("append", interaction.guild.id, `└─${interaction.user.id} tried to timeout themselves.`, "WARN");
+            await Log("append", interaction.guild.id, `└─"@${interaction.user.id}" tried to timeout themselves.`, "WARN");
             return;
         }
         if(!duration_in_ms) {
@@ -77,7 +77,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
+            await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -88,7 +88,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to timeout '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
+            await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -100,7 +100,7 @@ module.exports = {
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
 
             await interaction.reply({embeds: [member_not_moderatable]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not moderatable by the client user.`, "ERROR");
+            await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
             return;
         }
 
@@ -121,7 +121,7 @@ module.exports = {
                         .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
                     await interaction.reply({embeds: [success_timeout]});
-                    await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
+                    await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" timed out '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
                 });
         } else {
             // Override option if the member is already timed out
@@ -161,13 +161,13 @@ module.exports = {
             const filter = async (buttonInteraction) => {
                 if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
                     isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-                    await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                    await Log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" overrode the decision.`, "WARN");
                     return true;
                 } else if(buttonInteraction.user.id == interaction.user.id) {
                     return true;
                 } else {
                     await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                    await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                    await Log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" did not have the permission to use this button.`, "WARN");
                     return;
                 }
             };
@@ -202,7 +202,7 @@ module.exports = {
                                 .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
                             interaction.editReply({embeds: [success_timeout], components: [buttonRow]});
-                            Log("append", interaction.guild.id, `└─'${interaction.user.tag}' timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
+                            Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" timed out (overriden) '${memberTarget.user.tag}' for ${duration}.${reason}`, "WARN");
                         });
                 } else {
                     // Disabling buttons
@@ -219,7 +219,7 @@ module.exports = {
                         .setDescription(`<@${interaction.user.id}> cancelled the timeout${isOverriddenText}.`);
 
                     interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
-                    Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the timeout timeout${isOverriddenText}.`, "INFO");
+                    Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" cancelled the timeout timeout${isOverriddenText}.`, "INFO");
                 }
             });
 
