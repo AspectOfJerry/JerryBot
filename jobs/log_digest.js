@@ -18,7 +18,7 @@ const counter = {
     "WARN": 0
 };
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every day
      */

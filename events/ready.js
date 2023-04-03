@@ -1,10 +1,10 @@
-const {REST} = require("@discordjs/rest");
-const {Routes} = require("discord-api-types/v9");
+const {REST} = require('@discordjs/rest');
+const {Routes} = require('discord-api-types/v9');
 
 const {Log, RefreshDataset, Sleep, StartJobs} = require("../modules/JerryUtils.js");
-const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require("../modules/telemetry");
-const {RefreshHubs} = require("../modules/voiceChannelHubManager.js");
-// const {InitNukeNotifier} = require("../modules/nuking_notifier");
+const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
+const {RefreshHubs} = require('../modules/voiceChannelHubManager.js');
+// const {InitNukeNotifier} = require('../modules/nuking_notifier');
 
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        await Log("append", "JerryBot", "[JerryBot] '@JerryBot#9090' is now online.", "DEBUG");
+        await Log("append", "JerryBot", '[JerryBot] "@JerryBot#9090" is now online.', "DEBUG");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
@@ -24,7 +24,7 @@ module.exports = {
         const bap_guild_id = "864928262971326476";
 
         if(process.env.npm_lifecycle_event == "clearcommands") {
-            Log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
+            await Log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
             console.log("Clearing global commands...");
 
             await rest.put(Routes.applicationCommands(client_id), {body: []});
@@ -51,13 +51,13 @@ module.exports = {
         console.log("Refreshing the voice channel hubs...");
         await RefreshHubs(client);
 
-        if(process.env.npm_lifecycle_event == "test") {
+        if(process.env.npm_lifecycle_event === "test") {
             // Test content here
             return;
         }
 
         // main
-        if(process.env.npm_lifecycle_event != "dev") {
+        if(process.env.npm_lifecycle_event !== "dev") {
             // Telemetry
             console.log("Starting telemetry...");
             await StartTelemetry(client);
@@ -113,6 +113,9 @@ module.exports = {
                 console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
                 await Sleep(1000);
 
+                await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
+
                 console.log(`Successfully deployed commands locally in ${goldfish_guild_id}.`);
                 await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
                 await Sleep(1000);
@@ -126,7 +129,7 @@ module.exports = {
             }
         }
 
-        if(process.env.npm_lifecycle_event != "dev") {
+        if(process.env.npm_lifecycle_event !== "dev") {
             ChecklistBotReady();
         }
     }

@@ -14,7 +14,7 @@ let disabled = false;
 // Then the bot was not stopped so the @everyone ping happened 3 times in a row.
 // Finally, bot was stopped 3 minutes after 2023 and the big issue was fixed.
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every year on January 1st
      */
@@ -56,5 +56,5 @@ async function Execute(client) {
 
 
 module.exports = {
-    Execute
+    execute
 };

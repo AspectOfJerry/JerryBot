@@ -8,7 +8,7 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 let disabled = false;
 
 
-async function Execute(client) {
+async function execute(client) {
     const JOBNAME = new CronJob("* * * * *", async () => { // Interval of INTERVAL
 
     });
@@ -21,5 +21,5 @@ async function Execute(client) {
 
 
 module.exports = {
-    Execute
+    execute
 };

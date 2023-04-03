@@ -10,7 +10,7 @@ const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
 let disabled = false;
 let once = false;
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every 2 minutes.
      * Sends a heartbeat to the status page
@@ -68,5 +68,5 @@ async function Jitter() {
 
 
 module.exports = {
-    Execute
+    execute
 };

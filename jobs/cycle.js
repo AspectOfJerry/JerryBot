@@ -7,7 +7,7 @@ const {Log, Sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers at 06h00 every day
      */
@@ -34,5 +34,5 @@ async function Execute(client) {
 
 
 module.exports = {
-    Execute
+    execute
 };

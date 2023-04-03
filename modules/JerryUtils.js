@@ -364,8 +364,8 @@ async function StartJobs(client) {
     console.log(job_files);
 
     for(const job_file of job_files) {
-        const {Execute} = require(`../jobs/${job_file}`);
-        Execute(client);
+        const {execute} = require(`../jobs/${job_file}`);
+        execute(client);
     }
 }
 

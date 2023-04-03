@@ -10,7 +10,7 @@ const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, G
 let disabled = false;
 
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every day, at 06h30
      */
@@ -39,12 +39,13 @@ async function Execute(client) {
             const schedule_embed = new MessageEmbed()
                 .setColor("YELLOW")
                 .setTitle(`:newspaper: [${jour}] ${day}`)
-                .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+                // .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+                .setDescription(":calendar_spiral: No school today!");
 
-            if(days_to_frc === 1 || days_to_frc === 0) {
-                schedule_embed
-                    .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
-            }
+            // if(days_to_frc === 1 || days_to_frc === 0) {
+            //     schedule_embed
+            //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+            // }
 
             waiting_schedule.delete();
             await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
@@ -75,7 +76,8 @@ async function Execute(client) {
         const schedule_embed = new MessageEmbed()
             .setColor("GREEN")
             .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
-            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+            // .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+            .setDescription(`:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
             .addFields(
                 {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
                 {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
@@ -93,10 +95,10 @@ async function Execute(client) {
                     ` ${schedule.period6.className}`
             });
 
-        if(days_to_frc === 1 || days_to_frc === 0) {
-            schedule_embed
-                .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
-        }
+        // if(days_to_frc === 1 || days_to_frc === 0) {
+        //     schedule_embed
+        //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+        // }
 
         waiting_schedule.delete();
         await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!`});
@@ -116,5 +118,5 @@ async function Execute(client) {
 
 
 module.exports = {
-    Execute
+    execute
 };

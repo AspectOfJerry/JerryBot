@@ -30,12 +30,13 @@ module.exports = async function (client, interaction) {
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle(`:newspaper: [${jour}] ${day}`)
-            .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+            // .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+            .setDescription(":calendar_spiral: No school today!");
 
-        if(days_to_frc === 1 || days_to_frc === 0) {
-            schedule_embed
-                .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
-        }
+        // if(days_to_frc === 1 || days_to_frc === 0) {
+        //     schedule_embed
+        //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
+        // }
 
         interaction.editReply({content: `Here's **today's** schedule!`});
         await interaction.channel.send({embeds: [schedule_embed]});
@@ -62,7 +63,8 @@ module.exports = async function (client, interaction) {
         .setColor("GREEN")
         .setTitle(`:newspaper: [Jour ${jour}] ${day}`)
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour}.`)
+        // .setDescription(`:hourglass: There are ${days_to_frc} days remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour}.`)
+        .setDescription(":calendar_spiral: This is the schedule for Jour ${jour}.")
         .addFields(
             {name: `P1 ${schedule.period1.className}`, value: `• Classroom: ${schedule.period1.classroom}${schedule.period1.notes}`, inline: false},
             {name: `P2 ${schedule.period2.className}`, value: `• Classroom: ${schedule.period2.classroom}${schedule.period2.notes}`, inline: false},
@@ -80,10 +82,10 @@ module.exports = async function (client, interaction) {
                 ` ${schedule.period6.className}`
         });
 
-    if(days_to_frc === 1 || days_to_frc === 0) {
-        schedule_embed
-            .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`);
-    }
+    // if(days_to_frc === 1 || days_to_frc === 0) {
+    //     schedule_embed
+    //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`);
+    // }
 
     interaction.editReply({content: "Here's **today's** schedule!"});
     // Do not combine the following in the same messge
