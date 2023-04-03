@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const fs = require("fs");
 const {Client, Intents, Collection, MessageEmbed} = require("discord.js");
 
@@ -6,7 +6,7 @@ const {GetCommandFiles, Log, Sleep, StartEventListeners} = require('./modules/Je
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-Log("append", 'index.js', `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
+Log("append", "index.js", `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
 
 const client = new Client({
     intents: [

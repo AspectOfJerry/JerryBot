@@ -21,7 +21,7 @@ module.exports = {
         const jerry_guild_id = "631939549332897842";
         const goldfish_guild_id = "890063136193925170";
         const group_311_guild_id = "1014278986135781438";
-        const bap_guild_id = "FOOBAR";
+        const bap_guild_id = "864928262971326476";
 
         if(process.env.npm_lifecycle_event == "clearcommands") {
             await Log("append", "JerryBot", `[JerryBot/clearcommands] Clearing the application (/) commands...`, "DEBUG");
