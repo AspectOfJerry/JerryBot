@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('untimeout')
+        .setName("untimeout")
         .setDescription("Untimes out a member for a specified amount of time.")
         .addUserOption((options) =>
             options
@@ -26,7 +26,7 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        await Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         let reason = interaction.options.getString("reason");
 
@@ -36,7 +36,7 @@ module.exports = {
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription('You cannot timeout yourself.');
+                .setDescription("You cannot timeout yourself.");
 
             await interaction.reply({embeds: [error_target_self]});
             return;
@@ -46,7 +46,7 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_role_too_low]});
@@ -56,7 +56,7 @@ module.exports = {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('PermissionError')
+                .setTitle("PermissionError")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             await interaction.reply({embeds: [error_equal_roles]});

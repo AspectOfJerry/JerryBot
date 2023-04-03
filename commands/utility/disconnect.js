@@ -26,7 +26,7 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         const is_all = interaction.options.getBoolean("all") || false;
         Log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
@@ -71,7 +71,7 @@ module.exports = {
 
             await interaction.reply({embeds: [disconnecting]});
 
-            await memberTarget.voice.channel.members.forEach(member => {
+            await memberTarget.voice.channel.members.forEach((member) => {
                 let current_voice_channel = member.voice.channel
                 member.voice.setChannel(null)
                     .then(() => {
@@ -83,6 +83,7 @@ module.exports = {
                         interaction.channel.followUp({embeds: [disconnect_success], ephemeral: true});
                     });
             });
+
             const disconnect_success = new MessageEmbed()
                 .setColor("GREEN")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

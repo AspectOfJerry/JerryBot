@@ -29,7 +29,7 @@ module.exports = {
                 const error_permissions = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('PermissionError')
+                    .setTitle("PermissionError")
                     .setDescription("I'm sorry but you do not have the permissions to perform this command. Please contact the bot administrators if you believe that this is an error.")
                     .setFooter({text: `Use '/help' to access the documentation on command permissions.`});
 

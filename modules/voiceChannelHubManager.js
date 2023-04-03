@@ -1,8 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {GetConfig, Log, Sleep, ToNormalized} = require('./JerryUtils');
-const fs = require('fs');
+const {GetConfig, Log, Sleep, ToNormalized} = require("./JerryUtils");
+const fs = require("fs");
 const Path = require("path");
 
 

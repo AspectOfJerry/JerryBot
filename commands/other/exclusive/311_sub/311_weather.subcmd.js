@@ -15,5 +15,5 @@ module.exports = async function (client, interaction) {
     // Checks
 
     // Main
-    await interaction.editReply("This command is currently unavailable.")
+    interaction.editReply("This command is currently unavailable.");
 };

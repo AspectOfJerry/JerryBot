@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const weather = require('weather-js');
+const weather = require("weather-js");
 
 const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
@@ -29,8 +29,8 @@ module.exports = {
         }
 
         // Declaring variables
-        const search_location = interaction.options.getString('location');
-        const search_unit = interaction.options.getString('unit') || "C";
+        const search_location = interaction.options.getString("location");
+        const search_unit = interaction.options.getString("unit") || "C";
 
         // Checks
 

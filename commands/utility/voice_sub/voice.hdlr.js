@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 const Path = require("path");
 
 const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
@@ -8,11 +8,11 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('voice')
+        .setName("voice")
         .setDescription("Perform voice channel actions.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('join')
+                .setName("join")
                 .setDescription("Joins a voice channel. Defaults to your current voice channel.")
                 .addChannelOption((options) =>
                     options
@@ -21,15 +21,15 @@ module.exports = {
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('leave')
+                .setName("leave")
                 .setDescription("Leaves the voice channel."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('mute')
+                .setName("mute")
                 .setDescription("Toggles server-mute on the bot."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('deaf')
+                .setName("deaf")
                 .setDescription("Toggles server-deaf on the bot.")),
     async execute(client, interaction) {
         // Declaring variables

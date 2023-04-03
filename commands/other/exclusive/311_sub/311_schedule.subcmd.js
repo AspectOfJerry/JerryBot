@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../../../../database/commands/exclusive/schedule/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../../../../database/commands/exclusive/schedule/dbms");
 
 const date = require("date-and-time");
 
@@ -37,9 +37,9 @@ module.exports = async function (client, interaction) {
                 .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
         }
 
-        await interaction.editReply({content: `Here's **today's** schedule!`});
+        interaction.editReply({content: `Here's **today's** schedule!`});
         await interaction.channel.send({embeds: [schedule_embed]});
-        await interaction.channel.send({content: schedule_message});
+        interaction.channel.send({content: schedule_message});
         return;
     }
 
@@ -82,10 +82,11 @@ module.exports = async function (client, interaction) {
 
     if(days_to_frc === 1 || days_to_frc === 0) {
         schedule_embed
-            .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
+            .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`);
     }
 
-    await interaction.editReply({content: `Here's **today's** schedule!`});
+    interaction.editReply({content: "Here's **today's** schedule!"});
+    // Do not combine the following in the same messge
     await interaction.channel.send({embeds: [schedule_embed]});
-    await interaction.channel.send({content: schedule_message});
+    interaction.channel.send({content: schedule_message});
 };

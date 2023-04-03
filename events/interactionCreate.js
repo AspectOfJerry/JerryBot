@@ -19,7 +19,7 @@ module.exports = {
         }
 
         try {
-            Log("append", interaction.guild.id, `"@${interaction.user.tag}'" executed "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}".`, "INFO");
+            Log("append", interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, "INFO");
             await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {
@@ -31,16 +31,16 @@ module.exports = {
                     .setDescription(`An error occured while executing the command${_err}`)
                     .setFooter({text: `${interaction.createdAt}`});
                 try {
-                    await interaction.reply({content: "<@611633988515266562>", embeds: [execution_error]});
+                    interaction.reply({content: "<@611633988515266562>", embeds: [execution_error]});
                 } catch {
                     try {
-                        await interaction.followUp({embeds: [execution_error]});
+                        interaction.followUp({embeds: [execution_error]});
                     } catch {
                         try {
-                            await interaction.channel.send({embeds: [execution_error]});
+                            interaction.channel.send({embeds: [execution_error]});
                         } catch {
                             console.log("Failure to send error message (3 attempts).");
-                            await Log("append", "interactionCreate", "Failure to send error message (3 attempts).", "ERROR");
+                            Log("append", "interactionCreate", "Failure to send error message (3 attempts).", "ERROR");
                         }
                     }
                 }

@@ -28,7 +28,7 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        await Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         const message = interaction.options.getString('message');
 

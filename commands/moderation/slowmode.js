@@ -6,11 +6,11 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('slowmode')
+        .setName("slowmode")
         .setDescription("Enables slowmode in a guild text channel.")
         .addIntegerOption((options) =>
             options
-                .setName('interval')
+                .setName("interva")
                 .setDescription("[REQUIRED] The rate limit in seconds.")
                 .setRequired(true))
         .addChannelOption((options) =>
@@ -28,13 +28,13 @@ module.exports = {
             return;
         }
 
-        // Declaring variables
-        const interval = interaction.options.getInteger('interval');
+        // Declaring variables"
+        const interval = interaction.options.getInteger("interval");
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
         const reason = interaction.options.getString("reason") ?? "No reason provided.";
 
         // Checks
-        if(channel.type !== 'GUILD_TEXT') {
+        if(channel.type !== "GUILD_TEXT") {
             const error_not_text_channel = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

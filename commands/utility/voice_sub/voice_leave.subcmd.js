@@ -29,7 +29,7 @@ module.exports = async function (client, interaction) {
             .setTitle('Error')
             .setDescription("The bot is not in a voice channel.");
 
-        await interaction.reply({embeds: [error_not_in_vc]});
+        interaction.reply({embeds: [error_not_in_vc]});
         return;
     }
 
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
         await interaction.editReply({embeds: [connection_destroyed]});
-        await Log("append", interaction.guild.id, `├─Destroyed. The connection to the voice channel has been destroyed.`, "INFO");
+        Log("append", interaction.guild.id, `├─Destroyed. The connection to the voice channel has been destroyed.`, "INFO");
 
         await Sleep(500);
 
@@ -53,7 +53,7 @@ module.exports = async function (client, interaction) {
             .setDescription(`Successfully left the voice channel.`);
 
         await interaction.editReply({embeds: [success_leave]});
-        await Log("append", interaction.guild.id, `└─Successfully left the voice channel.`, "INFO");
+        Log("append", interaction.guild.id, `└─Successfully left the voice channel.`, "INFO");
     });
     connection.destroy();
 };
