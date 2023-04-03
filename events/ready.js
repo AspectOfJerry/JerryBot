@@ -18,11 +18,10 @@ module.exports = {
 
         const client_id = client.user.id;
 
-        const jerry_guild_id = process.env.DISCORD_JERRY_GUILD_ID;
-        const goldfish_guild_id = process.env.DISCORD_GOLDFISH_GUILD_ID;
-        const cra_guild_id = process.env.DISCORD_CRA_GUILD_ID;
-        const group_311_guild_id = process.env.DISCORD_311_GUILD_ID;
-        const bap_guild_id = process.env.DISCORD_BAP_GUILD_ID;
+        const jerry_guild_id = "631939549332897842";
+        const goldfish_guild_id = "890063136193925170";
+        const group_311_guild_id = "1014278986135781438";
+        const bap_guild_id = "864928262971326476";
 
         if(process.env.npm_lifecycle_event == "clearcommands") {
             Log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
@@ -117,9 +116,6 @@ module.exports = {
                 console.log(`Successfully deployed commands locally in ${goldfish_guild_id}.`);
                 await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
                 await Sleep(1000);
-
-                await rest.put(Routes.applicationGuildCommands(client_id, cra_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${cra_guild_id}.`);
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 Log("append", "JerryBot", "[JerryBot] Successfully refreshed the application (/) commands locally!", "DEBUG");
