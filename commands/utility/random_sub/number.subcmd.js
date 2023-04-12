@@ -22,11 +22,6 @@ module.exports = async function (client, interaction) {
                 .setCustomId("random_restart_button")
                 .setLabel("Restart")
                 .setStyle("PRIMARY")
-                .setDisabled(false),
-            new MessageButton()
-                .setCustomId("random_cancel_button")
-                .setLabel("Cancel")
-                .setStyle("SECONDARY")
                 .setDisabled(false)
         );
 
@@ -49,7 +44,7 @@ module.exports = async function (client, interaction) {
     await Restart();
 
     async function Restart() {
-        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 30000});
+        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
 
         button_collector.on("collect", async (buttonInteraction) => {
             await buttonInteraction.deferUpdate();
@@ -58,19 +53,16 @@ module.exports = async function (client, interaction) {
             if(buttonInteraction.customId == "random_restart_button") {
                 random_embed.setDescription(`Random number: **${Math.floor((Math.random() * (max - min)) + min)}**`);
 
-                await interaction.editReply({embeds: [random_embed]});
+                await interaction.editReply({embeds: [random_embed], components: [row]});
                 Restart();
             }
+        });
 
-            if(buttonInteraction.customId === "random_cancel_button") {
-                row.components[0]
-                    .setStyle("SECONDARY")
-                    .setDisabled(true);
-                row.components[1]
-                    .setStyle("SUCCESS")
-                    .setDisabled(true);
+        button_collector.on("end", (collected, reason) => {
+            if(reason === "time") {
+                row.components[0].setDisabled(true);
 
-                await interaction.editReply({embeds: [random_embed], components: [row]});
+                interaction.editReply({embeds: [random_embed], components: [row]});
             }
         });
     }

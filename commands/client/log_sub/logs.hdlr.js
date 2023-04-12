@@ -19,15 +19,6 @@ module.exports = {
                         .setRequired(true)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName("read")
-                .setDescription("Read a line from a log file starting with the latest line.")
-                .addIntegerOption((options) =>
-                    options
-                        .setName("offset")
-                        .setDescription("[OPTIONAL] Number of the line to read starting with the latest line. Defaults to 0 (latest line).")
-                        .setRequired(false)))
-        .addSubcommand(subcommand =>
-            subcommand
                 .setName("get")
                 .setDescription("Sends the latest log file.")
                 .addIntegerOption((options) =>

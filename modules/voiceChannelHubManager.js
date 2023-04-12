@@ -36,7 +36,7 @@ async function RefreshHubs(client) {
 
     config.voiceChannelHubs = channels;
 
-    fs.writeFileSync(Path.resolve(__dirname, "../database/config/config_guilds.json"), JSON.stringify(config), (err) => {
+    fs.writeFileSync(Path.resolve(__dirname, "../database/config/config.json"), JSON.stringify(config), (err) => {
         if(err) {
             throw err;
         }

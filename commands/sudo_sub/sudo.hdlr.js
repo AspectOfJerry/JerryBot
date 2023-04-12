@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const Path = require("path");
 
-const {GetConfig, GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {GetConfig, GetSubCommandFiles, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -66,7 +66,7 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("presence_clear")
-                .setDescription("Clears the bot's presence."))
+                .setDescription("[SUDO] Clears the bot's presence."))
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("status")
@@ -80,6 +80,24 @@ module.exports = {
                             ["Online", "online"],
                             ["Idle", "idle"],
                             ["Do not disturb", "dnd"]
+                        ])))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("stop")
+                .setDescription("[SUDO] Stops the bot.")
+                .addStringOption((options) =>
+                    options
+                        .setName("reason")
+                        .setDescription("[OPTIONAL] The reason for the stop request.")
+                        .setRequired(false))
+                .addStringOption((options) =>
+                    options
+                        .setName("heartbeat")
+                        .setDescription("[OPTIONAL] Whether to stop the heartbeat.")
+                        .setRequired(false)
+                        .addChoices([
+                            ["Stop", "true"],
+                            ["No action", "false"]
                         ]))),
     async execute(client, interaction) {
         // Declaring variables

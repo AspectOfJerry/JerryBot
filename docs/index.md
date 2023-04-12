@@ -40,8 +40,7 @@ Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry
 <br>
 
 \*PL: Permission Levels<br>
-&nbsp;&nbsp;&nbsp;&nbsp;-2 = Superuser<br>
-&nbsp;&nbsp;&nbsp;&nbsp;-1 = Elevateduser<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1 = Superuser<br>
 &nbsp;&nbsp;&nbsp;&nbsp;0 = None<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1 = Highest<br>
 &nbsp;&nbsp;&nbsp;&nbsp;2 = Higher<br>

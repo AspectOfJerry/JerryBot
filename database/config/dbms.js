@@ -30,7 +30,7 @@ async function GetBaseConfig() {
  * @returns {object} A JSON object containing the full configuration file.
  */
 async function GetConfig() {
-    return require('./config_guilds.json');
+    return require('./config.json');
 }
 
 
@@ -144,7 +144,7 @@ async function RefreshDataset(client) {
 
 
     // Update the file
-    fs.writeFileSync(Path.resolve(__dirname, "./config_guilds.json"), JSON.stringify(config), (err) => {
+    fs.writeFileSync(Path.resolve(__dirname, "./config.json"), JSON.stringify(config), (err) => {
         if(err) {
             throw err;
         }

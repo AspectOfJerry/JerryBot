@@ -1,6 +1,7 @@
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
+const {connect} = require("../database/config/mongodb");
 const {Log, RefreshDataset, Sleep, StartJobs} = require("../modules/JerryUtils.js");
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
 const {RefreshHubs} = require('../modules/voiceChannelHubManager.js');
@@ -43,6 +44,8 @@ module.exports = {
             process.exit(0);
         }
 
+        // console.log("Connecting to the database...");
+        // await connect();
         console.log("Refreshing the database...");
         Log("append", "Database", "Refreshing the database...", "DEBUG");
         await RefreshDataset(client);
