@@ -113,7 +113,7 @@ module.exports = {
             .addFields(
                 {name: "User", value: `<@${interaction.user.id}>`, inline: true},
                 {name: "Command", value: `</${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}:${interaction.commandId}>`, inline: true},
-                {name: "Location", value: `${interaction.guild.name}/<#${interaction.channel.id}>`, inline: false},
+                {name: "Location", value: `<#${interaction.channel.id}>`, inline: false},
             )
 
         for(const user of super_users) {

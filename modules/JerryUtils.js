@@ -252,24 +252,38 @@ async function PermissionCheck(interaction) {
 
     var permissionSet = {};
 
+
+    // Get the guild's commandPermissions
     for(const [key, value] of guilds) {
         if(key == interaction.guild.id) {
-            // get guild commandPermissions
             permissionSet = value.commandPermissions;
         }
     }
 
+    // Check if no permissions were found
     if(Object.keys(permissionSet).length === 0) {
         throw `Failed to find a permissionSet for guild ${interaction.guild.id} (${interaction.guild.name})`;
     }
 
     let permissionValue;
 
+    // If there is a subcommand
     if(subcommand_name) {
         commandName = commandName + "_sub";
     }
 
-    for(const category of Object.values(permissionSet)) {
+    for(const [key, category] of Object.entries(permissionSet)) {
+        // If category itself is a subcommand directory
+        if(key.endsWith("_sub")) {
+            const command = category[subcommand_name];
+
+            if(command !== undefined) {
+                permissionValue = command;
+                break;
+            }
+            continue;
+        }
+
         const command = category[commandName];
 
         if(command !== undefined) {
@@ -278,11 +292,14 @@ async function PermissionCheck(interaction) {
                 break;
             } else {
                 const sub_command = command[subcommand_name];
-                permissionValue = sub_command
+                permissionValue = sub_command;
                 break;
             }
         }
     }
+
+    console.log(commandName)
+    console.log(permissionValue)
 
     if(permissionValue === undefined || permissionValue === null) {
         await Log("append", interaction.guild.id, `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`, "FATAL");

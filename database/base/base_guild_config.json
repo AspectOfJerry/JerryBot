@@ -15,8 +15,7 @@
                 "bot": 0,
                 "guild": 0
             },
-            "ping": 0,
-            "stop": 3
+            "ping": 0
         },
         "moderation": {
             "ban": 1,
@@ -39,16 +38,13 @@
             "tictactoe": 0,
             "typing": 0
         },
-        "sudo": {
-            "dev_sub": {
-                "stop": -1
-            },
-            "sudo_sub": {
-                "blacklist": -2,
-                "nuke": -2,
-                "status_clear": -2,
-                "stauts": -2
-            }
+        "sudo_sub": {
+            "blacklist": -1,
+            "nuke": -1,
+            "presence_clear": -1,
+            "presence": -1,
+            "status": -1,
+            "stop": -1
         },
         "utility": {
             "hypixel_sub": {

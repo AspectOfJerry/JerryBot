@@ -88,15 +88,16 @@ module.exports = {
             Log("append", "JerryBot", "[JerryBot/prod] Successfully refreshed the application (/) commands globally!", "DEBUG");
         } else if(process.env.npm_lifecycle_event === "dev") {
             try {
-                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
+                // await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
+                // console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
                 await Sleep(750);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
                 console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+                await Sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
+                // await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
+                // console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 Log("append", "JerryBot", `[JerryBot/dev] Successfully refreshed the application (/) commands locally!`, "DEBUG");
