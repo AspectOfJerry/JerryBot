@@ -1,6 +1,6 @@
 ---
 name: Enhancement
-about: Improve a feature
+about: New feature or request
 title: ''
 labels: enhancement
 assignees: ''
