@@ -202,7 +202,6 @@ async function executeSB(client) {
         for(const monitor of monitors) {
             monitor.rate = (monitor.fail / (monitor.success + monitor.fail)) * 100;
             monitor.text = `${monitor.rate <= 90 ? `${success_emoji} **${monitor.name}**: Operational (${monitor.rate}% failure)` : monitor.rate <= 48 ? `${warn_emoji} **${monitor.name}**: Degraded performance (${monitor.rate}% failure)` : `${fail_emoji} **${monitor.name}**: Failing (${monitor.rate}% failure)`}`;
-            console.log(`${monitor.name}, sucesses: ${monitor.success}, fails: ${monitor.fail}`)
             total_avg_rate + monitor.rate;
             i++;
         }
@@ -214,7 +213,11 @@ async function executeSB(client) {
             .setFooter({text: "Updated every 4 minutes; resets daily."});
 
         for(const message of messages) {
-            message.edit({embeds: [new_embed]});
+            try {
+                message.edit({embeds: [new_embed]});
+            } catch(err) {
+                console.error(err);
+            }
         }
     });
 
@@ -243,7 +246,7 @@ async function executeSB(client) {
 
     embedMessage = new MessageEmbed()
         .setColor("DARK_GREY")
-        .setTitle(`${success_emoji} Hypixel Skyblock API status`)
+        .setTitle(`${warn_emoji} Hypixel Skyblock API status`)
         .setDescription(`${sb_auctions.text}\n${sb_bazaar.text}\n${sb_collections.text}\n${sb_election.text}\n${sb_auctions_end.text}\n${sb_items.text}\n${sb_skills.text}\n${sb_profiles.text}`)
         .setFooter({text: "Updated every 4 minutes; resets daily."});
 
