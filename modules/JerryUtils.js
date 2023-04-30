@@ -384,6 +384,9 @@ async function StartJobs(client) {
         const {execute} = require(`../jobs/${job_file}`);
         execute(client);
     }
+
+    const {executeSB} = require(`../jobs/hypixel_api_status.js`);
+    executeSB(client);
 }
 
 
