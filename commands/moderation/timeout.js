@@ -139,7 +139,7 @@ module.exports = {
                         .setDisabled(false)
                 );
 
-            let isOverriddenText = "";
+            let isOverridden = false;
 
             // const now = Math.round(Date.now() / 1000);
             // const auto_cancel_timestamp = now + 15;
@@ -154,13 +154,12 @@ module.exports = {
                 // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
                 .setFooter({text: "🟥 Canceling in 10s"});
 
-            await interaction.reply({embeds: [confirm_override], components: [buttonRow]});
-            await Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
+            const message = await interaction.reply({embeds: [confirm_override], components: [buttonRow], fetchReply: true});
+            Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
 
             // Creating a filter for the collector
             const filter = async (buttonInteraction) => {
                 if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                    isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
                     await Log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" overrode the decision.`, "WARN");
                     return true;
                 } else if(buttonInteraction.user.id === interaction.user.id) {
@@ -172,7 +171,7 @@ module.exports = {
                 }
             };
 
-            const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 15000});
+            const button_collector = message.createMessageComponentCollector({filter, time: 15000});
 
             button_collector.on("collect", async (buttonInteraction) => {
                 await buttonInteraction.deferUpdate();
@@ -195,9 +194,9 @@ module.exports = {
                                 .setColor("GREEN")
                                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                                 .setTitle("User timeout override")
-                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverriddenText}.${reason}`)
+                                .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.${reason} `)
                                 .addFields(
-                                    {name: "Time out expiration", value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
+                                    {name: "Time out expiration", value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}: R>*`}
                                 )
                                 .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
@@ -216,10 +215,10 @@ module.exports = {
                     const cancel_override = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`<@${interaction.user.id}> cancelled the timeout${isOverriddenText}.`);
+                        .setDescription(`<@${interaction.user.id}> cancelled the timeout${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                     interaction.editReply({embeds: [cancel_override], components: [buttonRow]});
-                    Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" cancelled the timeout timeout${isOverriddenText}.`, "INFO");
+                    Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" cancelled the timeout timeout${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
                 }
             });
 

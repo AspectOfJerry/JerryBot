@@ -24,13 +24,13 @@ module.exports = {
         }
 
         // Declaring variables
-        const amount = interaction.options.getInteger('amount');
+        const amount = interaction.options.getInteger("amount");
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
 
         // Checks
 
         // Main
-        const buttonRow = new MessageActionRow()
+        const button_row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('purge_confirm_button')
@@ -41,9 +41,10 @@ module.exports = {
                     .setCustomId('purge_cancel_button')
                     .setLabel("Cancel")
                     .setStyle("PRIMARY")
+                    .setDisabled(false)
             );
 
-        let isOverriddenText = "";
+        let isOverridden = false;
 
         // const now = Math.round(Date.now() / 1000);
         // const auto_cancel_timestamp = now + 10;
@@ -58,16 +59,15 @@ module.exports = {
             // ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
             .setFooter({text: "🟥 Canceling in 10s"});
 
-        await interaction.reply({embeds: [confirm_purging], components: [buttonRow], ephemeral: true});
+        const message = await interaction.reply({embeds: [confirm_purging], components: [button_row], ephemeral: true, fetchReply: true});
         Log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                isOverriddenText = ` (overriden by <@${buttonInteraction.user.id}>)`;
                 await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
                 return true;
-            } else if(buttonInteraction.user.id == interaction.user.id) {
+            } else if(buttonInteraction.user.id === interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
@@ -76,7 +76,7 @@ module.exports = {
             }
         }
 
-        const button_collector = interaction.channel.createMessageComponentCollector({filter, time: 10000});
+        const button_collector = message.createMessageComponentCollector({filter, componentType: "BUTTON", time: 10000});
 
         button_collector.on("collect", async (buttonInteraction) => {
             await buttonInteraction.deferUpdate();
@@ -84,10 +84,10 @@ module.exports = {
 
             if(buttonInteraction.customId == "purge_confirm_button") {
                 // Disabling buttons
-                buttonRow.components[0]
+                button_row.components[0]
                     .setStyle("SUCCESS")
                     .setDisabled(true);
-                buttonRow.components[1]
+                button_row.components[1]
                     .setStyle("SECONDARY")
                     .setDisabled(true);
 
@@ -100,37 +100,37 @@ module.exports = {
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Message purging")
                             .setDescription(`Successfully purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
-                        // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
+                        // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>$${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
-                        interaction.followUp({embeds: [success_purge], components: [buttonRow], ephemeral: true});
-                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverriddenText}.`, "WARN");
+                        interaction.followUp({embeds: [success_purge], components: [button_row], ephemeral: true});
+                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "WARN");
                     });
             } else {
                 // Disabling buttons
-                buttonRow.components[0]
+                button_row.components[0]
                     .setStyle("SECONDARY")
                     .setDisabled(true);
-                buttonRow.components[1]
+                button_row.components[1]
                     .setStyle("SUCCESS")
                     .setDisabled(true);
 
                 const cancel_purge = new MessageEmbed()
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Successfully cancelled${isOverriddenText}.`)
+                    .setDescription(`Successfully cancelled${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`)
 
-                interaction.followUp({embeds: [cancel_purge], components: [buttonRow], ephemeral: true});
-                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverriddenText}.`, "INFO");
+                interaction.followUp({embeds: [cancel_purge], components: [button_row], ephemeral: true});
+                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
             }
         });
 
         button_collector.on("end", (collected) => {
             if(collected.size === 0) {
                 // Disabling buttons
-                buttonRow.components[0]
+                button_row.components[0]
                     .setStyle("SECONDARY")
                     .setDisabled(true);
-                buttonRow.components[1]
+                button_row.components[1]
                     .setStyle("SECONDARY")
                     .setDisabled(true);
 
@@ -139,7 +139,7 @@ module.exports = {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Auto aborted.`)
 
-                interaction.followUp({embeds: [auto_abort], components: [buttonRow], ephemeral: true});
+                interaction.followUp({embeds: [auto_abort], components: [button_row], ephemeral: true});
                 Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
             }
         });
