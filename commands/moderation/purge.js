@@ -11,7 +11,9 @@ module.exports = {
         .addIntegerOption((options) =>
             options
                 .setName("amount")
-                .setDescription("[REQUIRED] The amount of messages to delete.")
+                .setDescription("[REQUIRED] The amount of messages to delete (<= 100).")
+                .setMinValue(0)
+                .setMaxValue(100)
                 .setRequired(true))
         .addChannelOption((options) =>
             options
@@ -33,12 +35,12 @@ module.exports = {
         const button_row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setCustomId('purge_confirm_button')
-                    .setLabel('Purge')
+                    .setCustomId("purge_confirm_button")
+                    .setLabel("Purge")
                     .setStyle("DANGER")
                     .setDisabled(false),
                 new MessageButton()
-                    .setCustomId('purge_cancel_button')
+                    .setCustomId("purge_cancel_button")
                     .setLabel("Cancel")
                     .setStyle("PRIMARY")
                     .setDisabled(false)
@@ -99,7 +101,7 @@ module.exports = {
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                             .setTitle("Message purging")
-                            .setDescription(`Successfully purged __${msgs.size}__  messages in <#${channel.id}>${isOverriddenText}.`);
+                            .setDescription(`Successfully purged __${msgs.size}__  messages in <#${channel.id}>${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
                         // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>$${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                         interaction.followUp({embeds: [success_purge], components: [button_row], ephemeral: true});

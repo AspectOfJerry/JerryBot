@@ -1,10 +1,10 @@
 const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
 const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../../database/commands/exclusive/schedule/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../../database/commands/exclusive/schedule/dbms");
 
 const test_label = "0x00";
 
@@ -20,7 +20,7 @@ module.exports = {
                 .setRequired(false))
     // .addStringOption((options) =>
     //     options
-    //         .setName('OPTION_NAME')
+    //         .setName("OPTION_NAME")
     //         .setDescription("[OPTIONAL] OPTION_DESCRIPTION")
     //         .setRequired(false))
     ,
@@ -29,7 +29,7 @@ module.exports = {
         // interaction.deferReply()
 
         // Permission check
-        const whitelist_ids = ['611633988515266562'];
+        const whitelist_ids = ["611633988515266562"];
 
         if(!whitelist_ids.includes(interaction.user.id)) {
             const error_permissions = new MessageEmbed()

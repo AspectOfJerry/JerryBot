@@ -9,8 +9,8 @@ module.exports = async function (client, interaction) {
     }
 
     // Declaring variables
-    const min = interaction.options.getInteger('min') ?? 0;
-    const max = interaction.options.getInteger('max') ?? 100;
+    const min = interaction.options.getInteger("min") ?? 0;
+    const max = interaction.options.getInteger("max") ?? 100;
 
     // Checks
 

@@ -7,25 +7,25 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('random')
+        .setName("random")
         .setDescription("Commands related to pseudorandom number generators.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('number')
+                .setName("number")
                 .setDescription("Generates a random number")
                 .addIntegerOption((options) =>
                     options
-                        .setName('min')
+                        .setName("min")
                         .setDescription("The minimum number. Defaults to 0")
                         .setRequired(false))
                 .addIntegerOption((options) =>
                     options
-                        .setName('max')
+                        .setName("max")
                         .setDescription("The maximum number. Defaults to 100")
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('coinflip')
+                .setName("coinflip")
                 .setDescription("Coinflip!")
         ),
     async execute(client, interaction) {

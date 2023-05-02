@@ -7,26 +7,23 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("logs")
-        .setDescription("Perform an action with the bot's log files.")
+        .setName("hypixel")
+        .setDescription("Hypixel related commands")
         .addSubcommand(subcommand =>
             subcommand
-                .setName("append")
-                .setDescription("Appends a string to the active log file.")
-                .addStringOption((options) =>
-                    options
-                        .setName("body")
-                        .setDescription("[REQUIRED] The string to append to the log file.")
-                        .setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName("get")
-                .setDescription("Sends the latest log file.")
-                .addIntegerOption((options) =>
-                    options
-                        .setName("offset")
-                        .setDescription("[OPTIONAL] Number of days to skip starting with the current day going back. Defaults to 0 (today).")
-                        .setRequired(false))),
+                .setName("api")
+                .setDescription("Makes an API request to Hypixel"))
+    // .addSubcommand(subcommand =>
+    // subcommand
+    // .setName("SUBCMD_NAME")
+    // .setDescription("SUBCMD_DESCRIPTION")
+    // .addStringOption((options) =>
+    //     options
+    //         .setName("SUBCMD_OPTION_NAME")
+    //         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
+    //         .setRequired(true / false))
+    // )
+    ,
     async execute(client, interaction) {
         // Declaring variables
 
