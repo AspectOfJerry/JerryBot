@@ -21,7 +21,7 @@ module.exports = {
         }
 
         // Declaring variables
-        const game = new TicTacToe({language: 'en'});
+        const game = new TicTacToe({language: "en"});
 
         // Checks
 
@@ -29,8 +29,8 @@ module.exports = {
         Log("append", interaction.guild.id, "└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module", "INFO");
         game.handleInteraction(interaction);
 
-        const opponent = (interaction.options.getUser('opponent'))?.id ?? null;
-        const opponent_text = opponent ? ` opponent: <@${(interaction.options.getUser('opponent'))?.id}>` : "";
+        const opponent = (interaction.options.getUser("opponent"))?.id ?? null;
+        const opponent_text = opponent ? ` opponent: <@${(interaction.options.getUser("opponent"))?.id}>` : "";
 
         const restart_embed = new MessageEmbed()
             .setDescription(`:clipboard: </${interaction.commandName}:${interaction.commandId}>${opponent_text}`);

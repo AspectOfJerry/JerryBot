@@ -14,5 +14,5 @@ module.exports = async function (client, interaction) {
     // Checks
 
     // Main
-    interaction.reply("This command will be available in 5 buisness days.")
+    interaction.reply("This command will be available in 5 buisness days.");
 };

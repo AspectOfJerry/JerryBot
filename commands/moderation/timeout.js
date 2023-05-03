@@ -65,7 +65,7 @@ module.exports = {
                 );
 
             interaction.reply({embeds: [error_duration]});
-            await Log("append", interaction.guild.id, `└─Invalid duration.`);
+            await Log("append", interaction.guild.id, "└─Invalid duration.");
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -97,7 +97,7 @@ module.exports = {
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                 .setTitle("Error")
-                .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`)
+                .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`);
 
             await interaction.reply({embeds: [member_not_moderatable]});
             await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
@@ -129,7 +129,7 @@ module.exports = {
                 .addComponents(
                     new MessageButton()
                         .setCustomId("override_confirm_button")
-                        .setLabel(`Override`)
+                        .setLabel("Override")
                         .setStyle("DANGER")
                         .setDisabled(false),
                     new MessageButton()
@@ -147,7 +147,7 @@ module.exports = {
             const confirm_override = new MessageEmbed()
                 .setColor("YELLOW")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle(`Overrite timeout`)
+                .setTitle("Overrite timeout")
                 .setDescription(`<@${memberTarget.user.id}> is already timed out. Do you want to overrite the current timeout?`)
                 // .addFields(
                 //     {name: 'Auto cancel', value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: true}
@@ -155,7 +155,7 @@ module.exports = {
                 .setFooter({text: "🟥 Canceling in 10s"});
 
             const message = await interaction.reply({embeds: [confirm_override], components: [buttonRow], fetchReply: true});
-            Log("append", interaction.guild.id, `├─Execution authorized. Waiting for the confirmation.`, "INFO");
+            Log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
             // Creating a filter for the collector
             const filter = async (buttonInteraction) => {

@@ -1,11 +1,9 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const CronJob = require('cron').CronJob;
-const fetch = require("node-fetch");
-const date = require("date-and-time");
+const CronJob = require("cron").CronJob;
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require('../database/commands/exclusive/schedule/dbms');
+const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../database/commands/exclusive/schedule/dbms");
 
 let disabled = false;
 
@@ -19,7 +17,7 @@ async function execute(client) {
             return;
         }
 
-        await Log("append", 'schedule311', `[311] Posting today's schedule...`, "DEBUG");
+        await Log("append", "schedule311", "[311] Posting today's schedule...", "DEBUG");
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
@@ -48,7 +46,7 @@ async function execute(client) {
             // }
 
             waiting_schedule.delete();
-            await channel.send({content: `Good morning, here's **today's** schedule for **311**!`});
+            await channel.send({content: "Good morning, here's **today's** schedule for **311**!"});
             await channel.send({embeds: [schedule_embed]});
             await channel.send({content: schedule_message})
                 .then((msg) => {
@@ -101,19 +99,19 @@ async function execute(client) {
         // }
 
         waiting_schedule.delete();
-        await channel.send({content: `<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!`});
+        await channel.send({content: "<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!"});
         await channel.send({embeds: [schedule_embed]});
         await channel.send({content: schedule_message})
             .then((msg) => {
-                msg.react('✅');
+                msg.react("✅");
             });
         await Log("append", "schedule311", `[311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
     });
 
     schedule_311.start();
 
-    Log("append", "schedule311", `[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.`, "DEBUG");
-    console.log(`[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.`);
+    Log("append", "schedule311", "[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.", "DEBUG");
+    console.log("[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.");
 }
 
 

@@ -6,7 +6,7 @@ const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('msg')
+        .setName("msg")
         .setDescription("Talk privately with a guild member through the bot.")
         .addUserOption((options) =>
             options
@@ -23,14 +23,14 @@ module.exports = {
             return;
         }
 
-        await interaction.reply('This command is currently disabled.');
+        await interaction.reply("This command is currently disabled.");
 
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
         await Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
-        const message = interaction.options.getString('message');
+        const message = interaction.options.getString("message");
 
         let DMChannel;
 
@@ -39,7 +39,7 @@ module.exports = {
             const error_cannot_message_bot = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle('Error')
+                .setTitle("Error")
                 .setDescription("You cannot message a bot.");
 
             interaction.reply({embeds: [error_cannot_message_bot]});
@@ -63,7 +63,7 @@ module.exports = {
                     .setTitle("Message sent!")
                     .setDescription(`Creating a message collector in the DM channel. You will be able to see what <@${memberTarget.id}> sends to the bot.\n` +
                         "To send them a message, type your message in this channel and the bot will relay it!")
-                    .addField('Important', "Send '**msg.stop**' in this channel to stop the collector.");
+                    .addField("Important", "Send '**msg.stop**' in this channel to stop the collector.");
 
                 await interaction.followUp({embeds: [message_sent]});
 
@@ -75,21 +75,21 @@ module.exports = {
                 receive_collector.on("collect", msg => {
                     if(msg.author.id != client.user.id) {
                         const message_embed = new MessageEmbed()
-                            .setColor('BLURPLE')
+                            .setColor("BLURPLE")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                             .setAuthor({name: `${msg.author.tag}`, iconURL: `${msg.author.displayAvatarURL({dynamic: true})}`})
                             .setDescription(`*Receive:* ${msg.content}`);
 
                         interaction.followUp({embeds: [message_embed]});
                     }
-                })
+                });
 
                 send_collector.on("collect", msg => {
-                    if(msg.content.toUpperCase() == 'MSG.STOP') {
+                    if(msg.content.toUpperCase() == "MSG.STOP") {
                         const stopping_collector = new MessageEmbed()
                             .setColor("RED")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                            .setTitle('Stopping Collector')
+                            .setTitle("Stopping Collector")
                             .setDescription(`Stopping the message collector. You will no longer be able to see what <@${memberTarget.id}> sends to the bot.`);
 
                         msg.reply({embeds: [stopping_collector]});

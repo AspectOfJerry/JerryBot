@@ -1,6 +1,6 @@
 const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
 const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
 
@@ -12,14 +12,14 @@ module.exports = async function (client, interaction) {
 
     // Declaring variables
     const input_modal = new Modal()
-        .setCustomId('input_modal')
-        .setTitle('Number input');
+        .setCustomId("input_modal")
+        .setTitle("Number input");
 
     const numbers_input = new TextInputComponent()
-        .setCustomId('input_numbers')
+        .setCustomId("input_numbers")
         .setLabel("LABEL")
         .setPlaceholder("List of numbers seperated by spaces. Commas and periods are accepted for decimals.")
-        .setStyle('PARAGRAPH');
+        .setStyle("PARAGRAPH");
 
     const first_row = new MessageActionRow().addComponents(numbers_input);
 
@@ -50,7 +50,7 @@ module.exports = async function (client, interaction) {
                 newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
                 Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
-            }
+            };
 
             msg.awaitMessageComponent(filter, {time: 30000})
                 .then(async (newInteraction) => {
@@ -59,7 +59,7 @@ module.exports = async function (client, interaction) {
                             return true;
                         }
                         return false;
-                    }
+                    };
 
                     await newInteraction.showModal(input_modal);
                     newInteraction.awaitModalSubmit({filter, time: 60000})
@@ -67,7 +67,7 @@ module.exports = async function (client, interaction) {
 
                         }).catch((err) => {
                             if(err.message.includes("time")) {
-
+                                // send timeout message
                             }
                         });
                 });

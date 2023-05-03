@@ -1,3 +1,4 @@
+const process = require("process");
 const mongoose = require("mongoose");
 
 const uri = `mongodb+srv://JerryBotAdmin:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;

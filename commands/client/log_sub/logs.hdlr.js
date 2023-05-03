@@ -33,6 +33,7 @@ module.exports = {
         // Checks
 
         // Main
+        // eslint-disable-next-line no-undef
         const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {

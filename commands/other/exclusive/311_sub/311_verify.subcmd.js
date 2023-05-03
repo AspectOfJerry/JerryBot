@@ -9,7 +9,6 @@ module.exports = async function (client, interaction) {
     }
 
     // Declaring variables
-    collectedModal = false;
     const select_menu = new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()

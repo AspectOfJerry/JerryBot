@@ -125,69 +125,69 @@ async function IsSuperUser(client, userResolvable) {
  */
 async function Log(method, tag, body, type) {
     switch(method) {
-        case "append": {
-            // Declaring variables
-            const now = new Date();
+    case "append": {
+        // Declaring variables
+        const now = new Date();
 
-            let tagLenght = 0;
-            let tagExtraIndentNum = 0;
-            let tagExtraIndent = "";
-            let typeLenght = 0;
-            let typeExtraIndentNum = 0;
-            let typeExtraIndent = "";
+        let tagLenght = 0;
+        let tagExtraIndentNum = 0;
+        let tagExtraIndent = "";
+        let typeLenght = 0;
+        let typeExtraIndentNum = 0;
+        let typeExtraIndent = "";
 
-            // Get current date
-            const now_date = date.format(now, "YYYY-MM-DD");
-            const now_time = date.format(now, "HH:mm:ss.SSS");
+        // Get current date
+        const now_date = date.format(now, "YYYY-MM-DD");
+        const now_time = date.format(now, "HH:mm:ss.SSS");
 
-            // Generate the log file name
-            const file_name = `${now_date}_JerryBot.log`;
+        // Generate the log file name
+        const file_name = `${now_date}_JerryBot.log`;
 
-            // Generate the new line content
-            if(tag == null) {
-                tag = "------------------";
-            }
-            tagLenght = tag.length;
-            tagExtraIndentNum = 19 - tagLenght;
-            for(let i = 0; i < tagExtraIndentNum; i++) {
-                tagExtraIndent = tagExtraIndent + " ";
-            }
-
-            // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
-            if(!type) {
-                throw `Cannot use type of ${type}`;
-            }
-
-            typeLenght = type.length;
-            typeExtraIndentNum = 5 - typeLenght;
-
-            for(let i = 0; i < typeExtraIndentNum; i++) {
-                typeExtraIndent = typeExtraIndent + " ";
-            }
-
-            const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
-
-            const return_object = {
-                body: body,
-                fileName: file_name,
-                parsedBody: parsed_body
-            };
-
-            // Append to file
-            fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
-                if(err) {
-                    throw err;
-                }
-            });
-            RegisterEvent(type, 1);
-            return return_object;
+        // Generate the new line content
+        if(tag == null) {
+            tag = "------------------";
         }
-        case "read": {
-            // Read stuff
+        tagLenght = tag.length;
+        tagExtraIndentNum = 19 - tagLenght;
+        for(let i = 0; i < tagExtraIndentNum; i++) {
+            tagExtraIndent = tagExtraIndent + " ";
         }
-            break;
-        default:
-            throw "Unknown logging method.";
+
+        // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
+        if(!type) {
+            throw `Cannot use type of ${type}`;
+        }
+
+        typeLenght = type.length;
+        typeExtraIndentNum = 5 - typeLenght;
+
+        for(let i = 0; i < typeExtraIndentNum; i++) {
+            typeExtraIndent = typeExtraIndent + " ";
+        }
+
+        const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
+
+        const return_object = {
+            body: body,
+            fileName: file_name,
+            parsedBody: parsed_body
+        };
+
+        // Append to file
+        fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
+            if(err) {
+                throw err;
+            }
+        });
+        RegisterEvent(type, 1);
+        return return_object;
+    }
+    case "read": {
+        // Read stuff
+    }
+        break;
+    default:
+        throw "Unknown logging method.";
     }
 }
 
@@ -220,7 +220,7 @@ async function PermissionCheck(interaction) {
             const guild_blacklisted_warning = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setTitle("Guild Blacklisted Warning")
-                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`)
+                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`);
 
             interaction.channel.send({embeds: [guild_blacklisted_warning]});
             Log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
@@ -297,9 +297,6 @@ async function PermissionCheck(interaction) {
             }
         }
     }
-
-    console.log(commandName)
-    console.log(permissionValue)
 
     if(permissionValue === undefined || permissionValue === null) {
         await Log("append", interaction.guild.id, `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`, "FATAL");
@@ -385,7 +382,7 @@ async function StartJobs(client) {
         execute(client);
     }
 
-    const {executeSB} = require(`../jobs/hypixel_api_status.js`);
+    const {executeSB} = require("../jobs/hypixel_api_status.js");
     executeSB(client);
 }
 

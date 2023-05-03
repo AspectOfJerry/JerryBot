@@ -1,7 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const CronJob = require("cron").CronJob;
-const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
@@ -14,7 +13,7 @@ async function execute(client) {
     const online = new CronJob("00 6 * * *", async () => {
         client.user.setStatus("online");
 
-        Log("append", 'cycle', "[CycleDay] Successfully the bot's status to online.", "DEBUG");
+        Log("append", "cycle", "[CycleDay] Successfully the bot's status to online.", "DEBUG");
     });
 
     /**

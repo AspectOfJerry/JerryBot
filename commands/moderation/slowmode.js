@@ -52,7 +52,7 @@ module.exports = {
                     const disabled_slowmode = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
+                        .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`);
 
                     interaction.reply({embeds: [disabled_slowmode]});
                     Log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
@@ -66,7 +66,7 @@ module.exports = {
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully enabled a **${interval}** second rate limit per user in <#${channel.id}>.`)
-                    .setFooter({text: "Set the rate limit to 0 to disable it."})
+                    .setFooter({text: "Set the rate limit to 0 to disable it."});
 
                 interaction.reply({embeds: [enabled_slowmode]});
                 Log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");

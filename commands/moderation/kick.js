@@ -101,7 +101,7 @@ module.exports = {
         const confirm_kick = new MessageEmbed()
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle(`Confirm Kick`)
+            .setTitle("Confirm Kick")
             .setDescription(`Are you sure you want to kick <@${memberTarget.id}>?`)
             // .addFields(
             //     {name: "Auto cancel", value: `> :red_square: Canceling <t:${auto_cancel_timestamp}:R>*.`, inline: false}
@@ -192,10 +192,10 @@ module.exports = {
                 const auto_abort = new MessageEmbed()
                     .setColor("DARK_GREY")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Auto aborted.`);
+                    .setDescription("Auto aborted.");
 
                 interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
             }
         });
     }

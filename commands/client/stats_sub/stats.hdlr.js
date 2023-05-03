@@ -7,11 +7,11 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('stats')
+        .setName("stats")
         .setDescription("Shows statistics about the bot.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('bot')
+                .setName("bot")
                 .setDescription("Shows statistics about the bot.")),
     async execute(client, interaction) {
         // Declaring variables
@@ -19,6 +19,7 @@ module.exports = {
         // Checks
 
         // Main
+        // eslint-disable-next-line no-undef
         const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {

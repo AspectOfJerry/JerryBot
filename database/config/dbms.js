@@ -21,7 +21,7 @@ async function AddGuild(guildObject) {
  * @returns {object} A JSON object containing the base command permissions
  */
 async function GetBaseConfig() {
-    return require('../base/base_guild_config.json');
+    return require("../base/base_guild_config.json");
 }
 
 
@@ -30,7 +30,7 @@ async function GetBaseConfig() {
  * @returns {object} A JSON object containing the full configuration file.
  */
 async function GetConfig() {
-    return require('./config.json');
+    return require("./config.json");
 }
 
 
@@ -60,7 +60,7 @@ async function GetHighestPL(member) {
     const role_config = guild.permissionRoles;
 
     if(!role_config) {
-        throw `Missing permissionRoles configuration`;
+        throw "Missing permissionRoles configuration";
     }
 
     for(let i = 1; i < Object.keys(role_config).length + 1; i++) {
@@ -144,6 +144,7 @@ async function RefreshDataset(client) {
 
 
     // Update the file
+    // eslint-disable-next-line no-undef
     fs.writeFileSync(Path.resolve(__dirname, "./config.json"), JSON.stringify(config), (err) => {
         if(err) {
             throw err;
@@ -164,7 +165,6 @@ module.exports = {
     AddGuild,
     GetConfig,
     GetGuildConfigMap,
-    GetConfig,
     GetHighestPL,
     ParseGuild,
     RefreshDataset,

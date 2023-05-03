@@ -20,6 +20,38 @@
         "url": "https://github.com/AspectOfJerry/JerryBot/issues",
         "email": "jerry@aspectofjerry.dev"
     },
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "commonjs": true,
+            "es2021": true
+        },
+        "extends": "eslint:recommended",
+        "overrides": [],
+        "parserOptions": {
+            "ecmaVersion": "latest"
+        },
+        "rules": {
+            "indent": [
+                "error",
+                4
+            ],
+            "linebreak-style": [
+                "error",
+                "windows"
+            ],
+            "quotes": [
+                "error",
+                "double"
+            ],
+            "semi": [
+                "error",
+                "always"
+            ],
+            "no-unused-vars": "warn",
+            "no-unreachable": "off"
+        }
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
@@ -39,5 +71,8 @@
         "ms": "^2.1.3",
         "node-fetch": "^2.6.7",
         "weather-js": "^2.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.39.0"
     }
 }

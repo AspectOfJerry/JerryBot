@@ -1,10 +1,10 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const CronJob = require('cron').CronJob;
+const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
-const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
+const {ChecklistHeartbeat, UpdateHeartbeat} = require("../modules/telemetry");
 
 
 let disabled = false;
@@ -50,12 +50,12 @@ async function execute(client) {
 
     heartbeat.start();
 
-    Log("append", "heartbeat", `[Heartbeat] Heartbeat started!`, "DEBUG");
-    console.log(`[Heartbeat] Heartbeat started!`);
+    Log("append", "heartbeat", "[Heartbeat] Heartbeat started!", "DEBUG");
+    console.log("[Heartbeat] Heartbeat started!");
 
-    await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+    await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq")
         .then(() => {
-            Log("append", "heartbeat", `[Heartbeat] The first Heartbeat was sent to the status page.`, "DEBUG");
+            Log("append", "heartbeat", "[Heartbeat] The first Heartbeat was sent to the status page.", "DEBUG");
             const now = Math.round(Date.now() / 1000);
             UpdateHeartbeat(client, now);
         });

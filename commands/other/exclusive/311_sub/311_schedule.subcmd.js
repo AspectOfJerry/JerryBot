@@ -38,7 +38,7 @@ module.exports = async function (client, interaction) {
         //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
         // }
 
-        interaction.editReply({content: `Here's **today's** schedule!`});
+        interaction.editReply({content: "Here's **today's** schedule!"});
         await interaction.channel.send({embeds: [schedule_embed]});
         interaction.channel.send({content: schedule_message});
         return;

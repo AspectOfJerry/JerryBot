@@ -72,13 +72,13 @@ module.exports = {
             await interaction.reply({embeds: [disconnecting]});
 
             await memberTarget.voice.channel.members.forEach((member) => {
-                let current_voice_channel = member.voice.channel
+                let currentVoiceChannel = member.voice.channel;
                 member.voice.setChannel(null)
                     .then(() => {
                         const disconnect_success = new MessageEmbed()
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
+                            .setDescription(`Successfully disconnected <@${member.id}> from ${currentVoiceChannel}.`);
 
                         interaction.channel.followUp({embeds: [disconnect_success], ephemeral: true});
                     });

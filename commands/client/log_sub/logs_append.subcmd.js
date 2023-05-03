@@ -21,16 +21,17 @@ module.exports = async function (client, interaction, string, object) {
         .setTitle("Writing to logs...")
         .addFields(
             {name: "Body string", value: `${string}`, inline: false},
-            {name: "Target directory", value: "../logs/", inline: false})
+            {name: "Target directory", value: "../logs/", inline: false});
+
     const write_to_logs = new MessageEmbed()
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
         .setTitle("Write to logs")
         .addFields(
             {name: "Body string", value: `${(await object).parsedBody}`, inline: false},
-            {name: "Target directory", value: `../logs/${(await object).fileName}`, inline: false})
+            {name: "Target directory", value: `../logs/${(await object).fileName}`, inline: false});
 
     interaction.reply({embeds: [writing_to_logs]});
-    await Log("append", interaction.guild.id, string, "INFO");
+    Log("append", interaction.guild.id, string, "INFO");
     interaction.editReply({embeds: [write_to_logs]});
 };

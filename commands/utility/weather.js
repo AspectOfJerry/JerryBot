@@ -46,7 +46,7 @@ module.exports = {
                 const search_error = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('Error')
+                    .setTitle("Error")
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
@@ -141,7 +141,7 @@ module.exports = {
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
             await interaction.editReply({embeds: [weather]});
-            await interaction.followUp({content: "This command needs a heavy rework."})
+            await interaction.followUp({content: "This command needs a heavy rework."});
         });
     }
 };

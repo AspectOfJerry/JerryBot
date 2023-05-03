@@ -7,15 +7,15 @@ const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('nasa')
+        .setName("nasa")
         .setDescription("Executes a command related with the NASA Open APIs.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('api')
+                .setName("api")
                 .setDescription("Makes an API call to NASA's APOD API."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('apod')
+                .setName("apod")
                 .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")),
     async execute(client, interaction) {
         // Declaring variables
@@ -23,6 +23,7 @@ module.exports = {
         // Checks
 
         // Main
+        // eslint-disable-next-line no-undef
         const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {

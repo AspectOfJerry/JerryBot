@@ -1,3 +1,4 @@
+const process = require("process");
 require("dotenv").config();
 const fs = require("fs");
 const {Client, Intents, Collection, MessageEmbed} = require("discord.js");

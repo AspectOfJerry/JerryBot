@@ -76,7 +76,7 @@ module.exports = {
                 await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
             }
-        }
+        };
 
         const button_collector = message.createMessageComponentCollector({filter, componentType: "BUTTON", time: 10000});
 
@@ -119,7 +119,7 @@ module.exports = {
                 const cancel_purge = new MessageEmbed()
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Successfully cancelled${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`)
+                    .setDescription(`Successfully cancelled${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                 interaction.followUp({embeds: [cancel_purge], components: [button_row], ephemeral: true});
                 Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
@@ -139,10 +139,10 @@ module.exports = {
                 const auto_abort = new MessageEmbed()
                     .setColor("DARK_GREY")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setDescription(`Auto aborted.`)
+                    .setDescription("Auto aborted.");
 
                 interaction.followUp({embeds: [auto_abort], components: [button_row], ephemeral: true});
-                Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+                Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
             }
         });
     }

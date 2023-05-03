@@ -96,8 +96,8 @@ module.exports = {
                         interaction.editReply({embeds: [move_error]});
                         Log("append", interaction.guild.id, `├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
 
-                        member_count--
-                        failed_member_count++
+                        member_count--;
+                        failed_member_count++;
                     });
                 await Sleep(100);
             });

@@ -1,8 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
-const {GetVcHubs, HandleJoin, HandleLeave} = require('../modules/voiceChannelHubManager');
+const {GetVcHubs, HandleJoin, HandleLeave} = require("../modules/voiceChannelHubManager");
 
 
 module.exports = {

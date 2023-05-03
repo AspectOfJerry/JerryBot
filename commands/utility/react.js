@@ -28,9 +28,9 @@ module.exports = {
         return;
         // Declaring variables
         const snowflake = await interaction.options.getString("message");
-        console.log(snowflake)
+        console.log(snowflake);
         const message = await interaction.channel.messages.resolve(snowflake);
-        console.log(message)
+        console.log(message);
         const emoji = interaction.options.getString("emoji");
 
         // Checks

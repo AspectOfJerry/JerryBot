@@ -3,7 +3,6 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fs = require("fs");
 const date = require("date-and-time");
-const fetch = require("node-fetch");
 
 // const {Log, Sleep} = require("../modules/JerryUtils.js");
 
@@ -31,7 +30,7 @@ async function execute(client) {
         const file_name = date.format(yesterday, "YYYY-MMMM");
         const prefix = date.format(yesterday, "YYYY-MM-DD");
 
-        const total_events = Object.values(counter).reduce((a, b) => {return a + b}, 0);
+        const total_events = Object.values(counter).reduce((a, b) => {return a + b;}, 0);
 
         const body = `[${prefix}] Total events: ${total_events},
     DEBUG: ${counter.DEBUG},
@@ -50,7 +49,7 @@ async function execute(client) {
         // Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
 
         // Reset counter
-        Object.keys(counter).forEach((key) => {counter[key] = 0});
+        Object.keys(counter).forEach((key) => {counter[key] = 0;});
     });
 
     digest.start();
@@ -69,7 +68,7 @@ function RegisterEvent(type, amount) {
         throw `Invalid type tag of ${type}`;
     }
 
-    counter[type]++;
+    counter[type] + amount;
 }
 
 

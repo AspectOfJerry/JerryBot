@@ -60,7 +60,7 @@ module.exports = {
         newClientStatus.toString();
         newClientStatus = newClientStatus.replaceAll("{", "");
         newClientStatus = newClientStatus.replaceAll("}", "");
-        newClientStatus = newClientStatus.replaceAll('"', "");
+        newClientStatus = newClientStatus.replaceAll("\"", "");
         newClientStatus = newClientStatus.replaceAll(":", ": ");
         newClientStatus = newClientStatus.replaceAll(",", ", ");
 
@@ -68,7 +68,7 @@ module.exports = {
         oldClientStatus.toString();
         oldClientStatus = oldClientStatus.replaceAll("{", "");
         oldClientStatus = oldClientStatus.replaceAll("}", "");
-        oldClientStatus = oldClientStatus.replaceAll('"', "");
+        oldClientStatus = oldClientStatus.replaceAll("\"", "");
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 

@@ -58,11 +58,12 @@ module.exports = {
                             ["Online", "online"],
                             ["Idle", "idle"],
                             ["Do not disturb", "dnd"]
-                        ])).addStringOption((option) =>
-                            option
-                                .setName("url")
-                                .setDescription("[OPTIONAL] A YouTube or Twitch URL, required if the type is Streaming.")
-                                .setRequired(false)))
+                        ]))
+                .addStringOption((option) =>
+                    option
+                        .setName("url")
+                        .setDescription("[OPTIONAL] A YouTube or Twitch URL, required if the type is Streaming.")
+                        .setRequired(false)))
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("presence_clear")
@@ -114,12 +115,13 @@ module.exports = {
                 {name: "User", value: `<@${interaction.user.id}>`, inline: true},
                 {name: "Command", value: `</${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}:${interaction.commandId}>`, inline: true},
                 {name: "Location", value: `<#${interaction.channel.id}>`, inline: false},
-            )
+            );
 
         for(const user of super_users) {
             client.users.send(user, {embeds: [notify]});
         }
 
+        // eslint-disable-next-line no-undef
         const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {

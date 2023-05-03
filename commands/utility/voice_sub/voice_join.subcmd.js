@@ -50,7 +50,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
         interaction.editReply({embeds: [connection_connecting]});
-        Log("append", interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, "INFO");
+        Log("append", interaction.guild.id, "├─Connecting. Establishing a connection to the voice channel...", "INFO");
     });
 
     connection.on(VoiceConnectionStatus.Ready, async () => {
@@ -61,7 +61,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Ready__. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [connection_ready]});
-        Log("append", interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, "INFO");
+        Log("append", interaction.guild.id, "├─Ready. The connection to the voice channel has been established.", "INFO");
 
         await Sleep(500);
 

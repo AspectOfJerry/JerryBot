@@ -1,7 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const CronJob = require('cron').CronJob;
-const fetch = require("node-fetch");
+const CronJob = require("cron").CronJob;
 
 const {Log, Sleep} = require("../modules/JerryUtils.js");
 
@@ -18,19 +17,19 @@ async function execute(client) {
     /**
      * Triggers every year on January 1st
      */
-    const new_year = new CronJob('0 0 1 1 *', async () => {
+    const new_year = new CronJob("0 0 1 1 *", async () => {
 
         const guilds = [];
         guilds.push(await client.guilds.fetch("631939549332897842"));
         guilds.push(await client.guilds.fetch("1014278986135781438"));
 
         const channels = [];
-        channels.push('782060424220377128'); // devServer
-        channels.push('1014293537363341332'); // 311
+        channels.push("782060424220377128"); // devServer
+        channels.push("1014293537363341332"); // 311
 
         const alt_channels = [];
-        alt_channels.push('857978482374344734'); // devServer
-        alt_channels.push('1014286502743773305'); // 311
+        alt_channels.push("857978482374344734"); // devServer
+        alt_channels.push("1014286502743773305"); // 311
 
         for(let i = 0; i < guilds.length; i++) {
             const channel = await guilds[i].channels.fetch(channels[i]);
@@ -38,20 +37,20 @@ async function execute(client) {
 
             await channel.send({content: `:tada: Happy new year ${guilds[i].roles.everyone}! :tada:`})
                 .then((msg) => {
-                    msg.react('🥳');
+                    msg.react("🥳");
                 });
 
             await alt_channel.send({content: ":tada: Happy new year everyone! :partying_face: :fireworks:"})
                 .then((msg) => {
-                    msg.react('🎉');
+                    msg.react("🎉");
                 });
         }
     });
 
     new_year.start();
 
-    Log("append", 'newYear', `[NewYear] The new year announcer is ready!`, "DEBUG");
-    console.log(`[NewYear] The new year announcer is ready!`);
+    Log("append", "newYear", "[NewYear] The new year announcer is ready!", "DEBUG");
+    console.log("[NewYear] The new year announcer is ready!");
 }
 
 

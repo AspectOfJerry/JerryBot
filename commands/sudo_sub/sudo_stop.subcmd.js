@@ -1,6 +1,7 @@
+const process = require("process");
 const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
 const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
 
@@ -23,7 +24,7 @@ module.exports = async function (client, interaction) {
         .addComponents(
             new MessageButton()
                 .setCustomId("stop_confirm_button")
-                .setLabel(`Stop`)
+                .setLabel("Stop")
                 .setStyle("DANGER")
                 .setDisabled(false),
             new MessageButton()
@@ -56,7 +57,7 @@ module.exports = async function (client, interaction) {
             overrideText = ` (overriden by <@${buttonInteraction.user.id}>)`;
             await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
-        } else if(buttonInteraction.user.id = interaction.user.id) {
+        } else if(buttonInteraction.user.id === interaction.user.id) {
             return true;
         } else {
             await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
@@ -89,7 +90,7 @@ module.exports = async function (client, interaction) {
 
             await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
             await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' authorized the stop request${overrideText}.`, "INFO");
-            await Log("append", interaction.guild.id, `└─Stopping the bot...`, "FATAL");
+            await Log("append", interaction.guild.id, "└─Stopping the bot...", "FATAL");
             await client.destroy(); // Destroying the Discord client
             await Sleep(250);
             process.exit(0); // Exiting here
@@ -115,10 +116,10 @@ module.exports = async function (client, interaction) {
             const auto_abort = new MessageEmbed()
                 .setColor("DARK_GREY")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Auto aborted.`);
+                .setDescription("Auto aborted.");
 
             interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-            Log("append", interaction.guild.id, `└─Auto aborted.`, "INFO");
+            Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
             return;
         }
     });

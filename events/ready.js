@@ -1,19 +1,20 @@
-const {REST} = require('@discordjs/rest');
-const {Routes} = require('discord-api-types/v9');
+const process = require("process");
+const {REST} = require("@discordjs/rest");
+const {Routes} = require("discord-api-types/v9");
 
 const {connect} = require("../database/config/mongodb");
 const {Log, RefreshDataset, Sleep, StartJobs} = require("../modules/JerryUtils.js");
-const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require('../modules/telemetry');
-const {RefreshHubs} = require('../modules/voiceChannelHubManager.js');
+const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require("../modules/telemetry");
+const {RefreshHubs} = require("../modules/voiceChannelHubManager.js");
 // const {InitNukeNotifier} = require('../modules/nuking_notifier');
 
 
 module.exports = {
-    name: 'ready',
+    name: "ready",
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        await Log("append", "JerryBot", '[JerryBot] "@JerryBot#9090" is now online.', "DEBUG");
+        await Log("append", "JerryBot", "[JerryBot] \"@JerryBot#9090\" is now online.", "DEBUG");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
@@ -100,7 +101,7 @@ module.exports = {
                 console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
 
                 console.log("Successfully refreshed the application (/) commands locally!");
-                Log("append", "JerryBot", `[JerryBot/dev] Successfully refreshed the application (/) commands locally!`, "DEBUG");
+                Log("append", "JerryBot", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
             } catch(err) {
                 if(err) {
                     console.error(err);

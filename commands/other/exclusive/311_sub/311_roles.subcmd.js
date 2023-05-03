@@ -37,7 +37,6 @@ module.exports = async function (client, interaction) {
 
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-            isOverriddenText = ` (overriden by <@${selectMenuInteraction.user.id}>)`;
             await Log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
@@ -52,8 +51,8 @@ module.exports = async function (client, interaction) {
     const prompt = new MessageEmbed()
         .setColor("YELLOW")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle('Self-toggle roles')
-        .setDescription('Select the roles you want to toggle in the dropdown menu.');
+        .setTitle("Self-toggle roles")
+        .setDescription("Select the roles you want to toggle in the dropdown menu.");
 
     await interaction.reply({embeds: [prompt], components: [select_menu], fetchReply: true})
         .then(async (msg) => {
@@ -95,10 +94,10 @@ module.exports = async function (client, interaction) {
                         .setTitle("Self-toggled roles")
                         .addFields(
                             {
-                                name: "Roles added", value: `${() => {if(!rolesAdded) {return "None"} return rolesAdded;}}`, inline: false
+                                name: "Roles added", value: `${() => {if(!rolesAdded) {return "None";} return rolesAdded;}}`, inline: false
                             },
                             {
-                                name: "Roles removed", value: `${() => {if(!rolesRemoved) {return "None"} return rolesRemoved;}}`, inline: false
+                                name: "Roles removed", value: `${() => {if(!rolesRemoved) {return "None";} return rolesRemoved;}}`, inline: false
                             }
                         );
 
