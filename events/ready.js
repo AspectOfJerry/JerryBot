@@ -4,6 +4,7 @@ const {Routes} = require("discord-api-types/v9");
 
 const {connect} = require("../database/config/mongodb");
 const {Log, RefreshDataset, Sleep, StartJobs} = require("../modules/JerryUtils.js");
+const {configOpenAI} = require("../modules/gpt.js");
 const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require("../modules/telemetry");
 const {RefreshHubs} = require("../modules/voiceChannelHubManager.js");
 // const {InitNukeNotifier} = require('../modules/nuking_notifier');
@@ -54,6 +55,9 @@ module.exports = {
         // Reresh Voice Channel Hubs
         console.log("Refreshing the voice channel hubs...");
         await RefreshHubs(client);
+
+        // configure openAI
+        configOpenAI();
 
         if(process.env.npm_lifecycle_event === "test") {
             // Test content here
