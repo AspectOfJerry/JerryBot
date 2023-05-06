@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const configSchema = require("./schema/configSchema.js");
 const guildSchema = require("./schema/guildSchema.js");
 
-console.log(`${process.env.MONGO_USER}:${process.env.MONGO_PW}`);
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -57,7 +56,7 @@ async function getConfig() {
  * @return The guild document
  */
 async function getGuildConfig(guildId) {
-    const res = await guildSchema.find({id: guildId});
+    const res = await guildSchema.findOne({id: guildId});
     return res;
 }
 
@@ -101,6 +100,8 @@ async function refreshDatabase(client) {
                 $set: {
                     id: guildId,
                     name: guild.name,
+                },
+                $setOnInsert: {
                     permissionRoles: {
                         l1: "",
                         l2: "",

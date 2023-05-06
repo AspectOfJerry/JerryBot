@@ -3,9 +3,9 @@ const {REST} = require("@discordjs/rest");
 const {Routes} = require("discord-api-types/v9");
 
 const {connect, refreshDatabase, updateConfig} = require("../database/mongodb.js");
-const {Log, Sleep, StartJobs} = require("../modules/JerryUtils.js");
+const {log, sleep, StartJobs} = require("../modules/JerryUtils.js");
 const {configOpenAI} = require("../modules/gpt.js");
-const {ChecklistBotReady, ChecklistJobs, StartTelemetry} = require("../modules/telemetry");
+const {checklistBotReady, checklistJobs, startTelemetry} = require("../modules/telemetry");
 const {refreshHubs} = require("../modules/voiceChannelHubManager.js");
 // const {InitNukeNotifier} = require('../modules/nuking_notifier');
 
@@ -71,12 +71,12 @@ module.exports = {
         if(process.env.npm_lifecycle_event !== "dev") {
             // Telemetry
             console.log("Starting telemetry...");
-            await StartTelemetry(client);
+            await startTelemetry(client);
 
             // Jobs
             console.log("Starting jobs...");
             await StartJobs(client);
-            ChecklistJobs();
+            checklistJobs();
 
             // Other
             // await InitNukeNotifier(client);
@@ -142,7 +142,7 @@ module.exports = {
         }
 
         if(process.env.npm_lifecycle_event !== "dev") {
-            ChecklistBotReady();
+            checklistBotReady();
         }
     }
 };

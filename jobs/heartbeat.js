@@ -4,7 +4,7 @@ const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
 const {log, sleep} = require("../modules/JerryUtils.js");
-const {ChecklistHeartbeat, UpdateHeartbeat} = require("../modules/telemetry");
+const {checklistHeartbeat, updateHeartbeat} = require("../modules/telemetry");
 
 
 let disabled = false;
@@ -22,9 +22,9 @@ async function execute(client) {
                 .then(() => {
                     log("append", "heartbeat", "[Heartbeat] Heartbeat sent to the status page.", "DEBUG");
                     const now = Math.round(Date.now() / 1000);
-                    UpdateHeartbeat(client, now);
+                    updateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeat();
+                        checklistHeartbeat();
                         once = true;
                     }
                 });
@@ -39,9 +39,9 @@ async function execute(client) {
                 .then(() => {
                     log("append", "heartbeat", "[Heartbeat] Heartbeat sent to status page.", "DEBUG");
                     const now = Math.round(Date.now() / 1000);
-                    UpdateHeartbeat(client, now);
+                    updateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeat();
+                        checklistHeartbeat();
                         once = true;
                     }
                 });
@@ -57,7 +57,7 @@ async function execute(client) {
         .then(() => {
             log("append", "heartbeat", "[Heartbeat] The first Heartbeat was sent to the status page.", "DEBUG");
             const now = Math.round(Date.now() / 1000);
-            UpdateHeartbeat(client, now);
+            updateHeartbeat(client, now);
         });
 }
 

@@ -30,7 +30,7 @@ module.exports = {
                     .setDescription("You must be in a voice channel if you are not providing a voice channel.");
 
                 interaction.reply({embeds: [not_in_vc]});
-                log("append", interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, "WARN"); // Logs
+                log("append", interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, "WARN");
                 return;
             }
             voice_channel = interaction.member.voice.channel;

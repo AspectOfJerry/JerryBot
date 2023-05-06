@@ -59,7 +59,7 @@ async function execute(client) {
 }
 
 
-function RegisterEvent(type, amount) {
+function registerEvent(type, amount) {
     amount = amount ?? 1;
 
     const types = ["DEBUG", "ERROR", "FATAL", "INFO", "WARN"];
@@ -74,5 +74,5 @@ function RegisterEvent(type, amount) {
 
 module.exports = {
     execute,
-    RegisterEvent
+    registerEvent
 };

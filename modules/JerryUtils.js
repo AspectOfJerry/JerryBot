@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const fs = require("fs");
 const date = require("date-and-time");
 const {getConfig, getGuildConfig} = require("../database/mongodb.js");
-const {RegisterEvent} = require("../jobs/log_digest");
+const {registerEvent} = require("../jobs/log_digest");
 
 
 /**
@@ -98,13 +98,27 @@ async function getSubCommandFiles(dir, suffix) {
 async function getMemberPL(member) {
     const roles = member.roles.cache;
 
-    const guild_config = await getGuildConfig(member.guildId);
+    const guild_config = await getGuildConfig(member.guild.id);
+
+    const missing_fields = {};
+
+    !guild_config.permissionRoles.l1 ? missing_fields.l1 = true : void (0);
+    !guild_config.permissionRoles.l2 ? missing_fields.l2 = true : void (0);
+    !guild_config.permissionRoles.l3 ? missing_fields.l3 = true : void (0);
+
+    console.log(missing_fields);
+
+    if(Object.keys(missing_fields).length > 0) {
+        return missing_fields;
+    }
 
     for(let i = 1; i < Object.keys(guild_config.permissionRoles).length + 1; i++) {
         if(roles.has(guild_config.permissionRoles[`PL${i}`])) {
             return i;
         }
     }
+
+    return 0;
 }
 
 /**
@@ -186,7 +200,7 @@ async function log(method, tag, body, type) {
                 throw err;
             }
         });
-        RegisterEvent(type, 1);
+        registerEvent(type, 1);
         return return_object;
     }
     case "read": {
@@ -263,12 +277,39 @@ async function permissionCheck(interaction, pl) {
 
         try {
             interaction.reply({embeds: [embed]});
+            return false;
         } catch {
             interaction.editReply({embeds: [embed]});
+            return false;
         }
     }
 
-    if(pl === 0 || getMemberPL(interaction.member) <= pl) {
+    const member_pl = await getMemberPL(interaction.member);
+    if(isNaN(member_pl)) {
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setLabel("Documentation")
+                    .setEmoji("📘")
+                    .setStyle("LINK")
+                    .setURL("https://bot.aspectofjerry.dev")
+            );
+
+        const embed = new MessageEmbed()
+            .setColor("FUCHSIA")
+            .setTitle("Error")
+            .setDescription(`The role configuration is missing for${member_pl.l1 ? " L1 commands" : void (0)}${member_pl.l2 ? " L2 commands" : void (0)}${member_pl.l3 ? " L3 commands" : void (0)}.\nPlease use the configuration commands to set the roles.`)
+            .setFooter({text: "Refer to the documentation for permission levels."});
+        try {
+            await interaction.reply({embeds: [embed], components: [row]});
+            return false;
+        } catch {
+            await interaction.editReply({embeds: [embed], components: [row]});
+            return false;
+        }
+    }
+
+    if(pl === 0 || member_pl <= pl) {
         return true;
     }
 
@@ -292,11 +333,11 @@ async function permissionCheck(interaction, pl) {
 
 /**
  * Sleep
- * @async `await` must be used when calling `Sleep()`.
+ * @async `await` must be used when calling `sleep()`.
  * @param {integer} delayInMsec The delay to wait for in milliseconds.
  * @throws {TypeError} Throws if `delayInMsec` is `NaN`.
  */
-async function Sleep(delayInMsec) {
+async function sleep(delayInMsec) {
     if(isNaN(delayInMsec)) {
         throw TypeError("delayInMsec is not a number", "sleep.js", 8);
     }
@@ -353,11 +394,11 @@ async function StartJobs(client) {
 
 
 /**
- * ToNormalized removes irregular characters from a string.
+ * toNormalized removes irregular characters from a string.
  * @param {string} string The string to normalize.
  * @return {string} The normalized string.
  */
-function ToNormalized(string) {
+function toNormalized(string) {
     return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
@@ -366,11 +407,11 @@ module.exports = {
     getCommandFiles,
     getSubCommandFiles,
     isSuperUser,
-    Log,
-    Sleep,
+    log,
+    sleep,
     StartJobs,
     StartEventListeners,
-    ToNormalized,
+    toNormalized,
     getMemberPL,
     permissionCheck
 };

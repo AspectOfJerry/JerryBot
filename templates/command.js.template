@@ -16,7 +16,7 @@ module.exports = {
     ,
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await permissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, x) === false) {
             return;
         }
 

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const guildSchema = new mongoose.Schema({
     id: {type: String, required: true, unique: true, immutable: true},
     name: {type: String, unique: false},

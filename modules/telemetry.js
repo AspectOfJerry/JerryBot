@@ -18,26 +18,26 @@ var messages = [];
 var embedMessage;
 var isDeployed = false;
 
-async function BotStop(_client, timestamp) {
+async function botStop(_client, timestamp) {
 }
 
-async function ChecklistBotReady() {
+async function checklistBotReady() {
     embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`);
-    await UpdateEmbeds(embedMessage);
+    await updateEmbeds(embedMessage);
 }
 
-async function ChecklistJobs() {
+async function checklistJobs() {
     embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Jobs inactive.*/i, ":white_check_mark: Jobs running;");
-    await UpdateEmbeds(embedMessage);
+    await updateEmbeds(embedMessage);
 }
 
-async function ChecklistHeartbeat() {
+async function checklistHeartbeat() {
     embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (2min + jitter);");
-    await UpdateEmbeds(embedMessage);
+    await updateEmbeds(embedMessage);
 }
 
 
-async function StartTelemetry(_client) {
+async function startTelemetry(_client) {
     log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
     if(os.version().toLowerCase().includes("server")) {
         isDeployed = true;
@@ -77,7 +77,7 @@ async function StartTelemetry(_client) {
 }
 
 
-async function UpdateEmbeds(newEmbed) {
+async function updateEmbeds(newEmbed) {
     if(ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
@@ -102,7 +102,7 @@ async function UpdateEmbeds(newEmbed) {
 }
 
 
-async function UpdateHeartbeat(_client, timestamp) {
+async function updateHeartbeat(_client, timestamp) {
     client = _client;
     if(ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
@@ -115,16 +115,16 @@ async function UpdateHeartbeat(_client, timestamp) {
     embedMessage.fields[2].value = `:green_heart: <t:${timestamp}:R>;`;
     embedMessage.fields[3].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
 
-    await UpdateEmbeds(embedMessage);
+    await updateEmbeds(embedMessage);
 }
 
 
 module.exports = {
-    BotStop,
-    ChecklistBotReady,
-    ChecklistHeartbeat,
-    ChecklistJobs,
-    StartTelemetry,
-    UpdateEmbeds,
-    UpdateHeartbeat,
+    botStop,
+    checklistBotReady,
+    checklistHeartbeat,
+    checklistJobs,
+    startTelemetry,
+    updateEmbeds,
+    updateHeartbeat,
 };
