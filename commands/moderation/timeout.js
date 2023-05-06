@@ -196,7 +196,7 @@ module.exports = {
                                 .setTitle("User timeout override")
                                 .setDescription(`<@${interaction.user.id}> timed out (overriden) <@${memberTarget.id}> for ${duration}${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.${reason} `)
                                 .addFields(
-                                    {name: "Time out expiration", value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}: R>*`}
+                                    {name: "Time out expiration", value: `> Expiration: <t:${Math.round(await memberTarget.communicationDisabledUntilTimestamp / 1000)}:R>*`}
                                 )
                                 .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 

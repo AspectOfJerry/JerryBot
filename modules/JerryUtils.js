@@ -106,8 +106,6 @@ async function getMemberPL(member) {
     !guild_config.permissionRoles.l2 ? missing_fields.l2 = true : void (0);
     !guild_config.permissionRoles.l3 ? missing_fields.l3 = true : void (0);
 
-    console.log(missing_fields);
-
     if(Object.keys(missing_fields).length > 0) {
         return missing_fields;
     }
@@ -349,7 +347,7 @@ async function sleep(delayInMsec) {
  * @param {Object} client The active Discord client
  * @param {array} commands The application commands to register in the `ready` event
  */
-async function StartEventListeners(client, commands) {
+async function startEventListeners(client, commands) {
     console.log("Starting event listeners...");
     log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
 
@@ -410,7 +408,7 @@ module.exports = {
     log,
     sleep,
     StartJobs,
-    StartEventListeners,
+    startEventListeners,
     toNormalized,
     getMemberPL,
     permissionCheck

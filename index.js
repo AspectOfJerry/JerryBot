@@ -3,7 +3,7 @@ require("dotenv").config();
 const fs = require("fs");
 const {Client, Intents, Collection, MessageEmbed} = require("discord.js");
 
-const {getCommandFiles, log, sleep, StartEventListeners} = require("./modules/JerryUtils.js");
+const {getCommandFiles, log, sleep, startEventListeners} = require("./modules/JerryUtils.js");
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
@@ -47,7 +47,7 @@ const client = new Client({
     }
 
     // Getting events
-    await StartEventListeners(client, commands);
+    await startEventListeners(client, commands);
 })();
 
 
