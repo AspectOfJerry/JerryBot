@@ -31,7 +31,7 @@ module.exports = async function (client, interaction) {
         .setTitle("Coinflip")
         .addFields(
             {name: "Coin", value: `${number ? "Head" : "Tail"}`, inline: false},
-            {name: "Decimal", value: `${number}`, inline: false}
+            {name: "Binary", value: `${number}`, inline: false}
         );
 
     await interaction.reply({embeds: [random_embed], components: [row]});

@@ -23,6 +23,20 @@ module.exports = {
                         .setName("id")
                         .setDescription("[OPTIONAL] The user id to blacklist. This option OVERWRITES the user option.").
                         setRequired(false)))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("msg")
+                .setDescription("[SUDO] Talk privately with a guild member through the bot.")
+                .addUserOption((options) =>
+                    options
+                        .setName("user")
+                        .setDescription("[REQUIRED] The user to send the message to.")
+                        .setRequired(true))
+                .addStringOption((options) =>
+                    options
+                        .setName("message")
+                        .setDescription("[REQUIRED] The initial message to send.")
+                        .setRequired(true)))
         .addSubcommand((subcommand) => // nuke
             subcommand
                 .setName("nuke")
