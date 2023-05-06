@@ -2,11 +2,11 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
@@ -42,9 +42,9 @@ module.exports = async function (client, interaction) {
             .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
         await interaction.editReply({embeds: [connection_destroyed]});
-        Log("append", interaction.guild.id, "├─Destroyed. The connection to the voice channel has been destroyed.", "INFO");
+        log("append", interaction.guild.id, "├─Destroyed. The connection to the voice channel has been destroyed.", "INFO");
 
-        await Sleep(500);
+        await sleep(500);
 
         const success_leave = new MessageEmbed()
             .setColor("GREEN")
@@ -53,7 +53,7 @@ module.exports = async function (client, interaction) {
             .setDescription("Successfully left the voice channel.");
 
         await interaction.editReply({embeds: [success_leave]});
-        Log("append", interaction.guild.id, "└─Successfully left the voice channel.", "INFO");
+        log("append", interaction.guild.id, "└─Successfully left the voice channel.", "INFO");
     });
     connection.destroy();
 };

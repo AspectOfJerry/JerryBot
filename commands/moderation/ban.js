@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -19,17 +19,17 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for the ban.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 1) === false) {
             return;
         }
 
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await Log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        await log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         let reason = interaction.options.getString("reason");
-        await Log("append", interaction.guild.id, `├─reason: '${reason}'`, "INFO");
+        await log("append", interaction.guild.id, `├─reason: '${reason}'`, "INFO");
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
@@ -40,7 +40,7 @@ module.exports = {
                 .setDescription("You cannot ban yourself.");
 
             interaction.reply({embeds: [error_target_self]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, "WARN");
+            await log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, "WARN");
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -52,7 +52,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
+            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -63,7 +63,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
+            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -75,7 +75,7 @@ module.exports = {
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`);
 
             await interaction.reply({embeds: [member_not_bannable]});
-            await Log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, "ERROR");
+            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, "ERROR");
             return;
         }
 
@@ -110,18 +110,18 @@ module.exports = {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         const message = await interaction.reply({embeds: [confirm_ban], components: [buttonRow], fetchReply: true});
-        Log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
+        log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                await log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
                 return true;
             } else if(buttonInteraction.user.id == interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await Log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                await log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
             }
         };
@@ -139,7 +139,7 @@ module.exports = {
             await interaction.editReply({embeds: [confirm_ban], components: [buttonRow]});
 
             if(buttonInteraction.customId == "ban_confirm_button") {
-                await Log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, "INFO");
+                await log("append", interaction.guild.id, `└─'${buttonInteraction.user.tag}' confirmed the ban.`, "INFO");
                 const banning = new MessageEmbed()
                     .setColor("YELLOW")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
@@ -158,7 +158,7 @@ module.exports = {
                             .setDescription(`<@${interaction.user.id}> banned <@${memberTarget.id}> from the guild${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.${reason}`);
 
                         interaction.editReply({embeds: [success_ban], components: [buttonRow]});
-                        Log("append", interaction.guild.id, `└─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "WARN");
+                        log("append", interaction.guild.id, `└─'${interaction.user.tag}' banned '${memberTarget.user.tag}' form the guild${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "WARN");
                     });
             } else {
                 const cancel_ban = new MessageEmbed()
@@ -167,7 +167,7 @@ module.exports = {
                     .setDescription(`<@${interaction.user.id}> cancelled the ban${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                 interaction.editReply({embeds: [cancel_ban], components: [buttonRow]});
-                Log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
+                log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the ban${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
             }
         });
 
@@ -185,7 +185,7 @@ module.exports = {
                     .setDescription("Auto aborted.");
 
                 interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-                Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
+                log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
             }
         });
     }

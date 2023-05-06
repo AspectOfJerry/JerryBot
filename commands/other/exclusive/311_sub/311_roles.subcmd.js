@@ -1,10 +1,10 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
@@ -37,13 +37,13 @@ module.exports = async function (client, interaction) {
 
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-            await Log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
+            await log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
             return true;
         } else {
             await selectMenuInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+            await log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
             return;
         }
     };

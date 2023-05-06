@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
             channel.send({embeds: [join_message]});
 
             member.roles.add("829896942208155678");
-            Log("append", "guildMemberAdd", `'@${member.user.tag}' joined guild "${member.guild.id}"!`, "INFO");
+            log("append", "guildMemberAdd", `'@${member.user.tag}' joined guild "${member.guild.id}"!`, "INFO");
         } else if(member.guild.id === "1014278986135781438") { // 311
             member.roles.add("1070867071803609119");
             const channel = member.guild.channels.resolve("1014278986135781441");
@@ -39,7 +39,7 @@ module.exports = {
 
             channel.send({embeds: [join_message, prompt_verify]});
 
-            Log("append", "guildMemberAdd", `'@${member.user.tag}' joined guild "${member.guild.id}"!`, "INFO");
+            log("append", "guildMemberAdd", `'@${member.user.tag}' joined guild "${member.guild.id}"!`, "INFO");
         }
     }
 };

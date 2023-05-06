@@ -4,7 +4,7 @@ const CronJob = require("cron").CronJob;
 const fs = require("fs");
 const date = require("date-and-time");
 
-// const {Log, Sleep} = require("../modules/JerryUtils.js");
+// const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
@@ -22,7 +22,7 @@ async function execute(client) {
      * Triggers every day
      */
     const digest = new CronJob("0 0 * * *", async () => {
-        // await Sleep(100);
+        // await sleep(100);
 
         const now = new Date();
         const yesterday = date.addDays(now, -1);
@@ -46,7 +46,7 @@ async function execute(client) {
             }
         });
 
-        // Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
+        // log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
 
         // Reset counter
         Object.keys(counter).forEach((key) => {counter[key] = 0;});
@@ -54,7 +54,7 @@ async function execute(client) {
 
     digest.start();
 
-    // Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
+    // log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
     console.log("[Digest] Log digest started!");
 }
 

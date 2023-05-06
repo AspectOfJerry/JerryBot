@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const CronJob = require("cron").CronJob;
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
@@ -13,7 +13,7 @@ async function execute(client) {
     const online = new CronJob("00 6 * * *", async () => {
         client.user.setStatus("online");
 
-        Log("append", "cycle", "[CycleDay] Successfully the bot's status to online.", "DEBUG");
+        log("append", "cycle", "[CycleDay] Successfully the bot's status to online.", "DEBUG");
     });
 
     /**
@@ -22,7 +22,7 @@ async function execute(client) {
     const idle = new CronJob("45 21 * * *", async () => {
         client.user.setStatus("idle");
 
-        Log("append", "cycle", "[CycleNight] Successfully the bot's status to idle.", "DEBUG");
+        log("append", "cycle", "[CycleNight] Successfully the bot's status to idle.", "DEBUG");
     });
 
     online.start();

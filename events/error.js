@@ -1,4 +1,4 @@
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -6,6 +6,6 @@ module.exports = {
     once: false,
     async execute(error) {
         console.log(error);
-        await Log("append", "Error", error, "ERROR");
+        await log("append", "Error", error, "ERROR");
     }
 };

@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("./JerryUtils");
+const {log, sleep} = require("./JerryUtils");
 
 const os = require("node:os");
 
@@ -22,7 +22,7 @@ async function BotStop(_client, timestamp) {
 }
 
 async function ChecklistBotReady() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`);
     await UpdateEmbeds(embedMessage);
 }
 
@@ -32,13 +32,13 @@ async function ChecklistJobs() {
 }
 
 async function ChecklistHeartbeat() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (2min + jitter);")
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (2min + jitter);");
     await UpdateEmbeds(embedMessage);
 }
 
 
 async function StartTelemetry(_client) {
-    Log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
+    log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
     if(os.version().toLowerCase().includes("server")) {
         isDeployed = true;
     }
@@ -95,7 +95,7 @@ async function UpdateEmbeds(newEmbed) {
             console.error(err);
 
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
-            await Log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
+            await log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
             globalFailedGuilds.push(msg.guild.id);
         }
     });

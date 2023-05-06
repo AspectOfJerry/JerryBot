@@ -2,17 +2,17 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
     // Declaring variables
     const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
-    await Log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
+    await log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
 
     // Checks
     if(!interaction.member.voice.channel && !voice_channel) {
@@ -50,7 +50,7 @@ module.exports = async function (client, interaction) {
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
         interaction.editReply({embeds: [connection_connecting]});
-        Log("append", interaction.guild.id, "├─Connecting. Establishing a connection to the voice channel...", "INFO");
+        log("append", interaction.guild.id, "├─Connecting. Establishing a connection to the voice channel...", "INFO");
     });
 
     connection.on(VoiceConnectionStatus.Ready, async () => {
@@ -61,9 +61,9 @@ module.exports = async function (client, interaction) {
             .setDescription("__Ready__. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [connection_ready]});
-        Log("append", interaction.guild.id, "├─Ready. The connection to the voice channel has been established.", "INFO");
+        log("append", interaction.guild.id, "├─Ready. The connection to the voice channel has been established.", "INFO");
 
-        await Sleep(500);
+        await sleep(500);
 
         const success_join = new MessageEmbed()
             .setColor("GREEN")
@@ -72,7 +72,7 @@ module.exports = async function (client, interaction) {
             .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
         await interaction.editReply({embeds: [success_join]});
-        Log("append", interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, "INFO");
+        log("append", interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, "INFO");
 
         const bot = interaction.guild.members.cache.get(client.user.id);
 

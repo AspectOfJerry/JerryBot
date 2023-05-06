@@ -3,17 +3,17 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, -1) === false) {
         return;
     }
 
     // Declaring variables
     const reason = interaction.options.getString("reason") ?? "No reason provided.";
-    await Log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
+    await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
 
     const payload_body = null;
 
@@ -50,18 +50,18 @@ module.exports = async function (client, interaction) {
         .setFooter({text: "🟥 Canceling in 10s"});
 
     await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
-    await Log("append", interaction.guild.id, "├─Execution authotized. Waiting for the confirmation...", "INFO");
+    await log("append", interaction.guild.id, "├─Execution authotized. Waiting for the confirmation...", "INFO");
 
     const filter = async (buttonInteraction) => {
         if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             overrideText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-            await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+            await log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(buttonInteraction.user.id === interaction.user.id) {
             return true;
         } else {
             await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await Log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+            await log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
             return;
         }
     };
@@ -89,10 +89,10 @@ module.exports = async function (client, interaction) {
                 ).setFooter({text: "The process will exit after this message."});
 
             await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
-            await Log("append", interaction.guild.id, `├─'@${interaction.user.tag}' authorized the stop request${overrideText}.`, "INFO");
-            await Log("append", interaction.guild.id, "└─Stopping the bot...", "FATAL");
+            await log("append", interaction.guild.id, `├─'@${interaction.user.tag}' authorized the stop request${overrideText}.`, "INFO");
+            await log("append", interaction.guild.id, "└─Stopping the bot...", "FATAL");
             await client.destroy(); // Destroying the Discord client
-            await Sleep(250);
+            await sleep(250);
             process.exit(0); // Exiting here
         } else {
             const cancel_stop = new MessageEmbed()
@@ -101,7 +101,7 @@ module.exports = async function (client, interaction) {
                 .setDescription(`<@${interaction.user.id}> aborted the stop request${overrideText}.`);
 
             interaction.editReply({embeds: [cancel_stop]});
-            Log("append", interaction.guild.id, `└─'@${interaction.user.tag}' aborted the stop request${overrideText}.`, "INFO");
+            log("append", interaction.guild.id, `└─'@${interaction.user.tag}' aborted the stop request${overrideText}.`, "INFO");
         }
     });
 
@@ -119,7 +119,7 @@ module.exports = async function (client, interaction) {
                 .setDescription("Auto aborted.");
 
             interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-            Log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
+            log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
             return;
         }
     });

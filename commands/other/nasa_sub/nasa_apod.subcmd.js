@@ -4,14 +4,13 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const fetch = require("node-fetch");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction) {
     await interaction.deferReply();
-
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 

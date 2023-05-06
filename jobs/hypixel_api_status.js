@@ -4,7 +4,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 let disabled = false;
@@ -195,16 +195,14 @@ async function executeSB(client) {
     });
 
     const master = new CronJob("*/4 * * * *", async () => { // Interval of 4 minutes
-        await Sleep(5000);
+        await sleep(5000);
         const monitors = [sb_auctions, sb_auctions_end, sb_bazaar, sb_collections, sb_election, sb_items, sb_skills, sb_profiles];
         let total_avg_rate = 0;
-        let i = 1;
 
         for(const monitor of monitors) {
             monitor.rate = (monitor.fail / (monitor.success + monitor.fail)) * 100;
             monitor.text = `${monitor.rate <= 90 ? `${success_emoji} **${monitor.name}**: Operational (${monitor.rate}% failure)` : monitor.rate <= 48 ? `${warn_emoji} **${monitor.name}**: Degraded performance (${monitor.rate}% failure)` : `${fail_emoji} **${monitor.name}**: Failing (${monitor.rate}% failure)`}`;
             total_avg_rate + monitor.rate;
-            i++;
         }
 
         const new_embed = new MessageEmbed()
@@ -253,7 +251,7 @@ async function executeSB(client) {
 
     messages.push(await channel.send({embeds: [embedMessage]}));
 
-    Log("append", "JOB_NAME", "[hypixel_api_status] Monitoring: skyblock_auctions, skyblock_auctions_end, skyblock_bazaar, skyblock_collections, skyblock_election, skyblock_items, skyblock_skills, skyblock_profiles", "DEBUG");
+    log("append", "JOB_NAME", "[hypixel_api_status] Monitoring: skyblock_auctions, skyblock_auctions_end, skyblock_bazaar, skyblock_collections, skyblock_election, skyblock_items, skyblock_skills, skyblock_profiles", "DEBUG");
     console.log("hypixel_api_status monitor started!");
 }
 

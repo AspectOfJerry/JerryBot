@@ -1,7 +1,7 @@
 // THIS FEATURE IS DISABLED
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require("./JerryUtils");
+const {log, sleep} = require("./JerryUtils");
 
 
 var nukeCheckTimerState = false;
@@ -76,7 +76,7 @@ async function nukeCounterMonitor() {
 async function nukeCheckTimer() {
     while(nukeCheckTimerState) {
         await resetCounters();
-        await Sleep(10000);
+        await sleep(10000);
     }
 }
 

@@ -1,23 +1,14 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {RegisterEvent} = require("../jobs/log_digest");
 const fs = require("fs");
 const date = require("date-and-time");
-
-const {
-    AddGuild,
-    GetConfig,
-    GetGuildConfigMap,
-    GetHighestPL,
-    RefreshDataset,
-    RemoveGuild,
-    SetPermissions
-} = require("../database/config/dbms");
+const {getConfig, getGuildConfig} = require("../database/mongodb.js");
+const {RegisterEvent} = require("../jobs/log_digest");
 
 
 /**
  * Private internal function
  */
-async function _GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
+async function _getDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
@@ -41,7 +32,7 @@ async function _GetDirCommandFiles(dir, suffix, command_files, ignored_files, sk
         }
 
         if(file.isDirectory()) {
-            _GetDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
+            _getDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
         } else if(file.name.endsWith(suffix)) {
             command_files.push(`${dir}/${file.name}`);
         }
@@ -53,12 +44,12 @@ async function _GetDirCommandFiles(dir, suffix, command_files, ignored_files, sk
  * @param {string} suffix The file suffix to search for
  * @returns {array} The list of command files
  */
-async function GetCommandFiles(dir, suffix) {
+async function getCommandFiles(dir, suffix) {
     let command_files = [];
     let ignored_files = [];
     let skipped_files = [];
 
-    _GetDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
+    _getDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
 
     console.log(`Ignored ${ignored_files.length} files:`);
     console.log(ignored_files);
@@ -71,7 +62,7 @@ async function GetCommandFiles(dir, suffix) {
 /**
  * Private internal function
  */
-async function _GetDirSubCommandFiles(dir, suffix, subcommand_files) {
+async function _getDirSubCommandFiles(dir, suffix, subcommand_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
@@ -79,7 +70,7 @@ async function _GetDirSubCommandFiles(dir, suffix, subcommand_files) {
     for(const file of files) {
         // If the file is a folder
         if(file.isDirectory()) {
-            _GetDirSubCommandFiles(`${dir}/${file.name}`, suffix, subcommand_files);
+            _getDirSubCommandFiles(`${dir}/${file.name}`, suffix, subcommand_files);
         } else if(file.name.endsWith(suffix)) {
             subcommand_files.push(`${dir}/${file.name}`);
         }
@@ -91,21 +82,37 @@ async function _GetDirSubCommandFiles(dir, suffix, subcommand_files) {
  * @param {string} suffix The file suffix to search for
  * @returns {array} The list of subcommand files
  */
-async function GetSubCommandFiles(dir, suffix) {
+async function getSubCommandFiles(dir, suffix) {
     let subcommand_files = [];
 
-    _GetDirSubCommandFiles(dir, suffix, subcommand_files);
+    _getDirSubCommandFiles(dir, suffix, subcommand_files);
 
     return subcommand_files;
 }
 
+/** 
+ * @async
+ * @param {Object} member The GuildMember to check
+ * @returns {number} The highest PL
+ */
+async function getMemberPL(member) {
+    const roles = member.roles.cache;
+
+    const guild_config = await getGuildConfig(member.guildId);
+
+    for(let i = 1; i < Object.keys(guild_config.permissionRoles).length + 1; i++) {
+        if(roles.has(guild_config.permissionRoles[`PL${i}`])) {
+            return i;
+        }
+    }
+}
 
 /**
- * @param {object} client The active Discord client
+ * @param {Object} client The active Discord client
  * @param userResolvable A userResolvable
  */
-async function IsSuperUser(client, userResolvable) {
-    const config = await GetConfig();
+async function isSuperUser(client, userResolvable) {
+    const config = "";
     const userId = client.users.resolveId(userResolvable);
 
     if(config.superUsers.includes(userId)) {
@@ -123,7 +130,7 @@ async function IsSuperUser(client, userResolvable) {
  * @param {string} type The type of the message {`DEBUG`, `ERROR`, `FATAL`, `INFO`, `WARN`}.
  * @returns {object} `return_object`.
  */
-async function Log(method, tag, body, type) {
+async function log(method, tag, body, type) {
     switch(method) {
     case "append": {
         // Declaring variables
@@ -194,11 +201,11 @@ async function Log(method, tag, body, type) {
 
 /**
  * @async
- * @param {object} interaction The Discord interaction object.
+ * @param {Object} interaction The Discord interaction object.
  * @returns {boolean} Whether or not the execution is authorized.
  */
-async function PermissionCheck(interaction) {
-    const config = await GetConfig();
+async function permissionCheck(interaction, pl) {
+    const config = await getConfig();
 
     if(config.userBlacklist.includes(interaction.member.id)) {
         const user_blacklisted = new MessageEmbed()
@@ -213,20 +220,20 @@ async function PermissionCheck(interaction) {
             interaction.editReply({embeds: [user_blacklisted]});
         }
 
-        await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is blacklisted from the bot. [UserBlacklist]`, "WARN");
+        log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is blacklisted from the bot. [UserBlacklist]`, "WARN");
         return false;
     } else if(config.superUsers.includes(interaction.member.id)) {
         if(config.guildBlacklist.includes(interaction.guild.id)) {
             const guild_blacklisted_warning = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setTitle("Guild Blacklisted Warning")
-                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (super user).`);
+                .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Execution authorized (superuser).`);
 
             interaction.channel.send({embeds: [guild_blacklisted_warning]});
-            Log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (super user).`, "WARN");
+            log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (superuser).`, "WARN");
         }
 
-        await Log("append", interaction.guild.id, `├─"@${interaction.user.tag}" is a super user. Execution authorized.`, "INFO");
+        await log("append", interaction.guild.id, `├─"@${interaction.user.tag}" is a super user. Execution authorized.`, "INFO");
         return true;
     } else if(config.guildBlacklist.includes(interaction.guild.id)) {
         const guild_blacklisted = new MessageEmbed()
@@ -241,69 +248,27 @@ async function PermissionCheck(interaction) {
             interaction.editReply({embeds: [guild_blacklisted]});
         }
 
-        await Log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
+        await log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
         return false;
     }
 
-    const guilds = await GetGuildConfigMap();
 
-    let commandName = interaction.commandName;
-    const subcommand_name = interaction.options.getSubcommand(false);
+    const guild_config = await getGuildConfig(interaction.guild.id);
 
-    var permissionSet = {};
+    if(guild_config === []) {
+        const embed = new MessageEmbed()
+            .setColor("FUCHSIA")
+            .setDescription("This guild's permission configuration is not in the database. Please contact the bot administrators for help.")
+            .setFooter({text: "Contact Jerry#3756 for help."});
 
-
-    // Get the guild's commandPermissions
-    for(const [key, value] of guilds) {
-        if(key == interaction.guild.id) {
-            permissionSet = value.commandPermissions;
+        try {
+            interaction.reply({embeds: [embed]});
+        } catch {
+            interaction.editReply({embeds: [embed]});
         }
     }
 
-    // Check if no permissions were found
-    if(Object.keys(permissionSet).length === 0) {
-        throw `Failed to find a permissionSet for guild ${interaction.guild.id} (${interaction.guild.name})`;
-    }
-
-    let permissionValue;
-
-    // If there is a subcommand
-    if(subcommand_name) {
-        commandName = commandName + "_sub";
-    }
-
-    for(const [key, category] of Object.entries(permissionSet)) {
-        // If category itself is a subcommand directory
-        if(key.endsWith("_sub")) {
-            const command = category[subcommand_name];
-
-            if(command !== undefined) {
-                permissionValue = command;
-                break;
-            }
-            continue;
-        }
-
-        const command = category[commandName];
-
-        if(command !== undefined) {
-            if(!subcommand_name) {
-                permissionValue = command;
-                break;
-            } else {
-                const sub_command = command[subcommand_name];
-                permissionValue = sub_command;
-                break;
-            }
-        }
-    }
-
-    if(permissionValue === undefined || permissionValue === null) {
-        await Log("append", interaction.guild.id, `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`, "FATAL");
-        throw `Could not find a permissionValue for "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}"`;
-    }
-
-    if(permissionValue === 0 || await GetHighestPL(interaction.member) <= permissionValue) {
+    if(pl === 0 || getMemberPL(interaction.member) <= pl) {
         return true;
     }
 
@@ -320,7 +285,7 @@ async function PermissionCheck(interaction) {
         await interaction.editReply({embeds: [error_permissions]});
     }
 
-    await Log("append", interaction.guild.id, `└─"@${interaction.user.tag}" did not have the required role to execute "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}". [PermissionError]`, "WARN");
+    log("append", interaction.guild.id, `└─"@${interaction.user.tag}" did not have the required role to execute "/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}". [PermissionError]`, "WARN");
     return false;
 }
 
@@ -340,12 +305,12 @@ async function Sleep(delayInMsec) {
 
 
 /**
- * @param {object} client The active Discord client
+ * @param {Object} client The active Discord client
  * @param {array} commands The application commands to register in the `ready` event
  */
 async function StartEventListeners(client, commands) {
     console.log("Starting event listeners...");
-    Log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
+    log("append", "JerryUtils", "Starting event listeners...", "DEBUG");
 
     const event_files = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 
@@ -366,11 +331,11 @@ async function StartEventListeners(client, commands) {
 
 /**
  * StartJobs starts the jobs located in `root/jobs`.
- * @param {object} client The Discord client.
+ * @param {Object} client The Discord client.
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    await Log("append", "JerryUtils", "Starting jobs...", "DEBUG");
+    await log("append", "JerryUtils", "Starting jobs...", "DEBUG");
 
     const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
@@ -398,21 +363,14 @@ function ToNormalized(string) {
 
 
 module.exports = {
-    GetCommandFiles,
-    GetSubCommandFiles,
-    IsSuperUser,
+    getCommandFiles,
+    getSubCommandFiles,
+    isSuperUser,
     Log,
     Sleep,
     StartJobs,
     StartEventListeners,
     ToNormalized,
-    // Import relaying
-    AddGuild,
-    GetConfig,
-    GetGuildConfigMap,
-    GetHighestPL,
-    PermissionCheck,
-    RefreshDataset,
-    RemoveGuild,
-    SetPermissions,
+    getMemberPL,
+    permissionCheck
 };

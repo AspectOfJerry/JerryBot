@@ -1,10 +1,10 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
@@ -97,13 +97,13 @@ module.exports = async function (client, interaction) {
     const filter = (newInteraction) => {
         if(newInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${newInteraction.user.id}>)`;
-            Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
+            log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(newInteraction.user.id == interaction.user.id) {
             return true;
         }
         newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-        Log("append", interaction.guild.id, `├─'@${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+        log("append", interaction.guild.id, `├─'@${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
         return;
     };
 

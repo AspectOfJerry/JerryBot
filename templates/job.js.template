@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
@@ -15,7 +15,7 @@ async function execute(client) {
 
     JOBNAME.start();
 
-    Log("append", "JOB_NAME", "[JOBNAME] ", "DEBUG");
+    log("append", "JOB_NAME", "[JOBNAME] ", "DEBUG");
     console.log("JOBNAME started!");
 }
 

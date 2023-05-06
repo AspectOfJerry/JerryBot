@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 const TicTacToe = require("discord-tictactoe");
 
@@ -16,7 +16,7 @@ module.exports = {
                 .setDescription("[OPTIONAL] Who you want to play against.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 0) === false) {
             return;
         }
 
@@ -26,7 +26,7 @@ module.exports = {
         // Checks
 
         // Main
-        Log("append", interaction.guild.id, "└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module", "INFO");
+        log("append", interaction.guild.id, "└─A game was started, and it is fully handeled by the 'discord-tictactoe' node module", "INFO");
         game.handleInteraction(interaction);
 
         const opponent = (interaction.options.getUser("opponent"))?.id ?? null;

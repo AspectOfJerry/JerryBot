@@ -1,12 +1,11 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction, string, object) {
     await interaction.deferReply();
-
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 1) === false) {
         return;
     }
 
@@ -32,6 +31,6 @@ module.exports = async function (client, interaction, string, object) {
             {name: "Target directory", value: `../logs/${(await object).fileName}`, inline: false});
 
     interaction.reply({embeds: [writing_to_logs]});
-    Log("append", interaction.guild.id, string, "INFO");
+    log("append", interaction.guild.id, string, "INFO");
     interaction.editReply({embeds: [write_to_logs]});
 };

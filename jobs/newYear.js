@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 
 const CronJob = require("cron").CronJob;
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
@@ -49,7 +49,7 @@ async function execute(client) {
 
     new_year.start();
 
-    Log("append", "newYear", "[NewYear] The new year announcer is ready!", "DEBUG");
+    log("append", "newYear", "[NewYear] The new year announcer is ready!", "DEBUG");
     console.log("[NewYear] The new year announcer is ready!");
 }
 

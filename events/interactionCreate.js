@@ -1,17 +1,16 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {GetConfig, Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
-        // await Log("append", 'interactionCreate', `An interaction was created.`, "DEBUG");
+        // await log("append", 'interactionCreate', `An interaction was created.`, "DEBUG");
         if(!interaction.isCommand()) {
             return;
         }
-
         const command = interaction.client.commands.get(interaction.commandName);
 
         if(!command) {
@@ -19,8 +18,8 @@ module.exports = {
         }
 
         try {
-            Log("append", interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, "INFO");
-            await command.execute(interaction.client, interaction);
+            log("append", interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, "INFO");
+            await command.execute(interaction.client, interaction, command.pl);
         } catch(err) {
             if(err) {
                 console.error(err);
@@ -31,7 +30,7 @@ module.exports = {
                     .setDescription(`An error occured while executing the command${_err}`)
                     .setFooter({text: `${interaction.createdAt}`});
 
-                const super_users = (await GetConfig()).superUsers;
+                const super_users = "";
 
                 const notify = new MessageEmbed()
                     .setColor("FUCHSIA")
@@ -56,7 +55,7 @@ module.exports = {
                             interaction.channel.send({embeds: [execution_error]});
                         } catch {
                             console.log("Failure to send error message (3 attempts).");
-                            Log("append", "interactionCreate", "Failure to send error message (3 attempts).", "ERROR");
+                            log("append", "interactionCreate", "Failure to send error message (3 attempts).", "ERROR");
                         }
                     }
                 }

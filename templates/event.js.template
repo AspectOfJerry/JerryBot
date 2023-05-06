@@ -1,10 +1,10 @@
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {
     name: "EVENT_NAME",
     once: false, // Whether or not this event should only be triggered once
     async execute(param) {
-        await Log("append", "EVENT_NAME", ``, "DEBUG");
+        await log("append", "EVENT_NAME", ``, "DEBUG");
     }
 };

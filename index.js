@@ -3,11 +3,11 @@ require("dotenv").config();
 const fs = require("fs");
 const {Client, Intents, Collection, MessageEmbed} = require("discord.js");
 
-const {GetCommandFiles, Log, Sleep, StartEventListeners} = require("./modules/JerryUtils.js");
+const {getCommandFiles, Log, Sleep, StartEventListeners} = require("./modules/JerryUtils.js");
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-Log("append", "index.js", `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
+log("append", "index.js", `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
 
 const client = new Client({
     intents: [
@@ -28,10 +28,10 @@ const client = new Client({
 (async () => {
     // Getting commands
     console.log("Getting command files...");
-    await Log("append", "index.js", "Getting command files...", "DEBUG");
+    await log("append", "index.js", "Getting command files...", "DEBUG");
 
     const suffix = ".js";
-    const command_files = await GetCommandFiles("./commands", suffix);
+    const command_files = await getCommandFiles("./commands", suffix);
 
     console.log(`Queued ${command_files.length} files:`);
     console.log(command_files);
