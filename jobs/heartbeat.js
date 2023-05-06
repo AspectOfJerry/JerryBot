@@ -1,30 +1,30 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const CronJob = require('cron').CronJob;
+const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
-const {ChecklistHeartbeat, UpdateHeartbeat} = require('../modules/telemetry');
+const {log, sleep} = require("../modules/JerryUtils.js");
+const {checklistHeartbeat, updateHeartbeat} = require("../modules/telemetry");
 
 
 let disabled = false;
 let once = false;
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every 2 minutes.
      * Sends a heartbeat to the status page
      */
     const heartbeat = new CronJob("*/2 * * * *", async () => {
         try {
-            await Sleep(await Jitter());
+            await sleep(await Jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
-                    Log("append", "heartbeat", "[Heartbeat] Heartbeat sent to the status page.", "DEBUG");
+                    log("append", "heartbeat", "[Heartbeat] Heartbeat sent to the status page.", "DEBUG");
                     const now = Math.round(Date.now() / 1000);
-                    UpdateHeartbeat(client, now);
+                    updateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeat();
+                        checklistHeartbeat();
                         once = true;
                     }
                 });
@@ -33,15 +33,15 @@ async function Execute(client) {
                 console.error(err);
             }
 
-            Log("append", "heartbeat", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.", "ERROR");
-            await Sleep(6000 + await Jitter());
+            log("append", "heartbeat", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.", "ERROR");
+            await sleep(6000 + await Jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
-                    Log("append", "heartbeat", "[Heartbeat] Heartbeat sent to status page.", "DEBUG");
+                    log("append", "heartbeat", "[Heartbeat] Heartbeat sent to status page.", "DEBUG");
                     const now = Math.round(Date.now() / 1000);
-                    UpdateHeartbeat(client, now);
+                    updateHeartbeat(client, now);
                     if(!once) {
-                        ChecklistHeartbeat();
+                        checklistHeartbeat();
                         once = true;
                     }
                 });
@@ -50,14 +50,14 @@ async function Execute(client) {
 
     heartbeat.start();
 
-    Log("append", "heartbeat", `[Heartbeat] Heartbeat started!`, "DEBUG");
-    console.log(`[Heartbeat] Heartbeat started!`);
+    log("append", "heartbeat", "[Heartbeat] Heartbeat started!", "DEBUG");
+    console.log("[Heartbeat] Heartbeat started!");
 
-    await fetch(`https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq`)
+    await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq")
         .then(() => {
-            Log("append", "heartbeat", `[Heartbeat] The first Heartbeat was sent to the status page.`, "DEBUG");
+            log("append", "heartbeat", "[Heartbeat] The first Heartbeat was sent to the status page.", "DEBUG");
             const now = Math.round(Date.now() / 1000);
-            UpdateHeartbeat(client, now);
+            updateHeartbeat(client, now);
         });
 }
 
@@ -68,5 +68,5 @@ async function Jitter() {
 
 
 module.exports = {
-    Execute
+    execute
 };

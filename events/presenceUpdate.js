@@ -1,5 +1,5 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {GetConfig, Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 var lastGuildId;
 var latestGuildId;
@@ -37,7 +37,7 @@ module.exports = {
             const old_activity = oldClientActivityType + oldClientActivityName + oldClientActivityDetails + oldClientActivityState;
             const new_activity = newClientActivityType + newClientActivityName + newClientActivityDetails + newClientActivityState;
     
-            await Log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${old_activity}' to: '${newStatus} (${newClientStatus})' | '${new_activity}' in: "${newPresence.guild.name}"`, "INFO");
+            await log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${old_activity}' to: '${newStatus} (${newClientStatus})' | '${new_activity}' in: "${newPresence.guild.name}"`, "INFO");
         */
 
         // ---STATUS UPDATE ONLY---
@@ -60,7 +60,7 @@ module.exports = {
         newClientStatus.toString();
         newClientStatus = newClientStatus.replaceAll("{", "");
         newClientStatus = newClientStatus.replaceAll("}", "");
-        newClientStatus = newClientStatus.replaceAll('"', "");
+        newClientStatus = newClientStatus.replaceAll("\"", "");
         newClientStatus = newClientStatus.replaceAll(":", ": ");
         newClientStatus = newClientStatus.replaceAll(",", ", ");
 
@@ -68,11 +68,11 @@ module.exports = {
         oldClientStatus.toString();
         oldClientStatus = oldClientStatus.replaceAll("{", "");
         oldClientStatus = oldClientStatus.replaceAll("}", "");
-        oldClientStatus = oldClientStatus.replaceAll('"', "");
+        oldClientStatus = oldClientStatus.replaceAll("\"", "");
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        await Log("append", "presenceUpdate", `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldStatus} (${oldClientStatus})" to: "${newClientActivityType}${newStatus} (${newClientStatus})"`, "INFO");
+        await log("append", "presenceUpdate", `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldStatus} (${oldClientStatus})" to: "${newClientActivityType}${newStatus} (${newClientStatus})"`, "INFO");
         lastGuildId = newPresence.guild.id;
         firstTime = false;
     }

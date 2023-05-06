@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -19,17 +19,17 @@ module.exports = {
                 .setDescription("[OPTIONAL] If you want to disconnect everyone in the targted user's voice channel. Defaults to false")
                 .setRequired(false)),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 3) === false) {
             return;
         }
 
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        Log("append", interaction.guild.id, `├─memberTarget: '${memberTarget.user.tag}'`, "INFO");
+        log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         const is_all = interaction.options.getBoolean("all") || false;
-        Log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
+        log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
 
         // Checks
         if(!memberTarget.voice.channel) {
@@ -39,7 +39,7 @@ module.exports = {
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc]});
-            Log("append", interaction.guild.id, `  └─'${memberTarget.tag}' is not in a voice channel.`, "WARN");
+            log("append", interaction.guild.id, `  └─'${memberTarget.tag}' is not in a voice channel.`, "WARN");
             return;
         }
 
@@ -71,18 +71,19 @@ module.exports = {
 
             await interaction.reply({embeds: [disconnecting]});
 
-            await memberTarget.voice.channel.members.forEach(member => {
-                let current_voice_channel = member.voice.channel
+            await memberTarget.voice.channel.members.forEach((member) => {
+                let currentVoiceChannel = member.voice.channel;
                 member.voice.setChannel(null)
                     .then(() => {
                         const disconnect_success = new MessageEmbed()
                             .setColor("GREEN")
                             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Successfully disconnected <@${member.id}> from ${current_voice_channel}.`);
+                            .setDescription(`Successfully disconnected <@${member.id}> from ${currentVoiceChannel}.`);
 
                         interaction.channel.followUp({embeds: [disconnect_success], ephemeral: true});
                     });
             });
+
             const disconnect_success = new MessageEmbed()
                 .setColor("GREEN")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)

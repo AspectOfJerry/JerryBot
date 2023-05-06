@@ -1,18 +1,18 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 const Path = require("path");
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {getSubCommandFiles, log, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('voice')
+        .setName("voice")
         .setDescription("Perform voice channel actions.")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('join')
+                .setName("join")
                 .setDescription("Joins a voice channel. Defaults to your current voice channel.")
                 .addChannelOption((options) =>
                     options
@@ -21,15 +21,15 @@ module.exports = {
                         .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('leave')
+                .setName("leave")
                 .setDescription("Leaves the voice channel."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('mute')
+                .setName("mute")
                 .setDescription("Toggles server-mute on the bot."))
         .addSubcommand(subcommand =>
             subcommand
-                .setName('deaf')
+                .setName("deaf")
                 .setDescription("Toggles server-deaf on the bot.")),
     async execute(client, interaction) {
         // Declaring variables
@@ -37,11 +37,12 @@ module.exports = {
         // Checks
 
         // Main
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        // eslint-disable-next-line no-undef
+        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
+                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

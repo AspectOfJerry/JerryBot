@@ -1,28 +1,28 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
     // Declaring variables
     const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
-    await Log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
+    await log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
 
     // Checks
     if(!interaction.member.voice.channel && !voice_channel) {
         const error_not_in_vc = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('Error')
+            .setTitle("Error")
             .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.");
 
-        await interaction.reply({embeds: [error_not_in_vc]});
+        interaction.reply({embeds: [error_not_in_vc]});
         return;
     }
 
@@ -30,7 +30,7 @@ module.exports = async function (client, interaction) {
     const creating_connection = new MessageEmbed()
         .setColor("YELLOW")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-        .setDescription('Creating a connection...');
+        .setDescription("Creating a connection...");
 
     await interaction.reply({embeds: [creating_connection]});
 
@@ -46,32 +46,33 @@ module.exports = async function (client, interaction) {
         const connection_connecting = new MessageEmbed()
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('VoiceConnection')
+            .setTitle("VoiceConnection")
             .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
 
-        await interaction.editReply({embeds: [connection_connecting]});
-        await Log("append", interaction.guild.id, `├─Connecting. Establishing a connection to the voice channel...`, "INFO");
+        interaction.editReply({embeds: [connection_connecting]});
+        log("append", interaction.guild.id, "├─Connecting. Establishing a connection to the voice channel...", "INFO");
     });
+
     connection.on(VoiceConnectionStatus.Ready, async () => {
         const connection_ready = new MessageEmbed()
             .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('VoiceConnection')
+            .setTitle("VoiceConnection")
             .setDescription("__Ready__. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [connection_ready]});
-        await Log("append", interaction.guild.id, `├─Ready. The connection to the voice channel has been established.`, "INFO");
+        log("append", interaction.guild.id, "├─Ready. The connection to the voice channel has been established.", "INFO");
 
-        await Sleep(500);
+        await sleep(500);
 
         const success_join = new MessageEmbed()
             .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle('VoiceConnection')
+            .setTitle("VoiceConnection")
             .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
         await interaction.editReply({embeds: [success_join]});
-        await Log("append", interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, "INFO");
+        log("append", interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, "INFO");
 
         const bot = interaction.guild.members.cache.get(client.user.id);
 
@@ -83,7 +84,7 @@ module.exports = async function (client, interaction) {
             await bot.voice.setMute(false);
         }
         if(bot.voice.serverDeaf) {
-            await bot.voice.setDeaf(false);
+            bot.voice.setDeaf(false);
         }
     });
 };

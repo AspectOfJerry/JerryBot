@@ -1,9 +1,9 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const weather = require('weather-js');
+const weather = require("weather-js");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,14 +23,13 @@ module.exports = {
                 .setRequired(false)),
     async execute(client, interaction) {
         await interaction.deferReply();
-
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 0) === false) {
             return;
         }
 
         // Declaring variables
-        const search_location = interaction.options.getString('location');
-        const search_unit = interaction.options.getString('unit') || "C";
+        const search_location = interaction.options.getString("location");
+        const search_unit = interaction.options.getString("unit") || "C";
 
         // Checks
 
@@ -46,7 +45,7 @@ module.exports = {
                 const search_error = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle('Error')
+                    .setTitle("Error")
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
@@ -141,7 +140,7 @@ module.exports = {
                 .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
             await interaction.editReply({embeds: [weather]});
-            await interaction.followUp({content: "This command needs a heavy rework."})
+            await interaction.followUp({content: "This command needs a heavy rework."});
         });
     }
 };

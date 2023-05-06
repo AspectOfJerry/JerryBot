@@ -3,10 +3,14 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("./JerryUtils");
+const {log, sleep} = require("./JerryUtils");
 
 const os = require("node:os");
 
+
+const success_emoji = "<:success:1102349129390248017>";
+const warn_emoji = "<:warn:1102349145106284584>";
+const fail_emoji = "<:fail:1102349156976185435>";
 
 var globalFailedGuilds = [];
 
@@ -18,27 +22,27 @@ var messages = [];
 var embedMessage;
 var isDeployed = false;
 
-async function BotStop(_client, timestamp) {
+async function botStop(_client, timestamp) {
 }
 
-async function ChecklistBotReady() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Bot is not fully ready;.*/, `:white_check_mark: <@${client.user.id}> is fully ready;`)
-    await UpdateEmbeds(embedMessage);
+async function checklistBotReady() {
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*<:warn:1102349145106284584> Bot is not fully ready.*/, `<:success:1102349129390248017> <@${client.user.id}> is fully ready`);
+    await updateEmbeds(embedMessage);
 }
 
-async function ChecklistJobs() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Jobs inactive.*/i, ":white_check_mark: Jobs running;");
-    await UpdateEmbeds(embedMessage);
+async function checklistJobs() {
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*<:warn:1102349145106284584> Jobs inactive.*/i, "<:success:1102349129390248017> Jobs running");
+    await updateEmbeds(embedMessage);
 }
 
-async function ChecklistHeartbeat() {
-    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*:x: Heartbeat not synced;.*/i, ":white_check_mark: Heartbeat synced (2min + jitter);")
-    await UpdateEmbeds(embedMessage);
+async function checklistHeartbeat() {
+    embedMessage.fields[1].value = embedMessage.fields[1].value.replace(/.*<:warn:1102349145106284584> Heartbeat not synced.*/i, "<:success:1102349129390248017> Heartbeat synced (2min + jitter)");
+    await updateEmbeds(embedMessage);
 }
 
 
-async function StartTelemetry(_client) {
-    Log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
+async function startTelemetry(_client) {
+    log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
     if(os.version().toLowerCase().includes("server")) {
         isDeployed = true;
     }
@@ -59,13 +63,13 @@ async function StartTelemetry(_client) {
     const embed = new MessageEmbed()
         .setColor("GREEN")
         .setTitle("JerryBot telemetry")
-        .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>;`)
+        .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`)
         .addFields(
             {name: "Deployed", value: `${isDeployed}`, inline: false},
-            {name: "Checklist", value: ":x: Bot is not fully ready;\n:white_check_mark: Event listeners ready;\n:x: Heartbeat not synced;\n:x: Jobs inactive;", inline: false},
-            {name: "Last Heartbeat*", value: ":black_heart: ---;", inline: true},
-            {name: "Next expected Heartbeat*", value: ":black_heart: ---;", inline: true}
-        ).setFooter({text: "Relative timestamps look out of sync depending on your timezone;"})
+            {name: "Checklist", value: `${warn_emoji} Bot is not fully ready\n${success_emoji} Database disconnected\n${success_emoji} Event listeners ready\n${warn_emoji} Heartbeat not synced\n${warn_emoji} Jobs inactive`, inline: false},
+            {name: "Last Heartbeat*", value: ":black_heart: ---*", inline: true},
+            {name: "Next expected Heartbeat*", value: ":black_heart: ---*", inline: true}
+        ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone"})
         .setTimestamp();
 
     // Add embeds here
@@ -77,12 +81,12 @@ async function StartTelemetry(_client) {
 }
 
 
-async function UpdateEmbeds(newEmbed) {
+async function updateEmbeds(newEmbed) {
     if(ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 
-    newEmbed.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*;/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*;`);
+    newEmbed.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*\*/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`);
 
     messages.forEach(async (msg) => {
         if(globalFailedGuilds.includes(msg.guild.id)) {
@@ -95,14 +99,14 @@ async function UpdateEmbeds(newEmbed) {
             console.error(err);
 
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
-            await Log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
+            await log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
             globalFailedGuilds.push(msg.guild.id);
         }
     });
 }
 
 
-async function UpdateHeartbeat(_client, timestamp) {
+async function updateHeartbeat(_client, timestamp) {
     client = _client;
     if(ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
@@ -115,16 +119,16 @@ async function UpdateHeartbeat(_client, timestamp) {
     embedMessage.fields[2].value = `:green_heart: <t:${timestamp}:R>;`;
     embedMessage.fields[3].value = `:yellow_heart: <t:${next_heartbeat_timestamp}:R>;`;
 
-    await UpdateEmbeds(embedMessage);
+    await updateEmbeds(embedMessage);
 }
 
 
 module.exports = {
-    BotStop,
-    ChecklistBotReady,
-    ChecklistHeartbeat,
-    ChecklistJobs,
-    StartTelemetry,
-    UpdateEmbeds,
-    UpdateHeartbeat,
+    botStop,
+    checklistBotReady,
+    checklistHeartbeat,
+    checklistJobs,
+    startTelemetry,
+    updateEmbeds,
+    updateHeartbeat,
 };

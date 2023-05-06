@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
         .setName("help")
         .setDescription("Help is on the way!"),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 0) === false) {
             return;
         }
 
@@ -31,7 +31,10 @@ module.exports = {
             .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("Need help?")
-            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev) and [here](https://www.youtube.com/watch?v=xvFZjo5PgG0)!");
+            .setDescription(":bookmark: You can find the documentation [here](https://bot.aspectofjerry.dev) and [here](https://www.youtube.com/watch?v=xvFZjo5PgG0)!")
+            .addFields({
+                name: "Lead developer", value: "@Jerry#3756", inline: false
+            });
 
         interaction.reply({embeds: [help], components: [row]});
     }

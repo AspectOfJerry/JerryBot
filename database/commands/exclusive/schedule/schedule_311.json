@@ -64,7 +64,7 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C09B",
-            "notes": "\n• Notes: Different classroom (C08 -> C09B)"
+            "notes": "• C08 -> C09B"
         },
         "period4": {
             "classCode": "MAT",
@@ -90,7 +90,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period2": {
             "classCode": "HIS",
@@ -146,7 +146,7 @@
             "classCode": "MAT",
             "className": "Math",
             "classroom": "100B",
-            "notes": "\n• Notes: Different classroom (C200 -> 100B)"
+            "notes": "• C200 -> 100B"
         },
         "period5": {
             "classCode": "DIN",
@@ -172,7 +172,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period3": {
             "classCode": "FRA",
@@ -216,7 +216,7 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C09A",
-            "notes": "\n• Notes: Different classroom (C08 -> C09A)"
+            "notes": "• C08 -> C09A"
         },
         "period4": {
             "classCode": "HIS",
@@ -234,7 +234,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         }
     },
     "jour7": {
@@ -242,7 +242,7 @@
             "classCode": "EDP",
             "className": "Sports",
             "classroom": "G2",
-            "notes": "\n• Uniforme d'éduc"
+            "notes": "requires uniform"
         },
         "period2": {
             "classCode": "SCT",
@@ -254,7 +254,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period4": {
             "classCode": "FRA",
@@ -292,7 +292,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period4": {
             "classCode": "HIS",
@@ -330,7 +330,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period4": {
             "classCode": "MAT",
@@ -368,13 +368,13 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C09B",
-            "notes": "\n• Notes: Different classroom (C08 -> C09B)"
+            "notes": "• C08 -> C09B"
         },
         "period4": {
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period5": {
             "classCode": "DIN",
@@ -438,7 +438,7 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C09A",
-            "notes": "\n• Different classroom (C08 -> C09A)"
+            "notes": "• C08 -> C09A"
         },
         "period3": {
             "classCode": "FRA",
@@ -450,7 +450,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period5": {
             "classCode": "DIN",
@@ -470,7 +470,7 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C01",
-            "notes": "\n• Different classroom (C08 -> C01)"
+            "notes": "• C08 -> C01"
         },
         "period2": {
             "classCode": "ESP",
@@ -514,7 +514,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period3": {
             "classCode": "MAT",
@@ -564,7 +564,7 @@
             "classCode": "SCT",
             "className": "Science",
             "classroom": "C01",
-            "notes": "\n• Different classroom (C08 -> C01)"
+            "notes": "• C08 -> C01"
         },
         "period5": {
             "classCode": "DIN",
@@ -634,7 +634,7 @@
             "classCode": "ANE",
             "className": "English",
             "classroom": "100B",
-            "notes": "\n• Notes: 100A for Regular and 100B for Enriched"
+            "notes": "• 100A"
         },
         "period4": {
             "classCode": "FRA",

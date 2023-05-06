@@ -1,11 +1,11 @@
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 
 module.exports = {
     name: "inviteCreate",
     once: false, // Whether or not this event should only be triggered once
     async execute(invite) {
-        await Log("append", "inviteCreate", `<@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
+        await log("append", "inviteCreate", `<@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
             expiresAt: ${invite.expiresAt},
             maxUses: ${invite.maxUses},
             temporary: ${invite.temporary},

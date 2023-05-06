@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
                 .setRequired(true)),
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 2) === false) {
             return;
         }
 
@@ -28,9 +28,9 @@ module.exports = {
         return;
         // Declaring variables
         const snowflake = await interaction.options.getString("message");
-        console.log(snowflake)
+        console.log(snowflake);
         const message = await interaction.channel.messages.resolve(snowflake);
-        console.log(message)
+        console.log(message);
         const emoji = interaction.options.getString("emoji");
 
         // Checks

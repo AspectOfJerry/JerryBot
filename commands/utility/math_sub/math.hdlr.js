@@ -3,16 +3,16 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const Path = require("path");
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {getSubCommandFiles, log, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('math')
+        .setName("math")
         .setDescription("Commands related to mathematics")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('average')
+                .setName("average")
                 .setDescription("Calculate the average of rational numbers.")
             // .addStringOption((options) =>
             //     options
@@ -36,11 +36,12 @@ module.exports = {
         // Checks
 
         // Main
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        // eslint-disable-next-line no-undef
+        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
+                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

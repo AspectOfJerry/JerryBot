@@ -1,7 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
         .setDescription("Common Vulnerability Scoring System Calculator"),
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 0) === false) {
             return;
         }
 
@@ -19,7 +19,7 @@ module.exports = {
             .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("Common Vulnerability Scoring System score calculator")
-            .setDescription(`Start by selecting the Attack Vector.\n\n• CVSS Vector string: \`CVSS:3.1/AV:...\``)
+            .setDescription("Start by selecting the Attack Vector.\n\n• CVSS Vector string: `CVSS:3.1/AV:...`")
             .addFields(
                 {name: "-> Attack Vector (AV)", value: "Network / Adjacent / Local / Physical", inline: false},
                 {name: "Attack Complexity (AC)", value: "Low / High", inline: false},
@@ -64,7 +64,7 @@ module.exports = {
                 return true;
             } else {
                 await newInteraction.reply({content: "You cannot use this component.", ephemeral: true});
-                await Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this component.`, "WARN");
+                await log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this component.`, "WARN");
                 return;
             }
         };
@@ -93,7 +93,7 @@ module.exports = {
             {name: "Attack Vector (AV)", value: `• ${av}`, inline: false},
             {name: "-> Attack Complexity (AC)", value: "Low / High", inline: false}
         );
-        row.components[0].setPlaceholder("Select the attack complexity (AC)")
+        row.components[0].setPlaceholder("Select the attack complexity (AC)");
         row.components[0].setOptions([
             {
                 label: "Low (L)",
@@ -114,7 +114,7 @@ module.exports = {
             {name: "Attack Complexity (AC)", value: `• ${ac}`, inline: false},
             {name: "-> Privileges Required (PR)", value: "None / Low / High", inline: false}
         );
-        row.components[0].setPlaceholder("Select the privileges required (PR)")
+        row.components[0].setPlaceholder("Select the privileges required (PR)");
         row.components[0].setOptions([
             {
                 label: "None (N)",
@@ -139,7 +139,7 @@ module.exports = {
             {name: "Privileges Required (PR)", value: `• ${pr}`, inline: false},
             {name: "-> User Interaction (UI)", value: "None / Required", inline: false}
         );
-        row.components[0].setPlaceholder("Select the user interaction (UI)")
+        row.components[0].setPlaceholder("Select the user interaction (UI)");
         row.components[0].setOptions([
             {
                 label: "None (N)",
@@ -160,7 +160,7 @@ module.exports = {
             {name: "User Interaction (UI)", value: `• ${ui}`, inline: false},
             {name: "-> Scope (S)", value: "Unchanged / Changed", inline: false}
         );
-        row.components[0].setPlaceholder("Select the scope (S)")
+        row.components[0].setPlaceholder("Select the scope (S)");
         row.components[0].setOptions([
             {
                 label: "Unchanged (U)",
@@ -181,7 +181,7 @@ module.exports = {
             {name: "Scope (S)", value: `• ${s}`, inline: false},
             {name: "-> Confidentiality (C)", value: "High / Low / None", inline: false}
         );
-        row.components[0].setPlaceholder("Select the confidentiality (C)")
+        row.components[0].setPlaceholder("Select the confidentiality (C)");
         row.components[0].setOptions([
             {
                 label: "High (H)",
@@ -206,7 +206,7 @@ module.exports = {
             {name: "Confidentiality (C)", value: `• ${c}`, inline: false},
             {name: "-> Integrity (I)", value: "High / Low / None", inline: false},
         );
-        row.components[0].setPlaceholder("Select the integrity (I)")
+        row.components[0].setPlaceholder("Select the integrity (I)");
         row.components[0].setOptions([
             {
                 label: "High (H)",
@@ -231,7 +231,7 @@ module.exports = {
             {name: "Integrity (I)", value: `• ${i}`, inline: false},
             {name: "-> Availability (A)", value: "High / Low / None", inline: false}
         );
-        row.components[0].setPlaceholder("Select the availability (A)")
+        row.components[0].setPlaceholder("Select the availability (A)");
         row.components[0].setOptions([
             {
                 label: "High (H)",

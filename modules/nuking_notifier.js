@@ -1,7 +1,7 @@
 // THIS FEATURE IS DISABLED
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {Log, Sleep} = require('./JerryUtils');
+const {log, sleep} = require("./JerryUtils");
 
 
 var nukeCheckTimerState = false;
@@ -12,59 +12,59 @@ var counterTotalMemberRemove = 0;
 var counterRoleDelete = 0;
 
 // Main
-async function InitNukeNotifier(client) {
+async function initNukeNotifier(client) {
     return;
     // const guild_ids = ['631939549332897842'];
     // await NukingEventMonitor(client, guild_ids);
 }
 
-async function AntiNuke(client) {
+async function antiNuke(client) {
 
 }
 
-async function NukingEventMonitor(client, guildIds) {
+async function nukingEventMonitor(client, guildIds) {
     // Events
     client.on("channelDelete", async (channel) => {
-        if(!channel.guild.id in guildIds) {
+        if(!(channel.guild.id in guildIds)) {
             return;
         }
 
         counterChannelDelete++;
-        await NukeCounterMonitor();
+        await nukeCounterMonitor();
     });
 
     client.on("guildBanAdd", async (member) => {
-        if(!member.guild.id in guildIds) {
+        if(!(member.guild.id in guildIds)) {
             return;
         }
 
         counterGuildBanAdd++;
-        await NukeCounterMonitor();
+        await nukeCounterMonitor();
     });
 
     client.on("guildMemberRemove", async (member) => {
-        if(!member.guild.id in guildIds) {
+        if(!(member.guild.id in guildIds)) {
             return;
         }
 
         counterGuildMemberRemove++;
-        await NukeCounterMonitor();
+        await nukeCounterMonitor();
     });
 
     client.on("roleDelete", async (role) => {
-        if(!role.guild.id in guildIds) {
+        if(!(role.guild.id in guildIds)) {
             return;
         }
 
         counterRoleDelete++;
-        await NukeCounterMonitor();
+        await nukeCounterMonitor();
     });
 
     nukeCheckTimerState = true;
-    NukeCheckTimer();
+    nukeCheckTimer();
 }
 
-async function NukeCounterMonitor() {
+async function nukeCounterMonitor() {
     // counterTotalMemberRemove = counterGuildBanAdd + counterGuildMemberRemove;
     // console.log(`counterChannelDelete: ${counterChannelDelete};
     // counterGuildBanAdd: ${counterGuildBanAdd};
@@ -73,14 +73,14 @@ async function NukeCounterMonitor() {
     // counterRoleDelete: ${counterRoleDelete};`);
 }
 
-async function NukeCheckTimer() {
+async function nukeCheckTimer() {
     while(nukeCheckTimerState) {
-        await ResetCounters();
-        await Sleep(10000);
+        await resetCounters();
+        await sleep(10000);
     }
 }
 
-async function ResetCounters() {
+async function resetCounters() {
     counterChannelDelete = 0;
     counterGuildBanAdd = 0;
     counterGuildMemberRemove = 0;
@@ -90,14 +90,14 @@ async function ResetCounters() {
 
 
 // Deployed
-async function NukeAnalyzer(client, member) {
+async function nukeAnalyzer(client, member) {
 
 }
 
-async function NukeTimer(client) {
+async function nukeTimer(client) {
 
 }
 
 module.exports = {
-    InitNukeNotifier
+    initNukeNotifier
 };

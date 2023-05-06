@@ -1,7 +1,8 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
+const Path = require("path");
 
-const {GetSubCommandFiles, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {getSubCommandFiles, log, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -19,15 +20,6 @@ module.exports = {
                         .setRequired(true)))
         .addSubcommand(subcommand =>
             subcommand
-                .setName("read")
-                .setDescription("Read a line from a log file starting with the latest line.")
-                .addIntegerOption((options) =>
-                    options
-                        .setName("offset")
-                        .setDescription("[OPTIONAL] Number of the line to read starting with the latest line. Defaults to 0 (latest line).")
-                        .setRequired(false)))
-        .addSubcommand(subcommand =>
-            subcommand
                 .setName("get")
                 .setDescription("Sends the latest log file.")
                 .addIntegerOption((options) =>
@@ -41,11 +33,12 @@ module.exports = {
         // Checks
 
         // Main
-        const subcommand_files = await GetSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        // eslint-disable-next-line no-undef
+        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await Log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
+                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;
             }

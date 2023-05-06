@@ -1,17 +1,17 @@
 const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('typing')
+        .setName("typing")
         .setDescription("Sends the typing indicator."),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 0) === false) {
             return;
         }
 
@@ -21,7 +21,7 @@ module.exports = {
 
         // Main
         await interaction.reply({content: "Typing...", ephemeral: true});
-        Log("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
+        log("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
 
         interaction.channel.sendTyping();
     }

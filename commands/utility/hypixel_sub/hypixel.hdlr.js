@@ -7,16 +7,23 @@ const {getSubCommandFiles, log, sleep} = require("../../../modules/JerryUtils.js
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("nasa")
-        .setDescription("Executes a command related with the NASA Open APIs.")
+        .setName("hypixel")
+        .setDescription("Hypixel related commands")
         .addSubcommand(subcommand =>
             subcommand
                 .setName("api")
-                .setDescription("Makes an API call to NASA's APOD API."))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName("apod")
-                .setDescription("Returns the Astronomy Picture of the Day (APOD) from NASA.")),
+                .setDescription("Makes an API request to Hypixel"))
+    // .addSubcommand(subcommand =>
+    // subcommand
+    // .setName("SUBCMD_NAME")
+    // .setDescription("SUBCMD_DESCRIPTION")
+    // .addStringOption((options) =>
+    //     options
+    //         .setName("SUBCMD_OPTION_NAME")
+    //         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
+    //         .setRequired(true / false))
+    // )
+    ,
     async execute(client, interaction) {
         // Declaring variables
 

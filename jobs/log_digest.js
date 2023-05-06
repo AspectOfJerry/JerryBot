@@ -3,9 +3,8 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fs = require("fs");
 const date = require("date-and-time");
-const fetch = require("node-fetch");
 
-// const {Log, Sleep} = require("../modules/JerryUtils.js");
+// const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
@@ -18,12 +17,12 @@ const counter = {
     "WARN": 0
 };
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers every day
      */
     const digest = new CronJob("0 0 * * *", async () => {
-        // await Sleep(100);
+        // await sleep(100);
 
         const now = new Date();
         const yesterday = date.addDays(now, -1);
@@ -31,7 +30,7 @@ async function Execute(client) {
         const file_name = date.format(yesterday, "YYYY-MMMM");
         const prefix = date.format(yesterday, "YYYY-MM-DD");
 
-        const total_events = Object.values(counter).reduce((a, b) => {return a + b}, 0);
+        const total_events = Object.values(counter).reduce((a, b) => {return a + b;}, 0);
 
         const body = `[${prefix}] Total events: ${total_events},
     DEBUG: ${counter.DEBUG},
@@ -47,20 +46,20 @@ async function Execute(client) {
             }
         });
 
-        // Log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
+        // log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
 
         // Reset counter
-        Object.keys(counter).forEach((key) => {counter[key] = 0});
+        Object.keys(counter).forEach((key) => {counter[key] = 0;});
     });
 
     digest.start();
 
-    // Log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
+    // log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
     console.log("[Digest] Log digest started!");
 }
 
 
-function RegisterEvent(type, amount) {
+function registerEvent(type, amount) {
     amount = amount ?? 1;
 
     const types = ["DEBUG", "ERROR", "FATAL", "INFO", "WARN"];
@@ -69,11 +68,11 @@ function RegisterEvent(type, amount) {
         throw `Invalid type tag of ${type}`;
     }
 
-    counter[type]++;
+    counter[type] + amount;
 }
 
 
 module.exports = {
-    Execute,
-    RegisterEvent
+    execute,
+    registerEvent
 };

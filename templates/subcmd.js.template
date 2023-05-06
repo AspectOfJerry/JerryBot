@@ -4,8 +4,8 @@ const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    await interaction.deferReply();
-    if(await permissionCheck(interaction, -1) === false) {
+    // interaction.deferReply();
+    if(await permissionCheck(interaction, x) === false) {
         return;
     }
 
@@ -14,5 +14,5 @@ module.exports = async function (client, interaction) {
     // Checks
 
     // Main
-    interaction.editReply({content: "This command is currently under development"});
+
 };

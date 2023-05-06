@@ -1,26 +1,27 @@
 const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {PermissionCheck, Log, Sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 1) === false) {
         return;
     }
 
     // Declaring variables
     const input_modal = new Modal()
-        .setCustomId('input_modal')
-        .setTitle('Number input');
+        .setCustomId("input_modal")
+        .setTitle("Number input");
 
     const numbers_input = new TextInputComponent()
-        .setCustomId('input_numbers')
-        .setLabel("Write the list of numbers seperated by spaces. Commas and periods are accepted for decimals.")
-        .setStyle('SHORT');
+        .setCustomId("input_numbers")
+        .setLabel("LABEL")
+        .setPlaceholder("List of numbers seperated by spaces. Commas and periods are accepted for decimals.")
+        .setStyle("PARAGRAPH");
 
-    const first_row = new MessageActionRow.addComponents(numbers_input);
+    const first_row = new MessageActionRow().addComponents(numbers_input);
 
     input_modal.addComponents(first_row);
 
@@ -38,7 +39,7 @@ module.exports = async function (client, interaction) {
     // Main
     const prompt_embed = new MessageEmbed()
         .setColor("GREEN")
-        .setDescription("Press the button and enter the numbers **separated by a space**. Use a **period** for decimal. Comas are **ignored**.");
+        .setDescription("Press the button and enter the numbers **separated by a space**. Use periods and commas are accepted for decimals.");
 
     await interaction.reply({embeds: [prompt_embed], components: [row], fetchReply: true})
         .then(async (msg) => {
@@ -47,23 +48,27 @@ module.exports = async function (client, interaction) {
                     return true;
                 }
                 newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
                 return;
-            }
+            };
 
-            msg.awaitMessageCompoent(filter, {time: 30000})
+            msg.awaitMessageComponent(filter, {time: 30000})
                 .then(async (newInteraction) => {
                     const filter = (newInteraction) => {
                         if(newInteraction.isModalSubmit() && newInteraction.customId === input_modal) {
                             return true;
                         }
                         return false;
-                    }
+                    };
 
                     await newInteraction.showModal(input_modal);
-                    newInteraction.awaitModalSubmit(filter, {time: 120000})
+                    newInteraction.awaitModalSubmit({filter, time: 60000})
                         .then((modalSubmit) => {
 
+                        }).catch((err) => {
+                            if(err.message.includes("time")) {
+                                // send timeout message
+                            }
                         });
                 });
         });

@@ -1,16 +1,16 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {PermissionCheck, Log, Sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('slowmode')
+        .setName("slowmode")
         .setDescription("Enables slowmode in a guild text channel.")
         .addIntegerOption((options) =>
             options
-                .setName('interval')
+                .setName("interva")
                 .setDescription("[REQUIRED] The rate limit in seconds.")
                 .setRequired(true))
         .addChannelOption((options) =>
@@ -24,24 +24,24 @@ module.exports = {
                 .setDescription("[OPTIONAL] The reason for enabling the rate limit.")
                 .setRequired(false)),
     async execute(client, interaction) {
-        if(await PermissionCheck(interaction) === false) {
+        if(await permissionCheck(interaction, 3) === false) {
             return;
         }
 
-        // Declaring variables
-        const interval = interaction.options.getInteger('interval');
+        // Declaring variables"
+        const interval = interaction.options.getInteger("interval");
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
         const reason = interaction.options.getString("reason") ?? "No reason provided.";
 
         // Checks
-        if(channel.type !== 'GUILD_TEXT') {
+        if(channel.type !== "GUILD_TEXT") {
             const error_not_text_channel = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
             await interaction.reply({embeds: [error_not_text_channel]});
-            await Log("append", interaction.guild.id, `└─The provided channel was not a text channel (#${channel.name}).`, "WARN");
+            await log("append", interaction.guild.id, `└─The provided channel was not a text channel (#${channel.name}).`, "WARN");
             return;
         }
 
@@ -52,10 +52,10 @@ module.exports = {
                     const disabled_slowmode = new MessageEmbed()
                         .setColor("GREEN")
                         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                        .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`)
+                        .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`);
 
                     interaction.reply({embeds: [disabled_slowmode]});
-                    Log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                    log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
                 });
             return;
         }
@@ -66,10 +66,10 @@ module.exports = {
                     .setColor("GREEN")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`Successfully enabled a **${interval}** second rate limit per user in <#${channel.id}>.`)
-                    .setFooter({text: "Set the rate limit to 0 to disable it."})
+                    .setFooter({text: "Set the rate limit to 0 to disable it."});
 
                 interaction.reply({embeds: [enabled_slowmode]});
-                Log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
             });
     }
 };

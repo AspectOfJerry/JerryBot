@@ -1,16 +1,15 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {PermissionCheck, Log, Sleep} = require("../../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
-    if(await PermissionCheck(interaction) === false) {
+    if(await permissionCheck(interaction, 0) === false) {
         return;
     }
 
     // Declaring variables
-    collectedModal = false;
-    let selectMenu = new MessageActionRow()
+    const select_menu = new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()
                 .setCustomId("select_menu")
@@ -61,7 +60,7 @@ module.exports = async function (client, interaction) {
                 ])
         );
 
-    let buttonRow = new MessageActionRow()
+    const button_row = new MessageActionRow()
         .addComponents(
             new MessageButton()
                 .setCustomId("cancel_button")
@@ -76,13 +75,13 @@ module.exports = async function (client, interaction) {
         );
 
     const prompt_name = new Modal()
-        .setCustomId('prompt_name')
+        .setCustomId("prompt_name")
         .setTitle("How should we call you (first name)?");
 
     const name_input = new TextInputComponent()
-        .setCustomId('name')
+        .setCustomId("name")
         .setLabel("Your server nickname will be set to this.")
-        .setStyle('SHORT');
+        .setStyle("SHORT");
 
     const first_row = new MessageActionRow().addComponents(name_input);
 
@@ -98,13 +97,13 @@ module.exports = async function (client, interaction) {
     const filter = (newInteraction) => {
         if(newInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             isOverriddenText = ` (overriden by <@${newInteraction.user.id}>)`;
-            Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
+            log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' overrode the decision.`, "WARN");
             return true;
         } else if(newInteraction.user.id == interaction.user.id) {
             return true;
         }
         newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-        Log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+        log("append", interaction.guild.id, `├─'@${newInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
         return;
     };
 
@@ -115,7 +114,7 @@ module.exports = async function (client, interaction) {
         .setDescription("Step 1: Select your group number.\nStep 2: Enter your first name.")
         .setFooter({text: "The command expires in 30s."});
 
-    const msg = await interaction.reply({embeds: [prompt], components: [selectMenu, buttonRow], fetchReply: true});
+    const msg = await interaction.reply({embeds: [prompt], components: [select_menu, button_row], fetchReply: true});
     const component_collector = await msg.createMessageComponentCollector({filter, time: 30000});
 
     component_collector.on("collect", async (componentInteraction) => {
@@ -124,11 +123,11 @@ module.exports = async function (client, interaction) {
             if(componentInteraction.customId === "cancel_button") {
                 await componentInteraction.deferUpdate();
                 component_collector.stop();
-                buttonRow.components[0]
+                button_row.components[0]
                     .setDisabled(true);
-                buttonRow.components[1]
+                button_row.components[1]
                     .setDisabled(true);
-                selectMenu.components[0]
+                select_menu.components[0]
                     .setDisabled(true);
 
                 const cancel = new MessageEmbed()
@@ -136,18 +135,18 @@ module.exports = async function (client, interaction) {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                     .setDescription(`<@${interaction.user.id}> cancelled the verify process${isOverriddenText}.`);
 
-                interaction.editReply({embeds: [cancel], components: [selectMenu, buttonRow]});
+                interaction.editReply({embeds: [cancel], components: [select_menu, button_row]});
                 return;
             } else if(componentInteraction.customId === "confirm_button") {
                 await componentInteraction.deferUpdate();
                 component_collector.stop();
-                buttonRow.components[0]
+                button_row.components[0]
                     .setDisabled(true);
-                buttonRow.components[1]
+                button_row.components[1]
                     .setDisabled(true);
 
                 await interaction.member.setNickname(name);
-                const roles = require('../../../../database/commands/exclusive/verify/roles.json');
+                const roles = require("../../../../database/commands/exclusive/verify/roles.json");
                 const role_id = roles[group];
                 await interaction.member.roles.add(role_id);
 
@@ -157,7 +156,7 @@ module.exports = async function (client, interaction) {
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
                     .setDescription(`You are now identified as ${name} in ${group}.`);
 
-                interaction.editReply({embeds: [success], components: [selectMenu, buttonRow]});
+                interaction.editReply({embeds: [success], components: [select_menu, button_row]});
                 if(interaction.member.roles.cache.has("1070867071803609119")) {
                     interaction.member.roles.remove("1070867071803609119");
                 }
@@ -166,11 +165,11 @@ module.exports = async function (client, interaction) {
             // Select menu
         } else if(componentInteraction.isSelectMenu()) {
             // Disable select menu
-            selectMenu.components[0]
+            select_menu.components[0]
                 .setDisabled(true);
 
             if(componentInteraction.customId === "select_menu") {
-                interaction.editReply({embeds: [prompt], components: [selectMenu, buttonRow]});
+                interaction.editReply({embeds: [prompt], components: [select_menu, button_row]});
                 group = componentInteraction.values.join("").toString();
 
                 await componentInteraction.showModal(prompt_name);
@@ -197,7 +196,7 @@ module.exports = async function (client, interaction) {
 
             newInteraction.deferUpdate();
 
-            buttonRow.components[1]
+            button_row.components[1]
                 .setDisabled(false);
 
             name = newInteraction.fields.getTextInputValue("name");
@@ -206,7 +205,7 @@ module.exports = async function (client, interaction) {
                 .setColor("YELLOW")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setTitle("Confirm your input")
-                .setDescription(`Please confirm the following data:`)
+                .setDescription("Please confirm the following data: ")
                 .addFields(
                     {
                         name: "Name", value: `${name}`, inline: false
@@ -216,27 +215,27 @@ module.exports = async function (client, interaction) {
                     }
                 );
 
-            interaction.editReply({embeds: [confirm_selection], components: [selectMenu, buttonRow]});
+            interaction.editReply({embeds: [confirm_selection], components: [select_menu, button_row]});
         });
     }
 
     component_collector.on("end", (collected, reason) => {
         if(reason === "time") {
             // Disable components
-            buttonRow.components[0]
+            button_row.components[0]
                 .setDisabled(true);
-            buttonRow.components[1]
+            button_row.components[1]
                 .setDisabled(true);
-            selectMenu.components[0]
+            select_menu.components[0]
                 .setDisabled(true);
 
             const expired = new MessageEmbed()
                 .setColor("DARK_GREY")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle('Verify')
+                .setTitle("Verify")
                 .setDescription(`The command has expired. Please execute </311 verify:${interaction.commandId}> again.`);
 
-            interaction.editReply({embeds: [expired], components: [selectMenu, buttonRow]});
+            interaction.editReply({embeds: [expired], components: [select_menu, button_row]});
         }
     });
 };

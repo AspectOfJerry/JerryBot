@@ -1,20 +1,19 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const CronJob = require("cron").CronJob;
-const fetch = require("node-fetch");
 
-const {Log, Sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/JerryUtils.js");
 
 let disabled = false;
 
-async function Execute(client) {
+async function execute(client) {
     /**
      * Triggers at 06h00 every day
      */
     const online = new CronJob("00 6 * * *", async () => {
         client.user.setStatus("online");
 
-        Log("append", 'cycle', "[CycleDay] Successfully the bot's status to online.", "DEBUG");
+        log("append", "cycle", "[CycleDay] Successfully the bot's status to online.", "DEBUG");
     });
 
     /**
@@ -23,7 +22,7 @@ async function Execute(client) {
     const idle = new CronJob("45 21 * * *", async () => {
         client.user.setStatus("idle");
 
-        Log("append", "cycle", "[CycleNight] Successfully the bot's status to idle.", "DEBUG");
+        log("append", "cycle", "[CycleNight] Successfully the bot's status to idle.", "DEBUG");
     });
 
     online.start();
@@ -34,5 +33,5 @@ async function Execute(client) {
 
 
 module.exports = {
-    Execute
+    execute
 };
