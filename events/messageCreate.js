@@ -11,7 +11,7 @@ module.exports = {
         const channels = ["1103466639292370964"];
 
         if(message.content.startsWith(gpt_prefix) && !message.author.bot && channels.includes(message.channel.id)) {
-            gpt(message.content.slice(4));
+            gpt(message, message.client);
         }
     }
 };

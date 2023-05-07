@@ -19,9 +19,7 @@ module.exports = {
             await log("append", "voiceStateUpdate", `"@${newState.member?.user.tag}" joined "#${newState.channel.name}" in "${newState.guild.name}".`, "INFO");
         }
 
-        const hubs = await getVcHubs(newState);
-
-        if(hubs.includes(newState.channel.id)) {
+        if((await getVcHubs(newState)).includes(newState.channel.id)) {
             handleJoin(newState);
         }
     }

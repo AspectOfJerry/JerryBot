@@ -46,7 +46,7 @@ async function refreshHubs(client) {
  * @returns {array} The voice channel hub ids.
  */
 async function getVcHubs() {
-
+    return (await getConfig()).voiceChannelHubs;
 }
 
 

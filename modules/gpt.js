@@ -1,6 +1,7 @@
 const process = require("process");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {Configuration, OpenAIApi} = require("openai");
+const {toNormalized} = require("../modules/JerryUtils.js");
 
 
 let configed = false;
@@ -24,22 +25,65 @@ function configOpenAI() {
  */
 async function gpt(message, client) {
     try {
-        const prompt = message.content;
+        const username = toNormalized(message.member?.nickname) ?? toNormalized(message.author.username);
+        const prompt = message.content.slice(4);
         const requesting = new MessageEmbed()
             .setColor("YELLOW")
-            .setAuthor({name: `${message.author.name}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
+            .setAuthor({name: `${username}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
             .setTitle(`${prompt}`)
-            .setDescription("*Generating response... This may take around 5 seconds.*")
-            .setFooter({text: "OpenAI gpt-3.5-turbo"});
+            .setDescription("*Generating response... This may take a while depending on complexity.*");
 
-        message.reply({embeds: [requesting]});
+        const msg = await message.reply({embeds: [requesting]});
         message.channel.sendTyping();
-        const completion = await openai.createCompletion({
+        const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            prompt: `${prompt}`,
-            temperature: 0.7,
+            messages: [{role: "assistant", content: `${prompt}`, name: `${username}`}],
+            temperature: 0.75,
+            max_tokens: 512,
             n: 1
         });
+
+
+        const data = completion.data;
+
+        const embed = new MessageEmbed()
+            .setColor("GREEN")
+            .setAuthor({name: `${username}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
+            .setTitle(`${prompt}`)
+            .setDescription(`${data.choices[0].message.content}`)
+            .setFooter({text: `model: OpenAI ${data.model}, tokens: ${data.usage.total_tokens}/512`});
+
+        // Split the message into chunks of maximum length 4096 https://discord.com/developers/docs/resources/channel#embed-object-embed-limits
+        const messageChunks = data.choices[0].message.content.match(/[\s\S]{1,4096}/g) || [];
+
+        let first = true;
+        for(const chunk of messageChunks) {
+            if(first) {
+                msg.edit({embeds: [embed]});
+                first = false;
+                continue;
+            }
+
+            // Send the chunk
+            embed.setDescription(`${chunk}`);
+            await msg.channel.send({embeds: [embed]});
+        }
+        // await msg.delete();
+
+        // // Split the message into chunks of maximum length 2000
+        // const messageChunks = data.choices[0].message.content.match(/[\s\S]{1,1920}/g) || [];
+
+        // // Send each chunk as a separate message
+        // let first = true;
+        // for(const chunk of messageChunks) {
+        //     if(first) {
+        //         message.reply({content: `**Completion** (model: OpenAI __${data.model}__, tokens: ${data.usage.total_tokens})\n\n${chunk}`});
+        //         first = false;
+        //         continue;
+        //     }
+        //     // Send the chunk as a message
+        //     await message.channel.send(chunk);
+        // }
 
         // CODE FROM CHATGPT
         // const openai = require('openai');
@@ -67,19 +111,10 @@ async function gpt(message, client) {
 
         // // Attach the response handler function to the stream
         // stream.on('data', handleResponse);
-
-        const embed = new MessageEmbed()
-            .setColor("GREEN")
-            .setAuthor({name: `${message.author.name}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
-            .setTitle(`${prompt}`)
-            .setDescription(`${completion.data.choices[0].text}`)
-            .setFooter({text: "OpenAI gpt-3.5-turbo"});
-
-        message.editReply({embeds: [embed]});
     } catch(err) {
         if(err.response) {
             console.log(err.response.status);
-            // console.log(err.response.data);
+            console.log(err.response.data);
         } else {
             console.log(err.message);
         }
