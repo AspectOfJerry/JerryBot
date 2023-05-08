@@ -2,8 +2,9 @@ const process = require("process");
 const mongoose = require("mongoose");
 // const {log, sleep} = require("../../modules/JerryUtils.js");
 
-const configSchema = require("./schema/configSchema.js");
-const guildSchema = require("./schema/guildSchema.js");
+const birthdaySchema = require("./schemas/birthdaySchema.js");
+const configSchema = require("./schemas/configSchema.js");
+const guildSchema = require("./schemas/guildSchema.js");
 
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
@@ -20,47 +21,28 @@ async function connect() {
 }
 
 
+// BIRTHDAY
 /**
  * @param {string} guildId The guild ID
  */
-async function deleteGuild(guildId) {
-    guildSchema.deleteOne({id: guildId})
-        .then((result) => {
-            if(result.deletedCount < 1) {
-                throw "Guild does not exist.";
-            }
-            return result;
-        });
-
-    // log("appenbd", "Database", `Deleted guild '${guildId}'`, "WARN");
-}
-
-
-/**
- * @returns The config document
- */
-async function getConfig() {
-    const id = "config";
-
-    const res = await configSchema.findOne({id: id});
+async function birthdaysByGuild(guildId) {
+    const res = await birthdaySchema.findOne({"guild.id": guildId});
     if(res === []) {
-        // log("append", "Database", "Config not found", "FATAL");
-        throw "Config not found";
+        return void (0);
     }
     return res;
 }
 
 
 /**
- * @param {string} guildId The guild ID
- * @return The guild document
+ * @param {Object} client The Discord client
  */
-async function getGuildConfig(guildId) {
-    const res = await guildSchema.findOne({id: guildId});
-    return res;
+async function refreshBirthdayCollection(client) {
+    // Delete guilds not in cache
 }
 
 
+// CONFIG
 /**
  * @param {string} id The id of the config document (`config` is always used)
  * @param {Array.<string>} guildBlacklist The list of blacklisted guilds
@@ -85,9 +67,51 @@ async function updateConfig(id, guildBlacklist, superUsers, userBlacklist, voice
 
 
 /**
- * @param {Object} client The Discord client
+ * @returns The config document
+*/
+async function getConfig() {
+    const id = "config";
+
+    const res = await configSchema.findOne({id: id});
+    if(res === []) {
+        // log("append", "Database", "Config not found", "FATAL");
+        throw "Config not found";
+    }
+    return res;
+}
+
+
+// GUILD
+/**
+ * @param {string} guildId The guild ID
  */
-async function refreshDatabase(client) {
+async function deleteGuild(guildId) {
+    const res = await guildSchema.deleteOne({id: guildId});
+    if(res.deletedCount < 1) {
+        throw "Guild does not exist.";
+    }
+    // log("appenbd", "Database", `Deleted guild '${guildId}'`, "WARN");
+    return res;
+}
+
+
+/**
+ * @param {string} guildId The guild ID
+ * @return The guild document
+ */
+async function getGuildConfig(guildId) {
+    const res = await guildSchema.findOne({id: guildId});
+    if(res === []) {
+        return void (0);
+    }
+    return res;
+}
+
+
+/**
+ * @param {Object} client The Discord client
+*/
+async function refreshGuildCollection(client) {
     // Delete guilds not in cache
     const guilds_ids = client.guilds.cache.map(guild => guild.id);
     await guildSchema.deleteMany({id: {$nin: guilds_ids}});
@@ -141,10 +165,14 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 
 module.exports = {
     connect,
-    deleteGuild,
+    // birthday
+
+    // config
     getConfig,
-    getGuildConfig,
-    refreshDatabase,
     updateConfig,
+    // guild
+    deleteGuild,
+    getGuildConfig,
+    refreshGuildCollection,
     updateGuild
 };

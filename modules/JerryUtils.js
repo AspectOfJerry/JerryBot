@@ -267,7 +267,7 @@ async function permissionCheck(interaction, pl) {
 
     const guild_config = await getGuildConfig(interaction.guild.id);
 
-    if(guild_config === []) {
+    if(!guild_config) {
         const embed = new MessageEmbed()
             .setColor("FUCHSIA")
             .setDescription("This guild's permission configuration is not in the database. Please contact the bot administrators for help.")

@@ -9,6 +9,39 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("sudo")
         .setDescription("SuperUser commands.")
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("bday")
+                .setDescription("[SUDO] Sets a user's birthday")
+                .addUserOption((option) =>
+                    option
+                        .setName("user")
+                        .setDescription("[REQUIRED] The user")
+                        .setRequired(true))
+                .addIntegerOption((option) =>
+                    option
+                        .setName("day")
+                        .setDescription("[REQUIRED] The day (1-31)")
+                        .setMinValue(1)
+                        .setMaxValue(31))
+                .addIntegerOption((option) =>
+                    option
+                        .setName("month")
+                        .setDescription("[REQUIRED] The month")
+                        .addChoices([
+                            ["[01] January", 1],
+                            ["[02] February", 2],
+                            ["[03] March", 3],
+                            ["[04] April", 4],
+                            ["[05] May", 5],
+                            ["[06] June", 6],
+                            ["[07] July", 7],
+                            ["[08] August", 8],
+                            ["[09] September", 9],
+                            ["[10] October", 10],
+                            ["[11] November", 11],
+                            ["[12] December", 12]
+                        ])))
         .addSubcommand((subcommand) => // blacklist
             subcommand
                 .setName("blacklist")
