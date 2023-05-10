@@ -33,14 +33,14 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await log("append", interaction.guild.id, `├─memberTarget: "@${memberTarget.user.tag}"`, "INFO");
+        log("append", interaction.guild.id, `├─memberTarget: "@${memberTarget.user.tag}"`, "INFO");
 
         const duration = interaction.options.getString("duration");
         let reason = interaction.options.getString("reason");
-        await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
+        log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
 
         const duration_in_ms = ms(duration);
-        await log("append", interaction.guild.id, `├─duration_in_ms: ${duration}`, "INFO");
+        log("append", interaction.guild.id, `├─duration_in_ms: ${duration}`, "INFO");
 
         // Checks
         if(memberTarget.id === interaction.user.id) {
@@ -51,7 +51,7 @@ module.exports = {
                 .setDescription("You cannot timeout yourself.");
 
             interaction.reply({embeds: [error_cannot_timeout_self]});
-            await log("append", interaction.guild.id, `└─"@${interaction.user.id}" tried to timeout themselves.`, "WARN");
+            log("append", interaction.guild.id, `└─"@${interaction.user.id}" tried to timeout themselves.`, "WARN");
             return;
         }
         if(!duration_in_ms) {
@@ -65,7 +65,7 @@ module.exports = {
                 );
 
             interaction.reply({embeds: [error_duration]});
-            await log("append", interaction.guild.id, "└─Invalid duration.");
+            log("append", interaction.guild.id, "└─Invalid duration.");
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -77,7 +77,7 @@ module.exports = {
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was lower.`, "WARN");
+            log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
@@ -88,7 +88,7 @@ module.exports = {
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was equal.`, "WARN");
+            log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
@@ -99,8 +99,8 @@ module.exports = {
                 .setTitle("Error")
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`);
 
-            await interaction.reply({embeds: [member_not_moderatable]});
-            await log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
+            interaction.reply({embeds: [member_not_moderatable]});
+            log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
             return;
         }
 
@@ -120,8 +120,8 @@ module.exports = {
                         )
                         .setFooter({text: "*Relative timestamps look out of sync depending on your timezone."});
 
-                    await interaction.reply({embeds: [success_timeout]});
-                    await log("append", interaction.guild.id, `└─"@${interaction.user.tag}" timed out "@${memberTarget.user.tag}" for ${duration}.${reason}`, "WARN");
+                    interaction.reply({embeds: [success_timeout]});
+                    log("append", interaction.guild.id, `└─"@${interaction.user.tag}" timed out "@${memberTarget.user.tag}" for ${duration}.${reason}`, "WARN");
                 });
         } else {
             // Override option if the member is already timed out
@@ -160,13 +160,13 @@ module.exports = {
             // Creating a filter for the collector
             const filter = async (buttonInteraction) => {
                 if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                    await log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" overrode the decision.`, "WARN");
+                    log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" overrode the decision.`, "WARN");
                     return true;
                 } else if(buttonInteraction.user.id === interaction.user.id) {
                     return true;
                 } else {
-                    await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                    await log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" did not have the permission to use this button.`, "WARN");
+                    buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                    log("append", interaction.guild.id, `├─"@${buttonInteraction.user.tag}" did not have the permission to use this button.`, "WARN");
                     return;
                 }
             };

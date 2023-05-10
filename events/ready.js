@@ -2,7 +2,7 @@ const process = require("process");
 const {REST} = require("@discordjs/rest");
 const {Routes} = require("discord-api-types/v9");
 
-const {connect, refreshGuildCollection, updateConfig} = require("../database/mongodb.js");
+const {connect, refreshBirthdayCollection, refreshGuildCollection} = require("../database/mongodb.js");
 const {log, sleep, StartJobs} = require("../modules/JerryUtils.js");
 const {configOpenAI} = require("../modules/gpt.js");
 const {checklistBotReady, checklistJobs, startTelemetry} = require("../modules/telemetry");
@@ -50,9 +50,13 @@ module.exports = {
         log("append", "Database", "Connecting to the database...", "DEBUG");
         await connect();
 
-        console.log("Refreshing the database...");
-        log("append", "Database", "Refreshing the database...", "DEBUG");
+        console.log("Refreshing the guilds collection...");
+        log("append", "Database", "Refreshing the guilds collection...", "DEBUG");
         await refreshGuildCollection(client);
+
+        console.log("Refreshing the guilds collection...");
+        log("append", "Database", "Refreshing the guilds collection...", "DEBUG");
+        await refreshBirthdayCollection(client);
 
         // Reresh Voice Channel Hubs
         console.log("Refreshing the voice channel hubs...");

@@ -11,12 +11,14 @@ let disabled = false;
 async function execute(client) {
     const birthday = new CronJob("30 6 * * *", async () => { // Interval of every day at
 
+        log("append", "birthday", "[Birthday] Checking birthdays...", "DEBUG");
+        console.log("Checking birthdays...");
     });
 
     birthday.start();
 
-    log("append", "birthday", "[Birthday] birthday announcer started", "DEBUG");
     console.log("birthday announcer started!");
+    log("append", "birthday", "[Birthday] birthday announcer started", "DEBUG");
 }
 
 

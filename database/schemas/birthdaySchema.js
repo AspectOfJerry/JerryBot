@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const birthdaySchema = new mongoose.Schema({
     id: {type: String, required: true, unique: true, immutable: true},
     username: {type: String, unique: false},

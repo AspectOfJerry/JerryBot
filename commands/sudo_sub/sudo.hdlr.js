@@ -18,16 +18,23 @@ module.exports = {
                         .setName("user")
                         .setDescription("[REQUIRED] The user")
                         .setRequired(true))
+                .addStringOption((option) =>
+                    option
+                        .setName("name")
+                        .setDescription("[REQUIRED] A human readable name")
+                        .setRequired(true))
                 .addIntegerOption((option) =>
                     option
                         .setName("day")
                         .setDescription("[REQUIRED] The day (1-31)")
                         .setMinValue(1)
-                        .setMaxValue(31))
+                        .setMaxValue(31)
+                        .setRequired(true))
                 .addIntegerOption((option) =>
                     option
                         .setName("month")
                         .setDescription("[REQUIRED] The month")
+                        .setRequired(true)
                         .addChoices([
                             ["[01] January", 1],
                             ["[02] February", 2],
@@ -41,7 +48,12 @@ module.exports = {
                             ["[10] October", 10],
                             ["[11] November", 11],
                             ["[12] December", 12]
-                        ])))
+                        ]))
+                .addStringOption(option =>
+                    option
+                        .setName("notes")
+                        .setDescription("[OPTIONAL] Additional information about the user")
+                        .setRequired(false)))
         .addSubcommand((subcommand) => // blacklist
             subcommand
                 .setName("blacklist")

@@ -332,7 +332,7 @@ async function permissionCheck(interaction, pl) {
 /**
  * Sleep
  * @async `await` must be used when calling `sleep()`.
- * @param {integer} delayInMsec The delay to wait for in milliseconds.
+ * @param {number} delayInMsec The delay to wait for in milliseconds.
  * @throws {TypeError} Throws if `delayInMsec` is `NaN`.
  */
 async function sleep(delayInMsec) {

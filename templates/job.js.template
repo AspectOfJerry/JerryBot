@@ -15,8 +15,8 @@ async function execute(client) {
 
     JOBNAME.start();
 
-    log("append", "JOB_NAME", "[JOBNAME] ", "DEBUG");
     console.log("JOBNAME started!");
+    log("append", "JOB_NAME", "[JOBNAME] ", "DEBUG");
 }
 
 

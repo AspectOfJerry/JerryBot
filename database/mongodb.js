@@ -25,7 +25,7 @@ async function connect() {
 /**
  * @param {string} guildId The guild ID
  */
-async function birthdaysByGuild(guildId) {
+async function getBirthdaysByGuild(guildId) {
     const res = await birthdaySchema.findOne({"guild.id": guildId});
     if(res === []) {
         return void (0);
@@ -38,7 +38,64 @@ async function birthdaysByGuild(guildId) {
  * @param {Object} client The Discord client
  */
 async function refreshBirthdayCollection(client) {
-    // Delete guilds not in cache
+    // Delete users not in cache
+    const db_users = await birthdaySchema.find({});
+
+    const removing = db_users
+        .filter(user => !client.users.cache.get(user.id))
+        .map(user => user.id);
+
+    if(removing.length > 0) {
+        await birthdaySchema.deleteMany({id: {$in: removing}});
+    }
+
+    // Update username for existing users
+    const cached_users = Array.from(client.users.cache.values());
+    const updating = db_users.filter(user => cached_users.some(cachedUser => cachedUser.id === user.id));
+
+    if(updating.length > 0) {
+        const bulk_op = updating.map((user) => ({
+            updateOne: {
+                filter: {id: user.id},
+                update: {
+                    $set: {
+                        username: cached_users.find(cachedUser => cachedUser.id === user.id).username
+                    }
+                },
+                upsert: true
+            }
+        }));
+
+        await birthdaySchema.bulkWrite(bulk_op);
+    }
+}
+
+
+/**
+ * @param {Object} user The Discord user to update
+ * @param {string} name A human readable 
+ * @param {number} day The day of the monthname
+ * @param {number} month The month
+ * @param {string} notes Additional info
+ */
+async function updateBirthday(user, name, day, month, notes) {
+    const updated = {
+        username: user.username,
+        name: name,
+        day: day,
+        month: month,
+        notes: notes
+    };
+
+    Object.keys(updated).forEach(key => updated[key] === undefined && delete updated[key]);
+
+    const res = await birthdaySchema.findOneAndUpdate(
+        {id: user.id},
+        updated,
+        {new: true, upsert: true}
+    );
+
+    return res;
 }
 
 
@@ -118,7 +175,7 @@ async function refreshGuildCollection(client) {
 
     // Adding missing guilds
     for(const [guildId, guild] of client.guilds.cache.entries()) {
-        await guildSchema.findOneAndUpdate(
+        await guildSchema.updateOne(
             {id: guildId},
             {
                 $set: {
@@ -133,7 +190,7 @@ async function refreshGuildCollection(client) {
                     }
                 }
             },
-            {new: true, upsert: true}
+            {upsert: true}
         );
     }
 }
@@ -166,7 +223,9 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 module.exports = {
     connect,
     // birthday
-
+    getBirthdaysByGuild,
+    refreshBirthdayCollection,
+    updateBirthday,
     // config
     getConfig,
     updateConfig,
