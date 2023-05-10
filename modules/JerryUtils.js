@@ -397,7 +397,7 @@ async function StartJobs(client) {
  * @return {string} The normalized string.
  */
 function toNormalized(string) {
-    if(string === undefined || string === null) {
+    if(string === void (0) || string === null) {
         return;
     }
     return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");

@@ -88,7 +88,7 @@ async function updateBirthday(user, name, day, month, notes) {
         notes: notes
     };
 
-    Object.keys(updated).forEach(key => updated[key] === undefined && delete updated[key]);
+    Object.keys(updated).forEach(key => updated[key] === void (0) && delete updated[key]);
 
     const res = await birthdaySchema.findOneAndUpdate(
         {id: user.id},
