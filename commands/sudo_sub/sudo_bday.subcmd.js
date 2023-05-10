@@ -20,7 +20,7 @@ module.exports = async function (client, interaction) {
     log("append", interaction.guild.id, `├─day: "${day}"`, "INFO");
     const month = interaction.options.getInteger("month");
     log("append", interaction.guild.id, `├─month: "${month}"`, "INFO");
-    const notes = interaction.options.getString("notes");
+    let notes = interaction.options.getString("notes");
     log("append", interaction.guild.id, `├─notes: "${notes}"`, "INFO");
 
     // Checks
@@ -36,8 +36,12 @@ module.exports = async function (client, interaction) {
         return;
     }
 
+    if(notes !== void (0)) {
+        notes = notes.split(",").map(s => s.trim());
+    }
+
     // Main
-    await updateBirthday(user, name, day, month, notes.split(",").map(s => s.trim()));
+    await updateBirthday(user, name, day, month, notes);
     const updated = new MessageEmbed()
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
