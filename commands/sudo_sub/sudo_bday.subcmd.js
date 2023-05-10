@@ -37,7 +37,7 @@ module.exports = async function (client, interaction) {
     }
 
     // Main
-    await updateBirthday(user, name, day, month, notes);
+    await updateBirthday(user, name, day, month, notes.split(",").map(s => s.trim()));
     const updated = new MessageEmbed()
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

@@ -7,7 +7,7 @@ const birthdaySchema = new mongoose.Schema({
     name: {type: String, required: true, unique: false},
     day: {type: Number, required: true, integer: true, min: 1, max: 31},
     month: {type: Number, required: true, integer: true, min: 1, max: 12},
-    notes: {type: String, required: false}
+    notes: {type: [String], required: false, default: []}
 });
 
 module.exports = mongoose.model("birthdaySchema", birthdaySchema, "bday");

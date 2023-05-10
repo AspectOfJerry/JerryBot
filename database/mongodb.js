@@ -23,11 +23,12 @@ async function connect() {
 
 // BIRTHDAY
 /**
- * @param {string} guildId The guild ID
+ * @param {number} day The day of the month
+ * @param {number} month The month
  */
-async function getBirthdaysByGuild(guildId) {
-    const res = await birthdaySchema.findOne({"guild.id": guildId});
-    if(res === []) {
+async function getBirthdayByDate(day, month) {
+    const res = await birthdaySchema.find({day: day, month: month});
+    if(res.length <= 0) {
         return void (0);
     }
     return res;
@@ -76,7 +77,7 @@ async function refreshBirthdayCollection(client) {
  * @param {string} name A human readable 
  * @param {number} day The day of the monthname
  * @param {number} month The month
- * @param {string} notes Additional info
+ * @param {Array.<string>} notes Additional info
  */
 async function updateBirthday(user, name, day, month, notes) {
     const updated = {
@@ -130,7 +131,7 @@ async function getConfig() {
     const id = "config";
 
     const res = await configSchema.findOne({id: id});
-    if(res === []) {
+    if(res.length <= 0) {
         // log("append", "Database", "Config not found", "FATAL");
         throw "Config not found";
     }
@@ -158,7 +159,7 @@ async function deleteGuild(guildId) {
  */
 async function getGuildConfig(guildId) {
     const res = await guildSchema.findOne({id: guildId});
-    if(res === []) {
+    if(res.length <= 0) {
         return void (0);
     }
     return res;
@@ -223,7 +224,7 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 module.exports = {
     connect,
     // birthday
-    getBirthdaysByGuild,
+    getBirthdayByDate,
     refreshBirthdayCollection,
     updateBirthday,
     // config

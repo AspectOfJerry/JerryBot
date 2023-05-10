@@ -25,7 +25,7 @@ async function addHub(id) {
 async function refreshHubs(client) {
     log("append", "voiceChannelHubs", "[voiceChannelHubManager] Refreshing the hub dataset...", "DEBUG");
     const hubs = (await getConfig()).voiceChannelHubs;
-    if(hubs === []) {
+    if(hubs.length <= 0) {
         throw "Could not retrieve voice channel hubs.";
     }
     const channels = [];

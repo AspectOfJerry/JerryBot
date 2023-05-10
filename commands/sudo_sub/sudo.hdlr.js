@@ -52,7 +52,7 @@ module.exports = {
                 .addStringOption(option =>
                     option
                         .setName("notes")
-                        .setDescription("[OPTIONAL] Additional information about the user")
+                        .setDescription("[OPTIONAL] [ARRAY (comma split)] Additional info about the user.")
                         .setRequired(false)))
         .addSubcommand((subcommand) => // blacklist
             subcommand
