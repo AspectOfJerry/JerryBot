@@ -37,7 +37,6 @@ module.exports = async function (client, interaction) {
     }
 
     if(notes !== void (0) && notes !== null) {
-        console.log(notes);
         notes = notes.split(",").map(s => s.trim());
     }
 

@@ -12,7 +12,7 @@ let disabled = false;
 async function execute(client) {
     const birthday = new CronJob("30 6 * * *", async () => { // Interval of every day at
         const now = new Date();
-        const _date = date.format(now, "D-M").split(" ");
+        const _date = date.format(now, "D-M").split("-");
 
         log("append", "birthday", "[Birthday] Checking birthdays...", "DEBUG");
 
