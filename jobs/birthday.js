@@ -18,7 +18,7 @@ async function execute(client) {
 
         const birthdays = await getBirthdayByDate(_date[0], _date[1]);
 
-        if(birthdays.length <= 0) {
+        if(!birthdays) {
             log("append", "birthday", "[Birthday] No birthdays to report today.", "INFO");
             return;
         }
