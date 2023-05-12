@@ -22,7 +22,6 @@ module.exports = {
         const client_id = client.user.id;
 
         const jerry_guild_id = "631939549332897842";
-        const goldfish_guild_id = "890063136193925170";
         const group_311_guild_id = "1014278986135781438";
         const bap_guild_id = "864928262971326476";
 
@@ -148,31 +147,6 @@ module.exports = {
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 log("append", "JerryBot", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
-            } catch(err) {
-                if(err) {
-                    console.error(err);
-                }
-            }
-        } else {
-            try {
-                // Register commands locally to all guilds
-                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
-                await sleep(1000);
-
-                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
-                await sleep(1000);
-
-                await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
-
-                console.log(`Successfully deployed commands locally in ${goldfish_guild_id}.`);
-                await rest.put(Routes.applicationGuildCommands(client_id, goldfish_guild_id), {body: commands});
-                await sleep(1000);
-
-                console.log("Successfully refreshed the application (/) commands locally!");
-                log("append", "JerryBot", "[JerryBot] Successfully refreshed the application (/) commands locally!", "DEBUG");
             } catch(err) {
                 if(err) {
                     console.error(err);
