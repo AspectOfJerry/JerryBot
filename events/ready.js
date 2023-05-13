@@ -121,11 +121,10 @@ module.exports = {
         }
 
         // Registering commands
-        console.log("Registering the application (/) commands...");
-        await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
-
         if(process.env.npm_lifecycle_event === "prod") {
             // Register commands globally
+            console.log("Registering the application (/) commands...");
+            await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
             console.log("Deploying commands globally...");
 
             await rest.put(Routes.applicationCommands(client_id), {body: commands});
@@ -134,6 +133,8 @@ module.exports = {
             log("append", "JerryBot", "[JerryBot/prod] Successfully refreshed the application (/) commands globally!", "DEBUG");
         } else if(process.env.npm_lifecycle_event === "dev") {
             try {
+                console.log("Registering the application (/) commands...");
+                await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
                 await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
                 console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
                 await sleep(750);

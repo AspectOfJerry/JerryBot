@@ -107,6 +107,12 @@ async function executeSB(client) {
                 } else {
                     sb_auctions.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_auctions.fail++;
+                sb_auctions.success--;
             });
     });
 
@@ -119,6 +125,12 @@ async function executeSB(client) {
                 } else {
                     sb_auctions_end.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_auctions_end.fail++;
+                sb_auctions_end.success--;
             });
     });
 
@@ -131,6 +143,12 @@ async function executeSB(client) {
                 } else {
                     sb_bazaar.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_bazaar.fail++;
+                sb_bazaar.success--;
             });
     });
 
@@ -143,6 +161,12 @@ async function executeSB(client) {
                 } else {
                     sb_collections.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_collections.fail++;
+                sb_collections.success--;
             });
     });
 
@@ -155,6 +179,12 @@ async function executeSB(client) {
                 } else {
                     sb_election.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_election.fail++;
+                sb_election.success--;
             });
     });
 
@@ -167,6 +197,12 @@ async function executeSB(client) {
                 } else {
                     sb_items.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_items.fail++;
+                sb_items.success--;
             });
     });
 
@@ -179,6 +215,12 @@ async function executeSB(client) {
                 } else {
                     sb_skills.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_skills.fail++;
+                sb_skills.success--;
             });
     });
 
@@ -191,6 +233,12 @@ async function executeSB(client) {
                 } else {
                     sb_profiles.fail++;
                 }
+            }).catch((err) => {
+                if(err) {
+                    console.error(err);
+                }
+                sb_profiles.fail++;
+                sb_profiles.success--;
             });
     });
 
