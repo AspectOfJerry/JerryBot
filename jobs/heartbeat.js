@@ -17,7 +17,7 @@ async function execute(client) {
      */
     const heartbeat = new CronJob("*/2 * * * *", async () => {
         try {
-            await sleep(await Jitter());
+            await sleep(jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
                     log("append", "heartbeat", "[Heartbeat] Heartbeat sent to the status page.", "DEBUG");
@@ -34,7 +34,7 @@ async function execute(client) {
             }
 
             log("append", "heartbeat", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.", "ERROR");
-            await sleep(6000 + await Jitter());
+            await sleep(5000 + jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
                     log("append", "heartbeat", "[Heartbeat] Heartbeat sent to status page.", "DEBUG");
@@ -62,7 +62,7 @@ async function execute(client) {
 }
 
 
-async function Jitter() {
+function jitter() {
     return Math.floor(Math.random() * 1450) + 50;
 }
 
