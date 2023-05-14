@@ -155,7 +155,6 @@ async function executeSB(client) {
                 : monitor.rate <= 20 ?
                     `${warn_emoji} **${monitor.name}**: Degraded (${monitor.rate.toFixed(2)}% failure)`
                     : `${fail_emoji} **${monitor.name}**: Failing (${monitor.rate.toFixed(2)}% failure)`}`;
-            console.log(monitor);
         }
 
         let rates = 0;
