@@ -29,6 +29,8 @@ module.exports = {
             await log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
             console.log("Clearing global commands...");
 
+            await client.user.setPresence({activities: [{name: "clearing commands...", type: "PLAYING"}], status: "dnd"});
+
             await rest.put(Routes.applicationCommands(client_id), {body: []});
 
             await sleep(2500);

@@ -76,7 +76,7 @@ module.exports = async function (client, interaction) {
                     roles.set("1054158881586155560", "announcement");
                     roles.set("1016500157480706191", "schedule");
 
-                    for(const [id, name] of Object.entries(roles)) {
+                    for(const [id, name] of roles.entries()) {
                         if(selected.includes(name)) {
                             if(!selectMenuInteraction.member.roles.cache.has(id)) {
                                 await selectMenuInteraction.member.roles.add(id);
@@ -94,10 +94,10 @@ module.exports = async function (client, interaction) {
                         .setTitle("Self-toggled roles")
                         .addFields(
                             {
-                                name: "Roles added", value: `${() => {if(!rolesAdded) {return "None";} return rolesAdded;}}`, inline: false
+                                name: "Roles added", value: `${rolesAdded.length !== 0 ? rolesAdded.toString().replace(",", ", ") : "None"}`, inline: false
                             },
                             {
-                                name: "Roles removed", value: `${() => {if(!rolesRemoved) {return "None";} return rolesRemoved;}}`, inline: false
+                                name: "Roles removed", value: `${rolesRemoved.length !== 0 ? rolesRemoved.toString().replace(",", ", ") : "None"}`, inline: false
                             }
                         );
 

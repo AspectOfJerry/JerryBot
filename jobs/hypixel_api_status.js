@@ -124,6 +124,8 @@ async function executeSB(client) {
             await fetch(`${endpoint.endpoint}key=${process.env.HYPIXEL_API_KEY_JERRY}`)
                 .then((res) => {
                     if(!res.ok) {
+                        endpoint.fails += 1;
+                        log("append", "hypixel_api_status", `Failed to fetch ${endpoint.endpoint} with status code of ${res.status}.`, "WARN");
                         throw new Error(`Failed to fetch ${endpoint.endpoint} with status ${res.status}`);
                     }
                     return res.json();
