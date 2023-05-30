@@ -1,6 +1,7 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
 const {log, permissionCheck, sleep, toNormalized} = require("../../modules/JerryUtils.js");
+const {getConfig} = require("../../database/mongodb.js");
 
 const crypto = require("crypto");
 
@@ -13,7 +14,7 @@ module.exports = async function (client, interaction) {
     }
 
     // Generate the one time use password
-    const pal_code = "0x" + crypto.randomBytes(4).toString("hex").toUpperCase();
+    const auth_code = "0x" + crypto.randomBytes(4).toString("hex").toUpperCase();
 
     // Generate the second-in-command superuser
     const sic = "";
@@ -40,6 +41,12 @@ module.exports = async function (client, interaction) {
                 .setStyle("SECONDARY")
         );
 
+    // Choosing second-in-command superuser
+    const superusers = (await getConfig()).superUsers;
+    superusers.splice(superusers.indexOf(interaction.user.id), 1); // remove the user to not get picked below
+
+    const second_user = client.users.resolve(superusers[Math.floor(Math.random() * items.length)]);
+
     const embed = new MessageEmbed()
         .setColor("FUCHSIA")
         .setTitle(":warning: Discord guild nuking request")
@@ -50,10 +57,10 @@ module.exports = async function (client, interaction) {
                 name: "Time", value: `${new Date()}`, inline: false
             },
             {
-                name: ":key: Code", value: `Your Permissive Action Link (PAL) code is: \`${pal_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
+                name: ":key: AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
             },
             {
-                name: "Dual-key holder", value: `A separate code has been sent to the second-in-command (2IC): ${sic}.\nThey have 2 minutes to confirm their choice.`
+                name: "Dual-key holder", value: `A separate code has been sent to the second-in-command (<@${second_user.id}>): ${sic}.\nThey have 2 minutes to confirm their choice.`
             }
         );
 
@@ -61,6 +68,8 @@ module.exports = async function (client, interaction) {
 
     // Main
     interaction.reply({embeds: [embed], components: [row]});
+
+    // Challenge-response
 
     // Approve for execution
 
