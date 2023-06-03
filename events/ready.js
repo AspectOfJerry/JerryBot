@@ -105,17 +105,20 @@ module.exports = {
         } else if(process.env.npm_lifecycle_event === "dev") {
             try {
                 console.log("Registering the application (/) commands...");
-                await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
-                await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
-                await sleep(750);
+                // await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
+                // await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
+                // console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
+                // await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
-                await sleep(750);
+                // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+                // console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+                // await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
+                // await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
+                // console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
+
+                await rest.put(Routes.applicationGuildCommands(client_id, "1113966154143244349"), {body: commands});
+                console.log("Successfully deployed commands locally in 1113966154143244349.");
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 log("append", "JerryBot", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
