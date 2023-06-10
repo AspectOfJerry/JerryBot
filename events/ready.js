@@ -44,6 +44,7 @@ module.exports = {
 
             console.log("Sucessfully cleared all registered application (/) commands!");
             await log("append", "JerryBot", "[JerryBot/clearcommands] Successfully cleared the application (/) commands!", "DEBUG");
+            await client.destroy();
             process.exit(0);
         }
 
@@ -110,9 +111,9 @@ module.exports = {
                 // console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
                 // await sleep(750);
 
-                // await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-                // console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
-                // await sleep(750);
+                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
+                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+                await sleep(750);
 
                 // await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
                 // console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);

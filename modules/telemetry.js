@@ -51,9 +51,6 @@ async function startTelemetry(_client) {
     guilds.push(await client.guilds.fetch("631939549332897842")); // devServer guild
     channels.push(await guilds[0].channels.fetch("1030988308202922084")); // system-monitor channel in devServer guild
 
-    guilds.push(await client.guilds.fetch("1014278986135781438"));
-    channels.push(await guilds[1].channels.fetch("1031014002093981746"));
-
     // Delete previous messages if any
     for(const _channel of channels) {
         await _channel.bulkDelete(16, true);
@@ -74,7 +71,6 @@ async function startTelemetry(_client) {
 
     // Add embeds here
     messages.push(await channels[0].send({embeds: [embed]}));
-    messages.push(await channels[1].send({embeds: [embed]}));
     embedMessage = messages[0].embeds[0];
 
     ready = true;

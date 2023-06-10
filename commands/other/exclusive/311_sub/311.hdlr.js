@@ -35,12 +35,12 @@ module.exports = {
         // Checks
         // Whitelist
         if(interaction.guild.id != "1014278986135781438") {
-            const cmd_not_avail_in_guild = new MessageEmbed()
+            const not_avail_in_guild = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
                 .setDescription("This command is not available in this guild!");
 
-            await interaction.reply({embeds: [cmd_not_avail_in_guild]});
+            await interaction.reply({embeds: [not_avail_in_guild]});
             return;
         }
 
