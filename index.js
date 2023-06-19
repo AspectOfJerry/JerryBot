@@ -1,9 +1,8 @@
 const process = require("process");
 require("dotenv").config();
-const fs = require("fs");
-const {Client, Intents, Collection, MessageEmbed} = require("discord.js");
+const {Client, Intents, Collection} = require("discord.js");
 
-const {getCommandFiles, log, sleep, startEventListeners} = require("./modules/JerryUtils.js");
+const {getCommandFiles, log, startEventListeners} = require("./modules/JerryUtils.js");
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
@@ -33,16 +32,25 @@ const client = new Client({
     const suffix = ".js";
     const command_files = await getCommandFiles("./commands", suffix);
 
-    console.log(`Queued ${command_files.length} files:`);
+    console.log(`Queued ${command_files.commands.length} + ${command_files.exclusive.length} (${command_files.commands.length + command_files.exclusive.length}) files, ignored ${command_files.ignored.length} files, skipped ${command_files.skipped.length} files:`);
     console.log(command_files);
 
-    const commands = [];
+    const commands = {
+        commands: [],
+        exclusive: []
+    };
 
     client.commands = new Collection();
 
-    for(const file of command_files) {
+    for(const file of command_files.commands) {
         const command = require(file);
-        commands.push(command.data.toJSON());
+        commands.commands.push(command.data.toJSON());
+        client.commands.set(command.data.name, command);
+    }
+
+    for(const file of command_files.exclusive) {
+        const command = require(file);
+        commands.exclusive.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     }
 

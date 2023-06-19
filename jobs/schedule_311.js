@@ -5,29 +5,55 @@ const CronJob = require("cron").CronJob;
 const {log, sleep} = require("../modules/JerryUtils.js");
 const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../database/commands/exclusive/schedule/dbms");
 
-let disabled = false;
 
+let _disabled = false;
 
 async function execute(client) {
     /**
      * Triggers every day, at 06h30
      */
     const schedule_311 = new CronJob("30 06 * * *", async () => {
-        if(disabled) {
+        if(_disabled) {
             return;
         }
 
-        await log("append", "schedule311", "[311] Posting today's schedule...", "DEBUG");
+        log("append", "", "[Schedule] Posting today's schedule...", "DEBUG");
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
 
-        const waiting_schedule = await channel.send({content: "Fetching the schedule..."});
         channel.sendTyping();
 
-
         let jour = await GetJourByDate();
+
+        if(jour === "DISABLE") {
+            schedule_311.stop();
+            console.log("Disabled schedule announcer.");
+            log("append", "", "[Schedule] End of school year; disabling daily schedule announcer", "DEBUG");
+            return;
+        }
+
         const day = await GetFullDateString();
+
+        if(jour === "EOY") {
+            // const schedule_message = "<@&1016500157480706191>, End of school year reached!";
+            const schedule_message = "End of school year reached!";
+
+            const schedule_embed = new MessageEmbed()
+                .setColor("GREEN")
+                .setTitle(`:newspaper: ${day}`)
+                .setDescription("Detected the end of the school year. Daily schedule posting has been automatically disabled.");
+
+            await channel.send({content: "<@&1016500157480706191>, Good morning, here's **today's** schedule for **401**!", embeds: [schedule_embed]});
+            await channel.send({content: schedule_message})
+                .then((msg) => {
+                    msg.react("🎉");
+                });
+            log("append", "", "[Schedule] Successfully posted today's schedule (End of year reached).", "INFO");
+
+            _disabled = true;
+            return;
+        }
 
         const days_to_frc = await GetFRCDays(await GetDate());
 
@@ -45,14 +71,12 @@ async function execute(client) {
             //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
             // }
 
-            waiting_schedule.delete();
-            await channel.send({content: "Good morning, here's **today's** schedule for **311**!"});
-            await channel.send({embeds: [schedule_embed]});
+            await channel.send({content: "Good morning, here's **today's** schedule for **311**!", embeds: [schedule_embed]});
             await channel.send({content: schedule_message})
                 .then((msg) => {
                     msg.react("✅");
                 });
-            await log("append", "schedule311", `[311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+            log("append", "", `[Schedule] Successfully posted today's schedule (${schedule_message}).`, "INFO");
             return;
         }
 
@@ -88,8 +112,8 @@ async function execute(client) {
                     ` ${schedule.period1.classCode},` +
                     ` ${schedule.period2.classCode},` +
                     ` ${schedule.period3.classCode},` +
-                    ` ${schedule.period4.classCode},` +
-                    ` ${schedule.period5.classCode},` +
+                    ` ${schedule.period4.classCode}` +
+                    " |" +
                     ` ${schedule.period6.classCode}`
             });
 
@@ -98,20 +122,18 @@ async function execute(client) {
         //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`)
         // }
 
-        waiting_schedule.delete();
-        await channel.send({content: "<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!"});
-        await channel.send({embeds: [schedule_embed]});
+        await channel.send({content: "<@&1016500157480706191> Good morning, here's **today's** schedule for **311**!", embeds: [schedule_embed]});
         await channel.send({content: schedule_message})
             .then((msg) => {
                 msg.react("✅");
             });
-        await log("append", "schedule311", `[311] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+        log("append", "", `[Schedule] Successfully posted today's schedule (${schedule_message}).`, "INFO");
     });
 
     schedule_311.start();
 
-    log("append", "schedule311", "[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.", "DEBUG");
-    console.log("[311] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.");
+    log("append", "", "[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.", "DEBUG");
+    console.log("[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.");
 }
 
 

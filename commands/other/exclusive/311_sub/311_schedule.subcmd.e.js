@@ -20,11 +20,26 @@ module.exports = async function (client, interaction) {
     let jour = interaction.options.getString("day") ?? await GetJourByDate();
     const day = await GetFullDateString();
 
+    if(jour === "EOY" || jour === "DISABLE") {
+        // const schedule_message = "<@&1016500157480706191>, End of school year reached!";
+        const schedule_message = "End of school year reached!";
+
+        const schedule_embed = new MessageEmbed()
+            .setColor("GREEN")
+            .setTitle(`:newspaper: ${day}`)
+            .setDescription("Detected the end of the school year. Have an amazing break!");
+
+        interaction.editReply({content: schedule_message, embeds: [schedule_embed]})
+            .then((msg) => {
+                msg.react("🎉");
+            });
+        return;
+    }
+
+
     const days_to_frc = await GetFRCDays(await GetDate());
 
     if(isNaN(jour)) {
-        // const schedule_message = `${jour} No school`;
-
         const schedule_embed = new MessageEmbed()
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -37,9 +52,7 @@ module.exports = async function (client, interaction) {
         //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: No school today!`);
         // }
 
-        interaction.editReply({content: "Here's **today's** schedule!"});
-        await interaction.channel.send({embeds: [schedule_embed]});
-        // interaction.channel.send({content: schedule_message});
+        interaction.editReply({content: "Here's **today's** schedule!", embeds: [schedule_embed]});
         return;
     }
 
@@ -76,8 +89,8 @@ module.exports = async function (client, interaction) {
                 ` ${schedule.period1.classCode},` +
                 ` ${schedule.period2.classCode},` +
                 ` ${schedule.period3.classCode},` +
-                ` ${schedule.period4.classCode},` +
-                ` ${schedule.period5.classCode},` +
+                ` ${schedule.period4.classCode}` +
+                " |" +
                 ` ${schedule.period6.classCode}`
         });
 
@@ -86,8 +99,6 @@ module.exports = async function (client, interaction) {
     //         .setDescription(`:hourglass: There is ${days_to_frc} day remaining before the first FRC match!\n\n:calendar_spiral: This is the schedule for Jour ${jour} (**today**).`);
     // }
 
-    interaction.editReply({content: "Here's **today's** schedule!"});
-    // Do not combine the following in the same messge
-    await interaction.channel.send({embeds: [schedule_embed]});
+    interaction.editReply({content: "Here's **today's** schedule!", embeds: [schedule_embed]});
     // interaction.channel.send({content: schedule_message});
 };

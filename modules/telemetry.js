@@ -1,9 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} = require("discord.js");
+const {log, sleep} = require("./JerryUtils");
 
 const CronJob = require("cron").CronJob;
-const fetch = require("node-fetch");
-
-const {log, sleep} = require("./JerryUtils");
 
 const os = require("node:os");
 
@@ -63,7 +61,7 @@ async function startTelemetry(_client) {
         .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`)
         .addFields(
             {name: "Deployed", value: `${isDeployed}`, inline: false},
-            {name: "Checklist", value: `${warn_emoji} Bot is not fully ready\n${success_emoji} Database disconnected\n${success_emoji} Event listeners ready\n${warn_emoji} Heartbeat not synced\n${warn_emoji} Jobs inactive`, inline: false},
+            {name: "Checklist", value: `${warn_emoji} Bot is not fully ready\n${success_emoji} Database connected\n${success_emoji} Event listeners ready\n${warn_emoji} Heartbeat not synced\n${warn_emoji} Jobs inactive`, inline: false},
             {name: "Last Heartbeat*", value: ":black_heart: ---*", inline: true},
             {name: "Next expected Heartbeat*", value: ":black_heart: ---*", inline: true}
         ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone"})

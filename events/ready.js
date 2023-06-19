@@ -15,15 +15,11 @@ module.exports = {
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        await log("append", "JerryBot", "[JerryBot] \"@JerryBot#9090\" is now online.", "DEBUG");
+        await log("append", "", "[0x524459] \"@JerryBot#9090\" is now online.", "DEBUG");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
         const client_id = client.user.id;
-
-        const jerry_guild_id = "631939549332897842";
-        const group_311_guild_id = "1014278986135781438";
-        const bap_guild_id = "864928262971326476";
 
         if(process.env.npm_lifecycle_event == "clearcommands") {
             await log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
@@ -36,9 +32,11 @@ module.exports = {
             await sleep(2500);
             console.log("Clearing local commands...");
 
-            for(const [key, guild] of client.guilds.cache) {
-                await rest.put(Routes.applicationGuildCommands(client_id, guild.id), {body: []});
-                console.log(`Successfully cleared local commands in ${guild.name} (${guild.id}).`);
+            const local_guilds = ["1014278986135781438", "1113966154143244349"];
+
+            for(const guild of local_guilds) {
+                await rest.put(Routes.applicationGuildCommands(client_id, guild), {body: []});
+                console.log(`Successfully cleared local commands in ${guild}.`);
                 await sleep(500);
             }
 
@@ -48,32 +46,56 @@ module.exports = {
             process.exit(0);
         }
 
+        if(process.env.npm_lifecycle_event === "deploy") {
+            // Register commands globally
+            console.log("Registering the application (/) commands...");
+            await log("append", "JerryBot", "[Deploy] Registering global application (/) commands...", "DEBUG");
+            console.log("Deploying commands globally...");
+
+            await rest.put(Routes.applicationCommands(client_id), {body: commands.commands});
+
+            console.log("Finished refreshing the application (/) commands globally!");
+
+            log("append", "JerryBot", "[Deploy] Successfully refreshed the application (/) commands globally!", "DEBUG");
+
+            // Local commands
+            await log("append", "JerryBot", "[Deploy] Registering exclusive application (/) commands locally...", "DEBUG");
+            console.log("Deploying commands globally...");
+
+            await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [commands.exclusive.find((e) => e.name === "311")]});
+            console.log("Successfully deployed commands locally in \"1014278986135781438\".");
+
+            await log("append", "JerryBot", "[Deploy] Exiting process...", "FATAL");
+            await client.destroy();
+            process.exit(0);
+        }
+
         console.log("Connecting to the database...");
-        log("append", "Database", "Connecting to the database...", "DEBUG");
+        log("append", "", "[DB] Connecting to the database...", "DEBUG");
         await connect();
 
         console.log("Refreshing the guild collection...");
-        log("append", "Database", "Refreshing the guild collection...", "DEBUG");
+        log("append", "", "[DB] Refreshing the guild collection...", "DEBUG");
         await refreshGuildCollection(client);
 
         console.log("Refreshing the birthday collection...");
-        log("append", "Database", "Refreshing the birthday collection...", "DEBUG");
+        log("append", "", "[DB] Refreshing the birthday collection...", "DEBUG");
         await refreshBirthdayCollection(client);
 
         // Reresh Voice Channel Hubs
         console.log("Refreshing the voice channel hubs...");
-        log("append", "Database", "Refreshing the voice channel hubs...", "DEBUG");
+        log("append", "", "[DB] Refreshing the voice channel hubs...", "DEBUG");
         await refreshHubs(client);
 
         // configure openAI
         console.log("Configuring OpenAI...");
-        log("append", "OpenAI", "Configuring OpenAI...", "DEBUG");
+        log("append", "", "[OpenAI] Configuring OpenAI...", "DEBUG");
         configOpenAI();
 
         if(process.env.npm_lifecycle_event === "test") {
             // Test content here
-            const {executeSB} = require("../jobs/hypixel_api_status.js");
-            executeSB(client);
+            console.log(commands.commands);
+            console.log(commands.exclusive);
             return;
         }
 
@@ -93,36 +115,27 @@ module.exports = {
         }
 
         // Registering commands
-        if(process.env.npm_lifecycle_event === "prod") {
-            // Register commands globally
-            console.log("Registering the application (/) commands...");
-            await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
-            console.log("Deploying commands globally...");
-
-            await rest.put(Routes.applicationCommands(client_id), {body: commands});
-
-            console.log("Finished refreshing the application (/) commands globally!");
-            log("append", "JerryBot", "[JerryBot/prod] Successfully refreshed the application (/) commands globally!", "DEBUG");
-        } else if(process.env.npm_lifecycle_event === "dev") {
+        if(process.env.npm_lifecycle_event === "dev") {
             try {
                 console.log("Registering the application (/) commands...");
-                // await log("append", "JerryBot", "[JerryBot] Registering the application (/) commands...", "DEBUG");
+                log("append", "JerryBot", "[0x524459] Registering local application (/) commands...", "DEBUG");
                 // await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
                 // console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
                 // await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, group_311_guild_id), {body: commands});
-                console.log(`Successfully deployed commands locally in ${group_311_guild_id}.`);
+                await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
+                console.log("Successfully deployed commands locally in \"1014278986135781438\".");
                 await sleep(750);
+
+                // 311
+                // await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: []});
+                console.log("Successfully deployed commands locally in \"1014278986135781438\".");
 
                 // await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
                 // console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, "1113966154143244349"), {body: commands});
-                console.log("Successfully deployed commands locally in 1113966154143244349.");
-
                 console.log("Successfully refreshed the application (/) commands locally!");
-                log("append", "JerryBot", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
+                log("append", "", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
             } catch(err) {
                 if(err) {
                     console.error(err);

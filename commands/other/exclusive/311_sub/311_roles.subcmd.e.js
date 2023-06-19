@@ -1,6 +1,6 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {log, permissionCheck, sleep} = require("../../../../modules/JerryUtils.js");
+const {log, permissionCheck} = require("../../../../modules/JerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
@@ -27,7 +27,7 @@ module.exports = async function (client, interaction) {
                         emoji: "📢"
                     },
                     {
-                        label: "311 schedule",
+                        label: "401 schedule",
                         description: "Pinged by the schedule announcer.",
                         value: "schedule",
                         emoji: "🗓️"

@@ -1,4 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
@@ -37,7 +37,7 @@ module.exports = {
         await log("append", interaction.guild.id, `├─send_typing: ${send_typing}`, "INFO");
 
         const message_lenght = message.length;
-        const duration_in_ms = Math.round(message_lenght / 14 * 1000);
+        const duration_in_ms = Math.round((message_lenght / 15) * 1000 + 200);
 
         // Checks
         if(!channel.isText()) {

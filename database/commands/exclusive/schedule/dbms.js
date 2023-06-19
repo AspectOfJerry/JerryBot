@@ -30,14 +30,19 @@ async function GetJourByDate() {
     const now = await GetDate();
     const full_schedule = await GetFullSchedule();
 
+    if(now >= new Date(full_schedule.metadata.lastJourDate)) {
+        if(now == new Date(full_schedule.metadata.lastJourDate)) {
+            return "EOY";
+        }
+        return "DISABLE";
+    }
+
     const exceptions = await GetExceptions();
 
     let jour = 1;
     let firstDay = full_schedule.metadata.firstJourDate;
     let day = date.parse(firstDay, "YYYY-MM-DD");
     let dayType = "SCO";
-
-    await sleep(500);
 
     outer: while(!date.isSameDay(day, now)) {
         dayType = "SCO";

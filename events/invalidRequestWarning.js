@@ -5,6 +5,6 @@ module.exports = {
     name: "invalidRequestWarning",
     once: false, // Whether or not this event should only be triggered once
     async execute(invalidRequestWarningData) {
-        await log("append", "invalidRequestWarning", invalidRequestWarningData, "WARN");
+        await log("append", "", `[0x495257] ${invalidRequestWarningData}`, "WARN");
     }
 };

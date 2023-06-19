@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "clearcommands": "node index.js",
+        "deploy":"node index.js",
         "dev": "node index.js",
         "main": "node index.js",
         "premain": "npm install",

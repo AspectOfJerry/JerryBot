@@ -37,7 +37,7 @@ async function gpt(message, client) {
         message.channel.sendTyping();
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{role: "assistant", content: `${prompt}`, name: `${username.replace(" ", "_")}`}],
+            messages: [{role: "assistant", content: `${prompt}`, name: `${username.replaceAll(" ", "_")}`}],
             temperature: 0.75,
             max_tokens: 512,
             n: 1

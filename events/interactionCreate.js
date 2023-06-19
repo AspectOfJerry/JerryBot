@@ -1,5 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {log, sleep} = require("../modules/JerryUtils.js");
 
 
@@ -11,6 +10,7 @@ module.exports = {
         if(!interaction.isCommand()) {
             return;
         }
+
         const command = interaction.client.commands.get(interaction.commandName);
 
         if(!command) {
@@ -18,8 +18,8 @@ module.exports = {
         }
 
         try {
-            log("append", interaction.guild.id, `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}'.`, "INFO");
-            await command.execute(interaction.client, interaction, command.pl);
+            log("append", "", `[0x494352] '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`, "INFO");
+            await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {
                 console.error(err);
@@ -54,8 +54,8 @@ module.exports = {
                         try {
                             interaction.channel.send({embeds: [execution_error]});
                         } catch {
-                            console.log("Failure to send error message (3 attempts).");
-                            log("append", "interactionCreate", "Failure to send error message (3 attempts).", "ERROR");
+                            console.log("Failed to send error message (3 attempts).");
+                            log("append", "", "[0x494352] Failed to send error message (3 attempts).", "ERROR");
                         }
                     }
                 }

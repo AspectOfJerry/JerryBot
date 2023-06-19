@@ -4,7 +4,7 @@ This Privacy Policy is meant to help you understand what information we collect,
 
 ## Information we collect
 
-@Jerry#9090 logs events such as but not limited to
+@JerryBot#9090 logs events such as but not limited to
 
 - (a) interactionCreate (when executing slash (/) commands)
 - (b) inviteCreate (when creating a new invite to this server)

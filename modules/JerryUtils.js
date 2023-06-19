@@ -1,4 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const fs = require("fs");
 const date = require("date-and-time");
 const {getConfig, getGuildConfig} = require("../database/mongodb.js");
@@ -8,33 +8,36 @@ const {registerEvent} = require("../jobs/log_digest");
 /**
  * Private internal function
  */
-async function _getDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files) {
+async function _getDirCommandFiles(dir, suffix, command_files) {
     const files = fs.readdirSync(dir, {
         withFileTypes: true
     });
 
     for(const file of files) {
-        if(file.name.endsWith(".subcmd.js")) {
-            ignored_files.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
+        if(file.name.endsWith(".subcmd.js") || file.name.endsWith(".subcmd.e.js")) {
+            command_files.ignored.push(`${dir}/${file.name} => subcommand`); // Ignoring subcommand files because they will be called by the handler.
             continue;
         } else if(file.name.endsWith(".todo")) {
-            ignored_files.push(`${dir}/${file.name} => todo`);
+            command_files.ignored.push(`${dir}/${file.name} => todo`);
             continue;
         } else if(file.name.endsWith(".template")) {
-            ignored_files.push(`${dir}/${file.name} => template file`);
+            command_files.ignored.push(`${dir}/${file.name} => template file`);
             continue;
-        } else if(file.name.endsWith(".hdlr.js")) {
-            skipped_files.push(`${dir}/${file.name} => subcommand handler`);
+        } else if(file.name.endsWith(".hdlr.js") || file.name.endsWith(".hdlr.e.js")) {
+            command_files.skipped.push(`${dir}/${file.name} => subcommand handler`);
             // Do not put `continue;` here! Subcommand handlers should not be ignored as they work the same way as command files.
         } else if(file.name.endsWith("dbms.js")) {
-            skipped_files.push(`${dir}/${file.name} => database manager`);
+            command_files.skipped.push(`${dir}/${file.name} => database manager`);
             continue;
         }
 
         if(file.isDirectory()) {
-            _getDirCommandFiles(`${dir}/${file.name}`, suffix, command_files, ignored_files, skipped_files);
+            _getDirCommandFiles(`${dir}/${file.name}`, suffix, command_files);
+        } else if(file.name.endsWith(".e.js") && !file.name.endsWith("subcmd.e.js")) {
+            // Exclusive command files
+            command_files.exclusive.push(`${dir}/${file.name}`);
         } else if(file.name.endsWith(suffix)) {
-            command_files.push(`${dir}/${file.name}`);
+            command_files.commands.push(`${dir}/${file.name}`);
         }
     }
 }
@@ -45,16 +48,15 @@ async function _getDirCommandFiles(dir, suffix, command_files, ignored_files, sk
  * @returns {array} The list of command files
  */
 async function getCommandFiles(dir, suffix) {
-    let command_files = [];
-    let ignored_files = [];
-    let skipped_files = [];
+    const command_files = {
+        commands: [],
+        ignored: [],
+        skipped: [],
+        exclusive: []
+    };
 
-    _getDirCommandFiles(dir, suffix, command_files, ignored_files, skipped_files);
+    _getDirCommandFiles(dir, suffix, command_files);
 
-    console.log(`Ignored ${ignored_files.length} files:`);
-    console.log(ignored_files);
-    console.log(`Skipped ${skipped_files.length} files:`);
-    console.log(skipped_files);
     return command_files;
 }
 
@@ -224,7 +226,7 @@ async function permissionCheck(interaction, pl) {
             .setColor("FUCHSIA")
             .setTitle("User Blacklisted")
             .setDescription("I'm sorry but you are in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: "Contact Jerry#3756 for help."});
+            .setFooter({text: "Contact @jerrydev for help."});
 
         try {
             interaction.reply({embeds: [user_blacklisted]});
@@ -252,7 +254,7 @@ async function permissionCheck(interaction, pl) {
             .setColor("FUCHSIA")
             .setTitle("Guild Blacklisted")
             .setDescription("I'm sorry but this Guild is in the bot's blacklist. Please contact the bot administrators if you believe that this is an error.")
-            .setFooter({text: "Contact Jerry#3756 for help."});
+            .setFooter({text: "Contact @jerrydev for help."});
 
         try {
             interaction.reply({embeds: [guild_blacklisted]});
@@ -271,7 +273,7 @@ async function permissionCheck(interaction, pl) {
         const embed = new MessageEmbed()
             .setColor("FUCHSIA")
             .setDescription("This guild's permission configuration is not in the database. Please contact the bot administrators for help.")
-            .setFooter({text: "Contact Jerry#3756 for help."});
+            .setFooter({text: "Contact @jerrydev for help."});
 
         try {
             interaction.reply({embeds: [embed]});
@@ -290,7 +292,7 @@ async function permissionCheck(interaction, pl) {
                     .setLabel("Documentation")
                     .setEmoji("📘")
                     .setStyle("LINK")
-                    .setURL("https://bot.aspectofjerry.dev")
+                    .setURL("https://bot.jerrydev.net")
             );
 
         const embed = new MessageEmbed()
@@ -386,8 +388,9 @@ async function StartJobs(client) {
         execute(client);
     }
 
-    const {executeSB} = require("../jobs/hypixel_api_status.js");
-    executeSB(client);
+    // DISABLED
+    // const {executeSB} = require("../jobs/hypixel_api_status.js");
+    // executeSB(client);
 }
 
 

@@ -1,9 +1,8 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {MessageEmbed} = require("discord.js");
+const {log} = require("../modules/JerryUtils.js");
 
 var lastGuildId;
 var latestGuildId;
-var firstTime = true;
 
 
 module.exports = {
@@ -42,18 +41,17 @@ module.exports = {
 
         // ---STATUS UPDATE ONLY---
         // Declaring variables
-        let oldStatus = oldPresence?.status || "unknown";
         let oldClientStatus = oldPresence?.clientStatus || "unknown";
-        let oldClientActivityType = oldPresence?.activities[0]?.type ? oldPresence.activities[0].type + ", " : "null, ";
+        let oldClientActivityType = oldPresence?.activities[0]?.type ? oldPresence.activities[0].type + ", " : "";
 
-        let newStatus = newPresence?.status || "unknown";
         let newClientStatus = newPresence?.clientStatus || "unknown";
-        let newClientActivityType = newPresence?.activities[0]?.type ? newPresence.activities[0].type + ", " : "null, ";
+        let newClientActivityType = newPresence?.activities[0]?.type ? newPresence.activities[0].type + ", " : "";
 
         latestGuildId = newPresence.guild.id;
 
-        if(oldStatus == newStatus && oldClientActivityType == newClientActivityType || lastGuildId != latestGuildId && firstTime != true) {
-            return; // No changes
+        // If there are mostly no changes, do not log to prevent log spamming
+        if(oldClientStatus == newClientStatus && oldClientActivityType == newClientActivityType || lastGuildId != latestGuildId) {
+            return;
         }
 
         newClientStatus = JSON.stringify(newClientStatus);
@@ -72,11 +70,10 @@ module.exports = {
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        await log("append", "presenceUpdate", `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldStatus} (${oldClientStatus})" to: "${newClientActivityType}${newStatus} (${newClientStatus})"`, "INFO");
+        log("append", "", `[0x505355] "@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldClientStatus}" to: "${newClientActivityType}${newClientStatus}"`, "INFO");
         lastGuildId = newPresence.guild.id;
-        firstTime = false;
     }
 
-    // Message all superUsers when another superUser goes online
+    // Message all superUsers with a "@silent" message when another superUser goes online
 
 };

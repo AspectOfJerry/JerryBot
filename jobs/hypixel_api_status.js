@@ -114,6 +114,7 @@ async function execute(client) {
 
 // Skyblock endpoints
 async function executeSB(client) {
+    return; // DISABLED
     const master_sb = new CronJob("* * * * *", async () => {
         await sleep(jitter());
         const monitors = [sb_auctions, sb_auctions_end, sb_bazaar, sb_collections, sb_election, sb_items, sb_profiles, sb_skills];

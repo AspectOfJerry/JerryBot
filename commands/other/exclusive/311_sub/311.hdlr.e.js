@@ -46,10 +46,10 @@ module.exports = {
 
         // Main
         // eslint-disable-next-line no-undef
-        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.e.js");
 
         for(const file of subcommand_files) {
-            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
+            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.e.js")) {
                 await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
                 require(file)(client, interaction);
                 break;

@@ -4,28 +4,70 @@
 
 <br>
 
-## Ongoing maintenance
-
-The bot is currently under maintenance and will be available in the next months.
-This page may be out of date with the latest features of the bot.
-
-Stay updated at: [https://status.aspectofjerry.dev](https://status.aspectofjerry.dev) and [https://github.com/AspectOfJerry/JerryBot](https://github.com/AspectOfJerry/JerryBot)
-
-<br>
-
-# Command list
+# Table of Contents
+- [JerryBot#9090](#jerrybot9090)
+    - [👋 Welcome to the documentation page!](#-welcome-to-the-documentation-page)
+- [Table of Contents](#table-of-contents)
+  - [Code](#code)
+    - [Scripts](#scripts)
+    - [Custom emojis](#custom-emojis)
+    - [Even codes (logs)](#even-codes-logs)
+  - [Commands](#commands)
   - [Client](#client)
   - [Config](#config)
   - [Moderation](#moderation)
   - [Utility](#utility)
-    - [Math](#utilitymath---subcommands)
-    - [Random](#utilityrandom---subcommands)
-    - [Voice](#utilityvoice---subcommands)
+    - [Utility/math - subcommands](#utilitymath---subcommands)
+    - [Utility/random - subcommands](#utilityrandom---subcommands)
+    - [Utility/voice - subcommands](#utilityvoice---subcommands)
   - [Other](#other)
   - [Sudo](#sudo)
-  - [Other (exclusive)](#other-exclusive-commands-guild-specific)
+  - [Other exclusive commands (Guild specific)](#other-exclusive-commands-guild-specific)
+    - [311 - subcommands](#311---subcommands)
 
 <br>
+
+## Code
+
+### Scripts
+
+coming soon when i have the patience to write this section
+
+### Custom emojis
+
+```js
+const success_emoji = "<:success:1102349129390248017>";
+const warn_emoji = "<:warn:1102349145106284584>";
+const fail_emoji = "<:fail:1102349156976185435>";
+```
+
+### Even codes (logs)
+
+| Hex Code | Code | Event name            |
+| -------- | ---- | --------------------- |
+| 0x444247 | DBG  | debug                 |
+| 0x455252 | ERR  | error                 |
+| 0x474241 | GBA  | guildBanAdd           |
+| 0x474252 | GBR  | guildBanRemove        |
+| 0x475543 | GUC  | guildCreate           |
+| 0x475544 | GUD  | guildDelete           |
+| 0x474D41 | GMA  | guildMemberAdd        |
+| 0x494352 | ICR  | interactionCreate     |
+| 0x495257 | IRW  | invalidRequestWarning |
+| 0x495643 | IVC  | inviteCreate          |
+| 0x495644 | IVD  | inviteDelete          |
+| 0x4D5343 | MSC  | messageCreate         |
+| 0x4D5344 | MSD  | messageDelete         |
+| 0x4D5355 | MSU  | messageUpdate         |
+| 0x505355 | PSU  | presenceUpdate        |
+| 0x524459 | RDY  | ready                 |
+| 0x545053 | TPS  | typingStart           |
+| 0x565355 | VSU  | voiceStateUpdate      |
+| 0x57524E | WRN  | warn                  |
+
+<br>
+
+## Commands
 
 \*Parameters<br>
 &nbsp;&nbsp;&nbsp;&nbsp;? = Optional parameter (|default value)<br>

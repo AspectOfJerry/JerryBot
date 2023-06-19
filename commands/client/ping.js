@@ -1,7 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck} = require("../../modules/JerryUtils.js");
 
 
 module.exports = {
@@ -20,8 +20,8 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.channel.send({content: "ping..."})
-            .then(pingMessage => {
+        interaction.channel.send({content: "@silent ping..."})
+            .then((pingMessage) => {
                 pingMessage.delete().catch(console.error);
 
                 webSocketLatency = client.ws.ping;
@@ -30,7 +30,7 @@ module.exports = {
                 const row = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
-                            .setLabel("Learn how the bot connects to Discord")
+                            .setLabel("Learn how bots connect to Discord")
                             .setEmoji("📘")
                             .setStyle("LINK")
                             .setURL("https://discord.com/developers/docs/topics/gateway#connections")

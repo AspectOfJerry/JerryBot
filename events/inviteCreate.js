@@ -5,7 +5,7 @@ module.exports = {
     name: "inviteCreate",
     once: false, // Whether or not this event should only be triggered once
     async execute(invite) {
-        await log("append", "inviteCreate", `<@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
+        await log("append", "", `[0x495643] <@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
             expiresAt: ${invite.expiresAt},
             maxUses: ${invite.maxUses},
             temporary: ${invite.temporary},
