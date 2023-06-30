@@ -15,13 +15,13 @@ module.exports = async function (client, interaction) {
     // Checks
     const _connection = getVoiceConnection(interaction.guild.id);
     if(!_connection) {
-        const error_not_in_vc = new MessageEmbed()
+        const voice_state_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("Error")
+            .setTitle("VoiceStateException")
             .setDescription("The bot is not in a voice channel.");
 
-        interaction.reply({embeds: [error_not_in_vc]});
+        interaction.reply({embeds: [voice_state_exception]});
         return;
     }
 

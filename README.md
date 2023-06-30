@@ -10,6 +10,8 @@ For more information, please refer to the [documentation](https://bot.jerrydev.n
 
 coming soon when i have the patience to write this section
 
+## Developer reference
+
 ### Custom emojis
 
 ```js
@@ -40,3 +42,24 @@ const fail_emoji = "<:fail:1102349156976185435>";
 | 0x545053 | TPS  | typingStart           |
 | 0x565355 | VSU  | voiceStateUpdate      |
 | 0x57524E | WRN  | warn                  |
+
+<br>
+
+### Exception messages
+
+Clarifications:
+> Invalid: "Invalid" typically implies that something is not valid or acceptable based on defined criteria or rules. It suggests that the object or value does not meet the required conditions or expectations.
+> *OpenAI ChatGPT*
+
+> Incorrect: "Incorrect" indicates that something is not accurate or right in relation to a particular context or expectation. It suggests that the object or value is not correct or appropriate in the given situation.
+> *OpenAI ChatGPT*
+
+| Name                           | Context                                        |
+| ------------------------------ | ---------------------------------------------- |
+| VoiceStateException            | User's voice state is not suitable             |
+| Invalid(Input){x}TypeException | *{x}* is the wrong type                        |
+| {x}PermissionException         | Bot is unable to *{x}* the user                |
+| Self{x}Exception               | User cannot *{x}* themselves                   |
+| InvalidInput{x}Exception       | Input *{x}* is not suitable                    |
+| {x}ResolveException            | *{x}* cannot be resolved or cannot be found    |
+| {x}(Request)FailureException   | An error occured while doing or fetching *{x}* |

@@ -32,13 +32,13 @@ module.exports = {
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
-            const error_target_self = new MessageEmbed()
+            const self_kick_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("SelfKickException")
                 .setDescription("You cannot kick yourself.");
 
-            interaction.reply({embeds: [error_target_self]});
+            interaction.reply({embeds: [self_kick_exception]});
             log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to kick themselves.`, "WARN");
             return;
         }
@@ -47,7 +47,7 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
@@ -58,7 +58,7 @@ module.exports = {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
@@ -67,13 +67,13 @@ module.exports = {
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.kickable) {
-            const member_not_kickcable = new MessageEmbed()
+            const kick_permission_exception = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTilte("Error")
+                .setTilte("KickPermissionException")
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
-            interaction.reply({embeds: [member_not_kickcable]});
+            interaction.reply({embeds: [kick_permission_exception]});
             log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is not kickable by the client user.`, "ERROR");
             return;
         }

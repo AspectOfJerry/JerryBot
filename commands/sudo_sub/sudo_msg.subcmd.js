@@ -36,13 +36,13 @@ module.exports = {
 
         // Checks
         if(memberTarget.user.bot) {
-            const error_cannot_message_bot = new MessageEmbed()
+            const invalid_input_recipient_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("Error")
+                .setTitle("InvalidInputRecipientException")
                 .setDescription("You cannot message a bot.");
 
-            interaction.reply({embeds: [error_cannot_message_bot]});
+            interaction.reply({embeds: [invalid_input_recipient_exception]});
             return;
         }
 

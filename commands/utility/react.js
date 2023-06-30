@@ -35,13 +35,13 @@ module.exports = {
 
         // Checks
         if(!message) {
-            const invalid_snowflake = new MessageEmbed()
+            const message_resolve_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("Error")
+                .setTitle("MessageResolveException")
                 .setDescription(`Unable to reference the ${message} Snowflake to a message in <#${interaction.channel.id}>.`);
 
-            interaction.reply({embeds: [invalid_snowflake], ephemeral: true});
+            interaction.reply({embeds: [message_resolve_exception], ephemeral: true});
             return;
         }
 
@@ -55,13 +55,13 @@ module.exports = {
 
                 interaction.reply({embeds: [reacted]});
             }).catch(() => {
-                const invalid_emoji = new MessageEmbed()
+                const reaction_failure_exception = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                    .setTitle("Error")
+                    .setTitle("ReactionFailureException")
                     .setDescription("Could not react `" + emoji + "` to the message.");
 
-                interaction.reply({embeds: [invalid_emoji], ephemeral: true});
+                interaction.reply({embeds: [reaction_failure_exception], ephemeral: true});
             });
     }
 };

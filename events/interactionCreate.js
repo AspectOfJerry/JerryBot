@@ -24,9 +24,9 @@ module.exports = {
             if(err) {
                 console.error(err);
                 const _err = ":\n```\n" + err + "\n```" || ". ```No further information is available.```";
-                const execution_error = new MessageEmbed()
+                const command_exec_failure_exception = new MessageEmbed()
                     .setColor("FUCHSIA")
-                    .setTitle("Error")
+                    .setTitle("CommandExecFailureException")
                     .setDescription(`An error occured while executing the command${_err}`)
                     .setFooter({text: `${interaction.createdAt}`});
 
@@ -34,7 +34,7 @@ module.exports = {
 
                 const notify = new MessageEmbed()
                     .setColor("FUCHSIA")
-                    .setTitle(":warning: CommandInteraction error")
+                    .setTitle(":warning: CommandExecFailureException")
                     .setDescription(`An error occured while executing the command${_err}`)
                     .addFields(
                         {name: "User", value: `<@${interaction.user.id}>`, inline: true},
@@ -43,19 +43,24 @@ module.exports = {
                     );
 
                 for(const user of super_users) {
-                    interaction.client.users.send(user, {embeds: [notify]});
+                    try {
+                        interaction.client.users.resolve(user).send(user, {embeds: [notify]});
+                    } catch(err) {
+                        console.error(err);
+                    }
                 }
+
                 try {
-                    interaction.reply({content: "<@611633988515266562>", embeds: [execution_error]});
+                    interaction.reply({content: "<@611633988515266562>,", embeds: [command_exec_failure_exception]});
                 } catch {
                     try {
-                        interaction.followUp({embeds: [execution_error]});
+                        interaction.followUp({embeds: [command_exec_failure_exception]});
                     } catch {
                         try {
-                            interaction.channel.send({embeds: [execution_error]});
+                            interaction.channel.send({embeds: [command_exec_failure_exception]});
                         } catch {
-                            console.log("Failed to send error message (3 attempts).");
-                            log("append", "", "[0x494352] Failed to send error message (3 attempts).", "ERROR");
+                            console.log("Failed to raise the exception (3 attempts).");
+                            log("append", "", "[0x494352] Failed to raise the exception (3 attempts).", "ERROR");
                         }
                     }
                 }

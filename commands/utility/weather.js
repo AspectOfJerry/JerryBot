@@ -42,14 +42,14 @@ module.exports = {
                 console.error(error);
             }
             if(result.length === 0) {
-                const search_error = new MessageEmbed()
+                const weather_request_failure_exception = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle("Error")
+                    .setTitle("WeatherRequestFailureException")
                     .setDescription(`Could not find weather for "${search_location}".`)
                     .setFooter({text: "Powered by the MSN Weather Service using npm weather-js"});
 
-                await interaction.editReply({embeds: [search_error]});
+                await interaction.editReply({embeds: [weather_request_failure_exception]});
                 return;
             }
             // Current stats

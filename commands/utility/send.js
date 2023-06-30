@@ -41,13 +41,13 @@ module.exports = {
 
         // Checks
         if(!channel.isText()) {
-            const error_require_text_based_channel = new MessageEmbed()
+            const invalid_input_channel_type_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("InvalidInputChannelTypeException")
                 .setDescription("You need to mention a text-based channel.");
 
-            interaction.reply({embeds: [error_require_text_based_channel]});
+            interaction.reply({embeds: [invalid_input_channel_type_exception]});
             return;
         }
 

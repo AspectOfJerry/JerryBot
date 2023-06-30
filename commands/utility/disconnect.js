@@ -63,33 +63,59 @@ module.exports = {
                 });
         } else {
             const current_voice_channel = memberTarget.voice.channel;
-            const member_count = memberTarget.voice.channel.members.size;
+            let memberCount = memberTarget.voice.channel.members.size;
             const disconnecting = new MessageEmbed()
                 .setColor("YELLOW")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Disconnecting all ${member_count} members from ${current_voice_channel}...`);
+                .setDescription(`Disconnecting all ${memberCount} members from ${current_voice_channel}...`);
 
             await interaction.reply({embeds: [disconnecting]});
+            log("append", interaction.guild.id, `└─Attemping to disconnect every member in 'v#${current_voice_channel.name}'...`, "WARN");
 
-            await memberTarget.voice.channel.members.forEach((member) => {
-                let currentVoiceChannel = member.voice.channel;
-                member.voice.setChannel(null)
+            let failedMemberCount = 0;
+            let failedString = "";
+
+            await memberTarget.voice.channel.members.forEach(async (member) => {
+                const voice_channel = member.voice.channel; // using variable here because we wont be able to access it after the member is disconnected
+                await member.voice.setChannel(null)
                     .then(() => {
-                        const disconnect_success = new MessageEmbed()
-                            .setColor("GREEN")
-                            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                            .setDescription(`Successfully disconnected <@${member.id}> from ${currentVoiceChannel}.`);
+                        // const disconnect_success = new MessageEmbed()
+                        //     .setColor("GREEN")
+                        //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                        //     .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.id}>.`);
 
-                        interaction.channel.followUp({embeds: [disconnect_success], ephemeral: true});
+                        // interaction.editReply({embeds: [disconnect_success], ephemeral: true});
+                        log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`, "INFO");
+                    }).catch(() => {
+                        // const disconnect_error = new MessageEmbed()
+                        //     .setColor("RED")
+                        //     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                        //     .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
+
+                        // interaction.editReply({embeds: [disconnect_error]});
+                        log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from '${voice_channel.name}'.`);
+                        memberCount--;
+                        failedMemberCount++;
                     });
             });
 
-            const disconnect_success = new MessageEmbed()
-                .setColor("GREEN")
-                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setDescription(`Successfully disconnected all ${member_count} members from ${current_voice_channel}.`);
+            // using a functio because too lazy to figure out why the final embed was being sent before the disconnects :/
+            let embedColor = "GREEN";
+            if(failedMemberCount !== 0) {
+                embedColor = "YELLOW";
+                failedString = `\nFailed to disconnect ${failedMemberCount} members.`;
+            }
+            if(failedMemberCount !== 0 && memberCount === 0) {
+                embedColor = "RED";
+            }
 
-            interaction.editReply({embeds: [disconnect_success]});
+            const disconnected = new MessageEmbed()
+                .setColor(embedColor)
+                .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
+                .setDescription(`Successfully disconnected ${memberCount} members from <#${current_voice_channel.id}>.${failedString}`);
+
+            interaction.editReply({embeds: [disconnected]});
+            log("append", interaction.guild.id, `└─Successfully disconnected ${memberCount} members from '${current_voice_channel.name}' and failed to disconnect ${failedMemberCount} members.`, "INFO");
         }
     }
 };

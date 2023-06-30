@@ -119,20 +119,16 @@ module.exports = {
             try {
                 console.log("Registering the application (/) commands...");
                 log("append", "JerryBot", "[0x524459] Registering local application (/) commands...", "DEBUG");
-                // await rest.put(Routes.applicationGuildCommands(client_id, jerry_guild_id), {body: commands});
-                // console.log(`Successfully deployed commands locally in ${jerry_guild_id}.`);
+                await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
+                console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
                 // await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
-                console.log("Successfully deployed commands locally in \"1014278986135781438\".");
-                await sleep(750);
+                // await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
+                // console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
+                // await sleep(750);
 
-                // 311
-                // await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: []});
-                console.log("Successfully deployed commands locally in \"1014278986135781438\".");
-
-                // await rest.put(Routes.applicationGuildCommands(client_id, bap_guild_id), {body: commands});
-                // console.log(`Successfully deployed commands locally in ${bap_guild_id}.`);
+                await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
+                console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 log("append", "", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");

@@ -25,13 +25,13 @@ module.exports = async function (client, interaction) {
 
     // Checks
     if(!date.isValid(`${day}-${month}-2000`, "D-M-YYYY")) { // 2000 for placeholder leap year
-        const invalid_date = new MessageEmbed()
+        const invalid_input_date_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("Error")
+            .setTitle("InvalidInputDateException")
             .setDescription("Invalid date.");
 
-        interaction.editReply({embeds: [invalid_date], ephemeral: true});
+        interaction.editReply({embeds: [invalid_input_date_exception], ephemeral: true});
         log("append", interaction.guild.id, "└─Invalid date", "WARN");
         return;
     }

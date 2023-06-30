@@ -1,4 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
@@ -12,17 +12,17 @@ module.exports = async function (client, interaction) {
 
     // Declaring variables
     const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
-    await log("append", interaction.guild.id, `├─voice_channel: ${voice_channel.name}`, "INFO");
+    await log("append", interaction.guild.id, `├─voice_channel: ${voice_channel?.name}`, "INFO");
 
     // Checks
     if(!interaction.member.voice.channel && !voice_channel) {
-        const error_not_in_vc = new MessageEmbed()
+        const voice_channel_resolve_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("Error")
+            .setTitle("VoiceChannelResolveException")
             .setDescription("You must specify a voice channel for the bot to join if you are not currently in a voice channel.");
 
-        interaction.reply({embeds: [error_not_in_vc]});
+        interaction.reply({embeds: [voice_channel_resolve_exception]});
         return;
     }
 

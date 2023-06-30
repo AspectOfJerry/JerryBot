@@ -32,13 +32,13 @@ module.exports = {
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
-            const error_target_self = new MessageEmbed()
+            const self_timeout_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("SelfTimeoutException")
                 .setDescription("You cannot timeout yourself.");
 
-            await interaction.reply({embeds: [error_target_self]});
+            interaction.reply({embeds: [self_timeout_exception]});
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -46,20 +46,20 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            await interaction.reply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [error_role_too_low]});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            await interaction.reply({embeds: [error_equal_roles]});
+            interaction.reply({embeds: [error_equal_roles]});
             return;
         }
         // -----END HIERARCHY CHECK-----

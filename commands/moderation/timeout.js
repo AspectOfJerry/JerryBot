@@ -44,27 +44,27 @@ module.exports = {
 
         // Checks
         if(memberTarget.id === interaction.user.id) {
-            const error_cannot_timeout_self = new MessageEmbed()
+            const self_timeout_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("SelfTimeoutException")
                 .setDescription("You cannot timeout yourself.");
 
-            interaction.reply({embeds: [error_cannot_timeout_self]});
+            interaction.reply({embeds: [self_timeout_exception]});
             log("append", interaction.guild.id, `└─"@${interaction.user.id}" tried to timeout themselves.`, "WARN");
             return;
         }
         if(!duration_in_ms) {
-            const error_duration = new MessageEmbed()
+            const invalid_input_date_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("InvalidInputDateException")
                 .setDescription("Invalid duration. Please use a valid duration.")
                 .addFields(
                     {name: "Valid examples", value: "1s *(minimum)*, 5m, 1h, 30d *(maximum)*", inline: true}
                 );
 
-            interaction.reply({embeds: [error_duration]});
+            interaction.reply({embeds: [invalid_input_date_exception]});
             log("append", interaction.guild.id, "└─Invalid duration.");
             return;
         }
@@ -73,7 +73,7 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
@@ -84,7 +84,7 @@ module.exports = {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
@@ -93,13 +93,13 @@ module.exports = {
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.moderatable) {
-            const member_not_moderatable = new MessageEmbed()
+            const kick_permission_exception = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("KickPermissionException")
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`);
 
-            interaction.reply({embeds: [member_not_moderatable]});
+            interaction.reply({embeds: [kick_permission_exception]});
             log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
             return;
         }

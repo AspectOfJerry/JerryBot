@@ -26,21 +26,21 @@ module.exports = {
         // Declaring variables
         const target = interaction.options.getUser("user");
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
 
         let reason = interaction.options.getString("reason");
-        await log("append", interaction.guild.id, `├─reason: '${reason}'`, "INFO");
+        log("append", interaction.guild.id, `├─reason: '${reason}'`, "INFO");
 
         // Checks
         if(memberTarget.id == interaction.user.id) {
-            const error_target_self = new MessageEmbed()
+            const self_ban_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("Error")
+                .setTitle("SelfBanException")
                 .setDescription("You cannot ban yourself.");
 
-            interaction.reply({embeds: [error_target_self]});
-            await log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, "WARN");
+            interaction.reply({embeds: [self_ban_exception]});
+            log("append", interaction.guild.id, `└─'${interaction.user.id}' tried to ban themselves.`, "WARN");
             return;
         }
         // -----BEGIN HIERARCHY CHECK-----
@@ -48,34 +48,34 @@ module.exports = {
             const error_role_too_low = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_role_too_low]});
-            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
+            log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban ${memberTarget.user.tag} but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
             const error_equal_roles = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionError")
+                .setTitle("PermissionLevelException")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
             interaction.reply({embeds: [error_equal_roles]});
-            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
+            log("append", interaction.guild.id, `└─'${interaction.user.tag}' tried to ban '${memberTarget.user.tag}' but their highest role was equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.bannable) {
-            const member_not_bannable = new MessageEmbed()
+            const ban_permission_exception = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTilte("Error")
+                .setTilte("BanPermissionException")
                 .setDescription(`<@$${memberTarget.user.id}> is not bannable by the client user.`);
 
-            await interaction.reply({embeds: [member_not_bannable]});
-            await log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, "ERROR");
+            interaction.reply({embeds: [ban_permission_exception]});
+            log("append", interaction.guild.id, `└─'${interaction.user.tag}' is not bannable by the client user.`, "ERROR");
             return;
         }
 

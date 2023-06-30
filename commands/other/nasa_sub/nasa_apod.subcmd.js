@@ -6,7 +6,6 @@ const fetch = require("node-fetch");
 
 const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
 
-const jerry_nasa_api_key = process.env.NASA_API_KEY_JERRY;
 
 module.exports = async function (client, interaction) {
     await interaction.deferReply();
@@ -15,7 +14,7 @@ module.exports = async function (client, interaction) {
     }
 
     // Declaring variables
-    const nasa_logo_red_hex = "#0b3d91";
+    const nasa_red_hex = "#FC3D21";
     let apodDate;
     let apodExplanation;
     let apodUrl;
@@ -26,21 +25,21 @@ module.exports = async function (client, interaction) {
 
     // Main
     // API request
-    await fetch(`https://api.nasa.gov/planetary/apod?api_key=${jerry_nasa_api_key}`)
+    await fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY_JERRY}`)
         .then(res => res.json())
-        .then(async res => {
+        .then(async (res) => {
             if(res.error) {
-                const request_error = new MessageEmbed()
+                const api_request_failure_exception = new MessageEmbed()
                     .setColor("RED")
                     .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                    .setTitle("Error")
+                    .setTitle("APIRequestFailureException")
                     .setDescription("An error occured while trying to fetch the APOD from NASA. Please try again later.")
                     .addFields(
                         {title: "Error code", description: `${res.error.code}`, inline: false},
                         {title: "Description", description: `${res.error.message}`}
                     );
 
-                await interaction.editReply({embeds: [request_error]});
+                interaction.editReply({embeds: [api_request_failure_exception]});
                 return;
             }
 
@@ -63,16 +62,16 @@ module.exports = async function (client, interaction) {
         });
 
     const nasa_apod = new MessageEmbed()
-        .setColor(nasa_logo_red_hex)
+        .setColor(nasa_red_hex)
         .setTitle("NASA Astronomy Picture of the Day (APOD)")
         .setURL("https://apod.nasa.gov/apod/astropix.html")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setDescription(`${apodExplanation}`)
         .addFields(
-            {title: "Ttile", description: `${apodTitle}`, inline: true},
-            {title: "Date", description: `${apodTitle}`, inline: true}
+            {name: "Title", value: `${apodTitle}`, inline: true},
+            {name: "Date", value: `${apodTitle}`, inline: true}
         ).setFooter({text: "NASA Open APIs", iconURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/110px-NASA_logo.svg.png"})
         .setImage(`${apodImageUrl}`);
 
-    await interaction.editReply({embeds: [nasa_apod]});
+    interaction.editReply({embeds: [nasa_apod]});
 };
