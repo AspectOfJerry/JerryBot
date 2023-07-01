@@ -1,6 +1,6 @@
 const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {log, sleep} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -39,6 +39,6 @@ module.exports = {
             channel.send({embeds: [join_message, prompt_verify]});
         }
 
-        log("append", "", `[0x474D41] '@${member.user.tag}' joined guild "${member.guild.id}"!`, "INFO");
+        logger.append("info", "0x474D41", `[GMA] '@${member.user.tag}' joined guild "${member.guild.id}"!`);
     }
 };

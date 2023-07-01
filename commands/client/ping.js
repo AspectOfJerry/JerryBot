@@ -1,7 +1,7 @@
 const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {log, permissionCheck} = require("../../modules/jerryUtils.js");
+const {logger, permissionCheck} = require("../../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -47,7 +47,7 @@ module.exports = {
                     );
 
                 interaction.reply({embeds: [pong], components: [row]});
-                log("append", interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
+                logger.append("note", "ping", `client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
             });
     }
 };

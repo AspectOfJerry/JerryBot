@@ -1,10 +1,10 @@
-const {log, sleep} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {
     name: "warn",
     once: false, // Whether or not this event should only be triggered once
     async execute(info) {
-        await log("append", "", `[0x57524E] ${info}`, "WARN");
+        logger.append("warn", "0x57524E", `[WRN] ${info}`);
     }
 };

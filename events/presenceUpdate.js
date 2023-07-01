@@ -1,5 +1,5 @@
 const {MessageEmbed} = require("discord.js");
-const {log} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 var lastGuildId;
 var latestGuildId;
@@ -70,7 +70,7 @@ module.exports = {
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        log("append", "", `[0x505355] "@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldClientStatus}" to: "${newClientActivityType}${newClientStatus}"`, "INFO");
+        logger.append("info", "0x505355", `[PSU] "@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldClientStatus}" to: "${newClientActivityType}${newClientStatus}"`);
         lastGuildId = newPresence.guild.id;
     }
 

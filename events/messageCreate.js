@@ -1,4 +1,4 @@
-const {log, sleep} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 const {gpt} = require("../modules/gpt");
 
 

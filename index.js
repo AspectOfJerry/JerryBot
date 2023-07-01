@@ -1,12 +1,26 @@
 const process = require("process");
 require("dotenv").config();
+const winston = require("winston");
+const moment = require("moment");
 const {Client, Intents, Collection} = require("discord.js");
 
-const {getCommandFiles, log, startEventListeners} = require("./modules/jerryUtils.js");
+const {getCommandFiles, logger, custom_logger_levels, startEventListeners} = require("./modules/jerryUtils.js");
+
+if(process.env.npm_lifecycle_event === "dev" || process.env.npm_lifecycle_event === "test") {
+    logger.add(new winston.transports.Console({
+        format: winston.format.combine(
+            // colorizzing the level breaks the message when using level.toUpperCase(). See: https://github.com/winstonjs/winston/issues/1345
+            winston.format.colorize({message: true, colors: custom_logger_levels.colors}),
+            winston.format.printf(({level, message}) => {
+                return `[${moment().format("HH:mm:ss.SSS")}] [${level.toUpperCase()}/${message}`;
+            })
+        )
+    }));
+}
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-log("append", "index.js", `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
+logger.append("info", "index.js", `[Startup] The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
 
 const client = new Client({
     intents: [
@@ -27,7 +41,7 @@ const client = new Client({
 (async () => {
     // Getting commands
     console.log("Getting command files...");
-    await log("append", "index.js", "Getting command files...", "DEBUG");
+    logger.append("debug", "index.js", "[Startup] Getting command files...");
 
     const suffix = ".js";
     const command_files = await getCommandFiles("./commands", suffix);

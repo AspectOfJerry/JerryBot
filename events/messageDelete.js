@@ -1,6 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 
-const {log} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
     async execute(message) {
         // Check if .cleanContent is the same as .content
         if(message.content === message.cleanContent) {
-            log("append", "", `[0x4D5344] A message sent by <@${message?.author.tag}> has been deleted:
-            message.content: "${message.content}".`, "WARN");
+            logger.append("note", "0x4D5344", `[MSD] A message sent by <@${message?.author.tag}> has been deleted:
+            message.content: "${message.content}".`);
         } else {
-            log("append", "", `[0x4D5344] A message sent by <@${message?.author.tag}> has been deleted:
+            logger.append("note", "0x4D5344", `[MSD] A message sent by <@${message?.author.tag}> has been deleted:
                 message.content: "${message.content}",
-                message.cleanContent: "${message.cleanContent}".`, "WARN");
+                message.cleanContent: "${message.cleanContent}".`);
         }
     }
 };

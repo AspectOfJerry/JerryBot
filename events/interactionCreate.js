@@ -6,7 +6,6 @@ module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
-        // await log("append", 'interactionCreate', `An interaction was created.`, "DEBUG");
         if(!interaction.isCommand()) {
             return;
         }
@@ -18,7 +17,7 @@ module.exports = {
         }
 
         try {
-            logger.append("info", "0x494352", `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
+            logger.append("info", "0x494352", `[ICR] '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
             await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {

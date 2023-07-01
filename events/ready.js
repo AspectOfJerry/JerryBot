@@ -4,7 +4,7 @@ const {REST} = require("@discordjs/rest");
 const {Routes} = require("discord-api-types/v9");
 
 const {connect, refreshBirthdayCollection, refreshGuildCollection} = require("../database/mongodb.js");
-const {log, logger, sleep, StartJobs} = require("../modules/jerryUtils.js");
+const {logger, sleep, StartJobs} = require("../modules/jerryUtils.js");
 const {configOpenAI} = require("../modules/gpt.js");
 const {checklistBotReady, checklistJobs, startTelemetry} = require("../modules/telemetry");
 const {refreshHubs} = require("../modules/voiceChannelHubManager.js");
@@ -16,14 +16,14 @@ module.exports = {
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        await log("append", "", "[0x524459] \"@JerryBot#9090\" is now online.", "DEBUG");
+        logger.append("info", "0x524459", "\"@JerryBot#9090\" is now online.");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
         const client_id = client.user.id;
 
         if(process.env.npm_lifecycle_event == "clearcommands") {
-            await log("append", "JerryBot", "[JerryBot/clearcommands] Clearing the application (/) commands...", "DEBUG");
+            logger.append("info", "0x524459", "[RDY/Clearcommands] Clearing the application (/) commands...");
             console.log("Clearing global commands...");
 
             await client.user.setPresence({activities: [{name: "clearing commands...", type: "PLAYING"}], status: "dnd"});
@@ -42,7 +42,7 @@ module.exports = {
             }
 
             console.log("Sucessfully cleared all registered application (/) commands!");
-            await log("append", "JerryBot", "[JerryBot/clearcommands] Successfully cleared the application (/) commands!", "DEBUG");
+            logger.append("info", "0x524459", "[RDY/Clearcommands] Successfully cleared the application (/) commands!");
             await client.destroy();
             process.exit(0);
         }
@@ -50,53 +50,51 @@ module.exports = {
         if(process.env.npm_lifecycle_event === "deploy") {
             // Register commands globally
             console.log("Registering the application (/) commands...");
-            await log("append", "JerryBot", "[Deploy] Registering global application (/) commands...", "DEBUG");
+            logger.append("info", "0x524459", "[RDY/Deploy] Registering global application (/) commands...");
             console.log("Deploying commands globally...");
 
             await rest.put(Routes.applicationCommands(client_id), {body: commands.commands});
 
             console.log("Finished refreshing the application (/) commands globally!");
 
-            log("append", "JerryBot", "[Deploy] Successfully refreshed the application (/) commands globally!", "DEBUG");
+            logger.append("info", "0x524459", "[RDY/Deploy] Successfully refreshed the application (/) commands globally!");
 
             // Local commands
-            await log("append", "JerryBot", "[Deploy] Registering exclusive application (/) commands locally...", "DEBUG");
+            logger.append("info", "0x524459", "[RDY/Deploy] Registering exclusive application (/) commands locally...");
             console.log("Deploying commands globally...");
 
             await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [commands.exclusive.find((e) => e.name === "311")]});
             console.log("Successfully deployed commands locally in \"1014278986135781438\".");
 
-            await log("append", "JerryBot", "[Deploy] Exiting process...", "FATAL");
+            logger.append("fatal", "0x524459", "[RDY/Deploy] Exiting process...");
+            logger.end();
             await client.destroy();
             process.exit(0);
         }
 
-        logger.append("info", "TEST", "Hello, World!");
-
         console.log("Connecting to the database...");
-        log("append", "", "[DB] Connecting to the database...", "DEBUG");
+        logger.append("info", "0x524459", "[RDY/Database] Connecting to the database...");
         await connect();
 
         console.log("Refreshing the guild collection...");
-        log("append", "", "[DB] Refreshing the guild collection...", "DEBUG");
+        logger.append("info", "0x524459", "[RDY/Database] Refreshing the guild collection...");
         await refreshGuildCollection(client);
 
         console.log("Refreshing the birthday collection...");
-        log("append", "", "[DB] Refreshing the birthday collection...", "DEBUG");
+        logger.append("info", "0x524459", "[RDY/Database] Refreshing the birthday collection...");
         await refreshBirthdayCollection(client);
 
         // Reresh Voice Channel Hubs
         console.log("Refreshing the voice channel hubs...");
-        log("append", "", "[DB] Refreshing the voice channel hubs...", "DEBUG");
+        logger.append("info", "0x524459", "[RDY/Database] Refreshing the voice channel hubs...");
         await refreshHubs(client);
 
         // configure openAI
         console.log("Configuring OpenAI...");
-        log("append", "", "[OpenAI] Configuring OpenAI...", "DEBUG");
+        logger.append("info", "0x524459", "[RDY/OpenAI] Configuring OpenAI...");
         configOpenAI();
 
         if(process.env.npm_lifecycle_event === "test") {
-            logger.add(new winston.transports.Console());
             // Test content here
             console.log(commands.commands);
             console.log(commands.exclusive);
@@ -120,10 +118,9 @@ module.exports = {
 
         // Registering commands
         if(process.env.npm_lifecycle_event === "dev") {
-            logger.add(new winston.transports.Console());
             try {
                 console.log("Registering the application (/) commands...");
-                // log("append", "JerryBot", "[0x524459] Registering local application (/) commands...", "DEBUG");
+                // logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
                 // await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
                 // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
                 // // await sleep(750);
@@ -136,7 +133,7 @@ module.exports = {
                 // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
 
                 console.log("Successfully refreshed the application (/) commands locally!");
-                log("append", "", "[JerryBot/dev] Successfully refreshed the application (/) commands locally!", "DEBUG");
+                logger.append("info", "0x524459", "[RDY/dev] Successfully refreshed the application (/) commands locally!");
             } catch(err) {
                 if(err) {
                     console.error(err);

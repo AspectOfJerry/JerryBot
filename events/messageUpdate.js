@@ -1,6 +1,6 @@
 const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 
-const {log, sleep} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -29,8 +29,8 @@ module.exports = {
             newMessage.cleanContent: "${newMessage.cleanContent}".`;
         }
 
-        log("append", "", `[0x4D5355] <@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
+        logger.append("info", "0x4D5355", `[MSU] <@${newMessage.author.tag}> edited a message in <#${newMessage.channel.name}> in <${newMessage.guild.name}>:
             ${oldContent}
-            ${newContent}`, "WARN");
+            ${newContent}`);
     }
 };
