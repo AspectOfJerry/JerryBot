@@ -4,7 +4,7 @@ const CronJob = require("cron").CronJob;
 const date = require("date-and-time");
 const {getBirthdayByDate} = require("../database/mongodb.js");
 
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/jerryUtils.js");
 
 let disabled = false;
 

@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");
 
 
 module.exports = async function (client, interaction) {

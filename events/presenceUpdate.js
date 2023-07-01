@@ -1,5 +1,5 @@
 const {MessageEmbed} = require("discord.js");
-const {log} = require("../modules/JerryUtils.js");
+const {log} = require("../modules/jerryUtils.js");
 
 var lastGuildId;
 var latestGuildId;

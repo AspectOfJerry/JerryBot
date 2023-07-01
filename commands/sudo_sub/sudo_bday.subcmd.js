@@ -1,5 +1,5 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {log, permissionCheck, sleep, toNormalized} = require("../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep, toNormalized} = require("../../modules/jerryUtils.js");
 
 const date = require("date-and-time");
 const {updateBirthday} = require("../../database/mongodb.js");

@@ -3,7 +3,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/jerryUtils.js");
 const {checklistHeartbeat, updateHeartbeat} = require("../modules/telemetry");
 
 

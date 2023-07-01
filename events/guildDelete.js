@@ -1,4 +1,4 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/jerryUtils.js");
 const {deleteGuild} = require("../database/mongodb.js");
 
 

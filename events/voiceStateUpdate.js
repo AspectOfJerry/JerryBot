@@ -1,6 +1,6 @@
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/jerryUtils.js");
 const {getVcHubs, handleJoin, handleLeave} = require("../modules/voiceChannelHubManager");
 
 

@@ -4,7 +4,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 
 const fetch = require("node-fetch");
 
-const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");
 
 
 module.exports = async function (client, interaction) {

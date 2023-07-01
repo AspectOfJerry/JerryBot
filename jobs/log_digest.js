@@ -4,7 +4,7 @@ const CronJob = require("cron").CronJob;
 const fs = require("fs");
 const date = require("date-and-time");
 
-// const {log, sleep} = require("../modules/JerryUtils.js");
+// const {log, sleep} = require("../modules/jerryUtils.js");
 
 let disabled = false;
 

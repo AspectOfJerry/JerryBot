@@ -1,6 +1,6 @@
 const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {log, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {

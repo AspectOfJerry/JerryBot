@@ -3,7 +3,7 @@ const {SlashCommandBuilder} = require("@discordjs/builders");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 const Path = require("path");
 
-const {getSubCommandFiles, log, sleep} = require("../../../modules/JerryUtils.js");
+const {getSubCommandFiles, log, sleep} = require("../../../modules/jerryUtils.js");
 
 
 module.exports = {

@@ -1,6 +1,6 @@
 const process = require("process");
 const mongoose = require("mongoose");
-// const {log, sleep} = require("../../modules/JerryUtils.js");
+// const {log, sleep} = require("../../modules/jerryUtils.js");
 
 const birthdaySchema = require("./schemas/birthdaySchema.js");
 const configSchema = require("./schemas/configSchema.js");

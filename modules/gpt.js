@@ -1,7 +1,7 @@
 const process = require("process");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {Configuration, OpenAIApi} = require("openai");
-const {toNormalized} = require("../modules/JerryUtils.js");
+const {toNormalized} = require("./jerryUtils.js");
 
 
 let configed = false;

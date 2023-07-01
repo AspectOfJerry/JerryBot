@@ -2,7 +2,7 @@ const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbe
 const {SlashCommandBuilder} = require("@discordjs/builders");
 const Path = require("path");
 
-const {getSubCommandFiles, log, sleep} = require("../../../../modules/JerryUtils.js");
+const {getSubCommandFiles, log, sleep} = require("../../../../modules/jerryUtils.js");
 
 
 module.exports = {

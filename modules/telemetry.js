@@ -1,5 +1,5 @@
 const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} = require("discord.js");
-const {log, sleep} = require("./JerryUtils");
+const {log, sleep} = require("./jerryUtils.js");
 
 const CronJob = require("cron").CronJob;
 

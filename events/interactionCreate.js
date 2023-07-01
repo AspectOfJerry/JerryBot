@@ -1,5 +1,5 @@
 const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {log, sleep} = require("../modules/JerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
         }
 
         try {
-            log("append", "", `[0x494352] '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`, "INFO");
+            logger.append("info", "0x494352", `'@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
             await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {
@@ -60,7 +60,7 @@ module.exports = {
                             interaction.channel.send({embeds: [command_exec_failure_exception]});
                         } catch {
                             console.log("Failed to raise the exception (3 attempts).");
-                            log("append", "", "[0x494352] Failed to raise the exception (3 attempts).", "ERROR");
+                            logger.append("error", "0x494352", "Failed to raise the exception (3 attempts).");
                         }
                     }
                 }

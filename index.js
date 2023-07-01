@@ -2,7 +2,7 @@ const process = require("process");
 require("dotenv").config();
 const {Client, Intents, Collection} = require("discord.js");
 
-const {getCommandFiles, log, startEventListeners} = require("./modules/JerryUtils.js");
+const {getCommandFiles, log, startEventListeners} = require("./modules/jerryUtils.js");
 
 
 console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);

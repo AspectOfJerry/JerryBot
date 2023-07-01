@@ -1,6 +1,6 @@
 const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {log, permissionCheck} = require("../../../../modules/JerryUtils.js");
+const {log, permissionCheck} = require("../../../../modules/jerryUtils.js");
 
 
 module.exports = async function (client, interaction) {

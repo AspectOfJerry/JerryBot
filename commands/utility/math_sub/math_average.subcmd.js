@@ -2,7 +2,7 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
+const {log, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
