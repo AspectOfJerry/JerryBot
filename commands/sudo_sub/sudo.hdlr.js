@@ -82,11 +82,11 @@ module.exports = {
                         .setName("message")
                         .setDescription("[REQUIRED] The initial message to send.")
                         .setRequired(true)))
-        .addSubcommand((subcommand) => // nuke
+        .addSubcommand((subcommand) => // NUKE
             subcommand
                 .setName("nuke")
                 .setDescription("[SUDO] Nukes the current guild if not in the safe list, effectively deleting most of its content."))
-        .addSubcommand((subcommand) => // presence
+        .addSubcommand((subcommand) => // PRESENCE
             subcommand
                 .setName("presence")
                 .setDescription("[SUDO] Edit the bot's presence.")
@@ -145,6 +145,11 @@ module.exports = {
             subcommand
                 .setName("stop")
                 .setDescription("[SUDO] Stops the bot.")
+                .addStringOption((options) =>
+                    options
+                        .setName("estop")
+                        .setDescription("[OPTIONAL] Skips the steps that ensure a clean exit (faster). Defaults to false.")
+                        .setRequired(false))
                 .addStringOption((options) =>
                     options
                         .setName("reason")

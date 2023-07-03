@@ -3,8 +3,7 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
-
+const {logger, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
 
 module.exports = async function (client, interaction) {
     if(await permissionCheck(interaction, -1) === false) {
@@ -14,6 +13,8 @@ module.exports = async function (client, interaction) {
     // Declaring variables
     const reason = interaction.options.getString("reason") ?? "No reason provided.";
     await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
+    const estop = interaction.options.getBoolean("estop") ?? ;
+    await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO")
 
     const payload_body = null;
 
