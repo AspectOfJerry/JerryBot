@@ -39,7 +39,7 @@ module.exports = {
             const invalid_input_recipient_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("InvalidInputRecipientException")
+                .setTitle("IllegalRecipientException")
                 .setDescription("You cannot message a bot.");
 
             interaction.reply({embeds: [invalid_input_recipient_exception]});

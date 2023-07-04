@@ -6,7 +6,7 @@ const {Client, Intents, Collection} = require("discord.js");
 
 const {getCommandFiles, logger, custom_logger_levels, startEventListeners} = require("./modules/jerryUtils.js");
 
-if(process.env.npm_lifecycle_event === "dev" || process.env.npm_lifecycle_event === "test") {
+if(process.env.npm_lifecycle_event !== "main") {
     logger.add(new winston.transports.Console({
         format: winston.format.combine(
             // colorizzing the level breaks the message when using level.toUpperCase(). See: https://github.com/winstonjs/winston/issues/1345

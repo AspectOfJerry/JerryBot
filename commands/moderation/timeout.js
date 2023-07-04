@@ -58,7 +58,7 @@ module.exports = {
             const invalid_input_date_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("InvalidInputDateException")
+                .setTitle("IllegalDateException")
                 .setDescription("Invalid duration. Please use a valid duration.")
                 .addFields(
                     {name: "Valid examples", value: "1s *(minimum)*, 5m, 1h, 30d *(maximum)*", inline: true}
@@ -70,36 +70,36 @@ module.exports = {
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
-            const error_role_too_low = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
-            const error_equal_roles = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             log("append", interaction.guild.id, `└─"@${interaction.user.tag}" tried to timeout "@${memberTarget.user.tag}" but their highest role was equal.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.moderatable) {
-            const kick_permission_exception = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("KickPermissionException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`<@${memberTarget.user.id}> is not moderatable by the client user.`);
 
-            interaction.reply({embeds: [kick_permission_exception]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             log("append", interaction.guild.id, `└─"@${interaction.user.tag}" is not moderatable by the client user.`, "ERROR");
             return;
         }

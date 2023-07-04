@@ -28,7 +28,7 @@ module.exports = async function (client, interaction) {
         const invalid_input_date_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("InvalidInputDateException")
+            .setTitle("IllegalDateException")
             .setDescription("Invalid date.");
 
         interaction.editReply({embeds: [invalid_input_date_exception], ephemeral: true});

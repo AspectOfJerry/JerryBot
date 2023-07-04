@@ -17,7 +17,7 @@ module.exports = {
         }
 
         try {
-            logger.append("info", "0x494352", `[ICR] '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
+            logger.append("info", "0x494352", `[ICR] "${interaction.guild.name}" > '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
             await command.execute(interaction.client, interaction);
         } catch(err) {
             if(err) {

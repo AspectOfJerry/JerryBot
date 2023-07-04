@@ -47,7 +47,7 @@ module.exports = {
                     );
 
                 interaction.reply({embeds: [pong], components: [row]});
-                logger.append("note", "ping", `client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
+                logger.append("notice", "ping", `client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
             });
     }
 };

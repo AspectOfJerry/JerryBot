@@ -44,36 +44,36 @@ module.exports = {
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
-            const error_role_too_low = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             log("append", interaction.guild.id, `└─'@${interaction.user.tag}' tried to kick '@${memberTarget.user.tag}' but their highest role was lower.`, "WARN");
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
-            const error_equal_roles = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is equal to <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]});
-            log("append", interaction.guild.id, `└─'@${interaction.user.tag}' tried to kick '@${memberTarget.user.tag}' but their highest roles were equal.`, "WARN");
+            interaction.reply({embeds: [insufficient_permission_exception]});
+            log("append", interaction.guild.id, `[InsufficientPermissionException] CMP '@${interaction.user.tag}', '@${memberTarget.user.tag}': EQUAL.`, "WARN");
             return;
         }
         // -----END HIERARCHY CHECK-----
         if(!memberTarget.kickable) {
-            const kick_permission_exception = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("FUCHSIA")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTilte("KickPermissionException")
+                .setTilte("InsufficientPermissionException")
                 .setDescription(`<@$${memberTarget.user.id}> is not kickable by the client user.`);
 
-            interaction.reply({embeds: [kick_permission_exception]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             log("append", interaction.guild.id, `└─'@${interaction.user.tag}' is not kickable by the client user.`, "ERROR");
             return;
         }

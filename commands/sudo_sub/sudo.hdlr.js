@@ -1,6 +1,6 @@
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
-const Path = require("path");
+const path = require("path");
 
 const {getSubCommandFiles, log, sleep} = require("../../modules/jerryUtils.js");
 
@@ -186,7 +186,7 @@ module.exports = {
         }
 
         // eslint-disable-next-line no-undef
-        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        const subcommand_files = await getSubCommandFiles(path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {

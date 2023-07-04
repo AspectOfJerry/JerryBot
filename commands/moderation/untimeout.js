@@ -43,23 +43,23 @@ module.exports = {
         }
         // -----BEGIN HIERARCHY CHECK-----
         if(memberTarget.roles.highest.position > interaction.member.roles.highest.position) {
-            const error_role_too_low = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is lower than <@${memberTarget.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_role_too_low]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             return;
         }
         if(memberTarget.roles.highest.position >= interaction.member.roles.highest.position) {
-            const error_equal_roles = new MessageEmbed()
+            const insufficient_permission_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("PermissionLevelException")
+                .setTitle("InsufficientPermissionException")
                 .setDescription(`Your highest role is equal to <@${interaction.user.id}>'s highest role.`);
 
-            interaction.reply({embeds: [error_equal_roles]});
+            interaction.reply({embeds: [insufficient_permission_exception]});
             return;
         }
         // -----END HIERARCHY CHECK-----

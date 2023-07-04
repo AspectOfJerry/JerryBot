@@ -1,10 +1,12 @@
 const process = require("process");
 const winston = require("winston");
+const fs = require("fs");
 const {REST} = require("@discordjs/rest");
 const {Routes} = require("discord-api-types/v9");
+const path = require("path");
 
 const {connect, refreshBirthdayCollection, refreshGuildCollection} = require("../database/mongodb.js");
-const {logger, sleep, StartJobs} = require("../modules/jerryUtils.js");
+const {getDirFiles, logger, sleep, StartJobs} = require("../modules/jerryUtils.js");
 const {configOpenAI} = require("../modules/gpt.js");
 const {checklistBotReady, checklistJobs, startTelemetry} = require("../modules/telemetry");
 const {refreshHubs} = require("../modules/voiceChannelHubManager.js");
@@ -95,9 +97,8 @@ module.exports = {
         configOpenAI();
 
         if(process.env.npm_lifecycle_event === "test") {
-            // Test content here
-            console.log(commands.commands);
-            console.log(commands.exclusive);
+            const args = process.argv.slice(2);
+            await require(`../tests/${args[0]}.test.js`);
             return;
         }
 
@@ -146,3 +147,22 @@ module.exports = {
         }
     }
 };
+
+async function getTests(dir, suffix) {
+    const files = await fs.readdir(dir, {withFileTypes: true});
+
+    let returnFiles = [];
+
+    for(const file of files) {
+        const filePath = `${dir}/${file.name}`;
+
+        if(file.isDirectory()) {
+            const subFiles = await getTests(filePath, suffix);
+            returnFiles.push(...subFiles);
+        } else if(file.name.endsWith(suffix)) {
+            returnFiles.push(filePath);
+        }
+    }
+
+    return returnFiles;
+}

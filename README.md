@@ -54,12 +54,22 @@ Clarifications:
 > Incorrect: "Incorrect" indicates that something is not accurate or right in relation to a particular context or expectation. It suggests that the object or value is not correct or appropriate in the given situation.
 > *OpenAI ChatGPT*
 
-| Name                           | Context                                        |
-| ------------------------------ | ---------------------------------------------- |
-| VoiceStateException            | User's voice state is not suitable             |
-| Invalid(Input){x}TypeException | *{x}* is the wrong type                        |
-| {x}PermissionException         | Bot is unable to *{x}* the user                |
-| Self{x}Exception               | User cannot *{x}* themselves                   |
-| InvalidInput{x}Exception       | Input *{x}* is not suitable                    |
-| {x}ResolveException            | *{x}* cannot be resolved or cannot be found    |
-| {x}(Request)FailureException   | An error occured while doing or fetching *{x}* |
+| Name                            | Context                                    |
+| ------------------------------- | ------------------------------------------ |
+| IllegalVoiceStateException      | User's voice state is not suitable         |
+| InvalidArgumentTypeException    | Incorrect argument type                    |
+| InsufficientPermissionException | Insufficient permissions for *any*          |
+| Self{action}Exception           | User cannot perform *action* on themselves |
+| IllegalArgumentException        | Invalid argument provided                  |
+| ResolveException                | Unable to resolve or find *any*            |
+| RequestFailureException         | Failed to perform or fetch *any*           |
+
+<br>
+
+### Logger formats
+
+| Name              | Example                                                                                                                       |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Command execution | find in `root/events/interactionCreate.js`                                                                                    |
+| Command info      | `logger.append("info", "EXEC", "'/command' > Hello, World!");`                                                                |
+| Role exception    | `logger.append("notice", "EXEC", "'/command' > [InsufficientPermissionException] on role compare, '@user1' EQUAL '@user2'");` |

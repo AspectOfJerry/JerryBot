@@ -1,7 +1,7 @@
 // THIS FEATURE IS DISABLED
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 
-const {log, sleep} = require("./JerryUtils");
+const {log, sleep} = require("./jerryUtils");
 
 
 var nukeCheckTimerState = false;

@@ -44,7 +44,7 @@ module.exports = {
             const invalid_input_channel_type_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-                .setTitle("InvalidInputChannelTypeException")
+                .setTitle("IllegalChannelTypeException")
                 .setDescription("You need to mention a text-based channel.");
 
             interaction.reply({embeds: [invalid_input_channel_type_exception]});

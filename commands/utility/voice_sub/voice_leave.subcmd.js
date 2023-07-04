@@ -26,7 +26,7 @@ module.exports = async function (client, interaction) {
         const voice_state_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("VoiceStateException")
+            .setTitle("IllegalVoiceStateException")
             .setDescription("The bot is not in a voice channel.");
 
         interaction.editReply({embeds: [voice_state_exception]});

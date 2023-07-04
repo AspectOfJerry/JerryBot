@@ -28,7 +28,7 @@ module.exports = {
             const not_in_vc = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("VoiceStateException")
+                .setTitle("IllegalVoiceStateException")
                 .setDescription("You must be in a voice channel if you are not providing a voice channel.");
 
             interaction.reply({embeds: [not_in_vc]});
@@ -40,7 +40,7 @@ module.exports = {
             const invalid_input_channel_type_exception = new MessageEmbed()
                 .setColor("RED")
                 .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 16})}`)
-                .setTitle("InvalidInputChannelTypeException")
+                .setTitle("IllegalChannelTypeException")
                 .setDescription(`<#${voice_channel.id}> is not a voice channel!`);
 
             interaction.reply({embeds: [invalid_input_channel_type_exception]});

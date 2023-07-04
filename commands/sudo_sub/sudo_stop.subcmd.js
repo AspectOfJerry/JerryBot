@@ -3,7 +3,7 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {logger, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
+const {logger, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
 
 module.exports = async function (client, interaction) {
     if(await permissionCheck(interaction, -1) === false) {
@@ -12,9 +12,9 @@ module.exports = async function (client, interaction) {
 
     // Declaring variables
     const reason = interaction.options.getString("reason") ?? "No reason provided.";
-    await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO");
-    const estop = interaction.options.getBoolean("estop") ?? ;
-    await log("append", interaction.guild.id, `├─reason: ${reason}`, "INFO")
+    logger.append("info", "EXEC", `'/sudo stop' > reason: ${reason}`);
+    const estop = interaction.options.getBoolean("estop") ?? false;
+    logger.append("info", "EXEC", `'/sudo stop' > estop: ${estop}`);
 
     const payload_body = null;
 
@@ -51,18 +51,18 @@ module.exports = async function (client, interaction) {
         .setFooter({text: "🟥 Canceling in 10s"});
 
     await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
-    await log("append", interaction.guild.id, "├─Execution authotized. Waiting for the confirmation...", "INFO");
+    logger.append("debug", "EXEC", "'/sudo stop' > Waiting for confimation...");
 
-    const filter = async (buttonInteraction) => {
+    const filter = (buttonInteraction) => {
         if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             overrideText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-            await log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+            logger.append("notice", "EXEC", `'/sudo stop' > '@${buttonInteraction.user.tag}' overrode the decision.`);
             return true;
         } else if(buttonInteraction.user.id === interaction.user.id) {
             return true;
         } else {
-            await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await log("append", interaction.guild.id, `├─'@${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+            buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+            logger.append("debug", "EXEC", `'/sudo stop' > '@${buttonInteraction.user.tag}' did not have the permission to use this button.`);
             return;
         }
     };
@@ -90,8 +90,7 @@ module.exports = async function (client, interaction) {
                 ).setFooter({text: "The process will exit after this message."});
 
             await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
-            await log("append", interaction.guild.id, `├─'@${interaction.user.tag}' authorized the stop request${overrideText}.`, "INFO");
-            await log("append", interaction.guild.id, "└─Stopping the bot...", "FATAL");
+            logger.append("fatal", "EXEC", "'/sudo stop' > Request confirmed, stopping the bot...");
             await client.destroy(); // Destroying the Discord client
             await sleep(250);
             process.exit(0); // Exiting here
@@ -102,7 +101,7 @@ module.exports = async function (client, interaction) {
                 .setDescription(`<@${interaction.user.id}> aborted the stop request${overrideText}.`);
 
             interaction.editReply({embeds: [cancel_stop]});
-            log("append", interaction.guild.id, `└─'@${interaction.user.tag}' aborted the stop request${overrideText}.`, "INFO");
+            logger.append("info", "EXEC", `'/sudo stop' > '@${interaction.user.tag}' aborted the stop request${overrideText}.`);
         }
     });
 
@@ -120,7 +119,7 @@ module.exports = async function (client, interaction) {
                 .setDescription("Auto aborted.");
 
             interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-            log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
+            logger.append("notice", "EXEC", "'/sudo stop' > Auto aborted");
             return;
         }
     });
