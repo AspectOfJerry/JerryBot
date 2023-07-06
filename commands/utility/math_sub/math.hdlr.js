@@ -10,26 +10,24 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("math")
         .setDescription("Commands related to mathematics")
-        .addSubcommand(subcommand =>
+        .addSubcommand((subcommand) =>
             subcommand
                 .setName("average")
-                .setDescription("Calculate the average of rational numbers.")
-            // .addStringOption((options) =>
-            //     options
-            //         .setName('SUBCMD_OPTION_NAME')
-            //         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-            //         .setRequired(true / false))
-        )
-    // .addSubcommand(subcommand =>
-    //     subcommand
-    //         .setName('SUBCMD_NAME')
-    //         .setDescription("SUBCMD_DESCRIPTION")
-    //     .addStringOption((options) =>
-    //         options
-    //             .setName('SUBCMD_OPTION_NAME')
-    //             .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
-    //             .setRequired(true / false)))
-    ,
+                .setDescription("Calculate the arithmetic mean of rational numbers."))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("gcdlcm")
+                .setDescription("Find the GCD and LCM (greatest common divider and the least common multiple) of two positive integers.")
+                .addIntegerOption((options) =>
+                    options
+                        .setName("n1")
+                        .setDescription("[REQUIRED] First positive |integer|.")
+                        .setRequired(true))
+                .addIntegerOption((options) =>
+                    options
+                        .setName("n2")
+                        .setDescription("[REQUIRED] Second positive |integer|.")
+                        .setRequired(true))),
     async execute(client, interaction) {
         // Declaring variables
 

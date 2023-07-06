@@ -74,11 +74,13 @@ module.exports = async function (client, interaction) {
                                 return eax + parseFloat(ebx);
                             }, 0); // eax: accumulator, ebx: current
 
+                            const avg = sum / numbers.length;
+
                             const reply = new MessageEmbed()
                                 .setColor("GREEN")
                                 .setTitle("Math average")
                                 .setURL("https://en.wikipedia.org/wiki/Average")
-                                .setDescription(`Here's the average:\n**>** ${sum / numbers.length}`)
+                                .setDescription(`Here's the average:\n**>** ${avg}`)
                                 .addFields(
                                     {name: "Sum of values", value: `${sum}`, inline: true},
                                     {name: "Number of values", value: `${numbers.length}`, inline: true},

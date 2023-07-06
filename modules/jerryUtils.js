@@ -504,6 +504,86 @@ function toNormalized(string) {
 }
 
 
+/**
+ * MATH STUFF
+ */
+
+/**
+ * Find the GCD using a slightly more optimized Euclidean algorithm
+ * https://en.wikipedia.org/wiki/Greatest_common_divisor
+ * 
+ * @param {number} n1 The first number
+ * @param {number} n2 The second number
+ */
+function findGCD(n1, n2) {
+    n1 = Math.abs(n1);
+    n2 = Math.abs(n2);
+
+    while(n2 !== 0) {
+        [n1, n2] = [n2, n1 % n2];
+    }
+    return n1;
+}
+
+/**
+ * Find the LCM using the GCD
+ * https://en.wikipedia.org/wiki/Least_common_multiple
+ * 
+ * @param {number} n1 The first number
+ * @param {number} n2 The second number
+ */
+function findLCM(n1, n2) {
+    n1 = Math.abs(n1);
+    n2 = Math.abs(n2);
+
+    const gcd = findGCD(n1, n2);
+    const lcm = (n1 * n2) / gcd;
+
+    return lcm;
+}
+
+/**
+ * Solves a quadratic equation and returns the roots
+ * https://en.wikipedia.org/wiki/Quadratic_equation
+ * 
+ * @param {number} a - The coefficient of x^2.
+ * @param {number} b - The coefficient of x.
+ * @param {number} c - The constant term.
+ * @returns {number[]} The roots of the quadratic equation.
+ */
+function solveQuadratic(a, b, c) {
+    const discriminant = b * b - 4 * a * c;
+    const solutions = [];
+
+    if(discriminant > 0) {
+        const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        solutions.push(root1, root2);
+    } else if(discriminant === 0) {
+        const root = -b / (2 * a);
+        solutions.push(root);
+    }
+
+    return solutions;
+}
+
+/**
+ * Calculates the factorial of a number in a very elegant way
+ *
+ * @param {number} n - The number for which to calculate the factorial.
+ * @returns {number} The factorial of the number.
+ */
+function calcFactorial(n) {
+    // Invalid input for factorial
+    if(n < 0) {
+        return NaN;
+    }
+
+    const factorial = Array.from({length: n}, (_e, index) => index + 1).reduce((eax, ebx) => eax * ebx, 1); // eax: accumulator, ebx: current
+
+    return factorial;
+}
+
 module.exports = {
     getDirFiles,
     getCommandFiles,
@@ -517,5 +597,11 @@ module.exports = {
     startEventListeners,
     toNormalized,
     getMemberPL,
-    permissionCheck
+    permissionCheck,
+    jMath: {
+        findGCD,
+        findLCM,
+        solveQuadratic,
+        calcFactorial
+    }
 };
