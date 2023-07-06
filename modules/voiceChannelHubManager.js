@@ -1,7 +1,7 @@
 // const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 // const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {log, sleep, toNormalized} = require("./jerryUtils.js");
+const {logger, sleep, toNormalized} = require("./jerryUtils.js");
 const {getConfig, updateConfig} = require("../database/mongodb.js");
 const fs = require("fs");
 const Path = require("path");
@@ -15,7 +15,7 @@ const active_channels = [];
  */
 async function addHub(id) {
 
-    log("append", "voiceChannelHubs", "[voiceChannelHubCreate]", "DEBUG");
+    logger.append("info", "voiceHubs", "[voiceChannelHubCreate]");
 }
 
 
@@ -23,7 +23,7 @@ async function addHub(id) {
  * @param {Object} client The active Discord client.
  */
 async function refreshHubs(client) {
-    log("append", "voiceChannelHubs", "[voiceChannelHubManager] Refreshing the hub dataset...", "DEBUG");
+    logger.append("info", "voiceHubs", "[voiceChannelHubManager] Refreshing the hub dataset...");
     const hubs = (await getConfig()).voiceChannelHubs;
     if(hubs.length <= 0) {
         throw "Could not retrieve voice channel hubs.";
@@ -58,7 +58,7 @@ function handleJoin(newState) {
         .then((voiceChannel) => {
             active_channels.push(voiceChannel.id);
             newState.member.voice.setChannel(voiceChannel.id);
-            log("append", "voiceChannelHubs", `[voiceChannelHubCreate] Created "#${voiceChannel.name}" (total active hub: ${active_channels.length})!`, "DEBUG");
+            logger.append("debug", "voiceHubs", `[voiceChannelHubCreate] Created "#${voiceChannel.name}" (total active hub: ${active_channels.length})!`);
         }).catch((err) => {
             console.error(err);
         });
@@ -76,7 +76,7 @@ function handleLeave(oldState) {
 
                 if(index > -1) {
                     active_channels.splice(index, 1);
-                    log("append", "voiceChannelHubs", `[voiceChannelHubDelete] Deleted "#${voiceChannel.name}" (total active hubs: ${active_channels.length}.`, "DEBUG");
+                    logger.append("debug", "voiceHubs", `[voiceChannelHubDelete] Deleted "#${voiceChannel.name}" (total active hubs: ${active_channels.length}.`);
                 }
             }).catch((err) => {
                 console.error(err);
@@ -90,7 +90,7 @@ function handleLeave(oldState) {
  */
 async function removeHub(id) {
 
-    log("append", "voiceChannelHubs", "[voiceChannelHubRemove]", "DEBUG");
+    logger.append("info", "voiceHubs", "[voiceChannelHubRemove]");
 }
 
 

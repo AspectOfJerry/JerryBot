@@ -126,9 +126,9 @@ module.exports = {
                 // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
                 // // await sleep(750);
 
-                // // await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
-                // // console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
-                // // await sleep(750);
+                await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
+                console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
+                await sleep(750);
 
                 // await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
                 // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap

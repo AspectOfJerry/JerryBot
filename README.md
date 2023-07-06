@@ -58,7 +58,7 @@ Clarifications:
 | ------------------------------- | ------------------------------------------ |
 | IllegalVoiceStateException      | User's voice state is not suitable         |
 | InvalidArgumentTypeException    | Incorrect argument type                    |
-| InsufficientPermissionException | Insufficient permissions for *any*          |
+| InsufficientPermissionException | Insufficient permissions for *any*         |
 | Self{action}Exception           | User cannot perform *action* on themselves |
 | IllegalArgumentException        | Invalid argument provided                  |
 | ResolveException                | Unable to resolve or find *any*            |

@@ -115,6 +115,12 @@ async function gpt(message, client) {
         if(err.response) {
             console.log(err.response.status);
             console.log(err.response.data);
+            const request_failure_exception = new MessageEmbed()
+                .setColor("RED")
+                .setTitle(`RequestFailureException${err.response.status ? err.response.status + " " : ""}`)
+                .setDescription(`An error occurred while requesting a completion: \`\`\`${err.response.data}\`\`\``);
+
+            message.editReply({embeds: [request_failure_exception]});
         } else {
             console.log(err.message);
         }
