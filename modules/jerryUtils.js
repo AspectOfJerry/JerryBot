@@ -597,6 +597,10 @@ function calcFactorial(n) {
     return factorial;
 }
 
+function solveSystemOfEquations(eq1, eq2) {
+
+}
+
 const success_emoji = "<:success:1102349129390248017>";
 const warn_emoji = "<:warn:1102349145106284584>";
 const fail_emoji = "<:fail:1102349156976185435>";

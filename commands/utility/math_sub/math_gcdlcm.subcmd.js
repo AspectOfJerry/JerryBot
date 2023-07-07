@@ -19,12 +19,12 @@ module.exports = async function (client, interaction) {
             new MessageButton()
                 .setStyle("LINK")
                 .setLabel("GCD")
-                .setEmoji("🔖") // bookmark
+                .setEmoji("📚") // books
                 .setURL("https://en.wikipedia.org/wiki/Greatest_common_divisor"),
             new MessageButton()
                 .setStyle("LINK")
                 .setLabel("LCM")
-                .setEmoji("🔖") // bookmark
+                .setEmoji("📚") // books
                 .setURL("https://en.wikipedia.org/wiki/Least_common_multiple")
         );
 

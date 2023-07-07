@@ -25,7 +25,7 @@ module.exports = async function (client, interaction) {
 
     input_modal.addComponents(first_row);
 
-    const row = new MessageActionRow()
+    const input_row = new MessageActionRow()
         .addComponents(
             new MessageButton()
                 .setCustomId("prompt_button")
@@ -42,7 +42,7 @@ module.exports = async function (client, interaction) {
         .setDescription("Press the button and enter the numbers **separated by a space**. Periods and commas are accepted for decimals.\n\nAnything that matches `/[^0-9\\s,.]/g` will be removed.")
         .setFooter({text: "You have 60s after to input the numbers after pressing the button."});
 
-    await interaction.reply({embeds: [prompt_embed], components: [row], fetchReply: true})
+    await interaction.reply({embeds: [prompt_embed], components: [input_row], fetchReply: true})
         .then(async (msg) => {
             const filter = (newInteraction) => {
                 if(newInteraction.isButton() && newInteraction.custonId && newInteraction.user.id === interaction.user.id) {
@@ -70,16 +70,23 @@ module.exports = async function (client, interaction) {
                             const numbers = clean_input.split(" ");
 
                             const sum = numbers.reduce((eax, ebx) => {
-                                console.log(`ADD EAX, ${ebx}`);
                                 return eax + parseFloat(ebx);
                             }, 0); // eax: accumulator, ebx: current
 
                             const avg = sum / numbers.length;
 
+                            const row = new MessageActionRow()
+                                .addComponents(
+                                    new MessageButton()
+                                        .setStyle("LINK")
+                                        .setEmoji("📚")
+                                        .setLabel("Arithmetic mean")
+                                        .setURL("https://en.wikipedia.org/wiki/Arithmetic_mean")
+                                );
+
                             const reply = new MessageEmbed()
                                 .setColor("GREEN")
                                 .setTitle("Math average")
-                                .setURL("https://en.wikipedia.org/wiki/Average")
                                 .setDescription(`Here's the average:\n**>** ${avg}`)
                                 .addFields(
                                     {name: "Sum of values", value: `${sum}`, inline: true},
@@ -87,12 +94,26 @@ module.exports = async function (client, interaction) {
                                     {name: "Cleaned input", value: `${clean_input}`, inline: false}
                                 ).setImage("https://wikimedia.org/api/rest_v1/media/math/render/png/c7740a0aa91314dbf006e8583ce6f61585e3aab6");
 
-                            modalSubmit.reply({embeds: [reply]});
+                            modalSubmit.reply({embeds: [reply], components: [row]});
                         }).catch((err) => {
                             if(err.message.includes("time")) {
-                                // send timeout message
+                                const timeout_exception = new MessageEmbed()
+                                    .setColor("GREY")
+                                    .setTitle("TimeoutException")
+                                    .setDescription("Command expired. Please try again.");
+
+                                interaction.editReply({embeds: [timeout_exception]});
                             }
                         });
+                }).catch((err) => {
+                    if(err.message.includes("time")) {
+                        const timeout_exception = new MessageEmbed()
+                            .setColor("GREY")
+                            .setTitle("TimeoutException")
+                            .setDescription("Command expired. Please try again.");
+
+                        interaction.editReply({embeds: [timeout_exception]});
+                    }
                 });
         });
 
