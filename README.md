@@ -71,5 +71,5 @@ Clarifications:
 | Name              | Example                                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Command execution | find in `root/events/interactionCreate.js`                                                                                    |
-| Command info      | `logger.append("info", "EXEC", "'/command' > Hello, World!");`                                                                |
-| Role exception    | `logger.append("notice", "EXEC", "'/command' > [InsufficientPermissionException] on role compare, '@user1' EQUAL '@user2'");` |
+| Command info      | `logger.append("info", "STDOUT", "'/command' > Hello, World!");`                                                                |
+| Role exception    | `logger.append("notice", "STDOUT", "'/command' > [InsufficientPermissionException] on role compare, '@user1' EQUAL '@user2'");` |

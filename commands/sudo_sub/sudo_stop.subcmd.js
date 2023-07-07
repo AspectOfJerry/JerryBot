@@ -12,9 +12,9 @@ module.exports = async function (client, interaction) {
 
     // Declaring variables
     const reason = interaction.options.getString("reason") ?? "No reason provided.";
-    logger.append("info", "EXEC", `'/sudo stop' > reason: ${reason}`);
+    logger.append("info", "PARAM", `'/sudo stop' > reason: ${reason}`);
     const estop = interaction.options.getBoolean("estop") ?? false;
-    logger.append("info", "EXEC", `'/sudo stop' > estop: ${estop}`);
+    logger.append("info", "PARAM", `'/sudo stop' > estop: ${estop}`);
 
     const payload_body = null;
 
@@ -51,18 +51,18 @@ module.exports = async function (client, interaction) {
         .setFooter({text: "🟥 Canceling in 10s"});
 
     await interaction.reply({embeds: [confirm_stop], components: [buttonRow]});
-    logger.append("debug", "EXEC", "'/sudo stop' > Waiting for confimation...");
+    logger.append("debug", "STDOUT", "'/sudo stop' > Waiting for confimation...");
 
     const filter = (buttonInteraction) => {
         if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
             overrideText = ` (overriden by <@${buttonInteraction.user.id}>)`;
-            logger.append("notice", "EXEC", `'/sudo stop' > '@${buttonInteraction.user.tag}' overrode the decision.`);
+            logger.append("notice", "STDOUT", `'/sudo stop' > '@${buttonInteraction.user.tag}' overrode the decision.`);
             return true;
         } else if(buttonInteraction.user.id === interaction.user.id) {
             return true;
         } else {
             buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            logger.append("debug", "EXEC", `'/sudo stop' > '@${buttonInteraction.user.tag}' did not have the permission to use this button.`);
+            logger.append("debug", "STDOUT", `'/sudo stop' > '@${buttonInteraction.user.tag}' did not have the permission to use this button.`);
             return;
         }
     };
@@ -90,7 +90,7 @@ module.exports = async function (client, interaction) {
                 ).setFooter({text: "The process will exit after this message."});
 
             await interaction.editReply({embeds: [stopping_bot], components: [buttonRow]});
-            logger.append("fatal", "EXEC", "'/sudo stop' > Request confirmed, stopping the bot...");
+            logger.append("fatal", "STDOUT", "'/sudo stop' > Request confirmed, stopping the bot...");
             await client.destroy(); // Destroying the Discord client
             await sleep(250);
             process.exit(0); // Exiting here
@@ -101,7 +101,7 @@ module.exports = async function (client, interaction) {
                 .setDescription(`<@${interaction.user.id}> aborted the stop request${overrideText}.`);
 
             interaction.editReply({embeds: [cancel_stop]});
-            logger.append("info", "EXEC", `'/sudo stop' > '@${interaction.user.tag}' aborted the stop request${overrideText}.`);
+            logger.append("info", "STDOUT", `'/sudo stop' > '@${interaction.user.tag}' aborted the stop request${overrideText}.`);
         }
     });
 
@@ -119,7 +119,7 @@ module.exports = async function (client, interaction) {
                 .setDescription("Auto aborted.");
 
             interaction.editReply({embeds: [auto_abort], components: [buttonRow]});
-            logger.append("notice", "EXEC", "'/sudo stop' > Auto aborted");
+            logger.append("notice", "STDOUT", "'/sudo stop' > Auto aborted");
             return;
         }
     });

@@ -31,6 +31,6 @@ module.exports = async function (client, interaction, string, object) {
             {name: "Target directory", value: `../logs/${(await object).fileName}`, inline: false});
 
     interaction.reply({embeds: [writing_to_logs]});
-    logger.append("notice", "exec", `[Manual append] ${string}`);
+    logger.append("notice", "STDOUT", `[Manual append] ${string}`);
     interaction.editReply({embeds: [write_to_logs]});
 };

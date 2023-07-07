@@ -121,17 +121,17 @@ module.exports = {
         if(process.env.npm_lifecycle_event === "dev") {
             try {
                 console.log("Registering the application (/) commands...");
-                // logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
-                // await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
-                // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
-                // // await sleep(750);
+                logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
+                await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
+                console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
+                await sleep(750);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
                 console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
                 await sleep(750);
 
-                // await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
-                // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
+                await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
+                console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 logger.append("info", "0x524459", "[RDY/dev] Successfully refreshed the application (/) commands locally!");

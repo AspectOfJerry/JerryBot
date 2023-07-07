@@ -505,6 +505,20 @@ function toNormalized(string) {
 
 
 /**
+ * Remove unwanted characters from a number. Does not remove whitespaces.
+ * @param {*} n Number
+ * @param {*} isInt Should it also remove punctuation?
+ * @returns Cleaned number (int or float depending on `isInt`)
+ */
+function cleanNumber(n, isInt) {
+    n.replace(/[^0-9\s,.]/g, "");
+    if(!isInt) {
+        return parseInt(n);
+    }
+    return parseFloat(n.replace(/[.,]/g, ""));
+}
+
+/**
  * MATH STUFF
  */
 
@@ -553,18 +567,17 @@ function findLCM(n1, n2) {
  */
 function solveQuadratic(a, b, c) {
     const discriminant = b * b - 4 * a * c;
-    const solutions = [];
 
     if(discriminant > 0) {
         const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
         const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-        solutions.push(root1, root2);
+        return [root1, root2];
     } else if(discriminant === 0) {
         const root = -b / (2 * a);
-        solutions.push(root);
+        return [root, root];
+    } else {
+        return [NaN, NaN];
     }
-
-    return solutions;
 }
 
 /**
@@ -584,6 +597,10 @@ function calcFactorial(n) {
     return factorial;
 }
 
+const success_emoji = "<:success:1102349129390248017>";
+const warn_emoji = "<:warn:1102349145106284584>";
+const fail_emoji = "<:fail:1102349156976185435>";
+
 module.exports = {
     getDirFiles,
     getCommandFiles,
@@ -598,10 +615,16 @@ module.exports = {
     toNormalized,
     getMemberPL,
     permissionCheck,
+    cleanNumber,
     jMath: {
         findGCD,
         findLCM,
         solveQuadratic,
         calcFactorial
+    },
+    jEmojis: {
+        success_emoji,
+        warn_emoji,
+        fail_emoji
     }
 };

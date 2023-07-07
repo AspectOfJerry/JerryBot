@@ -39,7 +39,7 @@ async function gpt(message, client) {
             model: "gpt-3.5-turbo",
             messages: [{role: "assistant", content: `${prompt}`, name: `${username.replaceAll(" ", "_")}`}],
             temperature: 0.75,
-            max_tokens: 512,
+            max_tokens: 1024,
             n: 1
         });
 
@@ -51,7 +51,7 @@ async function gpt(message, client) {
             .setAuthor({name: `${username}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
             .setTitle(`${prompt}`)
             .setDescription(`${data.choices[0].message.content}`)
-            .setFooter({text: `model: OpenAI ${data.model}, tokens: ${data.usage.total_tokens}/512`});
+            .setFooter({text: `model: OpenAI ${data.model}, usage: ${data.usage.total_tokens}/1024 tokens`});
 
         // Split the message into chunks of maximum length 4096 https://discord.com/developers/docs/resources/channel#embed-object-embed-limits
         const messageChunks = data.choices[0].message.content.match(/[\s\S]{1,4096}/g) || [];

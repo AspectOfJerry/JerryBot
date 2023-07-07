@@ -4,7 +4,7 @@ const {logger, permissionCheck, sleep, jMath} = require("../../../modules/jerryU
 
 
 module.exports = async function (client, interaction) {
-    interaction.deferReply();
+    await interaction.deferReply();
 
     if(await permissionCheck(interaction, 0) === false) {
         return;
@@ -13,6 +13,20 @@ module.exports = async function (client, interaction) {
     // Declaring variables
     const n1 = Math.abs(interaction.options.getInteger("n1"));
     const n2 = Math.abs(interaction.options.getInteger("n2"));
+
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setStyle("LINK")
+                .setLabel("GCD")
+                .setEmoji("🔖") // bookmark
+                .setURL("https://en.wikipedia.org/wiki/Greatest_common_divisor"),
+            new MessageButton()
+                .setStyle("LINK")
+                .setLabel("LCM")
+                .setEmoji("🔖") // bookmark
+                .setURL("https://en.wikipedia.org/wiki/Least_common_multiple")
+        );
 
     // Checks
 
@@ -24,11 +38,11 @@ module.exports = async function (client, interaction) {
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
         .setTitle("Math gcdlm")
-        .setDescription(`Here's the greatest common divisor and the least common multiple of:\n**>**${n1} and ${n2}`)
+        .setDescription(`Here's the Greatest Common Divisor and the Least Common Multiple of:\n**>** ${n1} and ${n2}`)
         .addFields(
             {name: "GCD (Euclidean algorithm)", value: `**>** ${gcd}`, inline: true},
-            {name: "GCD (using LCM)", value: `**>** ${lcm}`, inline: true}
-        ).setImage("https://jerrydev.net/static/fcf6a2d3cac72c57de79a5a00039ac6c.png");
+            {name: "LCM (using GCD)", value: `**>** ${lcm}`, inline: true}
+        ).setImage("https://wikimedia.org/api/rest_v1/media/math/render/png/3b155ac28a9e5580f4c7db9ed00f6fcfdb1ded66");
 
-    interaction.editReply({embeds: [gcdlcm]});
+    interaction.editReply({embeds: [gcdlcm], components: [row]});
 };

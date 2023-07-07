@@ -17,7 +17,7 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("gcdlcm")
-                .setDescription("Find the GCD and LCM (greatest common divider and the least common multiple) of two positive integers.")
+                .setDescription("Find the GCD and LCM of two positive integers.")
                 .addIntegerOption((options) =>
                     options
                         .setName("n1")
@@ -27,6 +27,25 @@ module.exports = {
                     options
                         .setName("n2")
                         .setDescription("[REQUIRED] Second positive |integer|.")
+                        .setRequired(true)))
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName("quadratic")
+                .setDescription("Solve a quadratic equation.")
+                .addNumberOption((options) =>
+                    options
+                        .setName("a")
+                        .setDescription("[REQUIRED] The coefficient of x^2")
+                        .setRequired(true))
+                .addNumberOption((options) =>
+                    options
+                        .setName("b")
+                        .setDescription("[REQUIRED] The coefficient of x")
+                        .setRequired(true))
+                .addNumberOption((options) =>
+                    options
+                        .setName("c")
+                        .setDescription("[REQUIRED] The constant term")
                         .setRequired(true))),
     async execute(client, interaction) {
         // Declaring variables

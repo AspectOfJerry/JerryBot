@@ -2,7 +2,7 @@ const fs = require("fs");
 const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
-const {logger, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");
+const {logger, permissionCheck, sleep, cleanNumber} = require("../../../modules/jerryUtils.js");
 
 
 module.exports = async function (client, interaction) {
@@ -49,7 +49,7 @@ module.exports = async function (client, interaction) {
                     return true;
                 }
                 newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                logger("notice", "EXEC", `'@${newInteraction.user.tag}' did not have the permission to use this button.`);
+                logger("notice", "STDOUT", `'@${newInteraction.user.tag}' did not have the permission to use this button.`);
                 return;
             };
 
@@ -65,7 +65,7 @@ module.exports = async function (client, interaction) {
                     await newInteraction.showModal(input_modal);
                     newInteraction.awaitModalSubmit({filter, time: 60000})
                         .then((modalSubmit) => {
-                            const clean_input = modalSubmit.fields.getTextInputValue("input_numbers").replace(/[^0-9\s,.]/g, "").replace(/,/g, ".").replace(/ +/g, " ");
+                            const clean_input = cleanNumber(modalSubmit.fields.getTextInputValue("input_numbers")).replace(/ +/g, " ");
 
                             const numbers = clean_input.split(" ");
 
@@ -85,7 +85,7 @@ module.exports = async function (client, interaction) {
                                     {name: "Sum of values", value: `${sum}`, inline: true},
                                     {name: "Number of values", value: `${numbers.length}`, inline: true},
                                     {name: "Cleaned input", value: `${clean_input}`, inline: false}
-                                ).setImage("https://jerrydev.net/static/cd9ac80b622c89936300d73077c10b28.png");
+                                ).setImage("https://wikimedia.org/api/rest_v1/media/math/render/png/c7740a0aa91314dbf006e8583ce6f61585e3aab6");
 
                             modalSubmit.reply({embeds: [reply]});
                         }).catch((err) => {
