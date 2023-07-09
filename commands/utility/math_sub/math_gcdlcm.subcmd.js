@@ -37,11 +37,11 @@ module.exports = async function (client, interaction) {
     const gcdlcm = new MessageEmbed()
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle("Math gcdlm")
+        .setTitle("Math gcdlcm")
         .setDescription(`Here's the Greatest Common Divisor and the Least Common Multiple of:\n**>** ${n1} and ${n2}`)
         .addFields(
-            {name: "GCD (Euclidean algorithm)", value: `**>** ${gcd}`, inline: true},
-            {name: "LCM (using GCD)", value: `**>** ${lcm}`, inline: true}
+            {name: "GCD (Euclidean algorithm)", value: `${gcd}`, inline: true},
+            {name: "LCM (using GCD)", value: `${lcm}`, inline: true}
         ).setImage("https://wikimedia.org/api/rest_v1/media/math/render/png/3b155ac28a9e5580f4c7db9ed00f6fcfdb1ded66");
 
     interaction.editReply({embeds: [gcdlcm], components: [row]});

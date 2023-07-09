@@ -42,15 +42,21 @@ async function sendDiscord(sclient, dclient, dchannelId, smessage) {
  * @param {object} message Discord message
  */
 async function sendSlack(sclient, schannelId, message) {
+    console.log(message.author.displayAvatarURL());
     await sclient.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
         channel: schannelId,
-        as_user: true,
-        username: message.author.displayName,
+        username: message.member.nickname || message.member.displayName || message.author.displayName || message.author.username, // change discordjs
         iconUrl: message.author.displayAvatarURL({format: "png"}),
-        text: message.cleanContent
-    }).then(() => {
-        message.react("📨");
-    });
+        text: message.cleanContent,
+    })
+        // .then(() => {
+        //     message.react("📨");
+        // })
+        .catch((err) => {
+            console.error(err);
+            message.reply({content: "An error occurred while posting the message to Slack. Please report this to a bot developer.", ephemeral: true});
+        });
 }
 
 module.exports = {

@@ -67,7 +67,7 @@ module.exports = async function (client, interaction) {
             + "\n\n** **";
 
         logger.append("notice", "STDOUT", "'/math quadratic' > Could not find any real roots for the equation because the discriminant is negative.");
-    } else if(solutions.some(undefined) || solutions.some(null)) {
+    } else if(solutions.includes(undefined) || solutions.includes(null)) {
         isQuad = false;
         color = "FUSCIA";
         explanation = "Could not find a solution to this equation. It appears the forces of mathematics encountered an enigmatic twist, rendering the equation inscrutable to mere mortal calculations. The solution remains elusive, concealed within the mysteries of the universe."
