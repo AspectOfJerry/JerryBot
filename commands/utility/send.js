@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 const {SlashCommandBuilder} = require("@discordjs/builders");
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+const {logger, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
 
 
 module.exports = {
@@ -30,11 +30,11 @@ module.exports = {
 
         // Declaring variables
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
-        await log("append", interaction.guild.id, `├─channel: "#${channel.name}"`, "INFO");
+        logger.append("info", "PARAM", `'/send' > channel: "#${channel.name}"`);
         const message = interaction.options.getString("message");
-        await log("append", interaction.guild.id, `├─message: "${message}"`, "INFO");
+        logger.append("info", "PARAM", `'/send' > message: "${message}"`);
         const send_typing = interaction.options.getBoolean("typing") ?? true;
-        await log("append", interaction.guild.id, `├─send_typing: ${send_typing}`, "INFO");
+        logger.append("info", "PARAM", `'/send' > send_typing: ${send_typing}`);
 
         const message_lenght = message.length;
         const duration_in_ms = Math.round((message_lenght / 15) * 1000 + 200);
@@ -53,19 +53,19 @@ module.exports = {
 
         // Main
         switch(send_typing) {
-        case true:
-            await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms} ms of typing...`, ephemeral: true});
+            case true:
+                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms} ms of typing...`, ephemeral: true});
 
-            channel.sendTyping();
-            await sleep(duration_in_ms);
+                channel.sendTyping();
+                await sleep(duration_in_ms);
 
-            channel.send({content: `${message}`});
-            break;
-        default:
-            await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+                channel.send({content: `${message}`});
+                break;
+            default:
+                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
-            channel.send({content: `${message}`});
-            break;
+                channel.send({content: `${message}`});
+                break;
         }
     }
 };
