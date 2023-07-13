@@ -1,5 +1,5 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 
 const {log, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");

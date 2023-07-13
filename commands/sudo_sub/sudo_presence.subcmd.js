@@ -1,6 +1,6 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
 module.exports = async function (client, interaction) {

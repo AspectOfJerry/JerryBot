@@ -1,11 +1,11 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 const weather = require("weather-js");
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("weather")
         .setDescription("Send the weather for a given location.")

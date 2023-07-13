@@ -104,6 +104,10 @@ module.exports = {
 
         if(process.env.npm_lifecycle_event === "test") {
             const args = process.argv.slice(2);
+            if(args.length < 1) {
+                return;
+            }
+
             await require(`../tests/${args[0]}.test.js`);
             return;
         }

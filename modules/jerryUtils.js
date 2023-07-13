@@ -1,13 +1,13 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const fs = require("fs");
-const date = require("date-and-time");
-const winston = require("winston");
-const DailyRotateFile = require("winston-daily-rotate-file");
-const path = require("path");
-const moment = require("moment");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import fs from "fs";
+import date from "date-and-time";
+import winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
+import path from "path";
+import moment from "moment";
 
-const {getConfig, getGuildConfig} = require("../database/mongodb.js");
-const {registerEvent} = require("../jobs/log_digest.js");
+import {getConfig, getGuildConfig} from "../database/mongodb.js";
+import {registerEvent} from "../jobs/log_digest.js";
 
 
 /**
@@ -456,7 +456,8 @@ async function startEventListeners(client, commands) {
     console.log(event_files);
 
     for(const event_file of event_files) {
-        const event = require(`../events/${event_file}`);
+        const module = await import(`../events/${event_file}`);
+        const event = module.default;
 
         if(event.once) {
             client.once(event.name, (...args) => event.execute(...args, commands));
@@ -481,7 +482,8 @@ async function StartJobs(client) {
     console.log(job_files);
 
     for(const job_file of job_files) {
-        const {execute} = require(`../jobs/${job_file}`);
+        const module = await import(`../jobs/${job_file}`);
+        const {execute} = module.default;
         execute(client);
     }
 
@@ -605,7 +607,7 @@ const success_emoji = "<:success:1102349129390248017>";
 const warn_emoji = "<:warn:1102349145106284584>";
 const fail_emoji = "<:fail:1102349156976185435>";
 
-module.exports = {
+export default {
     getDirFiles,
     getCommandFiles,
     getSubCommandFiles,

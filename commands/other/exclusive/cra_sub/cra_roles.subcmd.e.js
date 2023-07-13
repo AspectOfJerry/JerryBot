@@ -1,4 +1,4 @@
-const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
 const {log, permissionCheck} = require("../../../../modules/jerryUtils.js");
 

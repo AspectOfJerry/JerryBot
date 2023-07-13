@@ -1,4 +1,4 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 
 const {logger, sleep} = require("../modules/jerryUtils.js");
 

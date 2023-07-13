@@ -1,12 +1,12 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
-const ms = require("ms");
+import ms from "ms";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("timeout")
         .setDescription("Times out a member for a specified amount of time.")

@@ -1,10 +1,10 @@
-const process = require("process");
-require("dotenv").config();
-const winston = require("winston");
-const moment = require("moment");
-const {Client, Intents, Collection} = require("discord.js");
+import process from "process";
+import {config} from "dotenv"; config();
+import winston from "winston";
+import moment from "moment";
+import {Client, Intents, Collection} from "discord.js";
 
-const {getCommandFiles, logger, custom_logger_levels, startEventListeners} = require("./modules/jerryUtils.js");
+import {getCommandFiles, logger, custom_logger_levels, startEventListeners} from "./modules/jerryUtils.js";
 
 if(process.env.npm_lifecycle_event !== "main") {
     logger.add(new winston.transports.Console({
@@ -57,16 +57,21 @@ const client = new Client({
     client.commands = new Collection();
 
     for(const file of command_files.commands) {
-        const command = require(file);
+        const module = await import(file);
+        const command = module.default;
+
         commands.commands.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     }
 
     for(const file of command_files.exclusive) {
-        const command = require(file);
+        const module = await import(file);
+        const command = module.default;
+
         commands.exclusive.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     }
+
 
     // Getting events
     await startEventListeners(client, commands);

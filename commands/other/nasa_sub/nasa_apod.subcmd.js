@@ -1,6 +1,6 @@
 const process = require("process");
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 const fetch = require("node-fetch");
 

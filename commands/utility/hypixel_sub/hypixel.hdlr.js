@@ -1,11 +1,11 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 const Path = require("path");
 
 const {getSubCommandFiles, log, sleep} = require("../../../modules/jerryUtils.js");
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("hypixel")
         .setDescription("Hypixel related commands")

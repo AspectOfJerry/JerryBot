@@ -1,6 +1,6 @@
 const process = require("process");
 const moment = require("moment");
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 
 
 /**

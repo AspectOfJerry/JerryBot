@@ -1,4 +1,4 @@
-const {MessageEmbed} = require("discord.js");
+const {MessageEmbed} from "discord.js";
 
 const {logger, sleep} = require("../modules/jerryUtils.js");
 

@@ -1,10 +1,10 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("disconnect")
         .setDescription("Disconnect a user from their voice channel.")

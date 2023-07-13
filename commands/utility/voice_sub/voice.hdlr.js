@@ -1,12 +1,12 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
 const Path = require("path");
 
 const {getSubCommandFiles, log, sleep} = require("../../../modules/jerryUtils.js");
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("voice")
         .setDescription("Perform voice channel actions.")

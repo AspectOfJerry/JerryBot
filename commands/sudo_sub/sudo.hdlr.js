@@ -1,11 +1,11 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const path = require("path");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
+import path from "path";
 
-const {getSubCommandFiles, log, sleep} = require("../../modules/jerryUtils.js");
+import {getSubCommandFiles, log, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("sudo")
         .setDescription("SuperUser commands.")
@@ -191,7 +191,8 @@ module.exports = {
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
                 await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
-                require(file)(client, interaction);
+                const module = await import(file);
+                module.default(client, interaction);
                 break;
             }
         }

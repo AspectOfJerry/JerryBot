@@ -1,10 +1,10 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {logger, permissionCheck} = require("../../modules/jerryUtils.js");
+import {logger, permissionCheck} from "../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("ping")
         .setDescription("Displays the client latency and the WebSocket server latency."),

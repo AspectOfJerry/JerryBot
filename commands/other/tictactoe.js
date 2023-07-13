@@ -1,12 +1,12 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 const TicTacToe = require("discord-tictactoe");
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("tictactoe")
         .setDescription("Game of Tic Tac Toe with buttons.")

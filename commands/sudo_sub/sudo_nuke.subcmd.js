@@ -1,4 +1,4 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
 const {log, permissionCheck, sleep, toNormalized} = require("../../modules/jerryUtils.js");
 const {getConfig} = require("../../database/mongodb.js");
