@@ -49,7 +49,7 @@ module.exports = async function (client, interaction) {
                     return true;
                 }
                 newInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                logger("notice", "STDOUT", `'@${newInteraction.user.tag}' did not have the permission to use this button.`);
+                logger.append("notice", "STDOUT", `'@${newInteraction.user.tag}' did not have the permission to use this button.`);
                 return;
             };
 

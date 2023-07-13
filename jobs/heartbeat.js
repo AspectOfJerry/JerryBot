@@ -1,9 +1,7 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-
 const CronJob = require("cron").CronJob;
 const fetch = require("node-fetch");
 
-const {log, sleep} = require("../modules/jerryUtils.js");
+const {logger, sleep} = require("../modules/jerryUtils.js");
 const {checklistHeartbeat, updateHeartbeat} = require("../modules/telemetry");
 
 
@@ -20,7 +18,7 @@ async function execute(client) {
             await sleep(jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
-                    log("append", "heartbeat", "[Heartbeat] Heartbeat sent to the status page.", "DEBUG");
+                    logger.append("debug", "CRON", "[Heartbeat] Heartbeat sent to the status page.");
                     const now = Math.round(Date.now() / 1000);
                     updateHeartbeat(client, now);
                     if(!once) {
@@ -33,11 +31,11 @@ async function execute(client) {
                 console.error(err);
             }
 
-            log("append", "heartbeat", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.", "ERROR");
+            logger.append("error", "STDERR", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.");
             await sleep(5000 + jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
                 .then(() => {
-                    log("append", "heartbeat", "[Heartbeat] Heartbeat sent to status page.", "DEBUG");
+                    logger.append("debug", "CRON", "[Heartbeat] Catch Heartbeat sent to status page.");
                     const now = Math.round(Date.now() / 1000);
                     updateHeartbeat(client, now);
                     if(!once) {
@@ -49,13 +47,14 @@ async function execute(client) {
     });
 
     heartbeat.start();
+    logger.append("debug", "INIT", "[Heartbeat] Heartbeat cron job started!");
 
-    log("append", "heartbeat", "[Heartbeat] Heartbeat started!", "DEBUG");
-    console.log("[Heartbeat] Heartbeat started!");
+    logger.append("info", "INIT", "[Heartbeat] Heartbeat daemon started!");
+    console.log("[Heartbeat] Heartbeat daemon started!");
 
     await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq")
         .then(() => {
-            log("append", "heartbeat", "[Heartbeat] The first Heartbeat was sent to the status page.", "DEBUG");
+            logger.append("debug", "INIT", "[Heartbeat] The first Heartbeat was sent to the status page.");
             const now = Math.round(Date.now() / 1000);
             updateHeartbeat(client, now);
         });

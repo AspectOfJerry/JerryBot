@@ -66,7 +66,7 @@ module.exports = {
             logger.append("info", "0x524459", "[RDY/Deploy] Registering exclusive application (/) commands locally...");
             console.log("Deploying commands globally...");
 
-            await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [commands.exclusive.find((e) => e.name === "311")]});
+            await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [commands.exclusive.find((e) => e.name === "cra")]});
             console.log("Successfully deployed commands locally in \"1014278986135781438\".");
 
             logger.append("fatal", "0x524459", "[RDY/Deploy] Exiting process...");
@@ -132,7 +132,7 @@ module.exports = {
                 console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
                 await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "311")]});
+                await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "cra")]});
                 console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
                 await sleep(750);
 

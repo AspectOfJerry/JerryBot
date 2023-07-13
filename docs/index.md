@@ -23,7 +23,7 @@
   - [Other](#other)
   - [Sudo](#sudo)
   - [Other exclusive commands (Guild specific)](#other-exclusive-commands-guild-specific)
-    - [311 - subcommands](#311---subcommands)
+    - [cra - subcommands](#cra---subcommands)
 
 <br>
 
@@ -182,11 +182,10 @@ const fail_emoji = "<:fail:1102349156976185435>";
 
 <br>
 
-### 311 - subcommands
+### cra - subcommands
 
 |  PL*  | Command       | Parameters*   | Description                      |
 | :---: | ------------- | ------------- | -------------------------------- |
-|   —   | /311 roles    | —             | Self-select roles.               |
-|   —   | /311 schedule | \<?day\|auto> | Shows the schedule.              |
-|   —   | /311 verify   | —             | Identify yourself.               |
-|   —   | /311 weather  | —             | Shows the current day's weather. |
+|   —   | /cra roles    | —             | Self-select roles.               |
+|   —   | /cra schedule | \<?day\|auto> | Shows the schedule.              |
+|   —   | /cra weather  | —             | Shows the current day's weather. |

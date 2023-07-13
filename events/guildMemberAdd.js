@@ -20,7 +20,7 @@ module.exports = {
             channel.send({embeds: [join_message]});
 
             member.roles.add("829896942208155678");
-        } else if(member.guild.id === "1014278986135781438") { // 311
+        } else if(member.guild.id === "1014278986135781438") { // cra
             member.roles.add("1070867071803609119");
             const channel = member.guild.channels.resolve("1014278986135781441");
 
@@ -31,12 +31,7 @@ module.exports = {
                 .setDescription(`<@${member.user.id}> joined the guild!`)
                 .setTimestamp();
 
-            const prompt_verify = new MessageEmbed()
-                .setColor("YELLOW")
-                .setTitle("Identify")
-                .setDescription("Please identify yourself by running </311 verify:1066510229619089469>");
-
-            channel.send({embeds: [join_message, prompt_verify]});
+            channel.send({embeds: [join_message]});
         }
 
         logger.append("info", "0x474D41", `[GMA] '@${member.user.tag}' joined guild "${member.guild.id}"!`);

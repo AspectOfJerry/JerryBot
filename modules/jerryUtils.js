@@ -331,7 +331,7 @@ async function permissionCheck(interaction, pl) {
             interaction.editReply({embeds: [user_blacklisted]});
         }
 
-        logger("warn", "permissionCheck", `'@${interaction.user.tag}' is blacklisted from the bot`, "WARN");
+        logger.append("warn", "STDOUT", `[permissionCheck] > '@${interaction.user.tag}' is blacklisted from the bot`);
         return false;
     } else if(config.superUsers.includes(interaction.member.id)) {
         if(config.guildBlacklist.includes(interaction.guild.id)) {
@@ -340,10 +340,10 @@ async function permissionCheck(interaction, pl) {
                 .setDescription(`<@${interaction.user.id}>, This guild is blacklisted! Sudo mode bypess.`);
 
             interaction.channel.send({embeds: [guild_blacklisted_warning]});
-            log("append", interaction.guild.id, `├─"${interaction.guild.name}" is blacklisted from the bot. Execution authorized (superuser).`, "WARN");
+            logger.append("warn", "STDOUT", `[permissionCheck] > "${interaction.guild.name}" is blacklisted from the bot. Execution authorized (superuser).`);
         }
 
-        await log("append", interaction.guild.id, `├─"@${interaction.user.tag}" is a super user. Execution authorized.`, "INFO");
+        logger.append("warn", "STDOUT", `[permissionCheck] > '@${interaction.user.tag}' is a super user. Execution authorized.`);
         return true;
     } else if(config.guildBlacklist.includes(interaction.guild.id)) {
         const guild_blacklisted = new MessageEmbed()
@@ -358,7 +358,7 @@ async function permissionCheck(interaction, pl) {
             interaction.editReply({embeds: [guild_blacklisted]});
         }
 
-        await log("append", interaction.guild.id, `└─"${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`, "WARN");
+        logger.append("warn", "STDOUT", `[permissionCheck] > "${interaction.guild.name}" (${interaction.guild.id}) is blacklisted from the bot. [GuildBlacklist]`);
         return false;
     }
 
@@ -473,7 +473,7 @@ async function startEventListeners(client, commands) {
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    await log("append", "JerryUtils", "Starting jobs...", "DEBUG");
+    logger("into", "INIT", "Starting jobs...");
 
     const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
