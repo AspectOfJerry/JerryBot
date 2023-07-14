@@ -1,8 +1,8 @@
-const CronJob = require("cron").CronJob;
-const fetch = require("node-fetch");
+import CronJob from "cron";
+import fetch from "node-fetch";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
-const {checklistHeartbeat, updateHeartbeat} = require("../modules/telemetry");
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {checklistHeartbeat, updateHeartbeat} from "../modules/telemetry";
 
 
 let disabled = false;
@@ -66,6 +66,6 @@ function jitter() {
 }
 
 
-module.exports = {
+export {
     execute
 };

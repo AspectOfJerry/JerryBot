@@ -1,4 +1,4 @@
-const {MessageEmbed} from "discord.js";
+import {MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
 import {logger, permissionCheck, sleep} from "../../modules/jerryUtils.js";
@@ -53,19 +53,19 @@ export default {
 
         // Main
         switch(send_typing) {
-            case true:
-                await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms} ms of typing...`, ephemeral: true});
+        case true:
+            await interaction.reply({content: `Sending "${message}" to #${channel} with ${duration_in_ms} ms of typing...`, ephemeral: true});
 
-                channel.sendTyping();
-                await sleep(duration_in_ms);
+            channel.sendTyping();
+            await sleep(duration_in_ms);
 
-                channel.send({content: `${message}`});
-                break;
-            default:
-                await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
+            channel.send({content: `${message}`});
+            break;
+        default:
+            await interaction.reply({content: `Sending "${message}" to #${channel} without typing...`, ephemeral: true});
 
-                channel.send({content: `${message}`});
-                break;
+            channel.send({content: `${message}`});
+            break;
         }
     }
 };

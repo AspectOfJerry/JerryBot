@@ -3,7 +3,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     // interaction.deferReply();
     if(await permissionCheck(interaction, -1) === false) {
         return;
@@ -25,4 +25,4 @@ module.exports = async function (client, interaction) {
         .setFooter({text: "Use '/sudo presence' to change the bot's full presence."});
 
     interaction.reply({embeds: [success]});
-};
+}

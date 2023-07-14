@@ -1,4 +1,4 @@
-const {sendDiscord, sendSlack} = require("./messageHandler.js");
+import {sendDiscord, sendSlack} from "./messageHandler.js";
 
 
 let dclient;
@@ -12,8 +12,8 @@ const channel_mappings = new Map([
 // Maps channels Slack to Discord
 const channel_mappings_flipped = new Map([...channel_mappings].map(([key, value]) => [value, key]));
 
-function startSlack(client) {
-    require("../index.js");
+async function startSlack(client) {
+    (await import("../index.js")).default(client);
     dclient = client;
 }
 
@@ -43,7 +43,7 @@ async function slackToDiscord(sclient, event) {
     await sendDiscord(sclient, dclient, dchannel_id, event);
 }
 
-module.exports.slackcord = {
+export const slackcord = {
     setSclient,
     startSlack,
     discordToSlack,

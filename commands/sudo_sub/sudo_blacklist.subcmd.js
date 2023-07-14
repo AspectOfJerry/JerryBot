@@ -3,7 +3,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     if(await permissionCheck(interaction, -1) === false) {
         return;
     }
@@ -15,4 +15,4 @@ module.exports = async function (client, interaction) {
 
     // Main
     return interaction.reply("This command is under development");
-};
+}

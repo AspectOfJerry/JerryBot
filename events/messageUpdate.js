@@ -1,9 +1,9 @@
-const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "messageUpdate",
     once: false, // Whether or not this event should only be triggered once
     async execute(oldMessage, newMessage) {

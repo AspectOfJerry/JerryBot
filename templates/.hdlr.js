@@ -7,26 +7,27 @@ import {getSubCommandFiles, logger, sleep} from "../../../modules/jerryUtils.js"
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("random")
-        .setDescription("Commands related to pseudorandom number generators.")
-        .addSubcommand(subcommand =>
+        .setName("STRING")
+        .setDescription("STRING")
+        .addSubcommand((subcommand) =>
             subcommand
-                .setName("number")
-                .setDescription("Generates a random number")
-                .addIntegerOption((options) =>
-                    options
-                        .setName("min")
-                        .setDescription("The minimum number. Defaults to 0")
-                        .setRequired(false))
-                .addIntegerOption((options) =>
-                    options
-                        .setName("max")
-                        .setDescription("The maximum number. Defaults to 100")
-                        .setRequired(false)))
-        .addSubcommand(subcommand =>
+                .setName("STRING")
+                .setDescription("STRING")
+            // .addStringOption((options) =>
+            //     options
+            //         .setName("STRING")
+            //         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
+            //         .setRequired(BOOL))
+        )
+        .addSubcommand((subcommand) =>
             subcommand
-                .setName("coinflip")
-                .setDescription("Coinflip!")
+                .setName("STRING")
+                .setDescription("STRING")
+            // .addStringOption((options) =>
+            //     options
+            //         .setName("SUBCMD_OPTION_NAME")
+            //         .setDescription("[REQUIRED/OPTIONAL] SUBCMD_OPTION_DESCRIPTION")
+            //         .setRequired(BOOL))
         ),
     async execute(client, interaction) {
         // Declaring variables

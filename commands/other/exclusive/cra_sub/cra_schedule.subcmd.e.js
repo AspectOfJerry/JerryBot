@@ -1,12 +1,12 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep} = require("../../../../modules/jerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../../../../database/commands/exclusive/schedule/dbms.js");
+import {log, permissionCheck, sleep} from "../../../../modules/jerryUtils.js";
+import {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} from "../../../../database/commands/exclusive/schedule/dbms.js";
 
-const date = require("date-and-time");
+import date from "date-and-time";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     await interaction.deferReply();
     if(await permissionCheck(interaction, 0) === false) {
         return;
@@ -101,4 +101,4 @@ module.exports = async function (client, interaction) {
 
     interaction.editReply({content: "Here's **today's** schedule!", embeds: [schedule_embed]});
     // interaction.channel.send({content: schedule_message});
-};
+}

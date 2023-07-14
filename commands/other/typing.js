@@ -1,4 +1,4 @@
-const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
 import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";

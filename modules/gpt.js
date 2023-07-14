@@ -1,7 +1,7 @@
-const process = require("process");
+import process from "process";
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
-const {Configuration, OpenAIApi} = require("openai");
-const {toNormalized} = require("./jerryUtils.js");
+import {Configuration, OpenAIApi} from "openai";
+import {toNormalized} from "./jerryUtils.js";
 
 
 let configed = false;
@@ -86,7 +86,7 @@ async function gpt(message, client) {
         // }
 
         // CODE FROM CHATGPT
-        // const openai = require('openai');
+        // const openai from 'openai');
         // const api_key = 'YOUR_API_KEY';
 
         // openai.api_key = api_key;
@@ -128,7 +128,7 @@ async function gpt(message, client) {
 }
 
 
-module.exports = {
+export {
     configOpenAI,
     gpt
 };

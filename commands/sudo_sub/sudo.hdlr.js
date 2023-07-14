@@ -2,7 +2,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import {SlashCommandBuilder} from "@discordjs/builders";
 import path from "path";
 
-import {getSubCommandFiles, log, sleep} from "../../modules/jerryUtils.js";
+import {getSubCommandFiles, logger, sleep} from "../../modules/jerryUtils.js";
 
 
 export default {
@@ -185,14 +185,14 @@ export default {
             client.users.send(user, {embeds: [notify]});
         }
 
-        // eslint-disable-next-line no-undef
+        const __filename = new URL(import.meta.url).pathname;
+        const __dirname = path.dirname(__filename);
         const subcommand_files = await getSubCommandFiles(path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
-                const module = await import(file);
-                module.default(client, interaction);
+                logger.append("debug", "hdlr", "Handing controls to subcommand file...");
+                (await import(file)).default(client, interaction);
                 break;
             }
         }

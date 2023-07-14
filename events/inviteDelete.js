@@ -1,7 +1,7 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "inviteDelete",
     once: false, // Whether or not this event should only be triggered once
     async execute(invite) {

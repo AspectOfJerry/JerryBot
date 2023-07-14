@@ -1,7 +1,7 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
-const {updateGuild} = require("../database/mongodb.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {updateGuild} from "../database/mongodb.js";
 
-module.exports = {
+export default {
     name: "guildCreate",
     once: false, // Whether or not this event should only be triggered once
     async execute(guild) {

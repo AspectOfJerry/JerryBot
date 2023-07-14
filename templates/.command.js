@@ -6,8 +6,8 @@ import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("CMD_NAME")
-        .setDescription("CMD_DESCRIPTION")
+        .setName("STRING")
+        .setDescription("STRING")
         // .addStringOption((options) =>
         //     options
         //         .setName("OPTION_NAME")
@@ -16,7 +16,7 @@ export default {
     ,
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await permissionCheck(interaction, x) === false) {
+        if(await permissionCheck(interaction, INT) === false) {
             return;
         }
 

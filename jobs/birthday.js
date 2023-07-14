@@ -1,10 +1,10 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const CronJob = require("cron").CronJob;
-const date = require("date-and-time");
-const {getBirthdayByDate} = require("../database/mongodb.js");
+import CronJob from "cron";
+import date from "date-and-time";
+import {getBirthdayByDate} from "../database/mongodb.js";
 
-const {log, sleep} = require("../modules/jerryUtils.js");
+import {log, sleep} from "../modules/jerryUtils.js";
 
 let disabled = false;
 
@@ -49,6 +49,6 @@ async function execute(client) {
 }
 
 
-module.exports = {
+export {
     execute
 };

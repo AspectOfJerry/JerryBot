@@ -1,10 +1,10 @@
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
+import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
-const {getVcHubs, handleJoin, handleLeave} = require("../modules/voiceChannelHubManager");
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {getVcHubs, handleJoin, handleLeave} from "../modules/voiceChannelHubManager.js";
 
 
-module.exports = {
+export default {
     name: "voiceStateUpdate",
     once: false, // Whether or not this event should only be triggered once
     async execute(oldState, newState) {

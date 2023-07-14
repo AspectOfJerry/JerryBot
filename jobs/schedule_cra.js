@@ -1,9 +1,9 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const CronJob = require("cron").CronJob;
+import CronJob from "cron";
 
-const {log, sleep} = require("../modules/jerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../database/commands/exclusive/schedule/dbms.js");
+import {log, sleep} from "../modules/jerryUtils.js";
+import {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} from "../database/commands/exclusive/schedule/dbms.js";
 
 
 let _disabled = false;
@@ -137,6 +137,6 @@ async function execute(client) {
 }
 
 
-module.exports = {
+export {
     execute
 };

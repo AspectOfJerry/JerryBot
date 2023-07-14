@@ -1,11 +1,11 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
-const {log, permissionCheck, sleep, toNormalized} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
+import date from "date-and-time";
 
-const date = require("date-and-time");
-const {updateBirthday} = require("../../database/mongodb.js");
+import {updateBirthday} from "../../database/mongodb.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     await interaction.deferReply({ephemeral: true});
     if(await permissionCheck(interaction, -1) === false) {
         return;
@@ -50,4 +50,4 @@ module.exports = async function (client, interaction) {
 
     interaction.editReply({embeds: [updated], ephemeral: true});
     log("append", interaction.guild.id, `└─Successfully updated ${name}'s (<@${user.tag}>) birthday to ${day}-${month}!`, "INFO");
-};
+}

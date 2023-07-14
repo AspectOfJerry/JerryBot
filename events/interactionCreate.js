@@ -1,8 +1,8 @@
-const {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {

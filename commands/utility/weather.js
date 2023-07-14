@@ -1,26 +1,14 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-const weather = require("weather-js");
+import weather from "weather-js";
 
 import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName("weather")
-        .setDescription("Send the weather for a given location.")
-        .addStringOption((options) =>
-            options
-                .setName("location")
-                .setDescription("[REQUIRED] City or ZIP code.")
-                .setRequired(true))
-        .addStringOption((options) =>
-            options
-                .setName("unit")
-                .setDescription("[OPTIONAL] The unit of measurement for temperatures (C or F). Defaults to 'C'")
-                .addChoice("C", "C")
-                .addChoice("F", "F")
-                .setRequired(false)),
+        .setDescription("Send the weather for a given location."),
     async execute(client, interaction) {
         await interaction.deferReply();
         if(await permissionCheck(interaction, 0) === false) {
@@ -28,13 +16,13 @@ export default {
         }
 
         // Declaring variables
-        const search_location = interaction.options.getString("location");
-        const search_unit = interaction.options.getString("unit") || "C";
+        const search_location = null;
+        const search_unit = null;
 
         // Checks
 
         // Main
-        await interaction.editReply({content: "This command is currently under rework."});
+        await interaction.editReply({content: "look outside bruh. This command is deprecated and will be removed in the future."});
         return;
 
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {

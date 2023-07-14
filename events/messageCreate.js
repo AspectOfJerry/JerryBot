@@ -1,9 +1,9 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
-const {gpt} = require("../modules/gpt");
-const {slackcord} = require("../edge/gateway/controllers/slackcord.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {gpt} from "../modules/gpt.js";
+import {slackcord} from "../edge/gateway/controllers/slackcord.js";
 
 
-module.exports = {
+export default {
     name: "messageCreate",
     once: false, // Whether or not this event should only be triggered once
     async execute(message) {

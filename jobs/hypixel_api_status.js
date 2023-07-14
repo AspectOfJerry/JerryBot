@@ -1,10 +1,10 @@
-const process = require("process");
+import process from "process";
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const CronJob = require("cron").CronJob;
-const fetch = require("node-fetch");
+import CronJob from "cron";
+import fetch from "node-fetch";
 
-const {log, sleep} = require("../modules/jerryUtils.js");
+import {log, sleep} from "../modules/jerryUtils.js";
 
 
 let disabled = false;
@@ -228,7 +228,7 @@ function jitter() {
     return Math.floor(Math.random() * 450) + 50;
 }
 
-module.exports = {
+export {
     execute,
     executeSB
 };

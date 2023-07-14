@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 
 const birthdaySchema = new mongoose.Schema({
@@ -10,4 +10,4 @@ const birthdaySchema = new mongoose.Schema({
     notes: {type: [String], required: false, default: []}
 });
 
-module.exports = mongoose.model("birthdaySchema", birthdaySchema, "bday");
+export default mongoose.model("birthdaySchema", birthdaySchema, "bday");

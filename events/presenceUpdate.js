@@ -1,11 +1,11 @@
-const {MessageEmbed} from "discord.js";
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {MessageEmbed} from "discord.js";
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 var lastGuildId;
 var latestGuildId;
 
 
-module.exports = {
+export default {
     name: "presenceUpdate",
     once: false,
     async execute(oldPresence, newPresence) {

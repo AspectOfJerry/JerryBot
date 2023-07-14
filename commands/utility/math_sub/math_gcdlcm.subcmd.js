@@ -1,9 +1,9 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {logger, permissionCheck, sleep, jMath} = require("../../../modules/jerryUtils.js");
+import {logger, permissionCheck, sleep, jMath} from "../../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     await interaction.deferReply();
 
     if(await permissionCheck(interaction, 0) === false) {
@@ -45,4 +45,4 @@ module.exports = async function (client, interaction) {
         ).setImage("https://wikimedia.org/api/rest_v1/media/math/render/png/3b155ac28a9e5580f4c7db9ed00f6fcfdb1ded66");
 
     interaction.editReply({embeds: [gcdlcm], components: [row]});
-};
+}

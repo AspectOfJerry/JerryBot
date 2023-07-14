@@ -1,7 +1,7 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "typingStart",
     once: false,
     async execute(typing) {

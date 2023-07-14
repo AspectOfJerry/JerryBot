@@ -1,7 +1,6 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from"../modules/jerryUtils.js";
 
-
-module.exports = {
+export default {
     name: "debug",
     once: false,
     async execute(info) {

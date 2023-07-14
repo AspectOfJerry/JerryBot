@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} from "discord.js";
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
-const Path = require("path");
+import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
+import path from "path";
 
-const {getSubCommandFiles, log, sleep} = require("../../../modules/jerryUtils.js");
+import {getSubCommandFiles, log, sleep} from "../../../modules/jerryUtils.js";
 
 
 export default {
@@ -37,13 +37,14 @@ export default {
         // Checks
 
         // Main
-        // eslint-disable-next-line no-undef
-        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.js");
+        const __filename = new URL(import.meta.url).pathname;
+        const __dirname = path.dirname(__filename);
+        const subcommand_files = await getSubCommandFiles(path.resolve(__dirname, "./"), ".subcmd.js");
 
         for(const file of subcommand_files) {
             if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
                 await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
-                require(file)(client, interaction);
+                (await import(file)).default(client, interaction);
                 break;
             }
         }

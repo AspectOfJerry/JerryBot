@@ -1,9 +1,9 @@
-const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck} = require("../../../../modules/jerryUtils.js");
+import {log, permissionCheck} from "../../../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     if(await permissionCheck(interaction, 0) === false) {
         return;
     }
@@ -121,4 +121,4 @@ module.exports = async function (client, interaction) {
                 }
             });
         });
-};
+}

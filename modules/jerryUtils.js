@@ -9,6 +9,9 @@ import moment from "moment";
 import {getConfig, getGuildConfig} from "../database/mongodb.js";
 import {registerEvent} from "../jobs/log_digest.js";
 
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
 
 /**
  * Returns files in a given directory and its subdirectories recursively
@@ -22,13 +25,13 @@ async function getDirFiles(dir, suffix) {
     let returnFiles = [];
 
     for(const file of files) {
-        const filePath = `${dir}/${file.name}`;
+        const filepath = `${dir}/${file.name}`;
 
         if(file.isDirectory()) {
-            const subFiles = await getDirFiles(filePath, suffix);
+            const subFiles = await getDirFiles(filepath, suffix);
             returnFiles.push(...subFiles);
         } else if(file.name.endsWith(suffix)) {
-            returnFiles.push(filePath);
+            returnFiles.push(filepath);
         }
     }
 
@@ -474,7 +477,7 @@ async function startEventListeners(client, commands) {
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    logger("into", "INIT", "Starting jobs...");
+    logger.append("into", "INIT", "Starting jobs...");
 
     const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
@@ -607,7 +610,7 @@ const success_emoji = "<:success:1102349129390248017>";
 const warn_emoji = "<:warn:1102349145106284584>";
 const fail_emoji = "<:fail:1102349156976185435>";
 
-export default {
+export {
     getDirFiles,
     getCommandFiles,
     getSubCommandFiles,
@@ -622,15 +625,15 @@ export default {
     getMemberPL,
     permissionCheck,
     cleanNumber,
-    jMath: {
-        findGCD,
-        findLCM,
-        solveQuadratic,
-        calcFactorial
-    },
-    jEmojis: {
-        success_emoji,
-        warn_emoji,
-        fail_emoji
-    }
+};
+export const jMath = {
+    findGCD,
+    findLCM,
+    solveQuadratic,
+    calcFactorial
+};
+export const jEmoji = {
+    success_emoji,
+    warn_emoji,
+    fail_emoji
 };

@@ -1,10 +1,10 @@
-const process = require("process");
-const mongoose = require("mongoose");
-// const {log, sleep} = require("../../modules/jerryUtils.js");
+import process from "process";
+import mongoose from "mongoose";
+// const {log, sleep} from "../../modules/jerryUtils.js");
 
-const birthdaySchema = require("./schemas/birthdaySchema.js");
-const configSchema = require("./schemas/configSchema.js");
-const guildSchema = require("./schemas/guildSchema.js");
+import birthdaySchema from "./schemas/birthdaySchema.js";
+import configSchema from "./schemas/configSchema.js";
+import guildSchema from "./schemas/guildSchema.js";
 
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
@@ -221,7 +221,7 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 }
 
 
-module.exports = {
+export {
     connect,
     // birthday
     getBirthdayByDate,
