@@ -13,7 +13,7 @@ const channel_mappings = new Map([
 const channel_mappings_flipped = new Map([...channel_mappings].map(([key, value]) => [value, key]));
 
 async function startSlack(client) {
-    (await import("../index.js")).default(client);
+    await import("../index.js");
     dclient = client;
 }
 

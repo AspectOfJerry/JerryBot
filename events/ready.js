@@ -6,7 +6,7 @@ import {Routes} from "discord-api-types/v9";
 import path from "path";
 
 import {connect, refreshBirthdayCollection, refreshGuildCollection} from "../database/mongodb.js";
-import {getDirFiles, logger, sleep, StartJobs} from "../modules/jerryUtils.js";
+import {logger, sleep, StartJobs} from "../modules/jerryUtils.js";
 import {configOpenAI} from "../modules/gpt.js";
 import {checklistBotReady, checklistJobs, startTelemetry} from "../modules/telemetry.js";
 import {refreshHubs} from "../modules/voiceChannelHubManager.js";
@@ -132,16 +132,16 @@ export default {
             try {
                 console.log("Registering the application (/) commands...");
                 logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
-                await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
-                console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
-                await sleep(750);
+                // await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
+                // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
+                // await sleep(750);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "cra")]});
                 console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
                 await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
-                console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
+                // await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
+                // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 logger.append("info", "0x524459", "[RDY/dev] Successfully refreshed the application (/) commands locally!");

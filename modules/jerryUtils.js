@@ -4,16 +4,16 @@ import date from "date-and-time";
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 import path from "path";
+import URL from "url";
 import moment from "moment";
 
 import {getConfig, getGuildConfig} from "../database/mongodb.js";
 import {registerEvent} from "../jobs/log_digest.js";
 
-const __filename = new URL(import.meta.url).pathname;
-const __dirname = path.dirname(__filename);
-
+const __dirname = path.dirname(URL.fileURLToPath(import.meta.url));
 
 /**
+ * @deprecated
  * Returns files in a given directory and its subdirectories recursively
  * @param {string} dir 
  * @param {string} suffix 
@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
 async function getDirFiles(dir, suffix) {
     const files = await fs.readdir(dir, {withFileTypes: true});
 
-    let returnFiles = [];
+    const returnFiles = [];
 
     for(const file of files) {
         const filepath = `${dir}/${file.name}`;
@@ -96,6 +96,7 @@ async function getCommandFiles(dir, suffix) {
 
 
 /**
+ * @deprecated
  * Private internal function
  */
 async function _getDirSubCommandFiles(dir, suffix, subcommand_files) {
@@ -114,6 +115,7 @@ async function _getDirSubCommandFiles(dir, suffix, subcommand_files) {
 }
 
 /**
+ * @deprecated
  * @param {string} dir The directory
  * @param {string} suffix The file suffix to search for
  * @returns {array} The list of subcommand files

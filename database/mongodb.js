@@ -6,11 +6,9 @@ import birthdaySchema from "./schemas/birthdaySchema.js";
 import configSchema from "./schemas/configSchema.js";
 import guildSchema from "./schemas/guildSchema.js";
 
-
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
-
-
 async function connect() {
+    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
+
     try {
         await mongoose.connect(uri);
         console.log("Connected to MongoDB!");
@@ -20,6 +18,14 @@ async function connect() {
     }
 }
 
+async function disconnect() {
+    try {
+        await mongoose.disconnect();
+        console.log("Disconnected from MongoDB!");
+    } catch(err) {
+        console.error("Error disconnecting from MongoDB:", err);
+    }
+}
 
 // BIRTHDAY
 /**
@@ -223,6 +229,7 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 
 export {
     connect,
+    disconnect,
     // birthday
     getBirthdayByDate,
     refreshBirthdayCollection,

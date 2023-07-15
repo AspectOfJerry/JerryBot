@@ -2,8 +2,9 @@ import fs from "fs";
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 import path from "path";
+import url from "url";
 
-import {getSubCommandFiles, log, sleep} from "../../../modules/jerryUtils.js";
+import {logger, sleep} from "../../../modules/jerryUtils.js";
 
 
 export default {
@@ -53,16 +54,7 @@ export default {
         // Checks
 
         // Main
-        const __filename = new URL(import.meta.url).pathname;
-        const __dirname = path.dirname(__filename);
-        const subcommand_files = await getSubCommandFiles(path.resolve(__dirname, "./"), ".subcmd.js");
-
-        for(const file of subcommand_files) {
-            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.js")) {
-                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
-                (await import(file)).default(client, interaction);
-                break;
-            }
-        }
+        logger.append("debug", "HDLR", "Searching for subcommand file...");
+        (await import(`./${interaction.commandName}_${interaction.options.getSubcommand()}.subcmd.js`)).default(client, interaction);
     }
 };

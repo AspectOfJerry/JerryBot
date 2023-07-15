@@ -18,6 +18,9 @@ export default async function (client, interaction) {
 
     // Main
     let jour = interaction.options.getString("day") ?? await GetJourByDate();
+    console.log(jour);
+    return;
+
     const day = await GetFullDateString();
 
     if(jour === "EOY" || jour === "DISABLE") {

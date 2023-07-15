@@ -169,12 +169,13 @@ async function GetFRCDays(startJour) {
     return delta + 1; // + 1 to add the current day
 }
 
-export default {
+export {
     GetFullSchedule,
     GetExceptions,
     GetDate,
     GetFullDateString,
     GetFRCDays,
     GetJourByDate,
+    getcDayByDate,
     GetScheduleByJour
 };

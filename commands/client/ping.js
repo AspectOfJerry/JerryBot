@@ -20,7 +20,7 @@ export default {
         // Checks
 
         // Main
-        interaction.channel.send({content: "@silent ping..."})
+        interaction.channel.send({content: "ping..."})
             .then((pingMessage) => {
                 pingMessage.delete().catch(console.error);
 
