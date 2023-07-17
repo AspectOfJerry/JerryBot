@@ -1,12 +1,12 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep, toNormalized} = require("../../modules/jerryUtils.js");
-const {getConfig} = require("../../database/mongodb.js");
+import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
+import {getConfig} from "../../database/mongodb.js";
 
-const crypto = require("crypto");
+import crypto from "crypto";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     // await interaction.deferReply();
 
     if(await permissionCheck(interaction, -1) === false) {
@@ -264,4 +264,4 @@ module.exports = async function (client, interaction) {
     // Execute
 
     // Logs
-};
+}

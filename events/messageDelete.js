@@ -1,9 +1,9 @@
-const {MessageEmbed} = require("discord.js");
+import {MessageEmbed} from "discord.js";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "messageDelete",
     once: false, // Whether or not this event should only be triggered once
     async execute(message) {

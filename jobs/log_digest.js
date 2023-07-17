@@ -1,10 +1,8 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import CronJob from "cron";
+import fs from "fs";
+import date from "date-and-time";
 
-const CronJob = require("cron").CronJob;
-const fs = require("fs");
-const date = require("date-and-time");
-
-// const {log, sleep} = require("../modules/jerryUtils.js");
+// const {log, sleep} from "../modules/jerryUtils.js");
 
 let disabled = false;
 
@@ -68,11 +66,11 @@ function registerEvent(type, amount) {
         throw `Invalid type tag of ${type}`;
     }
 
-    counter[type] + amount;
+    counter[type] += amount;
 }
 
 
-module.exports = {
+export {
     execute,
     registerEvent
 };

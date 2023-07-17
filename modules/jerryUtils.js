@@ -1,16 +1,19 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const fs = require("fs");
-const date = require("date-and-time");
-const winston = require("winston");
-const DailyRotateFile = require("winston-daily-rotate-file");
-const path = require("path");
-const moment = require("moment");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import fs from "fs";
+import date from "date-and-time";
+import winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
+import path from "path";
+import URL from "url";
+import moment from "moment";
 
-const {getConfig, getGuildConfig} = require("../database/mongodb.js");
-const {registerEvent} = require("../jobs/log_digest.js");
+import {getConfig, getGuildConfig} from "../database/mongodb.js";
+import {registerEvent} from "../jobs/log_digest.js";
 
+const __dirname = path.dirname(URL.fileURLToPath(import.meta.url));
 
 /**
+ * @deprecated
  * Returns files in a given directory and its subdirectories recursively
  * @param {string} dir 
  * @param {string} suffix 
@@ -19,16 +22,16 @@ const {registerEvent} = require("../jobs/log_digest.js");
 async function getDirFiles(dir, suffix) {
     const files = await fs.readdir(dir, {withFileTypes: true});
 
-    let returnFiles = [];
+    const returnFiles = [];
 
     for(const file of files) {
-        const filePath = `${dir}/${file.name}`;
+        const filepath = `${dir}/${file.name}`;
 
         if(file.isDirectory()) {
-            const subFiles = await getDirFiles(filePath, suffix);
+            const subFiles = await getDirFiles(filepath, suffix);
             returnFiles.push(...subFiles);
         } else if(file.name.endsWith(suffix)) {
-            returnFiles.push(filePath);
+            returnFiles.push(filepath);
         }
     }
 
@@ -93,6 +96,7 @@ async function getCommandFiles(dir, suffix) {
 
 
 /**
+ * @deprecated
  * Private internal function
  */
 async function _getDirSubCommandFiles(dir, suffix, subcommand_files) {
@@ -111,6 +115,7 @@ async function _getDirSubCommandFiles(dir, suffix, subcommand_files) {
 }
 
 /**
+ * @deprecated
  * @param {string} dir The directory
  * @param {string} suffix The file suffix to search for
  * @returns {array} The list of subcommand files
@@ -456,7 +461,8 @@ async function startEventListeners(client, commands) {
     console.log(event_files);
 
     for(const event_file of event_files) {
-        const event = require(`../events/${event_file}`);
+        const module = await import(`../events/${event_file}`);
+        const event = module.default;
 
         if(event.once) {
             client.once(event.name, (...args) => event.execute(...args, commands));
@@ -473,7 +479,7 @@ async function startEventListeners(client, commands) {
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    logger("into", "INIT", "Starting jobs...");
+    logger.append("into", "INIT", "Starting jobs...");
 
     const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
@@ -481,7 +487,8 @@ async function StartJobs(client) {
     console.log(job_files);
 
     for(const job_file of job_files) {
-        const {execute} = require(`../jobs/${job_file}`);
+        const module = await import(`../jobs/${job_file}`);
+        const {execute} = module.default;
         execute(client);
     }
 
@@ -605,7 +612,7 @@ const success_emoji = "<:success:1102349129390248017>";
 const warn_emoji = "<:warn:1102349145106284584>";
 const fail_emoji = "<:fail:1102349156976185435>";
 
-module.exports = {
+export {
     getDirFiles,
     getCommandFiles,
     getSubCommandFiles,
@@ -620,15 +627,15 @@ module.exports = {
     getMemberPL,
     permissionCheck,
     cleanNumber,
-    jMath: {
-        findGCD,
-        findLCM,
-        solveQuadratic,
-        calcFactorial
-    },
-    jEmojis: {
-        success_emoji,
-        warn_emoji,
-        fail_emoji
-    }
+};
+export const jMath = {
+    findGCD,
+    findLCM,
+    solveQuadratic,
+    calcFactorial
+};
+export const jEmoji = {
+    success_emoji,
+    warn_emoji,
+    fail_emoji
 };

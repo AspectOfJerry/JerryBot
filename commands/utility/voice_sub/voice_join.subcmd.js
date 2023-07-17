@@ -1,11 +1,11 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
+import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-const {log, permissionCheck, sleep} = require("../../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     if(await permissionCheck(interaction, 0) === false) {
         return;
     }
@@ -87,4 +87,4 @@ module.exports = async function (client, interaction) {
             bot.voice.setDeaf(false);
         }
     });
-};
+}

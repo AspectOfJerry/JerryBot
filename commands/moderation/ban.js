@@ -1,10 +1,10 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {logger, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {logger, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("ban")
         .setDescription("Bans a user from the guild.")

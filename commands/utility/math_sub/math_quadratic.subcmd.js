@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {logger, permissionCheck, sleep, jMath, jEmojis, cleanNumber} = require("../../../modules/jerryUtils.js");
+import {logger, permissionCheck, sleep, jMath, jEmojis, cleanNumber} from "../../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     // await interaction.deferReply();
     if(await permissionCheck(interaction, 0) === false) {
         return;
@@ -91,7 +91,7 @@ module.exports = async function (client, interaction) {
             : "https://wikimedia.org/api/rest_v1/media/math/render/png/d40196d521aae8b791055b7da8f8844357969a1f");
 
     interaction.reply({embeds: [answer], components: [row]});
-};
+}
 
 function generateMathSolverLink(a, b, c) {
     const equation = `${a} { x }^{ 2 } ${b > 0 ? "+" : "-"} ${Math.abs(b)}x ${c > 0 ? "+" : "-"} ${Math.abs(c)} = 0`;

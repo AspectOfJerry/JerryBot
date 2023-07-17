@@ -1,10 +1,10 @@
-// const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-// const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
+// import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+// const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice");
 
-const {logger, sleep, toNormalized} = require("./jerryUtils.js");
-const {getConfig, updateConfig} = require("../database/mongodb.js");
-const fs = require("fs");
-const Path = require("path");
+import {logger, sleep, toNormalized} from "./jerryUtils.js";
+import {getConfig, updateConfig} from "../database/mongodb.js";
+import fs from "fs";
+import path from "path";
 
 
 const active_channels = [];
@@ -94,7 +94,7 @@ async function removeHub(id) {
 }
 
 
-module.exports = {
+export {
     addHub,
     refreshHubs,
     getVcHubs,

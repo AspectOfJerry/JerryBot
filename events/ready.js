@@ -1,20 +1,20 @@
-const process = require("process");
-const winston = require("winston");
-const fs = require("fs");
-const {REST} = require("@discordjs/rest");
-const {Routes} = require("discord-api-types/v9");
-const path = require("path");
+import process from "process";
+import winston from "winston";
+import fs from "fs";
+import {REST} from "@discordjs/rest";
+import {Routes} from "discord-api-types/v9";
+import path from "path";
 
-const {connect, refreshBirthdayCollection, refreshGuildCollection} = require("../database/mongodb.js");
-const {getDirFiles, logger, sleep, StartJobs} = require("../modules/jerryUtils.js");
-const {configOpenAI} = require("../modules/gpt.js");
-const {checklistBotReady, checklistJobs, startTelemetry} = require("../modules/telemetry");
-const {refreshHubs} = require("../modules/voiceChannelHubManager.js");
-const {slackcord} = require("../edge/gateway/controllers/slackcord.js");
-// const {InitNukeNotifier} = require('../modules/nuking_notifier');
+import {connect, refreshBirthdayCollection, refreshGuildCollection} from "../database/mongodb.js";
+import {logger, sleep, StartJobs} from "../modules/jerryUtils.js";
+import {configOpenAI} from "../modules/gpt.js";
+import {checklistBotReady, checklistJobs, startTelemetry} from "../modules/telemetry.js";
+import {refreshHubs} from "../modules/voiceChannelHubManager.js";
+import {slackcord} from "../edge/gateway/controllers/slackcord.js";
+// const {InitNukeNotifier} from '../modules/nuking_notifier.js');
 
 
-module.exports = {
+export default {
     name: "ready",
     once: true,
     async execute(client, commands) {
@@ -100,11 +100,15 @@ module.exports = {
         // Start slack bot
         console.log("Starting Slack bot...");
         logger.append("info", "0x524459", "[RDY/Slack] Starting Slack bot...");
-        slackcord.startSlack(client);
+        await slackcord.startSlack(client);
 
         if(process.env.npm_lifecycle_event === "test") {
             const args = process.argv.slice(2);
-            await require(`../tests/${args[0]}.test.js`);
+            if(args.length < 1) {
+                return;
+            }
+
+            await import(`../tests/${args[0]}.test.js`);
             return;
         }
 
@@ -128,16 +132,16 @@ module.exports = {
             try {
                 console.log("Registering the application (/) commands...");
                 logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
-                await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
-                console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
-                await sleep(750);
+                // await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
+                // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
+                // await sleep(750);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "cra")]});
                 console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
                 await sleep(750);
 
-                await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
-                console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
+                // await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
+                // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
 
                 console.log("Successfully refreshed the application (/) commands locally!");
                 logger.append("info", "0x524459", "[RDY/dev] Successfully refreshed the application (/) commands locally!");
@@ -160,13 +164,13 @@ async function getTests(dir, suffix) {
     const returnFiles = [];
 
     for(const file of files) {
-        const filePath = `${dir}/${file.name}`;
+        const filepath = `${dir}/${file.name}`;
 
         if(file.isDirectory()) {
-            const subFiles = await getTests(filePath, suffix);
+            const subFiles = await getTests(filepath, suffix);
             returnFiles.push(...subFiles);
         } else if(file.name.endsWith(suffix)) {
-            returnFiles.push(filePath);
+            returnFiles.push(filepath);
         }
     }
 

@@ -1,6 +1,6 @@
-const CronJob = require("cron").CronJob;
+import CronJob from "cron";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 let disabled = false;
 
@@ -33,6 +33,6 @@ async function execute(client) {
 }
 
 
-module.exports = {
+export {
     execute
 };

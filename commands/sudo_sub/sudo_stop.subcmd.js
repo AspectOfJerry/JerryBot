@@ -1,11 +1,12 @@
-const process = require("process");
-const fs = require("fs");
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} = require("@discordjs/voice");
+import process from "process";
+import fs from "fs";
 
-const {logger, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-module.exports = async function (client, interaction) {
+import {logger, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+
+export default async function (client, interaction) {
     if(await permissionCheck(interaction, -1) === false) {
         return;
     }
@@ -123,4 +124,4 @@ module.exports = async function (client, interaction) {
             return;
         }
     });
-};
+}

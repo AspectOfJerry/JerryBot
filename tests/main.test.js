@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const fs = require("fs");
-const date = require("date-and-time");
-const path = require("path");
-const moment = require("moment");
-const {logger, sleep} = require("../modules/jerryUtils.js");
-
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import fs from "fs";
+import date from "date-and-time";
+import path from "path";
+import moment from "moment";
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {createCraSchedule} from "../database/mongodb.js";
 
 console.log("Hello, World!");

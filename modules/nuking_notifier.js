@@ -1,7 +1,7 @@
 // THIS FEATURE IS DISABLED
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, sleep} = require("./jerryUtils");
+import {log, sleep} from "./jerryUtils";
 
 
 var nukeCheckTimerState = false;
@@ -98,6 +98,6 @@ async function nukeTimer(client) {
 
 }
 
-module.exports = {
+export {
     initNukeNotifier
 };

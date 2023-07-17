@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const CronJob = require("cron").CronJob;
+import CronJob from "cron";
 
-const {log, sleep} = require("../modules/jerryUtils.js");
-const {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} = require("../database/commands/exclusive/schedule/dbms.js");
+import {log, sleep} from "../modules/jerryUtils.js";
+import {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} from "../database/commands/exclusive/schedule/dbms.js";
 
 
 let _disabled = false;
@@ -130,13 +130,13 @@ async function execute(client) {
         log("append", "", `[Schedule] Successfully posted today's schedule (${schedule_message}).`, "INFO");
     });
 
-    schedule_cra.start();
+    // schedule_cra.start();
 
     log("append", "", "[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.", "DEBUG");
     console.log("[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.");
 }
 
 
-module.exports = {
+export {
     execute
 };

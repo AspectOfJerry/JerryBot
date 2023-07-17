@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     // interaction.deferReply();
     if(await permissionCheck(interaction, -1) === false) {
         return;
@@ -37,4 +37,4 @@ module.exports = async function (client, interaction) {
         ).setFooter({text: "Use '/sudo presence_clear' to remove the presence."});
 
     interaction.reply({embeds: [success]});
-};
+}

@@ -1,8 +1,8 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const CronJob = require("cron").CronJob;
+import CronJob from "cron";
 
-const {logger, sleep} = require("../modules/jerryUtils.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
 
 let disabled = false;
 
@@ -49,6 +49,6 @@ async function execute(client) {
 }
 
 
-module.exports = {
+export {
     execute
 };

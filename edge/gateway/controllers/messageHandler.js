@@ -1,6 +1,6 @@
-const process = require("process");
-const moment = require("moment");
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
+import process from "process";
+import moment from "moment";
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 
 
 /**
@@ -59,7 +59,7 @@ async function sendSlack(sclient, schannelId, message) {
         });
 }
 
-module.exports = {
+export {
     sendDiscord,
     sendSlack
 };

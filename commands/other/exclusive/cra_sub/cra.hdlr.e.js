@@ -1,11 +1,10 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const Path = require("path");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {getSubCommandFiles, log, sleep} = require("../../../../modules/jerryUtils.js");
+import {logger, sleep} from "../../../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("cra")
         .setDescription("Commands for CRA.")
@@ -41,15 +40,7 @@ module.exports = {
         }
 
         // Main
-        // eslint-disable-next-line no-undef
-        const subcommand_files = await getSubCommandFiles(Path.resolve(__dirname, "./"), ".subcmd.e.js");
-
-        for(const file of subcommand_files) {
-            if(file.endsWith(interaction.options.getSubcommand() + ".subcmd.e.js")) {
-                await log("append", "hdlr", "├─Handing controls to subcommand file...", "DEBUG");
-                require(file)(client, interaction);
-                break;
-            }
-        }
+        logger.append("debug", "HDLR", "Searching for subcommand file...");
+        (await import(`./${interaction.commandName}_${interaction.options.getSubcommand()}.subcmd.e.js`)).default(client, interaction);
     }
 };

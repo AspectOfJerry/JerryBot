@@ -1,8 +1,7 @@
-const {logger, sleep} = require("../modules/jerryUtils.js");
-const {deleteGuild} = require("../database/mongodb.js");
+import {logger, sleep} from "../modules/jerryUtils.js";
+import {deleteGuild} from "../database/mongodb.js";
 
-
-module.exports = {
+export default {
     name: "guildDelete",
     once: false, // Whether or not this event should only be triggered once
     async execute(guild) {

@@ -1,9 +1,9 @@
-const {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} = require("discord.js");
-const {log, sleep} = require("./jerryUtils.js");
+import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} from "discord.js";
+import {log, sleep} from "./jerryUtils.js";
 
-const CronJob = require("cron").CronJob;
+import CronJob from "cron";
 
-const os = require("node:os");
+import os from "node:os";
 
 
 const success_emoji = "<:success:1102349129390248017>";
@@ -117,7 +117,7 @@ async function updateHeartbeat(_client, timestamp) {
 }
 
 
-module.exports = {
+export {
     botStop,
     checklistBotReady,
     checklistHeartbeat,

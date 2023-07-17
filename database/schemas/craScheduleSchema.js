@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 
 const craScheduleSchema = new mongoose.Schema({
@@ -6,588 +6,587 @@ const craScheduleSchema = new mongoose.Schema({
         cohort: {type: String, required: true},
         startDate: {type: String, required: true},
         endDate: {type: String, required: true},
-        jour: {
+        cDay: {
             startTime: {type: String, required: true},
             endTime: {type: String, required: true}
         }
     },
-    exceptions: {},
-    jour1: {
+    cDay1: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour2: {
+    cDay2: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour3: {
+    cDay3: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour4: {
+    cDay4: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour5: {
+    cDay5: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour6: {
+    cDay6: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour7: {
+    cDay7: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour8: {
+    cDay8: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour9: {
+    cDay9: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour10: {
+    cDay10: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour11: {
+    cDay11: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour12: {
+    cDay12: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour13: {
+    cDay13: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour14: {
+    cDay14: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour15: {
+    cDay15: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour16: {
+    cDay16: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour17: {
+    cDay17: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     },
-    jour18: {
+    cDay18: {
         p1: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p2: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p3: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p4: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p5: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         },
         p6: {
             classCode: {type: String, required: true},
             classroom: {type: String, required: true},
-            notes: {type: String, required: true}
+            notes: {type: String, required: false}
         }
     }
 });
 
-module.exports = mongoose.model("birthdaySchema", craScheduleSchema, "bday");
+export default mongoose.model("craScheduleSchema", craScheduleSchema, "cra");

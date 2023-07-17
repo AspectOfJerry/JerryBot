@@ -1,16 +1,15 @@
-const process = require("process");
-const mongoose = require("mongoose");
-// const {log, sleep} = require("../../modules/jerryUtils.js");
+import process from "process";
+import mongoose from "mongoose";
+// const {log, sleep} from "../../modules/jerryUtils.js");
 
-const birthdaySchema = require("./schemas/birthdaySchema.js");
-const configSchema = require("./schemas/configSchema.js");
-const guildSchema = require("./schemas/guildSchema.js");
-
-
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
-
+import birthdaySchema from "./schemas/birthdaySchema.js";
+import configSchema from "./schemas/configSchema.js";
+import guildSchema from "./schemas/guildSchema.js";
+import craScheduleSchema from "./schemas/craScheduleSchema.js";
 
 async function connect() {
+    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
+
     try {
         await mongoose.connect(uri);
         console.log("Connected to MongoDB!");
@@ -20,6 +19,14 @@ async function connect() {
     }
 }
 
+async function disconnect() {
+    try {
+        await mongoose.disconnect();
+        console.log("Disconnected from MongoDB!");
+    } catch(err) {
+        console.error("Error disconnecting from MongoDB:", err);
+    }
+}
 
 // BIRTHDAY
 /**
@@ -199,6 +206,7 @@ async function refreshGuildCollection(client) {
 
 /**
  * @param {string} guildId The guild ID
+ * @param {string} guildName The guild name
  * @param {string} [l1] The layer 1 role
  * @param {string} [l2] The layer 2 role
  * @param {string} [l3] The layer 3 role
@@ -221,8 +229,20 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 }
 
 
-module.exports = {
+async function createCraSchedule(json) {
+    const res = await craScheduleSchema.findOneAndUpdate(
+        {"data.cohort": json.data.cohort},
+        json,
+        {new: true, upsert: true, runValidators: true}
+    );
+
+    return res;
+}
+
+
+export {
     connect,
+    disconnect,
     // birthday
     getBirthdayByDate,
     refreshBirthdayCollection,
@@ -234,5 +254,7 @@ module.exports = {
     deleteGuild,
     getGuildConfig,
     refreshGuildCollection,
-    updateGuild
+    updateGuild,
+    // cra
+    createCraSchedule
 };

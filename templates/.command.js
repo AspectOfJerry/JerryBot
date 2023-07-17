@@ -1,13 +1,13 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck, sleep} = require("../../modules/jerryUtils.js");
+import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
-        .setName("CMD_NAME")
-        .setDescription("CMD_DESCRIPTION")
+        .setName("STRING")
+        .setDescription("STRING")
         // .addStringOption((options) =>
         //     options
         //         .setName("OPTION_NAME")
@@ -16,7 +16,7 @@ module.exports = {
     ,
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await permissionCheck(interaction, x) === false) {
+        if(await permissionCheck(interaction, INT) === false) {
             return;
         }
 

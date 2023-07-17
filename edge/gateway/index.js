@@ -1,9 +1,9 @@
-const process = require("process");
-const {slackcord} = require("./controllers/slackcord.js");
+import process from "process";
+import {slackcord} from "./controllers/slackcord.js";
 
-const {App} = require("@slack/bolt");
+import bolt from "@slack/bolt";
 
-const app = new App({
+const app = new bolt.App({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     token: process.env.SLACK_BOT_TOKEN,
     socketMode: true,
