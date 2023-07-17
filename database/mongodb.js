@@ -229,6 +229,10 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 }
 
 
+/**
+ * @param {Object} json The cra schedule json
+ * @returns The cra schedule document
+*/
 async function createCraSchedule(json) {
     const res = await craScheduleSchema.findOneAndUpdate(
         {"data.cohort": json.data.cohort},
@@ -239,6 +243,15 @@ async function createCraSchedule(json) {
     return res;
 }
 
+
+async function getCraSchedule(cohort) {
+    const res = await craScheduleSchema.findOne({"data.cohort": cohort});
+
+    if(!res) {
+        return void (0);
+    }
+    return res._doc;
+}
 
 export {
     connect,
@@ -256,5 +269,6 @@ export {
     refreshGuildCollection,
     updateGuild,
     // cra
-    createCraSchedule
+    createCraSchedule,
+    getCraSchedule
 };

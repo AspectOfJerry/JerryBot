@@ -3,6 +3,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
 import {getConfig} from "../../database/mongodb.js";
 
+import dayjs from "dayjs";
 import crypto from "crypto";
 
 
@@ -57,10 +58,10 @@ export default async function (client, interaction) {
         .setColor("FUCHSIA")
         .setTitle(":warning: Discord guild nuking request")
         .setAuthor({name: `${interaction.user.username}`, iconURL: `${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
-        .setDescription("This is a test. This is only a test.")
+        .setDescription("**:rotating_light: This is a test. This is only a test. :rotating_light:**")
         .addFields(
             {
-                name: "Time", value: `${new Date()}`, inline: false
+                name: "Time", value: `${dayjs()}`, inline: false
             },
             {
                 name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within twenty (20) seconds in order to confirm your choice.`
@@ -119,7 +120,7 @@ export default async function (client, interaction) {
 
     embed.setFields(
         {
-            name: "Time", value: `${new Date()}`, inline: false
+            name: "Time", value: `${dayjs()}`, inline: false
         },
         {
             name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
@@ -172,7 +173,7 @@ export default async function (client, interaction) {
 
     embed.setFields(
         {
-            name: "Time", value: `${new Date()}`, inline: false
+            name: "Time", value: `${dayjs()}`, inline: false
         },
         {
             name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`

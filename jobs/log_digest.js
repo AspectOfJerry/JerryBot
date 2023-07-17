@@ -1,6 +1,6 @@
 import CronJob from "cron";
 import fs from "fs";
-import date from "date-and-time";
+import dayjs from "dayjs";
 
 // const {log, sleep} from "../modules/jerryUtils.js");
 
@@ -22,11 +22,10 @@ async function execute(client) {
     const digest = new CronJob("0 0 * * *", async () => {
         // await sleep(100);
 
-        const now = new Date();
-        const yesterday = date.addDays(now, -1);
+        const yesterday = dayjs().substract(1, "day");
 
-        const file_name = date.format(yesterday, "YYYY-MMMM");
-        const prefix = date.format(yesterday, "YYYY-MM-DD");
+        const file_name = dayjs.format(yesterday, "YYYY-MMMM");
+        const prefix = dayjs.format(yesterday, "YYYY-MM-DD");
 
         const total_events = Object.values(counter).reduce((a, b) => {return a + b;}, 0);
 

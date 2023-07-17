@@ -1,6 +1,6 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import fs from "fs";
-import date from "date-and-time";
+import dayjs from "dayjs";
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 import path from "path";
@@ -184,69 +184,69 @@ async function isSuperUser(client, userResolvable) {
  */
 async function log(method, tag, body, type) {
     switch(method) {
-        case "append": {
-            // Declaring variables
-            const now = new Date();
+    case "append": {
+        // Declaring variables
+        const now = dayjs();
 
-            let tagLenght = 0;
-            let tagExtraIndentNum = 0;
-            let tagExtraIndent = "";
-            let typeLenght = 0;
-            let typeExtraIndentNum = 0;
-            let typeExtraIndent = "";
+        let tagLenght = 0;
+        let tagExtraIndentNum = 0;
+        let tagExtraIndent = "";
+        let typeLenght = 0;
+        let typeExtraIndentNum = 0;
+        let typeExtraIndent = "";
 
-            // Get current date
-            const now_date = date.format(now, "YYYY-MM-DD");
-            const now_time = date.format(now, "HH:mm:ss.SSS");
+        // Get current date
+        const now_date = dayjs.format(now, "YYYY-MM-DD");
+        const now_time = dayjs.format(now, "HH:mm:ss.SSS");
 
-            // Generate the log file name
-            const file_name = `${now_date}_JerryBot.log`;
+        // Generate the log file name
+        const file_name = `${now_date}_JerryBot.log`;
 
-            // Generate the new line content
-            if(tag == null) {
-                tag = "------------------";
-            }
-            tagLenght = tag.length;
-            tagExtraIndentNum = 19 - tagLenght;
-            for(let i = 0; i < tagExtraIndentNum; i++) {
-                tagExtraIndent = tagExtraIndent + " ";
-            }
-
-            // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
-            if(!type) {
-                throw `Cannot use type of ${type}`;
-            }
-
-            typeLenght = type.length;
-            typeExtraIndentNum = 5 - typeLenght;
-
-            for(let i = 0; i < typeExtraIndentNum; i++) {
-                typeExtraIndent = typeExtraIndent + " ";
-            }
-
-            const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
-
-            const return_object = {
-                body: body,
-                fileName: file_name,
-                parsedBody: parsed_body
-            };
-
-            // Append to file
-            fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
-                if(err) {
-                    throw err;
-                }
-            });
-            registerEvent(type, 1);
-            return return_object;
+        // Generate the new line content
+        if(tag == null) {
+            tag = "------------------";
         }
-        case "read": {
-            // Read stuff
+        tagLenght = tag.length;
+        tagExtraIndentNum = 19 - tagLenght;
+        for(let i = 0; i < tagExtraIndentNum; i++) {
+            tagExtraIndent = tagExtraIndent + " ";
         }
-            break;
-        default:
-            throw "Unknown logging method.";
+
+        // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
+        if(!type) {
+            throw `Cannot use type of ${type}`;
+        }
+
+        typeLenght = type.length;
+        typeExtraIndentNum = 5 - typeLenght;
+
+        for(let i = 0; i < typeExtraIndentNum; i++) {
+            typeExtraIndent = typeExtraIndent + " ";
+        }
+
+        const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
+
+        const return_object = {
+            body: body,
+            fileName: file_name,
+            parsedBody: parsed_body
+        };
+
+        // Append to file
+        fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
+            if(err) {
+                throw err;
+            }
+        });
+        registerEvent(type, 1);
+        return return_object;
+    }
+    case "read": {
+        // Read stuff
+    }
+        break;
+    default:
+        throw "Unknown logging method.";
     }
 }
 
@@ -451,7 +451,7 @@ async function sleep(delayInMsec) {
  * @param {Object} client The active Discord client
  * @param {array} commands The application commands to register in the `ready` event
  */
-async function startEventListeners(client, commands) {
+async function enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController(client, commands) {
     console.log("Starting event listeners...");
     logger.append("info", "utils", "Starting event listeners...");
 
@@ -622,7 +622,7 @@ export {
     logger,
     sleep,
     StartJobs,
-    startEventListeners,
+    enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController,
     toNormalized,
     getMemberPL,
     permissionCheck,

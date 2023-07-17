@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
-import date from "date-and-time";
+import dayjs from "dayjs";
 
 import {updateBirthday} from "../../database/mongodb.js";
 
@@ -24,7 +24,7 @@ export default async function (client, interaction) {
     log("append", interaction.guild.id, `├─notes: "${notes}"`, "INFO");
 
     // Checks
-    if(!date.isValid(`${day}-${month}-2000`, "D-M-YYYY")) { // 2000 for placeholder leap year
+    if(!dayjs(`${day}-${month}-2000`).isValid()) { // 2000 for placeholder leap year, D-M-YYYY
         const invalid_input_date_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)

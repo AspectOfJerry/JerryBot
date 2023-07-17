@@ -95,7 +95,7 @@ export default {
 
         let isOverridden = false;
 
-        // const now = Math.round(Date.now() / 1000);
+        // const now = Math.round(dayjs() / 1000);
         // const auto_cancel_timestamp = now + 10;
 
         const confirm_kick = new MessageEmbed()

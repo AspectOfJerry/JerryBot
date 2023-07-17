@@ -3,7 +3,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import CronJob from "cron";
 
 import {log, sleep} from "../modules/jerryUtils.js";
-import {GetFullSchedule, GetExceptions, GetDate, GetFullDateString, GetFRCDays, GetJourByDate, GetScheduleByJour} from "../database/commands/exclusive/schedule/dbms.js";
+import {getExceptions, getDate, getFullDateString, getJourByDate, getScheduleByCday} from "../database/controllers/cra.js";
 
 
 let _disabled = false;
@@ -24,7 +24,9 @@ async function execute(client) {
 
         channel.sendTyping();
 
-        let jour = await GetJourByDate();
+        const cohort = "testCohort";
+
+        let jour = await getJourByDate(cohort);
 
         if(jour === "DISABLE") {
             schedule_cra.stop();
@@ -33,7 +35,7 @@ async function execute(client) {
             return;
         }
 
-        const day = await GetFullDateString();
+        const day = await getFullDateString();
 
         if(jour === "EOY") {
             // const schedule_message = "<@&1016500157480706191>, End of school year reached!";
@@ -54,8 +56,6 @@ async function execute(client) {
             _disabled = true;
             return;
         }
-
-        const days_to_frc = await GetFRCDays(await GetDate());
 
         if(isNaN(jour)) {
             const schedule_message = `${jour}: No school`;
@@ -80,7 +80,7 @@ async function execute(client) {
             return;
         }
 
-        const schedule = await GetScheduleByJour(jour);
+        const schedule = await getScheduleByCday(cohort, jour);
 
         jour = jour.toString();
 
