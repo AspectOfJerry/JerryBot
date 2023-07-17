@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import birthdaySchema from "./schemas/birthdaySchema.js";
 import configSchema from "./schemas/configSchema.js";
 import guildSchema from "./schemas/guildSchema.js";
+import craScheduleSchema from "./schemas/craScheduleSchema.js";
 
 async function connect() {
     const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
@@ -205,6 +206,7 @@ async function refreshGuildCollection(client) {
 
 /**
  * @param {string} guildId The guild ID
+ * @param {string} guildName The guild name
  * @param {string} [l1] The layer 1 role
  * @param {string} [l2] The layer 2 role
  * @param {string} [l3] The layer 3 role
@@ -227,6 +229,17 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 }
 
 
+async function createCraSchedule(json) {
+    const res = await craScheduleSchema.findOneAndUpdate(
+        {"data.cohort": json.data.cohort},
+        json,
+        {new: true, upsert: true, runValidators: true}
+    );
+
+    return res;
+}
+
+
 export {
     connect,
     disconnect,
@@ -241,5 +254,7 @@ export {
     deleteGuild,
     getGuildConfig,
     refreshGuildCollection,
-    updateGuild
+    updateGuild,
+    // cra
+    createCraSchedule
 };

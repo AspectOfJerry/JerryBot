@@ -1,16 +1,13 @@
 import {log, permissionCheck, sleep} from "../../../../modules/jerryUtils.js";
 import date from "date-and-time";
 
+
 // './schedule.json'
 async function GetFullSchedule() {
-    const file = await import("./schedule_311.json");
-    return file.default;
 }
 
 // './schedule_exceptions.json'
 async function GetExceptions() {
-    const file = await import("./schedule_311_exceptions.json");
-    return file.default;
 }
 
 // Main
