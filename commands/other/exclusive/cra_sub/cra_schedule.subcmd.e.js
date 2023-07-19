@@ -1,8 +1,8 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
 import {log, permissionCheck, sleep} from "../../../../modules/jerryUtils.js";
-import {getCdayByDate, getExceptions, getDate, getFullDateString, getJourByDate, getScheduleByCday} from "../../../../database/controllers/cra.js";
-import moment from "moment";
+import {getCdayByDate, getExceptions, getFullDateString, getScheduleByCday} from "../../../../database/controllers/cra.js";
+import dayjs from "dayjs";
 
 
 export default async function (client, interaction) {
@@ -13,16 +13,21 @@ export default async function (client, interaction) {
 
     // Declaring variables
     const cohort = "testCohort";
+    const testDate = "2022-08-30";
 
     // Checks
 
     // Main
     // let cDay = interaction.options.getString("day") ?? await getJourByDate(cohort);
-    let cDay = interaction.options.getString("day") ?? await getCdayByDate(cohort, moment("2023-04-03", "YYYY-MM-DD").toDate());
+    let cDay = interaction.options.getString("day") ?? interaction.options.getString("date")
+        ? await getCdayByDate(cohort, dayjs(interaction.options.getString("date")))
+        : null ?? await getCdayByDate(cohort, dayjs(testDate));
 
     console.log(cDay);
 
-    const day = await getFullDateString();
+    return;
+
+    const day = await getFullDateString(testDate);
 
     if(cDay === "EOY" || cDay === "DISABLE") {
         // const schedule_message = "<@&1016500157480706191>, End of school year reached!";

@@ -14,8 +14,14 @@ export default {
                 .setDescription("Get the schedule for a group.")
                 .addStringOption(options =>
                     options
-                        .setName("day")
-                        .setDescription("Get the schedule for today or next Jour. Defaults to automatic.")))
+                        .setName("jour")
+                        .setDescription("[OPTIONAL] Get the schedule for a specific cycle day.")
+                        .setRequired(false))
+                .addStringOption(options =>
+                    options
+                        .setName("date")
+                        .setDescription("[OPTIONAL] Get the schedule for a specific date.")
+                        .setRequired(false)))
         .addSubcommand(subcommand =>
             subcommand
                 .setName("weather")

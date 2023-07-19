@@ -4,6 +4,11 @@ import {createCraSchedule, getCraSchedule} from "../mongodb.js";
 import {fileURLToPath} from "url";
 import path from "path";
 import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter.js";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore.js";
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+
 
 // './schedule_exceptions.json'
 async function getExceptions() {
@@ -14,25 +19,23 @@ async function getExceptions() {
 }
 
 // Main
-async function getFullDateString() {
-    return dayjs().format("MMMM Do, YYYY");
+async function getFullDateString(date) {
+    return dayjs(date).format("dddd, MMMM DD, YYYY");
 }
 
 async function getCdayByDate(cohort, date) {
-    const _bench_start = performance.now();
-
     const full_schedule = await getCraSchedule(cohort);
-    const startDate = new Date(full_schedule.data.startDate);
-    const endDate = new Date(full_schedule.data.endDate);
+    const startDate = dayjs(full_schedule.data.startDate);
+    const endDate = dayjs(full_schedule.data.endDate);
 
-    if(date >= startDate && date <= endDate) {
-        const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-        const daysDifference = Math.floor((new Date(date) - startDate) / millisecondsPerDay);
-
+    if(date.isSameOrAfter(startDate) && date.isSameOrBefore(endDate)) {
+        const daysDifference = date.diff(startDate, "day");
         const weekdaysDifference = await excludeBreaks(startDate, daysDifference);
 
+        console.log("daysDifference:", daysDifference);
+        console.log("weekdaysDifference:", weekdaysDifference);
+
         const cycleDay = (weekdaysDifference % 18) + 1; // 18-day cycle
-        console.log("TIME ELAPSED NEW:" + (performance.now() - _bench_start));
         return cycleDay;
     }
 
@@ -41,38 +44,51 @@ async function getCdayByDate(cohort, date) {
 }
 
 async function excludeBreaks(startDate, daysDifference) {
-    let weekdaysDifference = daysDifference;
-    const dayOfWeek = startDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    // let weekdaysDelta = daysDifference;
+    // const dayOfWeek = startDate.day();
 
-    // Adjust weekdaysDifference based on the day of the week of the startDate
-    if(dayOfWeek > 0) {
-        weekdaysDifference -= dayOfWeek - 1;
-    }
+    // console.log("dayOfWeek:", dayOfWeek);
 
-    // Exclude weekends (Saturday and Sunday) from the weekdaysDifference
-    const fullWeeks = Math.floor(weekdaysDifference / 7);
-    const remainingDays = weekdaysDifference % 7;
-    weekdaysDifference = fullWeeks * 5 + Math.min(remainingDays, 5);
+    // if(dayOfWeek > 0) {
+    //     weekdaysDelta -= dayOfWeek;
+    // }
 
-    // Exclude specified days off
+    // const fullWeeks = Math.floor(weekdaysDelta / 7);
+    // console.log("fullWeeks:", fullWeeks);
+
+    // const remainingDays = weekdaysDelta % 7;
+    // console.log("remainingDays:", remainingDays);
+
+    // weekdaysDelta = fullWeeks * 5 + Math.min(remainingDays, 5);
+
     const exceptions = await getExceptions();
+    console.log("exceptions:", exceptions);
 
-    const currentDate = dayjs(startDate, "YYYY-MM-DD");
+    let currentDate = startDate.clone();
+    console.log("currentDate:", currentDate.format("YYYY-MM-DD"));
 
-    while(weekdaysDifference > 0) {
-        currentDate.setDate(currentDate.getDate() + 1);
+    console.log("ENTER LOOP");
+    let weekdaysDifference = 0;
+
+    while(daysDifference > 0) {
+        currentDate = currentDate.add(1, "day");
+        console.log(currentDate.day() !== 0, currentDate.day() !== 6, !exceptions[currentDate.format("YYYY-MM-DD")]);
 
         if(
-            currentDate.getDay() !== 0 && // Not Sunday
-            currentDate.getDay() !== 6 && // Not Saturday
-            !exceptions[currentDate.toISOString().split("T")[0]] // Not a specified day off
+            currentDate.day() !== 0 && // Not Sunday
+            currentDate.day() !== 6 && // Not Saturday
+            !exceptions[currentDate.format("YYYY-MM-DD")] // Not a specified day off
         ) {
-            weekdaysDifference--;
+            weekdaysDifference++;
+            daysDifference--;
         }
     }
 
+    console.log("Final weekdaysDifference:", weekdaysDifference);
     return weekdaysDifference;
 }
+
+
 
 // async function getJourByDate(cohort) {
 //     const _bench_start = performance.now();

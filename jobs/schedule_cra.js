@@ -3,7 +3,8 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import CronJob from "cron";
 
 import {log, sleep} from "../modules/jerryUtils.js";
-import {getExceptions, getDate, getFullDateString, getJourByDate, getScheduleByCday} from "../database/controllers/cra.js";
+import {getExceptions, getCdayByDate, getFullDateString, getScheduleByCday} from "../database/controllers/cra.js";
+import dayjs from "dayjs";
 
 
 let _disabled = false;
@@ -26,7 +27,7 @@ async function execute(client) {
 
         const cohort = "testCohort";
 
-        let jour = await getJourByDate(cohort);
+        let jour = await getCdayByDate(cohort, dayjs("2023-04-03", "YYYY-MM-DD").toDate());
 
         if(jour === "DISABLE") {
             schedule_cra.stop();
