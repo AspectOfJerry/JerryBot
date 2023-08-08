@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -62,18 +62,17 @@ export default {
             .setFooter({text: "🟥 Canceling in 10s"});
 
         const message = await interaction.reply({embeds: [confirm_purging], components: [button_row], ephemeral: true, fetchReply: true});
-        log("append", interaction.guild.id, "├─Execution authorized. Waiting for the confirmation.", "INFO");
 
         // Creating a filter for the collector
         const filter = async (buttonInteraction) => {
             if(buttonInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-                await log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' overrode the decision.`, "WARN");
+                logger.append("info", "STDOUT", `'/purge' > '${buttonInteraction.user.tag}' overrode the decision.`);
                 return true;
             } else if(buttonInteraction.user.id === interaction.user.id) {
                 return true;
             } else {
                 await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                await log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                logger.append("info", "STDOUT", `'/purge' > '${buttonInteraction.user.tag}' did not have the permission to use this button.`);
                 return;
             }
         };
@@ -105,7 +104,7 @@ export default {
                         // .setDescription(`<@${interaction.user.id}> purged __${msgs.size}__  messages in <#${channel.id}>$${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                         interaction.followUp({embeds: [success_purge], components: [button_row], ephemeral: true});
-                        log("append", interaction.guild.id, `└─'${interaction.user.tag}' purged '${msgs.size}' message(s) in '${channel.name}'${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "WARN");
+                        logger.append("notice", "STDOUT", `'/purge' > '@${interaction.user.tag}' purged '${msgs.size}' message(s) in '#${channel.name}'${isOverridden ? ` (overriden by '@${buttonInteraction.user.id}')` : ""}.`);
                     });
             } else {
                 // Disabling buttons
@@ -122,7 +121,7 @@ export default {
                     .setDescription(`Successfully cancelled${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`);
 
                 interaction.followUp({embeds: [cancel_purge], components: [button_row], ephemeral: true});
-                log("append", interaction.guild.id, `└─'${interaction.user.tag}' cancelled the purge${isOverridden ? ` (overriden by <@${buttonInteraction.user.id}>)` : ""}.`, "INFO");
+                logger.append("append", "STDOUT", `'/purge' > '@${interaction.user.tag}' cancelled the purge${isOverridden ? ` (overriden by '@${buttonInteraction.user.id}')` : ""}.`);
             }
         });
 
@@ -142,7 +141,7 @@ export default {
                     .setDescription("Auto aborted.");
 
                 interaction.followUp({embeds: [auto_abort], components: [button_row], ephemeral: true});
-                log("append", interaction.guild.id, "└─Auto aborted.", "INFO");
+                logger.append("info", interaction.guild.id, "'/purge' > Auto aborted.");
             }
         });
     }

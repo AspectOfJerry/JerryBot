@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -21,7 +21,7 @@ export default {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        logger.append("info", "IN", `'/profile' > memberTarget: '@${memberTarget.user.tag}'`);
 
         // Checks
 

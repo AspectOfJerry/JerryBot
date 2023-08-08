@@ -2,7 +2,7 @@ import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-import {log, permissionCheck, sleep} from "../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
@@ -12,7 +12,7 @@ export default async function (client, interaction) {
 
     // Declaring variables
     const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
-    await log("append", interaction.guild.id, `├─voice_channel: ${voice_channel?.name}`, "INFO");
+    logger.append("debug", "IN", `'/voice join' > voice_channel: ${voice_channel?.name}`);
 
     // Checks
     if(!interaction.member.voice.channel && !voice_channel) {
@@ -47,10 +47,10 @@ export default async function (client, interaction) {
             .setColor("YELLOW")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("VoiceConnection")
-            .setDescription("__Connecting__. The bot is establishing a connection to the voice channel...");
+            .setDescription("*Connecting*. The bot is establishing a connection to the voice channel...");
 
         interaction.editReply({embeds: [connection_connecting]});
-        log("append", interaction.guild.id, "├─Connecting. Establishing a connection to the voice channel...", "INFO");
+        logger.append("info", "STDOUT", "Connecting. Establishing a connection to the voice channel...");
     });
 
     connection.on(VoiceConnectionStatus.Ready, async () => {
@@ -58,10 +58,10 @@ export default async function (client, interaction) {
             .setColor("GREEN")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
             .setTitle("VoiceConnection")
-            .setDescription("__Ready__. The connection to the voice channel has been established.");
+            .setDescription("*Ready*. The connection to the voice channel has been established.");
 
         await interaction.editReply({embeds: [connection_ready]});
-        log("append", interaction.guild.id, "├─Ready. The connection to the voice channel has been established.", "INFO");
+        logger.append("info", "STDOUT", "'/voice join' > Ready. The connection to the voice channel has been established.");
 
         await sleep(500);
 
@@ -72,7 +72,7 @@ export default async function (client, interaction) {
             .setDescription(`Successfully joined <#${voice_channel.id}>`);
 
         await interaction.editReply({embeds: [success_join]});
-        log("append", interaction.guild.id, `└─Successfully joined ${voice_channel.name}`, "INFO");
+        logger.append("info", "STDOUT", `'/voice join' > Successfully joined ${voice_channel.name}`);
 
         const bot = interaction.guild.members.cache.get(client.user.id);
 

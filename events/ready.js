@@ -6,12 +6,12 @@ import {Routes} from "discord-api-types/v9";
 import path from "path";
 
 import {connect, refreshBirthdayCollection, refreshGuildCollection} from "../database/mongodb.js";
-import {logger, sleep, StartJobs} from "../modules/jerryUtils.js";
-import {configOpenAI} from "../modules/gpt.js";
-import {checklistBotReady, checklistJobs, startTelemetry} from "../modules/telemetry.js";
-import {refreshHubs} from "../modules/voiceChannelHubManager.js";
+import {logger, sleep, StartJobs} from "../utils/jerryUtils.js";
+import {configOpenAI} from "../utils/gpt.js";
+import {checklistBotReady, checklistJobs, startTelemetry} from "../utils/telemetry.js";
+import {refreshHubs} from "../utils/voiceChannelHubManager.js";
 import {slackcord} from "../edge/gateway/controllers/slackcord.js";
-// const {InitNukeNotifier} from '../modules/nuking_notifier.js');
+// const {InitNukeNotifier} from '../utils/nuking_notifier.js');
 
 
 export default {

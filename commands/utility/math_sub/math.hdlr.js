@@ -4,7 +4,7 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 import path from "path";
 import url from "url";
 
-import {logger, sleep} from "../../../modules/jerryUtils.js";
+import {logger, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default {

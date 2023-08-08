@@ -1,6 +1,6 @@
 import CronJob from "cron";
 
-import {logger, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 let disabled = false;
 

@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -31,10 +31,10 @@ export default {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        await log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        logger.append("info", "IN", `'/move' > memberTarget: '@${memberTarget.user.tag}'`);
 
         const is_all = interaction.options.getBoolean("all") || false;
-        await log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
+        logger.append("info", "IN", `'/move' > is_all: ${is_all}`);
         const new_voice_channel = interaction.options.getChannel("channel");
 
         // Checks
@@ -59,7 +59,7 @@ export default {
                         .setDescription(`Successfully moved <@${memberTarget.id}> from ${current_voice_channel} to ${new_voice_channel}.`);
 
                     interaction.reply({embeds: [success_move]});
-                    log("append", interaction.guild.id, `├─Successfully moved '@${memberTarget.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                    logger.apend("info", "STDOUT", `'/move' > Successfully moved '@${memberTarget.tag}' from '#${current_voice_channel.name}' to '#${new_voice_channel.name}'.`);
                     return;
                 });
         } else {
@@ -71,13 +71,13 @@ export default {
                 .setDescription(`Moving all ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>...`);
 
             await interaction.reply({embeds: [moving_members]});
-            await log("append", interaction.guild.id, `└─Attemping to move every member in <#${current_voice_channel.name}> to <#${new_voice_channel.name}>...`);
+            logger.append("debug", "STDOUT", `'/move' > Attemping to move every member in '#${current_voice_channel.name}' to '#${new_voice_channel.name}'...`);
 
             let failed_member_count = 0;
             let failed_string = "";
 
             await memberTarget.voice.channel.members.forEach(async (member) => {
-                let current_voice_channel = member.voice.channel;
+                const current_voice_channel = member.voice.channel;
                 await member.voice.setChannel(new_voice_channel)
                     .then(() => {
                         const move_success = new MessageEmbed()
@@ -86,7 +86,7 @@ export default {
                             .setDescription(`Successfully moved <@${member.id}> from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.`);
 
                         interaction.editReply({embeds: [move_success]});
-                        log("append", interaction.guild.id, `├─Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                        logger.append("info", "STDOUT", `'/move' > Successfully moved '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
                     }).catch(() => {
                         const move_error = new MessageEmbed()
                             .setColor("RED")
@@ -94,7 +94,7 @@ export default {
                             .setDescription(`An error occurred while moving <@${member.id}>.`);
 
                         interaction.editReply({embeds: [move_error]});
-                        log("append", interaction.guild.id, `├─An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
+                        logger.append("error", "STDERR", `'/move' > An error occurred while moving '${member.tag}' from <#${current_voice_channel.name}> to #<${new_voice_channel.name}>.`);
 
                         member_count--;
                         failed_member_count++;
@@ -116,7 +116,7 @@ export default {
                 .setDescription(`Successfully moved ${member_count} members from <#${current_voice_channel.id}> to <#${new_voice_channel.id}>.${failed_string}`);
 
             interaction.editReply({embeds: [succes_move]});
-            log("append", interaction.guild.id, `└─Successfully moved ${member_count} members from <#${current_voice_channel.name}> to <#${new_voice_channel.name}> and failed to move ${failed_member_count} members.`);
+            logger.append("info", "STDOUT", `'/move' > Successfully moved ${member_count} members from '#${current_voice_channel.name}' to '#${new_voice_channel.name}' and failed to move ${failed_member_count} members.`);
         }
     }
 };

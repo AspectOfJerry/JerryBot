@@ -12,6 +12,11 @@ var counterTotalMemberRemove = 0;
 var counterRoleDelete = 0;
 
 // Main
+/**
+ * @deprecated
+ * @param {*} client 
+ * @returns 
+ */
 async function initNukeNotifier(client) {
     return;
     // const guild_ids = ['631939549332897842'];
@@ -22,6 +27,11 @@ async function antiNuke(client) {
 
 }
 
+/**
+ * @deprecated
+ * @param {*} client 
+ * @param {*} guildIds 
+ */
 async function nukingEventMonitor(client, guildIds) {
     // Events
     client.on("channelDelete", async (channel) => {

@@ -4,7 +4,7 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 
 import fetch from "node-fetch";
 
-import {log, permissionCheck, sleep} from "../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
@@ -59,6 +59,9 @@ export default async function (client, interaction) {
             apodExplanation = res.explanation;
             apodUrl = res.url;
             apodTitle = res.title;
+        }).catch((err) => {
+            console.error(err);
+            interaction.editReply({content: "<@>, An error occured while executing the command"});
         });
 
     const nasa_apod = new MessageEmbed()

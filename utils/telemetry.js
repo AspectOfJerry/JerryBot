@@ -1,5 +1,5 @@
 import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} from "discord.js";
-import {log, sleep} from "./jerryUtils.js";
+import {logger, sleep} from "./jerryUtils.js";
 
 import CronJob from "cron";
 
@@ -40,7 +40,7 @@ async function checklistHeartbeat() {
 
 
 async function startTelemetry(_client) {
-    log("append", "telemetry", "[Telemetry] Starting telemetry...", "DEBUG");
+    logger.apppend("debug", "INIT", "[Telemetry] Starting telemetry...");
     if(os.version().toLowerCase().includes("server")) {
         isDeployed = true;
     }
@@ -93,7 +93,7 @@ async function updateEmbeds(newEmbed) {
             console.error(err);
 
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
-            await log("append", "telemetry", `Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`, "ERROR");
+            logger.append("error", "STDERR", `[Telemetry] Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
             globalFailedGuilds.push(msg.guild.id);
         }
     });

@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -41,7 +41,7 @@ export default {
                 .setDescription(`<#${channel.id}> is not a text channel!`);
 
             await interaction.reply({embeds: [error_not_text_channel]});
-            await log("append", interaction.guild.id, `└─The provided channel was not a text channel (#${channel.name}).`, "WARN");
+            logger.append("notice", "STDOUT", `'/slowmode' > The provided channel was not a text channel (#${channel.name}).`);
             return;
         }
 
@@ -55,7 +55,7 @@ export default {
                         .setDescription(`Successfully disabled the rate limit per user in <#${channel.id}>.`);
 
                     interaction.reply({embeds: [disabled_slowmode]});
-                    log("append", interaction.guild.id, `└─Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                    logger.append("info", "STDOUT", `'/slowmode' > Successfully disabled the rate limit per user in '#${channel.name}' in "${channel.guild.name}".`);
                 });
             return;
         }
@@ -69,7 +69,7 @@ export default {
                     .setFooter({text: "Set the rate limit to 0 to disable it."});
 
                 interaction.reply({embeds: [enabled_slowmode]});
-                log("append", interaction.guild.id, `└─Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`, "INFO");
+                logger.append("append", "STDOUT", `'/slowmode' > Successfully enabled a ${interval} second rate limit per user in '#${channel.name}' in "${channel.guild.name}".`);
             });
     }
 };

@@ -1,5 +1,5 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
-import {logger, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
 export default {

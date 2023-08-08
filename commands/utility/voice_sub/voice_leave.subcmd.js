@@ -2,7 +2,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-import {log, permissionCheck, sleep} from "../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
@@ -42,7 +42,7 @@ export default async function (client, interaction) {
             .setDescription("__Destroyed__. The connection to the voice channel has been destroyed.");
 
         await interaction.editReply({embeds: [connection_destroyed]});
-        log("append", interaction.guild.id, "├─Destroyed. The connection to the voice channel has been destroyed.", "INFO");
+        logger.apppend("info", "STDOUT", "'/voice leave' > Destroyed. The connection to the voice channel has been destroyed.");
 
         await sleep(500);
 
@@ -52,8 +52,8 @@ export default async function (client, interaction) {
             .setTitle("VoiceConnection")
             .setDescription("Successfully left the voice channel.");
 
-        await interaction.editReply({embeds: [success_leave]});
-        log("append", interaction.guild.id, "└─Successfully left the voice channel.", "INFO");
+        interaction.editReply({embeds: [success_leave]});
+        logger.append("info", "STDOUT", "'/voice leave' > Successfully left the voice channel.");
     });
     connection.destroy();
 }

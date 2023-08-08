@@ -1,7 +1,7 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -20,7 +20,7 @@ export default {
 
         // Declaring variables
         const voice_channel = interaction.options.getChannel("channel") || interaction.member.voice.channel;
-        log("append", interaction.guild.id, `├─voice_channel: '${voice_channel.name}'`, "INFO");
+        logger.append("info", "IN", `'/disconnectall' > voice_channel: '${voice_channel.name}'`);
 
         // Checks
 
@@ -32,7 +32,7 @@ export default {
                 .setDescription("You must be in a voice channel if you are not providing a voice channel.");
 
             interaction.reply({embeds: [not_in_vc]});
-            log("append", interaction.guild.id, `└─'${interaction.user.tag}' was not in a voice channel and did not provide a channel`, "WARN");
+            logger.append("notice", "STDOUT", `'/disconnectall' > '${interaction.user.tag}' was not in a voice channel && did not provide a channel`);
             return;
         }
 
@@ -44,7 +44,7 @@ export default {
                 .setDescription(`<#${voice_channel.id}> is not a voice channel!`);
 
             interaction.reply({embeds: [invalid_input_channel_type_exception]});
-            log("append", interaction.guild.id, `└─The provided channel was not a voice channel (${voice_channel.name}).`);
+            logger.append("notice", "STDOUT", `The provided channel NOT voice channel (${voice_channel.name}).`);
             return;
         }
 
@@ -58,7 +58,7 @@ export default {
                 .setDescription(`The <#${voice_channel.id}> voice channel is empty.`);
 
             interaction.reply({embeds: [empty_voice_channel]});
-            log("append", interaction.guild.id, "└─The provided channel was empty.", "WARN");
+            logger.append("notice", "STDOUT", "'/disconnectall' > The provided channel was empty.");
             return;
         }
 
@@ -69,7 +69,7 @@ export default {
             .setDescription(`Disconnecting all ${memberCount} members from <#${voice_channel.id}>...`);
 
         await interaction.reply({embeds: [disconnecting_members]});
-        log("append", interaction.guild.id, `└─Attemping to disconnect all member in the '${voice_channel.name}' voice channel...`, "WARN");
+        logger.append("debug", "STDOUT", `'/disconnectall' > Attemping to disconnect all member in the '#${voice_channel.name}' voice channel...`);
 
         let failedMemberCount = 0;
         let failedString = "";
@@ -84,7 +84,7 @@ export default {
                     //     .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.id}>.`);
 
                     // interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                    log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`, "INFO");
+                    logger.append("info", "StDOUT", `'/disconnectall' > Successfully disconnected '@${member.tag}' from the '@${voice_channel.name}' voice channel.`);
                 }).catch(() => {
                     // const disconnect_error = new MessageEmbed()
                     //     .setColor("RED")
@@ -92,7 +92,7 @@ export default {
                     //     .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
                     // interaction.editReply({embeds: [disconnect_error]});
-                    log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from '${voice_channel.name}'.`);
+                    logger.append("error", "STDERR", `'/disconnectall' > An error occurred while disconnecting '@${member.tag}' from '@${voice_channel.name}'.`);
                     memberCount--;
                     failedMemberCount++;
                 });
@@ -114,6 +114,6 @@ export default {
             .setDescription(`Successfully disconnected ${memberCount} members from <#${voice_channel.id}>.${failedString}`);
 
         interaction.editReply({embeds: [disconnected]});
-        log("append", interaction.guild.id, `└─Successfully disconnected ${memberCount} members from '${voice_channel.name}' and failed to disconnect ${failedMemberCount} members.`, "INFO");
+        logger.append("info", "STDOUT", `'/disconnectall' > Successfully disconnected ${memberCount} members from '${voice_channel.name}' and failed to disconnect ${failedMemberCount} members.`);
     }
 };

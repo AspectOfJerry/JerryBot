@@ -175,6 +175,7 @@ async function isSuperUser(client, userResolvable) {
 
 
 /**
+ * @deprecated
  * @async
  * @param {string} method The method to use {`append`, `read`}.
  * @param {string} tag The tag at the beginning of the line.
@@ -310,7 +311,10 @@ const logger = winston.createLogger({
  * @param {*} label "[label/level]"
  * @param {*} message Message to log
  */
-logger.append = (level, label, message) => {
+logger.append = (level, label, message, depCheck) => {
+    if(depCheck) {
+        console.log(`DEPCHECK for ${depCheck}`);
+    }
     logger.log(level, `${label}]: ${message}`);
 };
 

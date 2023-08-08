@@ -1,7 +1,7 @@
 import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {permissionCheck} from "../../modules/jerryUtils.js";
+import {permissionCheck} from "../../utils/jerryUtils.js";
 
 
 export default {

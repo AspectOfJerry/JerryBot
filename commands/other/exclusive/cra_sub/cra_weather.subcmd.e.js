@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import {log, permissionCheck, sleep} from "../../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {

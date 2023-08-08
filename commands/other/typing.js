@@ -1,7 +1,7 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -18,8 +18,8 @@ export default {
         // Checks
 
         // Main
-        await interaction.reply({content: "Typing...", ephemeral: true});
-        log("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
+        await interaction.revply({content: "Typing...", ephemeral: true});
+        logger.append("append", interaction.guild.id, `Typing in <#${interaction.channel.name}>`, "INFO");
 
         interaction.channel.sendTyping();
     }

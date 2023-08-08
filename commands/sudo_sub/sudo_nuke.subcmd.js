@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep, toNormalized} from "../../utils/jerryUtils.js";
 import {getConfig} from "../../database/mongodb.js";
 
 import dayjs from "dayjs";
@@ -139,7 +139,7 @@ export default async function (client, interaction) {
                     return true;
                 } else {
                     await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                    await log("append", interaction.guild.id, `├─'${buttonInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+                    logger.append("info", interaction.guild.id, `'/sudo nuke' > '${buttonInteraction.user.tag}' did not have the permission to use this button.`);
                     return;
                 }
             };

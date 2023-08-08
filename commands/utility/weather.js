@@ -3,7 +3,7 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 
 import weather from "weather-js";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -22,7 +22,7 @@ export default {
         // Checks
 
         // Main
-        await interaction.editReply({content: "look outside bruh. This command is deprecated and will be removed in the future."});
+        interaction.editReply({content: "This command is deprecated and will be removed in the future.\nJust look outside :wink:!"});
         return;
 
         weather.find({search: search_location, degreeType: search_unit}, async function (error, result) {

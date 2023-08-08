@@ -1,8 +1,8 @@
 import CronJob from "cron";
 import fetch from "node-fetch";
 
-import {logger, sleep} from "../modules/jerryUtils.js";
-import {checklistHeartbeat, updateHeartbeat} from "../modules/telemetry";
+import {logger, sleep} from "../utils/jerryUtils.js";
+import {checklistHeartbeat, updateHeartbeat} from "../utils/telemetry";
 
 
 let disabled = false;

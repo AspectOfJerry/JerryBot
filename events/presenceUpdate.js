@@ -1,5 +1,5 @@
 import {MessageEmbed} from "discord.js";
-import {logger, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 var lastGuildId;
 var latestGuildId;
@@ -36,21 +36,21 @@ export default {
             const old_activity = oldClientActivityType + oldClientActivityName + oldClientActivityDetails + oldClientActivityState;
             const new_activity = newClientActivityType + newClientActivityName + newClientActivityDetails + newClientActivityState;
     
-            await log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${old_activity}' to: '${newStatus} (${newClientStatus})' | '${new_activity}' in: "${newPresence.guild.name}"`, "INFO");
+            log("append", 'presenceUpdate', `"${newPresence.user.tag}" went from: '${oldStatus} (${oldClientStatus})' | '${old_activity}' to: '${newStatus} (${newClientStatus})' | '${new_activity}' in: "${newPresence.guild.name}"`, "INFO");
         */
 
         // ---STATUS UPDATE ONLY---
         // Declaring variables
         let oldClientStatus = oldPresence?.clientStatus || "unknown";
-        let oldClientActivityType = oldPresence?.activities[0]?.type ? oldPresence.activities[0].type + ", " : "";
+        const oldClientActivityType = oldPresence?.activities[0]?.type ? oldPresence.activities[0].type + ", " : "";
 
         let newClientStatus = newPresence?.clientStatus || "unknown";
-        let newClientActivityType = newPresence?.activities[0]?.type ? newPresence.activities[0].type + ", " : "";
+        const newClientActivityType = newPresence?.activities[0]?.type ? newPresence.activities[0].type + ", " : "";
 
         latestGuildId = newPresence.guild.id;
 
         // If there are mostly no changes, do not log to prevent log spamming
-        if(oldClientStatus == newClientStatus && oldClientActivityType == newClientActivityType || lastGuildId != latestGuildId) {
+        if((oldClientStatus == newClientStatus) && (oldClientActivityType == newClientActivityType) || (lastGuildId != latestGuildId)) {
             return;
         }
 

@@ -1,7 +1,7 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {logger, permissionCheck} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -47,7 +47,7 @@ export default {
                     );
 
                 interaction.reply({embeds: [pong], components: [row]});
-                logger.append("notice", "ping", `client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
+                logger.append("notice", "STDOUT", `'/ping' > Client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
             });
     }
 };

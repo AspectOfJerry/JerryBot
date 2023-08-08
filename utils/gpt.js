@@ -4,11 +4,11 @@ import {Configuration, OpenAIApi} from "openai";
 import {toNormalized} from "./jerryUtils.js";
 
 
-let configed = false;
+let configured = false;
 let openai;
 
 function configOpenAI() {
-    if(configed) {
+    if(configured) {
         throw "config() should only be called once.";
     }
 
@@ -16,7 +16,7 @@ function configOpenAI() {
         apiKey: process.env.OPENAI_API_KEY,
     });
     openai = new OpenAIApi(configuration);
-    configed = true;
+    configured = true;
 }
 
 

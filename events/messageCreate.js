@@ -1,5 +1,5 @@
-import {logger, sleep} from "../modules/jerryUtils.js";
-import {gpt} from "../modules/gpt.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
+import {gpt} from "../utils/gpt.js";
 import {slackcord} from "../edge/gateway/controllers/slackcord.js";
 
 

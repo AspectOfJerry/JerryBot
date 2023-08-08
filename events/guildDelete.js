@@ -1,4 +1,4 @@
-import {logger, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 import {deleteGuild} from "../database/mongodb.js";
 
 export default {

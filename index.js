@@ -4,7 +4,7 @@ import winston from "winston";
 import moment from "moment";
 import {Client, Intents, Collection} from "discord.js";
 
-import {getCommandFiles, logger, custom_logger_levels, enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController} from "./modules/jerryUtils.js";
+import {getCommandFiles, logger, custom_logger_levels, enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController} from "./utils/jerryUtils.js";
 
 if(process.env.npm_lifecycle_event !== "main") {
     logger.add(new winston.transports.Console({
@@ -19,8 +19,8 @@ if(process.env.npm_lifecycle_event !== "main") {
 }
 
 
-console.log(`>>>>> The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-logger.append("info", "index.js", `>>>>> [Startup] The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
+console.log(`>>>>> The bot was started!${process.env.npm_lifecycle_event ? ` (npm run ${process.env.npm_lifecycle_event})` : ""}`);
+logger.append("info", "index.js", `>>>>> [Startup] The bot was started!${process.env.npm_lifecycle_event ? ` (npm run ${process.env.npm_lifecycle_event})` : ""}`);
 
 const client = new Client({
     intents: [
@@ -75,7 +75,8 @@ const client = new Client({
 
     // Getting events
     await enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController(client, commands);
+
+    (await import("./build/placeholder.js")).default();
+
+    client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
 })();
-
-
-client.login(process.env.DISCORD_BOT_TOKEN_JERRY);

@@ -2,7 +2,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 
 import CronJob from "cron";
 
-import {log, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 import {getExceptions, getCdayByDate, getFullDateString, getScheduleByCday} from "../database/controllers/cra.js";
 import dayjs from "dayjs";
 
@@ -13,12 +13,12 @@ async function execute(client) {
     /**
      * Triggers every day, at 06h30
      */
-    const schedule_cra = new CronJob("30 06 * * *", async () => {
+    const daily_cra = new CronJob("30 06 * * *", async () => {
         if(_disabled) {
             return;
         }
 
-        log("append", "", "[Schedule] Posting today's schedule...", "DEBUG");
+        logger.append("debug", "CRON", "[Schedule] Fetching today's schedule...");
 
         const guild = await client.guilds.fetch("1014278986135781438");
         const channel = await guild.channels.fetch("1015060767403421696");
@@ -30,9 +30,9 @@ async function execute(client) {
         let jour = await getCdayByDate(cohort, dayjs("2023-04-03", "YYYY-MM-DD").toDate());
 
         if(jour === "DISABLE") {
-            schedule_cra.stop();
+            daily_cra.stop();
             console.log("Disabled schedule announcer.");
-            log("append", "", "[Schedule] End of school year; disabling daily schedule announcer", "DEBUG");
+            logger.append("debug", "CRON", "[Schedule] End of school year; disabling daily schedule announcer");
             return;
         }
 
@@ -52,7 +52,7 @@ async function execute(client) {
                 .then((msg) => {
                     msg.react("🎉");
                 });
-            log("append", "", "[Schedule] Successfully posted today's schedule (End of year reached).", "INFO");
+            logger.append("info", "CRON", "[Schedule] Successfully posted today's schedule (End of year reached).");
 
             _disabled = true;
             return;
@@ -77,7 +77,7 @@ async function execute(client) {
                 .then((msg) => {
                     msg.react("✅");
                 });
-            log("append", "", `[Schedule] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+            logger.append("info", "CRON", `[Schedule] Successfully posted today's schedule (${schedule_message}).`);
             return;
         }
 
@@ -128,13 +128,14 @@ async function execute(client) {
             .then((msg) => {
                 msg.react("✅");
             });
-        log("append", "", `[Schedule] Successfully posted today's schedule (${schedule_message}).`, "INFO");
+        logger.append("info", "CRON", `[Schedule] Successfully posted today's schedule (${schedule_message}).`);
     });
 
-    // schedule_cra.start();
+    // daily_cra.start();
+    // logger.append("debug", "CRON","[Daily] daily_cra CRON job started!");
 
-    log("append", "", "[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h30 everyday.", "DEBUG");
-    console.log("[Schedule] The 311 daily schedule announcer job has been started! The CRON job was set to 06h45 everyday.");
+    console.log("[Schedule] Daily announcer daemon! @06h30 everyday.");
+    logger.append("info", "CRON", "[Daily] Daily announcer daemon! @06h30 everyday.");
 }
 
 

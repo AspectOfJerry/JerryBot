@@ -4,12 +4,12 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import CronJob from "cron";
 import fetch from "node-fetch";
 
-import {log, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
 let disabled = false;
 
-let messages = [];
+const messages = [];
 let embedMessage;
 
 const success_emoji = "<:success:1102349129390248017>";
@@ -126,7 +126,7 @@ async function executeSB(client) {
                 .then((res) => {
                     if(!res.ok) {
                         endpoint.fails += 1;
-                        log("append", "hypixel_api_status", `Failed to fetch ${endpoint.endpoint} with status code of ${res.status}.`, "WARN");
+                        logger.append("warn", "CRON", `Failed to fetch ${endpoint.endpoint} with status code of ${res.status}.`);
                         throw new Error(`Failed to fetch ${endpoint.endpoint} with status ${res.status}`);
                     }
                     return res.json();
@@ -205,6 +205,7 @@ async function executeSB(client) {
     }
 
     master_sb.start();
+    logger.append("debug", "INIT", "[HypixelApiStatus] master_sb cron job started!");
     // testMonitors([sb_auctions, sb_auctions_end, sb_bazaar, sb_collections, sb_election, sb_items, sb_profiles, sb_skills]);
 
     const channels = [await client.channels.resolve("1101906552954298508")];
@@ -219,8 +220,9 @@ async function executeSB(client) {
         messages.push(await channel.send({embeds: [embedMessage]}));
     }
 
-    log("append", "hypixel_api_status", "[HypixelAPIStatus] Monitoring: skyblock_auctions, skyblock_auctions_end, skyblock_bazaar, skyblock_collections, skyblock_election, skyblock_items, skyblock_skills, skyblock_profiles", "DEBUG");
-    console.log("[HypixelAPIStatus] Now monitoring.");
+    console.log("[HypixelAPIStatus] Now monitoring Hypixel API endpoints");
+    logger.append("info", "INIT", "[HypixelApiStatus] Hypixel API monitor daemon started! Monitoring:"
+        + " skyblock_auctions, skyblock_auctions_end, skyblock_bazaar, skyblock_collections, skyblock_election, skyblock_items, skyblock_skills, skyblock_profiles");
 }
 
 

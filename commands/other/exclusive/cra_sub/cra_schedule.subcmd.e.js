@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import {log, permissionCheck, sleep} from "../../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../../../utils/jerryUtils.js";
 import {getCdayByDate, getExceptions, getFullDateString, getScheduleByCday} from "../../../../database/controllers/cra.js";
 import dayjs from "dayjs";
 

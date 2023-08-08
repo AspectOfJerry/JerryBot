@@ -4,7 +4,7 @@ import CronJob from "cron";
 import dayjs from "dayjs";
 import {getBirthdayByDate} from "../database/mongodb.js";
 
-import {log, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 let disabled = false;
 
@@ -14,12 +14,12 @@ async function execute(client) {
         const now = dayjs();
         const _date = dayjs.format(now, "D-M").split("-");
 
-        log("append", "birthday", "[Birthday] Checking birthdays...", "DEBUG");
+        logger.append("debug", "CRON", "[Birthday] Checking birthdays...");
 
         const birthdays = await getBirthdayByDate(_date[0], _date[1]);
 
         if(!birthdays) {
-            log("append", "birthday", "[Birthday] No birthdays to report today.", "INFO");
+            logger.append("info", "CRON", "[Birthday] No birthdays to report today.");
             return;
         }
 
@@ -37,15 +37,16 @@ async function execute(client) {
 
             for(const channel of channels) {
                 channel.send({content: `Happy birthday, <@${birthday.id}>!`, embeds: [bday]});
-                log("append", "birthday", `[Birthday] Wished ${birthday.name} a happy birthday in "#${channel.name}/${channel.guild.name}"!`, "INFO");
+                logger.append("info", "CRON", `[Birthday] Wished ${birthday.name} a happy birthday in "#${channel.name}/${channel.guild.name}"!`);
             }
         }
     });
 
     birthday.start();
+    logger.append("debug", "INIT", "[birthday] birthday cron job started!");
 
-    console.log("birthday announcer started!");
-    log("append", "birthday", "[Birthday] birthday announcer started", "DEBUG");
+    console.log("Birthday announcer started!");
+    logger.append("info", "INIT", "[Birthday]  Birthday announcer daemon started!");
 }
 
 

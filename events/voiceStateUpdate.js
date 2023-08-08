@@ -1,7 +1,7 @@
 import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-import {logger, sleep} from "../modules/jerryUtils.js";
-import {getVcHubs, handleJoin, handleLeave} from "../modules/voiceChannelHubManager.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
+import {getVcHubs, handleJoin, handleLeave} from "../utils/voiceChannelHubManager.js";
 
 
 export default {

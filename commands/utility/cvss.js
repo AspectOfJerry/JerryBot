@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -64,7 +64,7 @@ export default {
                 return true;
             } else {
                 await newInteraction.reply({content: "You cannot use this component.", ephemeral: true});
-                await log("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this component.`, "WARN");
+                logger.append("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this component.`, "WARN");
                 return;
             }
         };

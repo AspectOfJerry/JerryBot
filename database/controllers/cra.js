@@ -1,5 +1,5 @@
 import fs from "fs";
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {log, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 import {createCraSchedule, getCraSchedule} from "../mongodb.js";
 import {fileURLToPath} from "url";
 import path from "path";

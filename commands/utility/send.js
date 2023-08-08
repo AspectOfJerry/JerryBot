@@ -1,7 +1,7 @@
 import {MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {logger, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -30,11 +30,11 @@ export default {
 
         // Declaring variables
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
-        logger.append("info", "PARAM", `'/send' > channel: "#${channel.name}"`);
+        logger.append("info", "IN", `'/send' > channel: "#${channel.name}"`);
         const message = interaction.options.getString("message");
-        logger.append("info", "PARAM", `'/send' > message: "${message}"`);
+        logger.append("info", "IN", `'/send' > message: "${message}"`);
         const send_typing = interaction.options.getBoolean("typing") ?? true;
-        logger.append("info", "PARAM", `'/send' > send_typing: ${send_typing}`);
+        logger.append("info", "IN", `'/send' > send_typing: ${send_typing}`);
 
         const message_lenght = message.length;
         const duration_in_ms = Math.round((message_lenght / 15) * 1000 + 200);

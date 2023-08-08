@@ -1,6 +1,6 @@
-import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu} from "discord.js";
 
-import {log, permissionCheck} from "../../../../modules/jerryUtils.js";
+import {logger, permissionCheck} from "../../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
@@ -37,13 +37,13 @@ export default async function (client, interaction) {
 
     const filter = async (selectMenuInteraction) => {
         if(selectMenuInteraction.member.roles.highest.position > interaction.member.roles.highest.position) {
-            await log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`, "WARN");
+            logger.append("info", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' overrode the decision.`);
             return true;
         } else if(selectMenuInteraction.user.id == interaction.user.id) {
             return true;
         } else {
             await selectMenuInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-            await log("append", interaction.guild.id, `├─'@${selectMenuInteraction.user.tag}' did not have the permission to use this button.`, "WARN");
+            logger.append("info", interaction.guild.id, `/cra roles' > '@${selectMenuInteraction.user.tag}' did not have the permission to use this button.`);
             return;
         }
     };
@@ -68,8 +68,8 @@ export default async function (client, interaction) {
 
                 if(selectMenuInteraction.customId == "select_menu") {
                     const selected = selectMenuInteraction.values;
-                    let rolesAdded = [];
-                    let rolesRemoved = [];
+                    const rolesAdded = [];
+                    const rolesRemoved = [];
 
                     const roles = new Map();
 

@@ -3,7 +3,7 @@ import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmb
 import CronJob from "cron";
 import fetch from "node-fetch";
 
-import {logger, sleep} from "../modules/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 let disabled = false;
 

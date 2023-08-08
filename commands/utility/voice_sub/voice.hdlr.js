@@ -1,8 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent, Interaction} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
-import {joinVoiceChannel, createAudioPlayer, createAudioResource, entersState, StreamType, AudioPlayerStatus, VoiceConnectionStatus, getVoiceConnection} from "@discordjs/voice";
 
-import {logger, sleep} from "../../../modules/jerryUtils.js";
+import {logger, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default {

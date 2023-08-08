@@ -1,5 +1,5 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
-import {log, permissionCheck, sleep, toNormalized} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep, toNormalized} from "../../utils/jerryUtils.js";
 import dayjs from "dayjs";
 
 import {updateBirthday} from "../../database/mongodb.js";
@@ -13,35 +13,36 @@ export default async function (client, interaction) {
 
     // Declaring variables
     const user = interaction.options.getUser("user");
-    log("append", interaction.guild.id, `├─user: "@${user.tag}"`, "INFO");
+    logger.append("info", "IN", `'/sudo bday' > user: "@${user.tag}"`);
     const name = toNormalized(interaction.options.getString("name"));
-    log("append", interaction.guild.id, `├─name: "${name}"`, "INFO");
+    logger.append("info", "IN", `'/sudo bday' > name: "${name}"`);
     const day = interaction.options.getInteger("day");
-    log("append", interaction.guild.id, `├─day: "${day}"`, "INFO");
+    logger.append("info", "IN", `'/sudo bday' > day: "${day}"`);
     const month = interaction.options.getInteger("month");
-    log("append", interaction.guild.id, `├─month: "${month}"`, "INFO");
+    logger.append("info", "IN", `'/sudo bday' > month: "${month}"`);
     let notes = interaction.options.getString("notes");
-    log("append", interaction.guild.id, `├─notes: "${notes}"`, "INFO");
+    logger.append("info", "IN", `'/sudo bday' > notes: "${notes}"`);
 
     // Checks
     if(!dayjs(`${day}-${month}-2000`).isValid()) { // 2000 for placeholder leap year, D-M-YYYY
         const invalid_input_date_exception = new MessageEmbed()
             .setColor("RED")
             .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("IllegalDateException")
-            .setDescription("Invalid date.");
+            .setTitle("IllegalArgumentException")
+            .setDescription(`Invalid date: \`${day}-${month}\`.`);
 
         interaction.editReply({embeds: [invalid_input_date_exception], ephemeral: true});
-        log("append", interaction.guild.id, "└─Invalid date", "WARN");
+        logger.append("append", "Validation", "[IllegalArgumentException] Invalid date", "WARN");
         return;
     }
 
     if(notes !== void (0) && notes !== null) {
-        notes = notes.split(",").map(s => s.trim());
+        notes = notes.split(",").map((s) => s.trim());
     }
 
     // Main
     await updateBirthday(user, name, day, month, notes);
+
     const updated = new MessageEmbed()
         .setColor("GREEN")
         .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
@@ -49,5 +50,5 @@ export default async function (client, interaction) {
         .setDescription(`Successfully updated ${name}'s (<@${user.id}>) birthday to ${day}-${month}!`);
 
     interaction.editReply({embeds: [updated], ephemeral: true});
-    log("append", interaction.guild.id, `└─Successfully updated ${name}'s (<@${user.tag}>) birthday to ${day}-${month}!`, "INFO");
+    logger.append("append", interaction.guild.id, `└─Successfully updated ${name}'s (<@${user.tag}>) birthday to ${day}-${month}!`, "INFO");
 }

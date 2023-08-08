@@ -1,7 +1,7 @@
 import fs from "fs";
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import {logger, permissionCheck, sleep, cleanNumber} from "../../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep, cleanNumber} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {

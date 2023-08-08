@@ -1,7 +1,7 @@
 import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {log, permissionCheck, sleep} from "../../modules/jerryUtils.js";
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
 export default {
@@ -26,10 +26,10 @@ export default {
         // Declaring variables
         const target = interaction.options.getUser("user") || interaction.user;
         const memberTarget = interaction.guild.members.cache.get(target.id);
-        log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        logger.append("info", "IN", `├─memberTarget: '@${memberTarget.user.tag}'`);
 
         const is_all = interaction.options.getBoolean("all") || false;
-        log("append", interaction.guild.id, `├─is_all: ${is_all}`, "INFO");
+        logger.append("info", "IN", `├─is_all: ${is_all}`);
 
         // Checks
         if(!memberTarget.voice.channel) {
@@ -39,7 +39,7 @@ export default {
                 .setDescription(`Error: <@${memberTarget.id}> is not in a voice channel.`);
 
             interaction.reply({embeds: [user_not_in_vc]});
-            log("append", interaction.guild.id, `  └─'${memberTarget.tag}' is not in a voice channel.`, "WARN");
+            logger.append("notice", interaction.guild.id, `'/disconnect' > '@${memberTarget.tag}' is not in a voice channel.`);
             return;
         }
 
@@ -70,7 +70,7 @@ export default {
                 .setDescription(`Disconnecting all ${memberCount} members from ${current_voice_channel}...`);
 
             await interaction.reply({embeds: [disconnecting]});
-            log("append", interaction.guild.id, `└─Attemping to disconnect every member in 'v#${current_voice_channel.name}'...`, "WARN");
+            logger.append("debug", "STDOUT", `Attemping to disconnect every member in 'v#${current_voice_channel.name}'...`);
 
             let failedMemberCount = 0;
             let failedString = "";
@@ -85,7 +85,7 @@ export default {
                         //     .setDescription(`Successfully disconnected <@${member.id}> from <#${voice_channel.id}>.`);
 
                         // interaction.editReply({embeds: [disconnect_success], ephemeral: true});
-                        log("append", interaction.guild.id, `├─Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`, "INFO");
+                        logger.append("info", "STDOUT", `'/disconnect' > Successfully disconnected '${member.tag}' from the '${voice_channel.name}' voice channel.`);
                     }).catch(() => {
                         // const disconnect_error = new MessageEmbed()
                         //     .setColor("RED")
@@ -93,7 +93,7 @@ export default {
                         //     .setDescription(`An error occurred while disconnecting <@${member.id}>.`);
 
                         // interaction.editReply({embeds: [disconnect_error]});
-                        log("append", interaction.guild.id, `├─An error occurred while disconnecting '${member.tag}' from '${voice_channel.name}'.`);
+                        logger.append("error", "STDERR", `'/disconnect' > An error occurred while disconnecting '${member.tag}' from '${voice_channel.name}'.`);
                         memberCount--;
                         failedMemberCount++;
                     });
@@ -115,7 +115,7 @@ export default {
                 .setDescription(`Successfully disconnected ${memberCount} members from <#${current_voice_channel.id}>.${failedString}`);
 
             interaction.editReply({embeds: [disconnected]});
-            log("append", interaction.guild.id, `└─Successfully disconnected ${memberCount} members from '${current_voice_channel.name}' and failed to disconnect ${failedMemberCount} members.`, "INFO");
+            logger.apppend("info", "STDOUT", `'/disconnect' > Successfully disconnected ${memberCount} members from '${current_voice_channel.name}' and failed to disconnect ${failedMemberCount} members.`);
         }
     }
 };

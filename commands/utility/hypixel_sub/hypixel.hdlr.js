@@ -1,7 +1,7 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 import {SlashCommandBuilder} from "@discordjs/builders";
 
-import {logger, sleep} from "../../../modules/jerryUtils.js";
+import {logger, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default {

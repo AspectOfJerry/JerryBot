@@ -2,7 +2,7 @@ import CronJob from "cron";
 import fs from "fs";
 import dayjs from "dayjs";
 
-// const {log, sleep} from "../modules/jerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 let disabled = false;
 
@@ -43,16 +43,17 @@ async function execute(client) {
             }
         });
 
-        // log("append", "Digest", `Successfully saved ${yesterday}'s digest`, "INFO");
+        logger.append("debug", "Digest", `Successfully saved ${yesterday}'s digest`);
 
         // Reset counter
         Object.keys(counter).forEach((key) => {counter[key] = 0;});
     });
 
     digest.start();
+    logger.append("debug", "INIT", "[Digest] digest CRON job started!");
 
-    // log("append", "log_digest", "[Digest] Log digest started!", "DEBUG");
     console.log("[Digest] Log digest started!");
+    logger.append("info", "INIT", "[Digest] Log digest daemon started!");
 }
 
 

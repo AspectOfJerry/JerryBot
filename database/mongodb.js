@@ -1,6 +1,6 @@
 import process from "process";
 import mongoose from "mongoose";
-// const {log, sleep} from "../../modules/jerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 import birthdaySchema from "./schemas/birthdaySchema.js";
 import configSchema from "./schemas/configSchema.js";
@@ -13,7 +13,7 @@ async function connect() {
     try {
         await mongoose.connect(uri);
         console.log("Connected to MongoDB!");
-        // log("append", "Database", "Connected to MongoDB!", "DEBUG");
+        logger.append("debug", "STDOUT", "[Database] Connected to MongoDB!");
     } catch(err) {
         console.error(err);
     }
@@ -139,7 +139,7 @@ async function getConfig() {
 
     const res = await configSchema.findOne({id: id});
     if(res.length <= 0) {
-        // log("append", "Database", "Config not found", "FATAL");
+        logger.append("fatal", "STDERR", "[Database] Config not found");
         throw "Config not found";
     }
     return res;
@@ -155,7 +155,8 @@ async function deleteGuild(guildId) {
     if(res.deletedCount < 1) {
         throw "Guild does not exist.";
     }
-    // log("appenbd", "Database", `Deleted guild '${guildId}'`, "WARN");
+
+    logger.append("warn", "STDOUT", `[Database] Deleted guild '${guildId}'`);
     return res;
 }
 
@@ -224,7 +225,7 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
     l3 || l3 !== "" ? update.$set.permissionRoles.l3 = l3 : void (0);
 
     const res = await guildSchema.findOneAndUpdate({id: guildId}, update, {new: true, upsert: true});
-    // log("appenbd", "Database", `Update guild '${guildId}' with: ${update}`, "DEBUG");
+    logger.append("debug", "STDOUT", `[Database] Update guild '${guildId}' with: ${update}`);
     return res;
 }
 
