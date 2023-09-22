@@ -76,7 +76,5 @@ const client = new Client({
     // Getting events
     await enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController(client, commands);
 
-    (await import("./build/placeholder.js")).default();
-
     client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
 })();

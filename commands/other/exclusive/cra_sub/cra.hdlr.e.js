@@ -10,24 +10,6 @@ export default {
         .setDescription("Commands for CRA.")
         .addSubcommand((subcommand) =>
             subcommand
-                .setName("schedule")
-                .setDescription("Get the schedule for a group.")
-                .addStringOption((options) =>
-                    options
-                        .setName("jour")
-                        .setDescription("[OPTIONAL] Get the schedule for a specific cycle day.")
-                        .setRequired(false))
-                .addStringOption((options) =>
-                    options
-                        .setName("date")
-                        .setDescription("[OPTIONAL] Get the schedule for a specific date.")
-                        .setRequired(false)))
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("weather")
-                .setDescription("Get today's weather."))
-        .addSubcommand((subcommand) =>
-            subcommand
                 .setName("roles")
                 .setDescription("Self add/remove some roles.")),
     async execute(client, interaction) {

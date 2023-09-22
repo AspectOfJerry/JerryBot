@@ -483,7 +483,7 @@ async function enterprisifiedStartEventListenerRegistrationAndConfigurationServi
  */
 async function StartJobs(client) {
     console.log("Starting jobs...");
-    logger.append("into", "INIT", "Starting jobs...");
+    logger.append("info", "INIT", "Starting jobs...");
 
     const job_files = fs.readdirSync("./jobs").filter(file => file.endsWith(".js"));
 
@@ -491,8 +491,7 @@ async function StartJobs(client) {
     console.log(job_files);
 
     for(const job_file of job_files) {
-        const module = await import(`../jobs/${job_file}`);
-        const {execute} = module.default;
+        const {execute} = await import(`../jobs/${job_file}`);
         execute(client);
     }
 

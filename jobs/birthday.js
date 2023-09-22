@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import CronJob from "cron";
+import {CronJob} from "cron";
 import dayjs from "dayjs";
 import {getBirthdayByDate} from "../database/mongodb.js";
 

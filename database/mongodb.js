@@ -5,7 +5,6 @@ import {logger, sleep} from "../utils/jerryUtils.js";
 import birthdaySchema from "./schemas/birthdaySchema.js";
 import configSchema from "./schemas/configSchema.js";
 import guildSchema from "./schemas/guildSchema.js";
-import craScheduleSchema from "./schemas/craScheduleSchema.js";
 
 async function connect() {
     const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PW}@cluster0.3vjmcug.mongodb.net/?retryWrites=true&w=majority`;
@@ -230,30 +229,6 @@ async function updateGuild(guildId, guildName, l1, l2, l3) {
 }
 
 
-/**
- * @param {Object} json The cra schedule json
- * @returns The cra schedule document
-*/
-async function createCraSchedule(json) {
-    const res = await craScheduleSchema.findOneAndUpdate(
-        {"data.cohort": json.data.cohort},
-        json,
-        {new: true, upsert: true, runValidators: true}
-    );
-
-    return res;
-}
-
-
-async function getCraSchedule(cohort) {
-    const res = await craScheduleSchema.findOne({"data.cohort": cohort});
-
-    if(!res) {
-        return void (0);
-    }
-    return res._doc;
-}
-
 export {
     connect,
     disconnect,
@@ -268,8 +243,5 @@ export {
     deleteGuild,
     getGuildConfig,
     refreshGuildCollection,
-    updateGuild,
-    // cra
-    createCraSchedule,
-    getCraSchedule
+    updateGuild
 };

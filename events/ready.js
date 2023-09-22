@@ -103,12 +103,10 @@ export default {
         await slackcord.startSlack(client);
 
         if(process.env.npm_lifecycle_event === "test") {
+            console.log("Running a test...");
             const args = process.argv.slice(2);
-            if(args.length < 1) {
-                return;
-            }
 
-            await import(`../tests/${args[0]}.test.js`);
+            (await import(`../tests/${args[0] || "main"}.test.js`)).default(client);
             return;
         }
 

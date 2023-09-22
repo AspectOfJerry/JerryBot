@@ -78,7 +78,6 @@
         "ms": "^2.1.3",
         "node-fetch": "^2.6.7",
         "openai": "^3.2.1",
-        "ts-node": "^10.9.1",
         "weather-js": "^2.0.0",
         "winston": "^3.9.0",
         "winston-daily-rotate-file": "^4.7.1"

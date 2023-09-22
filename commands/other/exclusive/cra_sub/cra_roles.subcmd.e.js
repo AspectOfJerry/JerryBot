@@ -25,12 +25,6 @@ export default async function (client, interaction) {
                         description: "[Recommended] Receive announcement pings.",
                         value: "announcement",
                         emoji: "📢"
-                    },
-                    {
-                        label: "401 schedule",
-                        description: "Pinged by the schedule announcer.",
-                        value: "schedule",
-                        emoji: "🗓️"
                     }
                 ])
         );

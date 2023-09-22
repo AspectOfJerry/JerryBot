@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import CronJob from "cron";
+import {CronJob} from "cron";
 
 import {logger, sleep} from "../utils/jerryUtils.js";
 
@@ -44,7 +44,7 @@ async function execute(client) {
     new_year.start();
     logger.append("debug", "INIT", "[NewYear] New year announcer cron job started!");
 
-    console.log("[NewYear] The new year announcer daemong started!");
+    console.log("[NewYear] The new year announcer daemon started!");
     logger.append("info", "INIT", "[NewYear] New year announcer daemon started!");
 }
 

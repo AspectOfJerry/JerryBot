@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import path from "path";
 import moment from "moment";
 import {logger, sleep} from "../utils/jerryUtils.js";
-import {createCraSchedule} from "../database/mongodb.js";
 
-console.log("Hello, World!");
+export default async function (client) {
+    console.log("Hello, World!");
+}

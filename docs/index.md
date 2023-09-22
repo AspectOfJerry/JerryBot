@@ -159,6 +159,7 @@ const fail_emoji = "<:fail:1102349156976185435>";
 
 |  PL*  | Command    | Parameters* | Description                 |
 | :---: | ---------- | ----------- | --------------------------- |
+|  -1   | /test      | -           | -                           |
 |   —   | /tictactoe | —           | Game of tictactoe.          |
 |   —   | /typing    | —           | Sends the typing indicator. |
 
@@ -184,8 +185,6 @@ const fail_emoji = "<:fail:1102349156976185435>";
 
 ### cra - subcommands
 
-|  PL*  | Command       | Parameters*   | Description                      |
-| :---: | ------------- | ------------- | -------------------------------- |
-|   —   | /cra roles    | —             | Self-select roles.               |
-|   —   | /cra schedule | \<?day\|auto> | Shows the schedule.              |
-|   —   | /cra weather  | —             | Shows the current day's weather. |
+|  PL*  | Command    | Parameters* | Description        |
+| :---: | ---------- | ----------- | ------------------ |
+|   —   | /cra roles | —           | Self-select roles. |

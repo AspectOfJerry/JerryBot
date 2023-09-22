@@ -40,7 +40,7 @@ async function checklistHeartbeat() {
 
 
 async function startTelemetry(_client) {
-    logger.apppend("debug", "INIT", "[Telemetry] Starting telemetry...");
+    // logger.apppend("debug", "INIT", "[Telemetry] Starting telemetry...");
     if(os.version().toLowerCase().includes("server")) {
         isDeployed = true;
     }

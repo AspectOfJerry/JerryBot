@@ -1,4 +1,4 @@
-import CronJob from "cron";
+import {CronJob} from "cron";
 
 import {logger, sleep} from "../utils/jerryUtils.js";
 

@@ -1,7 +1,7 @@
 import process from "process";
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import CronJob from "cron";
+import {CronJob} from "cron";
 import fetch from "node-fetch";
 
 import {logger, sleep} from "../utils/jerryUtils.js";
