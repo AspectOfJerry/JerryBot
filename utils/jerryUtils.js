@@ -173,85 +173,6 @@ async function isSuperUser(client, userResolvable) {
     return false;
 }
 
-
-/**
- * @deprecated
- * @async
- * @param {string} method The method to use {`append`, `read`}.
- * @param {string} tag The tag at the beginning of the line.
- * @param {string} body The main content.
- * @param {string} type The type of the message {`DEBUG`, `ERROR`, `FATAL`, `INFO`, `WARN`}.
- * @returns {object} `return_object`.
- */
-async function log(method, tag, body, type) {
-    switch(method) {
-        case "append": {
-            // Declaring variables
-            const now = dayjs();
-
-            let tagLenght = 0;
-            let tagExtraIndentNum = 0;
-            let tagExtraIndent = "";
-            let typeLenght = 0;
-            let typeExtraIndentNum = 0;
-            let typeExtraIndent = "";
-
-            // Get current date
-            const now_date = "deprecated";
-            const now_time = "deprecated";
-
-            // Generate the log file name
-            const file_name = `${now_date}_JerryBot.log`;
-
-            // Generate the new line content
-            if(tag == null) {
-                tag = "------------------";
-            }
-            tagLenght = tag.length;
-            tagExtraIndentNum = 19 - tagLenght;
-            for(let i = 0; i < tagExtraIndentNum; i++) {
-                tagExtraIndent = tagExtraIndent + " ";
-            }
-
-            // DEBUG, ERROR, FATAL, INFO, WARN; │, ─, ├─, └─
-            if(!type) {
-                throw `Cannot use type of ${type}`;
-            }
-
-            typeLenght = type.length;
-            typeExtraIndentNum = 5 - typeLenght;
-
-            for(let i = 0; i < typeExtraIndentNum; i++) {
-                typeExtraIndent = typeExtraIndent + " ";
-            }
-
-            const parsed_body = `[${tagExtraIndent}${tag}] [${now_time}] [JerryBot/${type}]:${typeExtraIndent} ${body}`;
-
-            const return_object = {
-                body: body,
-                fileName: file_name,
-                parsedBody: parsed_body
-            };
-
-            // Append to file
-            fs.appendFile(`./logs/${file_name}`, parsed_body + "\n", (err) => {
-                if(err) {
-                    throw err;
-                }
-            });
-            registerEvent(type, 1);
-            return return_object;
-        }
-        case "read": {
-            // Read stuff
-        }
-            break;
-        default:
-            throw "Unknown logging method.";
-    }
-}
-
-
 const custom_logger_levels = {
     levels: {
         fatal: 0,
@@ -620,7 +541,6 @@ export {
     getCommandFiles,
     getSubCommandFiles,
     isSuperUser,
-    log,
     custom_logger_levels,
     logger,
     sleep,

@@ -22,7 +22,7 @@ async function execute(client) {
     const digest = new CronJob("0 0 * * *", async () => {
         // await sleep(100);
 
-        const yesterday = dayjs().substract(1, "day");
+        const yesterday = dayjs().subtract(1, "day");
 
         const file_name = dayjs.format(yesterday, "YYYY-MMMM");
         const prefix = dayjs.format(yesterday, "YYYY-MM-DD");
