@@ -8,7 +8,6 @@ import URL from "url";
 import moment from "moment";
 
 import {getConfig, getGuildConfig} from "../database/mongodb.js";
-import {registerEvent} from "../jobs/log_digest.js";
 
 const __dirname = path.dirname(URL.fileURLToPath(import.meta.url));
 
