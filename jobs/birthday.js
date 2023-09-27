@@ -10,6 +10,7 @@ let disabled = false;
 
 
 async function execute(client) {
+    return; // temporarily disabled
     const birthday = new CronJob("30 6 * * *", async () => { // Interval of every day at
         const now = dayjs();
         const _date = dayjs.format(now, "D-M").split("-");
