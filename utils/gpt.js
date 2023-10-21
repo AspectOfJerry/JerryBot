@@ -120,7 +120,7 @@ async function gpt(message, client) {
                 .setTitle(`RequestFailureException${err.response.status ? err.response.status + " " : ""}`)
                 .setDescription(`An error occurred while requesting a completion: \`\`\`${err.response.data}\`\`\``);
 
-            message.editReply({embeds: [request_failure_exception]});
+            message.edit({embeds: [request_failure_exception]});
         } else {
             console.log(err.message);
         }
