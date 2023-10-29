@@ -1,6 +1,6 @@
 import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-import {logger, permissionCheck, sleep, jMath, jEmojis, cleanNumber} from "../../../utils/jerryUtils.js";
+import {logger, permissionCheck, sleep, jMath, jEmoji, cleanNumber} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
@@ -41,7 +41,7 @@ export default async function (client, interaction) {
     let title = "Math solve quadratic";
     let explanation = "The equation represents a quadratic curve, which is a curve with the highest power of the variable being 2."
         + "\n> Quadratic curves can take various shapes, such as parabolas, and the solutions to this equation provide the x-values where the curve intersects the x-axis."
-        + `\n\n${jEmojis.success_emoji} Equation is quadratic!`
+        + `\n\n${jEmoji.success_emoji} Equation is quadratic!`
         + "\n\n** **";
     let isQuad = true;
 
@@ -51,7 +51,7 @@ export default async function (client, interaction) {
         title = "IllegalArgumentException";
         explanation = "The coefficient of x^2 (a) in a quadratic equation must be non-zero. This is because the coefficient determines the shape of the curve that represents the equation."
             + "\n> A non-zero coefficient ensures that the equation represents a quadratic curve rather than a linear equation. If the coefficient of x^2 is zero (a = 0) and the coefficient of x is non-zero (b ≠ 0), the equation becomes linear instead of quadratic."
-            + `\n\n${jEmojis.fail_emoji} Equation is no longer quadratic!`
+            + `\n\n${jEmoji.fail_emoji} Equation is no longer quadratic!`
             + "\n\n** **";
 
         row.components[1].setLabel("MathSolver (Linear)");
@@ -63,7 +63,7 @@ export default async function (client, interaction) {
         explanation = "*Imaginary roots are currently not supported by the command.* Could not find any real roots for the equation because the discriminant is negative."
             + "\n> In a quadratic equation, the discriminant determines whether the equation has real solutions."
             + " A negative discriminant indicates that the equation does not intersect the x-axis, resulting in the absence of real roots."
-            + `\n\n${jEmojis.warn_emoji} Equation possibly contains imaginary roots!`
+            + `\n\n${jEmoji.warn_emoji} Equation possibly contains imaginary roots!`
             + "\n\n** **";
 
         logger.append("notice", "STDOUT", "'/math quadratic' > Could not find any real roots for the equation because the discriminant is negative.");
