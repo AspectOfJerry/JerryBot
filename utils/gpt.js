@@ -50,24 +50,24 @@ async function gpt(message, client) {
             .setColor("GREEN")
             .setAuthor({name: `${username}`, iconURL: `${message.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
             .setTitle(`${prompt}`)
-            .setDescription(`${data.choices[0].message.content}`)
             .setFooter({text: `model: OpenAI ${data.model}, usage: ${data.usage.total_tokens}/1024 tokens`});
 
-        // Split the message into chunks of maximum length 4096 https://discord.com/developers/docs/resources/channel#embed-object-embed-limits
+        // Split the message into chunks of maximum length 4096
         const messageChunks = data.choices[0].message.content.match(/[\s\S]{1,4096}/g) || [];
 
         let first = true;
         for(const chunk of messageChunks) {
             if(first) {
-                msg.edit({embeds: [embed]});
+                embed.setDescription(chunk);
+                await msg.edit({embeds: [embed]});
                 first = false;
                 continue;
             }
 
-            // Send the chunk
-            embed.setDescription(`${chunk}`);
-            await msg.channel.send({embeds: [embed]});
+            embed.setDescription(chunk);
+            await message.channel.send({embeds: [embed]});
         }
+
         // await msg.delete();
 
         // // Split the message into chunks of maximum length 2000
