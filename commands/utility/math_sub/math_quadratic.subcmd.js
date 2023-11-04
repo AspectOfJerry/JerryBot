@@ -21,14 +21,14 @@ export default async function (client, interaction) {
         .addComponents(
             new MessageButton()
                 .setStyle("LINK")
-                .setLabel("Quadratic equation")
-                .setEmoji("📚") // books
-                .setURL("https://en.wikipedia.org/wiki/Quadratic_equation"),
-            new MessageButton()
-                .setStyle("LINK")
                 .setLabel("MathSolver")
                 .setEmoji("🧮") // abacus
-                .setURL(generateMathSolverLink(a, b, c))
+                .setURL(generateMathSolverLink(a, b, c)),
+            new MessageButton()
+                .setStyle("LINK")
+                .setLabel("Quadratic equation")
+                .setEmoji("📚") // books
+                .setURL("https://en.wikipedia.org/wiki/Quadratic_equation")
         );
 
     // Checks
@@ -38,57 +38,51 @@ export default async function (client, interaction) {
     logger.append("info", "STDOUT", `'/math quadratic' > solutions = [${solutions.toString()}]`);
 
     let color = "GREEN";
-    let title = "Math solve quadratic";
     let explanation = "The equation represents a quadratic curve, which is a curve with the highest power of the variable being 2."
-        + "\n> Quadratic curves can take various shapes, such as parabolas, and the solutions to this equation provide the x-values where the curve intersects the x-axis."
-        + `\n\n${jEmoji.success_emoji} Equation is quadratic!`
+        // + "\n> Quadratic curves can take various shapes, such as parabolas, and the solutions to this equation provide the x-values where the curve intersects the x-axis."
         + "\n\n** **";
-    let isQuad = true;
+    let equationFieldTitle = `${jEmoji.success_emoji} Equation is quadratic`;
+    let imageUrl = "";
 
     if(a === 0 && b !== 0) {
-        isQuad = false;
         color = "RED";
-        title = "IllegalArgumentException";
+        equationFieldTitle = `${jEmoji.fail_emoji} Equation is not quadratic (linear)`;
+        imageUrl = "https://wikimedia.org/api/rest_v1/media/math/render/png/00c22777378f9c594c71158fea8946f2495f2a28";
         explanation = "The coefficient of x^2 (a) in a quadratic equation must be non-zero. This is because the coefficient determines the shape of the curve that represents the equation."
             + "\n> A non-zero coefficient ensures that the equation represents a quadratic curve rather than a linear equation. If the coefficient of x^2 is zero (a = 0) and the coefficient of x is non-zero (b ≠ 0), the equation becomes linear instead of quadratic."
-            + `\n\n${jEmoji.fail_emoji} Equation is no longer quadratic!`
-            + "\n\n** **";
-
-        row.components[1].setLabel("MathSolver (Linear)");
+            + "\n** **";
 
         logger.append("notice", "STDOUT", "'/math quadratic' > The coefficient of x^2 (a) cannot be zero (0) because it determines the shape of the curve, which represents the equation.");
     } else if(solutions.some(Number.isNaN)) {
-        isQuad = false;
         color = "YELLOW";
-        explanation = "*Imaginary roots are currently not supported by the command.* Could not find any real roots for the equation because the discriminant is negative."
+        equationFieldTitle = `${jEmoji.warn_emoji} Equation contains imaginary roots`;
+        imageUrl = "https://wikimedia.org/api/rest_v1/media/math/render/png/d40196d521aae8b791055b7da8f8844357969a1f";
+        explanation = "Imaginary roots are not supported by the command. Could not find any real roots for the equation because the discriminant is negative."
             + "\n> In a quadratic equation, the discriminant determines whether the equation has real solutions."
             + " A negative discriminant indicates that the equation does not intersect the x-axis, resulting in the absence of real roots."
-            + `\n\n${jEmoji.warn_emoji} Equation possibly contains imaginary roots!`
-            + "\n\n** **";
+            + "\n** **";
 
         logger.append("notice", "STDOUT", "'/math quadratic' > Could not find any real roots for the equation because the discriminant is negative.");
     } else if(solutions.includes(undefined) || solutions.includes(null)) {
-        isQuad = false;
         color = "FUSCIA";
+        equationFieldTitle = `${jEmoji.error_emoji} Error`;
+        imageUrl = "https://t3.ftcdn.net/jpg/02/01/43/66/240_F_201436679_ZCLSEuwhRvmQEVofXHPpvLeV5sBLQ3vp.jpg";
         explanation = "Could not find a solution to this equation. It appears the forces of mathematics encountered an enigmatic twist, rendering the equation inscrutable to mere mortal calculations. The solution remains elusive, concealed within the mysteries of the universe."
             + "\nPlease contact the bot administrators if you believe that this is an error."
-            + "\n\n** **";
+            + "\n** **";
         logger.append("ERROR", "STDOUT", "'/math quadratic' > Could not find a solution to this equation.");
     }
 
 
     const answer = new MessageEmbed()
         .setColor(color)
-        .setTitle(`${title}`)
+        .setTitle("Math solve quadratic")
         .setDescription(`${explanation}`)
         .addFields(
-            {name: "Coefficient of x^2", value: `**>** ${a}`, inline: true},
-            {name: "Coefficient of x", value: `**>** ${b}`, inline: true},
-            {name: "Constant term", value: `**>** ${c}`, inline: true},
+            {name: equationFieldTitle, value: `${a}*x²* ${(b < 0 ? "- " : "+ ") + Math.abs(b)}*x* ${(b < 0 ? "- " : "+ ") + Math.abs(c)}`, inline: true},
             {name: "Solutions", value: `${solutions.join(", ").replace(/,/g, ",\n")}`, inline: false}
         )
-        .setImage(isQuad ? "https://wikimedia.org/api/rest_v1/media/math/render/png/00c22777378f9c594c71158fea8946f2495f2a28"
-            : "https://wikimedia.org/api/rest_v1/media/math/render/png/d40196d521aae8b791055b7da8f8844357969a1f");
+        .setImage(imageUrl);
 
     interaction.reply({embeds: [answer], components: [row]});
 }
