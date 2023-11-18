@@ -1,5 +1,3 @@
-import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
-
 import {CronJob} from "cron";
 
 import {logger, sleep} from "../utils/jerryUtils.js";
@@ -25,19 +23,19 @@ async function execute(client) {
         alt_channels.push("857978482374344734"); // devServer
         alt_channels.push("1014286502743773305"); // cra
 
-        for(let i = 0; i < guilds.length; i++) {
+        for (let i = 0; i < guilds.length; i++) {
             const channel = await guilds[i].channels.fetch(channels[i]);
             const alt_channel = await guilds[i].channels.fetch(alt_channels[i]);
 
             await channel.send({content: `:tada: Happy new year ${guilds[i].roles.everyone}! :tada:`})
-                .then((msg) => {
-                    msg.react("🥳");
-                });
+            .then((msg) => {
+                msg.react("🥳");
+            });
 
             await alt_channel.send({content: ":tada: Happy new year everyone! :partying_face: :fireworks:"})
-                .then((msg) => {
-                    msg.react("🎉");
-                });
+            .then((msg) => {
+                msg.react("🎉");
+            });
         }
     });
 

@@ -6,65 +6,65 @@ import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("cvss")
-        .setDescription("Common Vulnerability Scoring System Calculator"),
+    .setName("cvss")
+    .setDescription("Common Vulnerability Scoring System Calculator"),
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await permissionCheck(interaction, 0) === false) {
+        if (await permissionCheck(interaction, 0) === false) {
             return;
         }
 
         // Declaring variables
         const cvss = new MessageEmbed()
-            .setColor("GREEN")
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("Common Vulnerability Scoring System score calculator")
-            .setDescription("Start by selecting the Attack Vector.\n\n• CVSS Vector string: `CVSS:3.1/AV:...`")
-            .addFields(
-                {name: "-> Attack Vector (AV)", value: "Network / Adjacent / Local / Physical", inline: false},
-                {name: "Attack Complexity (AC)", value: "Low / High", inline: false},
-                {name: "Privileges Required (PR)", value: "None / Low / High", inline: false},
-                {name: "User Interaction (UI)", value: "None / Required", inline: false},
-                {name: "Scope (S)", value: "Unchanged / Changed", inline: false},
-                {name: "Confidentiality (C)", value: "High / Low / None", inline: false},
-                {name: "Integrity (I)", value: "High / Low / None", inline: false},
-                {name: "Availability (A)", value: "High / Low / None", inline: false}
-            );
+        .setColor("GREEN")
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setTitle("Common Vulnerability Scoring System score calculator")
+        .setDescription("Start by selecting the Attack Vector.\n\n• CVSS Vector string: `CVSS:3.1/AV:...`")
+        .addFields(
+            {name: "-> Attack Vector (AV)", value: "Network / Adjacent / Local / Physical", inline: false},
+            {name: "Attack Complexity (AC)", value: "Low / High", inline: false},
+            {name: "Privileges Required (PR)", value: "None / Low / High", inline: false},
+            {name: "User Interaction (UI)", value: "None / Required", inline: false},
+            {name: "Scope (S)", value: "Unchanged / Changed", inline: false},
+            {name: "Confidentiality (C)", value: "High / Low / None", inline: false},
+            {name: "Integrity (I)", value: "High / Low / None", inline: false},
+            {name: "Availability (A)", value: "High / Low / None", inline: false}
+        );
 
         const row = new MessageActionRow()
-            .addComponents(
-                new MessageSelectMenu()
-                    .setCustomId("select_menu")
-                    .setPlaceholder("Select the attack vector (AV)")
-                    .setMaxValues(1)
-                    .setMinValues(1)
-                    .addOptions([
-                        {
-                            label: "Network (N)",
-                            value: "Network",
-                            emoji: "🔴"
-                        }, {
-                            label: "Adjacent (A)",
-                            value: "Adjacent",
-                            emoji: "🟡"
-                        }, {
-                            label: "Local (L)",
-                            value: "Local",
-                            emoji: "🟢"
-                        }, {
-                            label: "Physical (L)",
-                            value: "Physical",
-                            emoji: "⚪"
-                        }
-                    ])
-            );
+        .addComponents(
+            new MessageSelectMenu()
+            .setCustomId("select_menu")
+            .setPlaceholder("Select the attack vector (AV)")
+            .setMaxValues(1)
+            .setMinValues(1)
+            .addOptions([
+                {
+                    label: "Network (N)",
+                    value: "Network",
+                    emoji: "🔴"
+                }, {
+                    label: "Adjacent (A)",
+                    value: "Adjacent",
+                    emoji: "🟡"
+                }, {
+                    label: "Local (L)",
+                    value: "Local",
+                    emoji: "🟢"
+                }, {
+                    label: "Physical (L)",
+                    value: "Physical",
+                    emoji: "⚪"
+                }
+            ])
+        );
 
         const filter = async (newInteraction) => {
-            if(newInteraction.user.id === interaction.user.id && newInteraction.isSelectMenu()) {
+            if (newInteraction.user.id === interaction.user.id && newInteraction.isSelectMenu()) {
                 return true;
             } else {
                 await newInteraction.reply({content: "You cannot use this component.", ephemeral: true});
-                logger.append("append", interaction.guild.id, `├─'${newInteraction.user.tag}' did not have the permission to use this component.`, "WARN");
+                logger.append("info", "STDOUT", `'/cvss' > '${newInteraction.user.tag}' did not have the permission to use this component.`);
                 return;
             }
         };
@@ -72,12 +72,12 @@ export default {
         async function AwaitSelectMenu(message) {
             let result;
             await message.awaitMessageComponent(filter, {time: 15000})
-                .then(async (newInteraction) => {
-                    newInteraction.deferUpdate();
-                    result = newInteraction.values.join("").toString();
-                }).catch((err) => {
-                    console.error(err);
-                });
+            .then(async (newInteraction) => {
+                newInteraction.deferUpdate();
+                result = newInteraction.values.join("").toString();
+            }).catch((err) => {
+                console.error(err);
+            });
 
             return result;
         }

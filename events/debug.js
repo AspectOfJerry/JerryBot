@@ -1,4 +1,4 @@
-import {logger, sleep} from"../utils/jerryUtils.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 export default {
     name: "debug",
@@ -6,10 +6,10 @@ export default {
     async execute(info) {
         const latency = info.match(/\[WS => Shard \d+\] Heartbeat acknowledged, latency of (\d+)ms/)?.[1];
 
-        if(latency && parseInt(latency) <= 50 || info.startsWith("[WS => Shard 0] [HeartbeatTimer] Sending a heartbeat.")) {
+        if (latency && parseInt(latency) <= 50 || info.startsWith("[WS => Shard 0] [HeartbeatTimer] Sending a heartbeat.")) {
             return;
         }
 
-        logger.append("debug", "0x444247", info);
+        logger.append("debug", "DBG", info);
     }
 };

@@ -1,12 +1,18 @@
 import process from "process";
-import {config} from "dotenv"; config();
+import {config} from "dotenv";
+config();
 import winston from "winston";
 import moment from "moment";
 import {Client, Intents, Collection} from "discord.js";
 
-import {getCommandFiles, logger, custom_logger_levels, enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController} from "./utils/jerryUtils.js";
+import {
+    getCommandFiles,
+    logger,
+    custom_logger_levels,
+    startEvents
+} from "./utils/jerryUtils.js";
 
-if(process.env.npm_lifecycle_event !== "main") {
+if (process.env.npm_lifecycle_event !== "main") {
     logger.add(new winston.transports.Console({
         format: winston.format.combine(
             // colorizzing the level breaks the message when using level.toUpperCase(). See: https://github.com/winstonjs/winston/issues/1345
@@ -56,7 +62,7 @@ const client = new Client({
 
     client.commands = new Collection();
 
-    for(const file of command_files.commands) {
+    for (const file of command_files.commands) {
         const module = await import(file);
         const command = module.default;
 
@@ -64,7 +70,7 @@ const client = new Client({
         client.commands.set(command.data.name, command);
     }
 
-    for(const file of command_files.exclusive) {
+    for (const file of command_files.exclusive) {
         const module = await import(file);
         const command = module.default;
 
@@ -74,7 +80,7 @@ const client = new Client({
 
 
     // Getting events
-    await enterprisifiedStartEventListenerRegistrationAndConfigurationServiceManagerHandlerAdapterExecutorWrapperBeanContainerInitializerProviderResolverProcessorFacadeControlManagerController(client, commands);
+    await startEvents(client, commands);
 
     client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
 })();

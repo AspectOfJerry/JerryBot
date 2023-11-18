@@ -4,7 +4,7 @@ import {logger, permissionCheck, sleep} from "../../../utils/jerryUtils.js";
 
 
 export default async function (client, interaction) {
-    if(await permissionCheck(interaction, 0) === false) {
+    if (await permissionCheck(interaction, 0) === false) {
         return;
     }
 
@@ -15,33 +15,33 @@ export default async function (client, interaction) {
     // Main
 
     const row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId("random_restart_button")
-                .setLabel("Restart")
-                .setStyle("PRIMARY")
-                .setDisabled(false)
-        );
+    .addComponents(
+        new MessageButton()
+        .setCustomId("random_restart_button")
+        .setLabel("Restart")
+        .setStyle("PRIMARY")
+        .setDisabled(false)
+    );
 
     const number = Math.floor(Math.random());
 
     const random_embed = new MessageEmbed()
-        .setColor("GREEN")
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle("Coinflip")
-        .addFields(
-            {name: "Coin", value: `${number ? "Head" : "Tail"}`, inline: false},
-            {name: "Binary", value: `${number}`, inline: false}
-        );
+    .setColor("GREEN")
+    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+    .setTitle("Coinflip")
+    .addFields(
+        {name: "Coin", value: `${number ? "Head" : "Tail"}`, inline: false},
+        {name: "Binary", value: `${number}`, inline: false}
+    );
 
     await interaction.reply({embeds: [random_embed], components: [row]});
 
     const filter = async (button_collector) => {
-        if(button_collector.user.id == interaction.user.id) {
+        if (button_collector.user.id === interaction.user.id) {
             return true;
         }
         button_collector.reply({content: "You cannot use this button.", ephemeral: true});
-        return;
+
     };
 
     await Restart();
@@ -55,12 +55,12 @@ export default async function (client, interaction) {
 
             const number = Math.round(Math.random());
 
-            if(buttonInteraction.customId == "random_restart_button") {
+            if (buttonInteraction.customId === "random_restart_button") {
                 random_embed
-                    .setFields(
-                        {name: "Coin", value: `${number ? "Head" : "Tail"}`, inline: false},
-                        {name: "Decimal", value: `${number}`, inline: false}
-                    );
+                .setFields(
+                    {name: "Coin", value: `${number ? "Head" : "Tail"}`, inline: false},
+                    {name: "Decimal", value: `${number}`, inline: false}
+                );
 
                 await interaction.editReply({embeds: [random_embed], components: [row]});
                 Restart();
@@ -68,7 +68,7 @@ export default async function (client, interaction) {
         });
 
         button_collector.on("end", (collected, reason) => {
-            if(reason === "time") {
+            if (reason === "time") {
                 row.components[0].setDisabled(true);
 
                 interaction.editReply({embeds: [random_embed], components: [row]});

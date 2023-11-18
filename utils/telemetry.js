@@ -10,15 +10,15 @@ const success_emoji = "<:success:1102349129390248017>";
 const warn_emoji = "<:warn:1102349145106284584>";
 const fail_emoji = "<:fail:1102349156976185435>";
 
-var globalFailedGuilds = [];
+const globalFailedGuilds = [];
 
-var ready;
-var client;
-var guilds = [];
-var channels = [];
-var messages = [];
-var embedMessage;
-var isDeployed = false;
+let ready;
+let client;
+const guilds = [];
+const channels = [];
+const messages = [];
+let embedMessage;
+let isDeployed = false;
 
 async function botStop(_client, timestamp) {
 }
@@ -41,7 +41,7 @@ async function checklistHeartbeat() {
 
 async function startTelemetry(_client) {
     // logger.apppend("debug", "INIT", "[Telemetry] Starting telemetry...");
-    if(os.version().toLowerCase().includes("server")) {
+    if (os.version().toLowerCase().includes("server")) {
         isDeployed = true;
     }
 
@@ -50,22 +50,26 @@ async function startTelemetry(_client) {
     channels.push(await guilds[0].channels.fetch("1030988308202922084")); // system-monitor channel in devServer guild
 
     // Delete previous messages if any
-    for(const _channel of channels) {
+    for (const _channel of channels) {
         await _channel.bulkDelete(16, true);
     }
 
     // Create the telemetry embed
     const embed = new MessageEmbed()
-        .setColor("GREEN")
-        .setTitle("JerryBot telemetry")
-        .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`)
-        .addFields(
-            {name: "Deployed", value: `${isDeployed}`, inline: false},
-            {name: "Checklist", value: `${warn_emoji} Bot is not fully ready\n${success_emoji} Database connected\n${success_emoji} Event listeners ready\n${warn_emoji} Heartbeat not synced\n${warn_emoji} Jobs inactive`, inline: false},
-            {name: "Last Heartbeat*", value: ":black_heart: ---*", inline: true},
-            {name: "Next expected Heartbeat*", value: ":black_heart: ---*", inline: true}
-        ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone"})
-        .setTimestamp();
+    .setColor("GREEN")
+    .setTitle("JerryBot telemetry")
+    .setDescription(`:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`)
+    .addFields(
+        {name: "Deployed", value: `${isDeployed}`, inline: false},
+        {
+            name: "Checklist",
+            value: `${warn_emoji} Bot is not fully ready\n${success_emoji} Database connected\n${success_emoji} Event listeners ready\n${warn_emoji} Heartbeat not synced\n${warn_emoji} Jobs inactive`,
+            inline: false
+        },
+        {name: "Last Heartbeat*", value: ":black_heart: ---*", inline: true},
+        {name: "Next expected Heartbeat*", value: ":black_heart: ---*", inline: true}
+    ).setFooter({text: "*Relative timestamps look out of sync depending on your timezone"})
+    .setTimestamp();
 
     // Add embeds here
     messages.push(await channels[0].send({embeds: [embed]}));
@@ -76,33 +80,33 @@ async function startTelemetry(_client) {
 
 
 async function updateEmbeds(newEmbed) {
-    if(ready !== true) {
+    if (ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 
     newEmbed.description = embedMessage.description.replace(/:arrows_counterclockwise: Last updated:.*\*/i, `:arrows_counterclockwise: Last updated: <t:${Math.floor(Date.now() / 1000)}:R>*`);
 
-    messages.forEach(async (msg) => {
-        if(globalFailedGuilds.includes(msg.guild.id)) {
-            return;
+    for (const msg of messages) {
+        if (globalFailedGuilds.includes(msg.guild.id)) {
+            continue;
         }
 
         try {
             await msg.edit({embeds: [newEmbed]});
-        } catch(err) {
+        } catch (err) {
             console.error(err);
 
             console.log(`Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
             logger.append("error", "STDERR", `[Telemetry] Failed to update a telemetry embed in the "${msg.guild.name}" guild. Abandoning telemetry for this guild.`);
             globalFailedGuilds.push(msg.guild.id);
         }
-    });
+    }
 }
 
 
 async function updateHeartbeat(_client, timestamp) {
     client = _client;
-    if(ready !== true) {
+    if (ready !== true) {
         throw "Cannot access HeartbeatNotifier before telemetry is ready.";
     }
 

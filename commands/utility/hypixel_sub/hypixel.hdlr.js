@@ -6,12 +6,12 @@ import {logger, sleep} from "../../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("hypixel")
-        .setDescription("Hypixel related commands")
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName("api")
-                .setDescription("Makes an API request to Hypixel"))
+    .setName("hypixel")
+    .setDescription("Hypixel related commands")
+    .addSubcommand(subcommand =>
+        subcommand
+        .setName("api")
+        .setDescription("Makes an API request to Hypixel"))
     // .addSubcommand(subcommand =>
     // subcommand
     // .setName("SUBCMD_NAME")

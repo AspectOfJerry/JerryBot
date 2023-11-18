@@ -6,10 +6,10 @@ import {permissionCheck} from "../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("help")
-        .setDescription("Help is on the way!"),
+    .setName("help")
+    .setDescription("Help is on the way!"),
     async execute(client, interaction) {
-        if(await permissionCheck(interaction, 0) === false) {
+        if (await permissionCheck(interaction, 0) === false) {
             return;
         }
 
@@ -19,23 +19,27 @@ export default {
 
         // Main
         const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setLabel("Documentation")
-                    .setEmoji("📘")
-                    .setStyle("LINK")
-                    .setURL("https://bot.jerrydev.ney")
-            );
+        .addComponents(
+            new MessageButton()
+            .setLabel("Documentation")
+            .setEmoji("📘")
+            .setStyle("LINK")
+            .setURL("https://bot.jerrydev.ney")
+        );
 
         const help = new MessageEmbed()
-            .setColor("GREEN")
-            .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-            .setTitle("Need help?")
-            .setDescription(":bookmark: You can find the documentation [here](https://bot.jerrydev.net) and [here](https://www.youtube.com/watch?v=xvFZjo5PgG0)!")
-            .addFields(
-                {name: "Lead developer", value: "@jerrydev (was Jerry#3756)", inline: false},
-                {name: "Found a bug?", value: "Report it on [GitHub (issues)](https://github.com/AspectOfJerry/JerryBot/issues).\nYou can also open an issue for suggestions.", inline: false}
-            );
+        .setColor("GREEN")
+        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+        .setTitle("Need help?")
+        .setDescription(":bookmark: You can find the documentation [here](https://bot.jerrydev.net) and [here](https://www.youtube.com/watch?v=xvFZjo5PgG0)!")
+        .addFields(
+            {name: "Lead developer", value: "@jerrydev (was Jerry#3756)", inline: false},
+            {
+                name: "Found a bug?",
+                value: "Report it on [GitHub (issues)](https://github.com/AspectOfJerry/JerryBot/issues).\nYou can also open an issue for suggestions.",
+                inline: false
+            }
+        );
 
         interaction.reply({embeds: [help], components: [row]});
     }

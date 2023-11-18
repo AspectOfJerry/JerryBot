@@ -50,7 +50,7 @@ export default {
         latestGuildId = newPresence.guild.id;
 
         // If there are mostly no changes, do not log to prevent log spamming
-        if((oldClientStatus == newClientStatus) && (oldClientActivityType == newClientActivityType) || (lastGuildId != latestGuildId)) {
+        if ((oldClientStatus === newClientStatus) && (oldClientActivityType === newClientActivityType) || (lastGuildId !== latestGuildId)) {
             return;
         }
 
@@ -70,7 +70,7 @@ export default {
         oldClientStatus = oldClientStatus.replaceAll(":", ": ");
         oldClientStatus = oldClientStatus.replaceAll(",", ", ");
 
-        logger.append("info", "0x505355", `[PSU] "@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldClientStatus}" to: "${newClientActivityType}${newClientStatus}"`);
+        logger.append("info", "PSU", `"@${newPresence.user.tag}" went from: "${oldClientActivityType}${oldClientStatus}" to: "${newClientActivityType}${newClientStatus}"`);
         lastGuildId = newPresence.guild.id;
     }
 

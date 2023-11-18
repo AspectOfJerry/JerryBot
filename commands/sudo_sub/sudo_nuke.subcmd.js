@@ -10,7 +10,7 @@ import crypto from "crypto";
 export default async function (client, interaction) {
     // await interaction.deferReply();
 
-    if(await permissionCheck(interaction, -1) === false) {
+    if (await permissionCheck(interaction, -1) === false) {
         return;
     }
 
@@ -26,25 +26,25 @@ export default async function (client, interaction) {
     const fail_emoji = "<:fail:1102349156976185435>";
 
     const row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId("arm_button")
-                .setLabel("Arm")
-                .setEmoji("🔓")
-                .setStyle("SUCCESS")
-                .setDisabled(true),
-            new MessageButton()
-                .setCustomId("execute_button")
-                .setLabel("Execute")
-                .setEmoji("🎯")
-                .setStyle("DANGER")
-                .setDisabled(true),
-            new MessageButton()
-                .setCustomId("abort_button")
-                .setLabel("Abort")
-                .setEmoji("🛑")
-                .setStyle("SECONDARY")
-        );
+    .addComponents(
+        new MessageButton()
+        .setCustomId("arm_button")
+        .setLabel("Arm")
+        .setEmoji("🔓")
+        .setStyle("SUCCESS")
+        .setDisabled(true),
+        new MessageButton()
+        .setCustomId("execute_button")
+        .setLabel("Execute")
+        .setEmoji("🎯")
+        .setStyle("DANGER")
+        .setDisabled(true),
+        new MessageButton()
+        .setCustomId("abort_button")
+        .setLabel("Abort")
+        .setEmoji("🛑")
+        .setStyle("SECONDARY")
+    );
 
     // Choosing second-in-command superuser
     const superusers = (await getConfig()).superUsers;
@@ -55,21 +55,22 @@ export default async function (client, interaction) {
     const sic = client.users.resolve(superusers[Math.floor(Math.random() * superusers.length)]) ?? interaction.user;
 
     const embed = new MessageEmbed()
-        .setColor("FUCHSIA")
-        .setTitle(":warning: Discord guild nuking request")
-        .setAuthor({name: `${interaction.user.username}`, iconURL: `${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
-        .setDescription("**:rotating_light: This is a test. This is only a test. :rotating_light:**")
-        .addFields(
-            {
-                name: "Time", value: `${dayjs()}`, inline: false
-            },
-            {
-                name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within twenty (20) seconds in order to confirm your choice.`
-            },
-            {
-                name: "Second-in-command", value: "*waiting for your confirmation*"
-            }
-        );
+    .setColor("FUCHSIA")
+    .setTitle(":warning: Discord guild nuking request")
+    .setAuthor({name: `${interaction.user.username}`, iconURL: `${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`})
+    .setDescription("**:rotating_light: This is a test. This is only a test. :rotating_light:**")
+    .addFields(
+        {
+            name: "Time", value: `${dayjs()}`, inline: false
+        },
+        {
+            name: "AuthCode",
+            value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within twenty (20) seconds in order to confirm your choice.`
+        },
+        {
+            name: "Second-in-command", value: "*waiting for your confirmation*"
+        }
+    );
 
     // Checks
 
@@ -77,41 +78,41 @@ export default async function (client, interaction) {
     const message = await interaction.reply({embeds: [embed], components: [row], fetchReply: true});
 
     const user_challenge = new MessageEmbed()
-        .setColor("FUCHSIA")
-        .setTitle(":warning: Discord guild nuking request")
-        .setDescription("Awaiting authorization code...");
+    .setColor("FUCHSIA")
+    .setTitle(":warning: Discord guild nuking request")
+    .setDescription("Awaiting authorization code...");
 
     const msg_challenge = await interaction.user.send({embeds: [user_challenge], fetchReply: true});
 
     // Challenge-response
     const filter = m => m.content.includes(auth_code);
     await msg_challenge.channel.awaitMessages({filter, max: 1, time: 20000, errors: ["time"]})
-        .then(async (collected) => {
-            collected = collected.first();
+    .then(async (collected) => {
+        collected = collected.first();
 
-            // Double check
-            if(collected.content !== auth_code) {
-                status = "fail";
-                throw "Fatal logic error: button id mismatch.";
+        // Double check
+        if (collected.content !== auth_code) {
+            status = "fail";
+            throw "Fatal logic error: button id mismatch.";
+        }
+
+        status = "authCodePositive";
+
+        const approved = new MessageEmbed()
+        .setColor("GREEN")
+        .setDescription(`${success_emoji} The authorization code is correct.`)
+        .addFields(
+            {
+                name: "Take me back", value: `<#${message.channel.id}>`, inline: false
             }
+        );
 
-            status = "authCodePositive";
+        collected.channel.send({embeds: [approved]});
+    }).catch((err) => {
+        console.log(err);
+    });
 
-            const approved = new MessageEmbed()
-                .setColor("GREEN")
-                .setDescription(`${success_emoji} The authorization code is correct.`)
-                .addFields(
-                    {
-                        name: "Take me back", value: `<#${message.channel.id}>`, inline: false
-                    }
-                );
-
-            collected.channel.send({embeds: [approved]});
-        }).catch((err) => {
-            console.log(err);
-        });
-
-    if(status !== "authCodePositive") {
+    if (status !== "authCodePositive") {
         console.log("BREAK");
         return;
     }
@@ -123,7 +124,8 @@ export default async function (client, interaction) {
             name: "Time", value: `${dayjs()}`, inline: false
         },
         {
-            name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
+            name: "AuthCode",
+            value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
         },
         {
             name: "Second-in-command", value: "A second-in-command will be chosen upon arming.", inline: false
@@ -133,38 +135,37 @@ export default async function (client, interaction) {
     row.components[0].setDisabled(false);
 
     await message.edit({embeds: [embed], components: [row]})
-        .then(async (msg) => {
-            const filter = async (buttonInteraction) => {
-                if(buttonInteraction.user.id === interaction.user.id && buttonInteraction.customId === "arm_button") {
-                    return true;
-                } else {
-                    await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
-                    logger.append("info", interaction.guild.id, `'/sudo nuke' > '${buttonInteraction.user.tag}' did not have the permission to use this button.`);
-                    return;
-                }
-            };
+    .then(async (msg) => {
+        const filter = async (buttonInteraction) => {
+            if (buttonInteraction.user.id === interaction.user.id && buttonInteraction.customId === "arm_button") {
+                return true;
+            } else {
+                await buttonInteraction.reply({content: "You cannot use this button.", ephemeral: true});
+                logger.append("info", interaction.guild.id, `'/sudo nuke' > '${buttonInteraction.user.tag}' did not have the permission to use this button.`);
+            }
+        };
 
-            await msg.awaitMessageComponent({filter, time: 360000})
-                .then((buttonInteraction) => {
-                    // Double check
-                    if(buttonInteraction.customId !== "arm_button") {
-                        status = "fail";
-                        throw "Fatal logic error: button id mismatch.";
-                    }
-                    buttonInteraction.deferUpdate();
+        await msg.awaitMessageComponent({filter, time: 360000})
+        .then((buttonInteraction) => {
+            // Double check
+            if (buttonInteraction.customId !== "arm_button") {
+                status = "fail";
+                throw "Fatal logic error: button id mismatch.";
+            }
+            buttonInteraction.deferUpdate();
 
-                    row.components[0]
-                        .setLabel("Armed")
-                        .setEmoji("🔐");
+            row.components[0]
+            .setLabel("Armed")
+            .setEmoji("🔐");
 
-                    message.edit({components: [row]});
-                    status = "goSic";
-                });
+            message.edit({components: [row]});
+            status = "goSic";
         });
+    });
 
     // Approved by user, go for sic
 
-    if(status !== "goSic") {
+    if (status !== "goSic") {
         console.log("BREAK");
         return;
     }
@@ -176,7 +177,8 @@ export default async function (client, interaction) {
             name: "Time", value: `${dayjs()}`, inline: false
         },
         {
-            name: "AuthCode", value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
+            name: "AuthCode",
+            value: `Your authorization code is: \`${auth_code}\`.\nPlease send it to the bot in Direct Message within 30 seconds in order to confirm your choice.`
         },
         {
             name: "Second-in-command", value: `A separate code has been sent to the second-in-command (<@${sic.id}>).\nThey have 5 minutes to approve.`
@@ -187,78 +189,78 @@ export default async function (client, interaction) {
     message.edit({embeds: [embed]});
 
     const sic_row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId("sic_approve_button")
-                .setLabel("Approve")
-                .setEmoji(`${success_emoji}`)
-                .setStyle("SUCCESS"),
-            new MessageButton()
-                .setCustomId("sic_reject_button")
-                .setLabel("Reject")
-                .setEmoji(`${fail_emoji}`)
-                .setStyle("DANGER")
-        );
+    .addComponents(
+        new MessageButton()
+        .setCustomId("sic_approve_button")
+        .setLabel("Approve")
+        .setEmoji(`${success_emoji}`)
+        .setStyle("SUCCESS"),
+        new MessageButton()
+        .setCustomId("sic_reject_button")
+        .setLabel("Reject")
+        .setEmoji(`${fail_emoji}`)
+        .setStyle("DANGER")
+    );
 
     const sic_embed = new MessageEmbed()
-        .setColor("FUCHSIA")
-        .setTitle(":warning: Discord guild nuking request")
-        .setDescription("Because of your superuser position, you have been randomly chosen to be the second-in-command for the nuking of a guild.\nYou have five (5) minutes to approve or reject the request.")
-        .addFields(
-            {
-                name: "Requested by", value: `<@${interaction.user.id}>`, inline: false
-            },
-            {
-                name: "Guild", value: `Name:"${interaction.guild.name}"\nID:"${interaction.guild.id}"`, inline: false
-            },
-            {
-                name: "Location", value: `<#${message.channel.id}>`
-            }
-        );
+    .setColor("FUCHSIA")
+    .setTitle(":warning: Discord guild nuking request")
+    .setDescription("Because of your superuser position, you have been randomly chosen to be the second-in-command for the nuking of a guild.\nYou have five (5) minutes to approve or reject the request.")
+    .addFields(
+        {
+            name: "Requested by", value: `<@${interaction.user.id}>`, inline: false
+        },
+        {
+            name: "Guild", value: `Name:"${interaction.guild.name}"\nID:"${interaction.guild.id}"`, inline: false
+        },
+        {
+            name: "Location", value: `<#${message.channel.id}>`
+        }
+    );
 
     // Waiting for second-in-command superuser
 
     const sic_msg = await sic.send({embeds: [sic_embed], components: [sic_row], fetchReply: true})
-        .then(async (msg) => {
-            const filter = async (buttonInteraction) => {
-                if(buttonInteraction.user.id === sic.id && (buttonInteraction.customId === "sic_approve_button" || buttonInteraction.customId === "sic_reject_button")) {
-                    return true;
-                }
-            };
+    .then(async (msg) => {
+        const filter = async (buttonInteraction) => {
+            if (buttonInteraction.user.id === sic.id && (buttonInteraction.customId === "sic_approve_button" || buttonInteraction.customId === "sic_reject_button")) {
+                return true;
+            }
+        };
 
-            await msg.awaitMessageComponent({filter, time: 300000})
-                .then((buttonInteraction) => {
-                    if(buttonInteraction.customId === "sic_approve_button") {
-                        buttonInteraction.deferUpdate();
+        await msg.awaitMessageComponent({filter, time: 300000})
+        .then((buttonInteraction) => {
+            if (buttonInteraction.customId === "sic_approve_button") {
+                buttonInteraction.deferUpdate();
 
-                        sic_row.components[0]
-                            .setLabel("Approved")
-                            .setDisabled(true);
-                        sic_row.components[1]
-                            .setStyle("SECONDARY")
-                            .setDisabled(true);
+                sic_row.components[0]
+                .setLabel("Approved")
+                .setDisabled(true);
+                sic_row.components[1]
+                .setStyle("SECONDARY")
+                .setDisabled(true);
 
-                        msg.edit({components: [sic_row]});
-                        status = "goSic";
-                    } else if(buttonInteraction.customId === "sic_reject_button") {
-                        buttonInteraction.deferUpdate();
+                msg.edit({components: [sic_row]});
+                status = "goSic";
+            } else if (buttonInteraction.customId === "sic_reject_button") {
+                buttonInteraction.deferUpdate();
 
-                        sic_row.components[1]
-                            .setLabel("Rejected")
-                            .setDisabled(true);
-                        sic_row.components[0]
-                            .setStyle("SECONDARY")
-                            .setDisabled(true);
+                sic_row.components[1]
+                .setLabel("Rejected")
+                .setDisabled(true);
+                sic_row.components[0]
+                .setStyle("SECONDARY")
+                .setDisabled(true);
 
-                        msg.edit({components: [sic_row]});
-                        status = "goSic";
-                    } else {
-                        status = "fail";
-                        throw "Fatal logic error: button id mismatch.";
-                    }
-                    status = "void";
-                });
+                msg.edit({components: [sic_row]});
+                status = "goSic";
+            } else {
+                status = "fail";
+                throw "Fatal logic error: button id mismatch.";
+            }
+            status = "void";
         });
+    });
 
     console.log(status);
 

@@ -7,6 +7,6 @@ export default {
     name: "guildMemberAdd",
     once: false,
     async execute(member) {
-        logger.append("info", "0x474D41", `[GMA] '@${member.user.tag}' joined guild "${member.guild.id}"!`);
+        logger.append("info", "GMA", `'@${member.user.tag}' joined guild "${member.guild.id}"!`);
     }
 };

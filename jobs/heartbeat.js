@@ -17,32 +17,31 @@ async function execute(client) {
         try {
             await sleep(jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
-                .then(() => {
-                    logger.append("debug", "CRON", "[Heartbeat] Heartbeat sent to the status page.");
-                    const now = Math.round(Date.now() / 1000);
-                    updateHeartbeat(client, now);
-                    if(!once) {
-                        checklistHeartbeat();
-                        once = true;
-                    }
-                });
-        } catch(err) {
-            if(err) {
+            .then(() => {
+                const now = Math.round(Date.now() / 1000);
+                updateHeartbeat(client, now);
+                if (!once) {
+                    checklistHeartbeat();
+                    once = true;
+                }
+            });
+        } catch (err) {
+            if (err) {
                 console.error(err);
             }
 
             logger.append("error", "STDERR", "[Heartbeat] An error occurred while sending the Heartbeat. Retrying in 6 seconds.");
             await sleep(5000 + jitter());
             await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq", {method: "POST"})
-                .then(() => {
-                    logger.append("debug", "CRON", "[Heartbeat] Catch Heartbeat sent to status page.");
-                    const now = Math.round(Date.now() / 1000);
-                    updateHeartbeat(client, now);
-                    if(!once) {
-                        checklistHeartbeat();
-                        once = true;
-                    }
-                });
+            .then(() => {
+                logger.append("debug", "CRON", "[Heartbeat] Catch Heartbeat sent to status page.");
+                const now = Math.round(Date.now() / 1000);
+                updateHeartbeat(client, now);
+                if (!once) {
+                    checklistHeartbeat();
+                    once = true;
+                }
+            });
         }
     });
 
@@ -53,11 +52,10 @@ async function execute(client) {
     console.log("[Heartbeat] Heartbeat daemon started!");
 
     await fetch("https://betteruptime.com/api/v1/heartbeat/ixeh3Ufdvq9EKWznsZMPFrpq")
-        .then(() => {
-            logger.append("debug", "INIT", "[Heartbeat] The first Heartbeat was sent to the status page.");
-            const now = Math.round(Date.now() / 1000);
-            updateHeartbeat(client, now);
-        });
+    .then(() => {
+        const now = Math.round(Date.now() / 1000);
+        updateHeartbeat(client, now);
+    });
 }
 
 

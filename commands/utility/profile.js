@@ -6,15 +6,15 @@ import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("profile")
-        .setDescription("Shows information about a user.")
-        .addUserOption((options) =>
-            options
-                .setName("user")
-                .setDescription("[OPTIONAL] The user to search for. Defaults to yourself.")
-                .setRequired(false)),
+    .setName("profile")
+    .setDescription("Shows information about a user.")
+    .addUserOption((options) =>
+        options
+        .setName("user")
+        .setDescription("[OPTIONAL] The user to search for. Defaults to yourself.")
+        .setRequired(false)),
     async execute(client, interaction) {
-        if(await permissionCheck(interaction, 0) === false) {
+        if (await permissionCheck(interaction, 0) === false) {
             return;
         }
 

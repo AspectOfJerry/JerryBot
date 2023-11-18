@@ -6,32 +6,28 @@ import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("test")
-        .setDescription("test"),
+    .setName("test")
+    .setDescription("test"),
     async execute(client, interaction) {
-        if(await permissionCheck(interaction, -1) === false) {
+        if (await permissionCheck(interaction, -1) === false) {
             return;
         }
 
-        // Declaring variables
         const role_id = "1154575328140853318"; // study
 
         const embed = new MessageEmbed()
-            .setColor("GREEN")
-            .setTitle("Study Role!")
-            .setDescription("Click the button to receive the '<@&1154575328140853318>' role.\nYou'll be mentioned whenever our fellow students create study materials.");
+        .setColor("GREEN")
+        .setTitle("Study Role!")
+        .setDescription("Click the button to receive the '<@&1154575328140853318>' role.\nYou'll be mentioned whenever our fellow students create study materials.");
 
         const button = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setCustomId("study")
-                    .setLabel("Click me to get the role!")
-                    .setStyle("SUCCESS")
-            );
+        .addComponents(
+            new MessageButton()
+            .setCustomId("study")
+            .setLabel("Click me to get the role!")
+            .setStyle("SUCCESS")
+        );
 
-        // Checks
-
-        // Main
         const message = await interaction.reply({embeds: [embed], components: [button], fetchReply: true});
 
         const button_collector = await message.createMessageComponentCollector({componentType: "BUTTON"});
@@ -45,7 +41,7 @@ export default {
         });
 
         button_collector.on("end", async (collected, reason) => {
-            if(reason === "time") {
+            if (reason === "time") {
                 // Disabling button
                 button.components[0].setDisabled(true);
                 message.edit({embeds: [embed], components: [button]});

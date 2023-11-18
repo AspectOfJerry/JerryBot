@@ -1,17 +1,12 @@
 import process from "process";
-import winston from "winston";
 import fs from "fs";
 import {REST} from "@discordjs/rest";
 import {Routes} from "discord-api-types/v9";
-import path from "path";
 
-import {connect, refreshBirthdayCollection, refreshGuildCollection} from "../database/mongodb.js";
+import {connect, refreshGuildCollection} from "../database/mongodb.js";
 import {logger, sleep, StartJobs} from "../utils/jerryUtils.js";
-import {configOpenAI} from "../utils/gpt.js";
 import {checklistBotReady, checklistJobs, startTelemetry} from "../utils/telemetry.js";
 import {refreshHubs} from "../utils/voiceChannelHubManager.js";
-import {slackcord} from "../edge/gateway/controllers/slackcord.js";
-// const {InitNukeNotifier} from '../utils/nuking_notifier.js');
 
 
 export default {
@@ -19,15 +14,19 @@ export default {
     once: true,
     async execute(client, commands) {
         console.log("JerryBot is now online.");
-        logger.append("info", "0x524459", "\"@JerryBot#9090\" is now online.");
+        logger.append("info", "RDY", "\"@JerryBot#9090\" is now online.");
 
         const rest = new REST({version: "9"}).setToken(process.env.DISCORD_BOT_TOKEN_JERRY); // REST
 
         const client_id = client.user.id;
 
-        if(process.env.npm_lifecycle_event == "clearcommands") {
-            logger.append("info", "0x524459", "[RDY/Clearcommands] Clearing the application (/) commands...");
+        if (process.env.npm_lifecycle_event === "clean") {
+            return;
+        }
+
+        if (process.env.npm_lifecycle_event === "clearcommands") {
             console.log("Clearing global commands...");
+            logger.append("info", "RDY", "[Clearcommands] Clearing the application (/) commands...");
 
             await client.user.setPresence({activities: [{name: "clearing commands...", type: "PLAYING"}], status: "dnd"});
 
@@ -38,71 +37,55 @@ export default {
 
             const local_guilds = ["1014278986135781438", "1113966154143244349"];
 
-            for(const guild of local_guilds) {
+            for (const guild of local_guilds) {
                 await rest.put(Routes.applicationGuildCommands(client_id, guild), {body: []});
                 console.log(`Successfully cleared local commands in ${guild}.`);
                 await sleep(500);
             }
 
             console.log("Sucessfully cleared all registered application (/) commands!");
-            logger.append("info", "0x524459", "[RDY/Clearcommands] Successfully cleared the application (/) commands!");
+            logger.append("info", "RDY", "[Clearcommands] Successfully cleared the application (/) commands!");
             await client.destroy();
             process.exit(0);
         }
 
-        if(process.env.npm_lifecycle_event === "deploy") {
+        if (process.env.npm_lifecycle_event === "deploy") {
             // Register commands globally
             console.log("Registering the application (/) commands...");
-            logger.append("info", "0x524459", "[RDY/Deploy] Registering global application (/) commands...");
-            console.log("Deploying commands globally...");
+            logger.append("info", "RDY", "[Deploy] Registering global application (/) commands...");
 
             await rest.put(Routes.applicationCommands(client_id), {body: commands.commands});
 
             console.log("Finished refreshing the application (/) commands globally!");
-
-            logger.append("info", "0x524459", "[RDY/Deploy] Successfully refreshed the application (/) commands globally!");
+            logger.append("info", "RDY", "[Deploy] Successfully refreshed the application (/) commands globally!");
 
             // Local commands
-            logger.append("info", "0x524459", "[RDY/Deploy] Registering exclusive application (/) commands locally...");
+            logger.append("info", "RDY", "[Deploy] Registering exclusive application (/) commands locally...");
             console.log("Deploying commands globally...");
 
             await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [commands.exclusive.find((e) => e.name === "cra")]});
             console.log("Successfully deployed commands locally in \"1014278986135781438\".");
 
-            logger.append("fatal", "0x524459", "[RDY/Deploy] Exiting process...");
+            logger.append("fatal", "RDY", "[Deploy] Exiting process...");
             logger.end();
             await client.destroy();
             process.exit(0);
         }
 
         console.log("Connecting to the database...");
-        logger.append("info", "0x524459", "[RDY/Database] Connecting to the database...");
+        logger.append("info", "RDY", "[Database] Connecting to the database...");
         await connect();
 
         console.log("Refreshing the guild collection...");
-        logger.append("info", "0x524459", "[RDY/Database] Refreshing the guild collection...");
+        logger.append("info", "RDY", "[Database] Refreshing the guild collection...");
         await refreshGuildCollection(client);
-
-        console.log("Refreshing the birthday collection...");
-        logger.append("info", "0x524459", "[RDY/Database] Refreshing the birthday collection...");
-        await refreshBirthdayCollection(client);
 
         // Reresh Voice Channel Hubs
         console.log("Refreshing the voice channel hubs...");
-        logger.append("info", "0x524459", "[RDY/Database] Refreshing the voice channel hubs...");
+        logger.append("info", "RDY", "[Database] Refreshing the voice channel hubs...");
         await refreshHubs(client);
 
-        // configure openAI
-        console.log("Configuring OpenAI...");
-        logger.append("info", "0x524459", "[RDY/OpenAI] Configuring OpenAI...");
-        configOpenAI();
-
-        // Start slack bot
-        console.log("Starting Slack bot...");
-        logger.append("info", "0x524459", "[RDY/Slack] Starting Slack bot...");
-        await slackcord.startSlack(client);
-
-        if(process.env.npm_lifecycle_event === "test") {
+        if (process.env.npm_lifecycle_event === "test") {
             console.log("Running a test...");
             const args = process.argv.slice(2);
 
@@ -111,7 +94,7 @@ export default {
         }
 
         // main
-        if(process.env.npm_lifecycle_event !== "dev") {
+        if (process.env.npm_lifecycle_event !== "dev") {
             // Telemetry
             console.log("Starting telemetry...");
             await startTelemetry(client);
@@ -120,37 +103,31 @@ export default {
             console.log("Starting jobs...");
             await StartJobs(client);
             checklistJobs();
-
-            // Other
-            // await InitNukeNotifier(client);
         }
 
         // Registering commands
-        if(process.env.npm_lifecycle_event === "dev") {
+        if (process.env.npm_lifecycle_event === "dev") {
             try {
                 console.log("Registering the application (/) commands...");
-                logger.append("info", "0x524459", "[RDY/dev] Registering local application (/) commands...");
-                // await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
-                // console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
-                // await sleep(750);
+                logger.append("info", "[RDY/dev] Registering local application (/) commands...");
+                await rest.put(Routes.applicationGuildCommands(client_id, "631939549332897842"), {body: commands.commands});
+                console.log("Successfully deployed commands locally in \"631939549332897842\"."); // dev
+                await sleep(750);
 
                 await rest.put(Routes.applicationGuildCommands(client_id, "1014278986135781438"), {body: [...commands.commands, commands.exclusive.find((e) => e.name === "cra")]});
                 console.log("Successfully deployed commands locally in \"1014278986135781438\"."); // cra
                 await sleep(750);
 
-                // await rest.put(Routes.applicationGuildCommands(client_id, "864928262971326476"), {body: commands.commands});
-                // console.log("Successfully deployed commands locally in \"864928262971326476\"."); // bap
-
                 console.log("Successfully refreshed the application (/) commands locally!");
-                logger.append("info", "0x524459", "[RDY/dev] Successfully refreshed the application (/) commands locally!");
-            } catch(err) {
-                if(err) {
+                logger.append("info", "[RDY/dev] Successfully refreshed the application (/) commands locally!");
+            } catch (err) {
+                if (err) {
                     console.error(err);
                 }
             }
         }
 
-        if(process.env.npm_lifecycle_event !== "dev") {
+        if (process.env.npm_lifecycle_event !== "dev") {
             checklistBotReady();
         }
     }
@@ -161,13 +138,13 @@ async function getTests(dir, suffix) {
 
     const returnFiles = [];
 
-    for(const file of files) {
+    for (const file of files) {
         const filepath = `${dir}/${file.name}`;
 
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             const subFiles = await getTests(filepath, suffix);
             returnFiles.push(...subFiles);
-        } else if(file.name.endsWith(suffix)) {
+        } else if (file.name.endsWith(suffix)) {
             returnFiles.push(filepath);
         }
     }
