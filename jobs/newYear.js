@@ -17,11 +17,9 @@ async function execute(client) {
 
         const channels = [];
         channels.push("782060424220377128"); // devServer
-        channels.push("1014293537363341332"); // cra
 
         const alt_channels = [];
         alt_channels.push("857978482374344734"); // devServer
-        alt_channels.push("1014286502743773305"); // cra
 
         for (let i = 0; i < guilds.length; i++) {
             const channel = await guilds[i].channels.fetch(channels[i]);
