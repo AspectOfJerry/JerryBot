@@ -1,17 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {CronJob} from "cron";
 
-const CronJob = require("cron").CronJob;
-
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 let disabled = false;
 
-
-// The first execution of the cron job went terribly (2022-2023)
-// because of a wrong CRON interval('* * 1 1 *' instead of '0 0 1 1 *').
-// The message did not send or maybe so the CRON job was changed to every minute to send the message anyway.
-// Then the bot was not stopped so the @everyone ping happened 3 times in a row.
-// Finally, bot was stopped 3 minutes after 2023 and the big issue was fixed.
 
 async function execute(client) {
     /**
@@ -25,35 +17,34 @@ async function execute(client) {
 
         const channels = [];
         channels.push("782060424220377128"); // devServer
-        channels.push("1014293537363341332"); // 311
 
         const alt_channels = [];
         alt_channels.push("857978482374344734"); // devServer
-        alt_channels.push("1014286502743773305"); // 311
 
-        for(let i = 0; i < guilds.length; i++) {
+        for (let i = 0; i < guilds.length; i++) {
             const channel = await guilds[i].channels.fetch(channels[i]);
             const alt_channel = await guilds[i].channels.fetch(alt_channels[i]);
 
             await channel.send({content: `:tada: Happy new year ${guilds[i].roles.everyone}! :tada:`})
-                .then((msg) => {
-                    msg.react("🥳");
-                });
+            .then((msg) => {
+                msg.react("🥳");
+            });
 
             await alt_channel.send({content: ":tada: Happy new year everyone! :partying_face: :fireworks:"})
-                .then((msg) => {
-                    msg.react("🎉");
-                });
+            .then((msg) => {
+                msg.react("🎉");
+            });
         }
     });
 
     new_year.start();
+    logger.append("debug", "INIT", "[NewYear] New year announcer cron job started!");
 
-    log("append", "newYear", "[NewYear] The new year announcer is ready!", "DEBUG");
-    console.log("[NewYear] The new year announcer is ready!");
+    console.log("[NewYear] The new year announcer daemon started!");
+    logger.append("info", "INIT", "[NewYear] New year announcer daemon started!");
 }
 
 
-module.exports = {
+export {
     execute
 };

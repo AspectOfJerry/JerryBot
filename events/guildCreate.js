@@ -1,17 +1,17 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
-const {updateGuild} = require("../database/mongodb.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
+import {updateGuild} from "../database/mongodb.js";
 
-module.exports = {
+export default {
     name: "guildCreate",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(guild) {
-        await log("append", "", `[0x475543] The bot joined the "${guild.name}" guild:
+        logger.append("notice", "GUC", `The bot joined the "${guild.name}" guild:
             createdAt: ${guild.createdAt} [${guild.createdTimestamp}],
             id: ${guild.id},
             large: ${guild.large},
             memberCount: ${guild.memberCount},
             ownerId: ${guild.ownerId},
-            preferredLocale: '${guild.preferredLocale}'.`, "INFO");
+            preferredLocale: '${guild.preferredLocale}'.`);
 
         updateGuild(guild.id, guild.name, "", "", "");
     }

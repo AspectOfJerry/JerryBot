@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const configSchema = new mongoose.Schema({
     id: {type: String, required: true, unique: true, immutable: true},
@@ -8,4 +8,4 @@ const configSchema = new mongoose.Schema({
     voiceChannelHubs: [String]
 });
 
-module.exports = mongoose.model("configSchema", configSchema, "config");
+export default mongoose.model("configSchema", configSchema, "config");

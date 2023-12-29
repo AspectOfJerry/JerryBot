@@ -1,11 +1,11 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
-module.exports = async function (client, interaction) {
+export default async function (client, interaction) {
     // interaction.deferReply();
-    if(await permissionCheck(interaction, -1) === false) {
+    if (await permissionCheck(interaction, -1) === false) {
         return;
     }
 
@@ -18,11 +18,11 @@ module.exports = async function (client, interaction) {
     client.user.setStatus(status);
 
     const success = new MessageEmbed()
-        .setColor("GREEN")
-        .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
-        .setTitle("PresenceUpdate")
-        .setDescription(`Successfully set the bot's status to ${status}!`)
-        .setFooter({text: "Use '/sudo presence' to change the bot's full presence."});
+    .setColor("GREEN")
+    .setThumbnail(`${interaction.member.user.displayAvatarURL({dynamic: true, size: 32})}`)
+    .setTitle("PresenceUpdate")
+    .setDescription(`Successfully set the bot's status to ${status}!`)
+    .setFooter({text: "Use '/sudo presence' to change the bot's full presence."});
 
     interaction.reply({embeds: [success]});
-};
+}
