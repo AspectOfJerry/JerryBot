@@ -1,10 +1,10 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "guildBanRemove",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(ban) {
-        await log("append", "", `[0x474252] '@${ban.user.tag}' was unbanned from "${ban.guild.name}".`, "WARN");
+        logger.append("info", "GBR", `'@${ban.user.tag}' was unbanned from "${ban.guild.name}".`);
     }
 };

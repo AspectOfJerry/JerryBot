@@ -1,15 +1,15 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "inviteCreate",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(invite) {
-        await log("append", "", `[0x495643] <@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
+        logger.append("notice", "IVC", `<@${invite.inviter?.tag}> created an invite to <#${invite.channel.name}> in <${invite.guild?.name}>
             expiresAt: ${invite.expiresAt},
             maxUses: ${invite.maxUses},
             temporary: ${invite.temporary},
             code: ${invite.code},
-            url: ${invite.url}.`, "DEBUG");
+            url: ${invite.url}.`);
     }
 };

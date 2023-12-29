@@ -1,10 +1,10 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "invalidRequestWarning",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(invalidRequestWarningData) {
-        await log("append", "", `[0x495257] ${invalidRequestWarningData}`, "WARN");
+        logger.append("warn", "IRW", `${invalidRequestWarningData}`);
     }
 };

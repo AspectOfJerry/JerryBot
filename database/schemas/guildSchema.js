@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 
 const guildSchema = new mongoose.Schema({
@@ -11,4 +11,4 @@ const guildSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("guildSchema", guildSchema, "guild");
+export default mongoose.model("guildSchema", guildSchema, "guild");

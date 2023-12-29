@@ -1,9 +1,9 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
 
-const {log, permissionCheck, sleep} = require("../../../modules/JerryUtils.js");
+import {logger, permissionCheck, sleep} from "../../../utils/jerryUtils.js";
 
 
-module.exports = async function (client, interaction, string, object) {
+export default async function (client, interaction, string, object) {
     await interaction.deferReply();
     if(await permissionCheck(interaction, 1) === false) {
         return;
@@ -31,6 +31,6 @@ module.exports = async function (client, interaction, string, object) {
             {name: "Target directory", value: `../logs/${(await object).fileName}`, inline: false});
 
     interaction.reply({embeds: [writing_to_logs]});
-    log("append", interaction.guild.id, string, "INFO");
+    logger.append("notice", "STDOUT", `'/logs append' << ${string}`);
     interaction.editReply({embeds: [write_to_logs]});
-};
+}

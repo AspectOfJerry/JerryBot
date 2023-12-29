@@ -1,10 +1,10 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck} = require("../../modules/JerryUtils.js");
+import {logger, permissionCheck} from "../../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("ping")
         .setDescription("Displays the client latency and the WebSocket server latency."),
@@ -20,7 +20,7 @@ module.exports = {
         // Checks
 
         // Main
-        interaction.channel.send({content: "@silent ping..."})
+        interaction.channel.send({content: "ping..."})
             .then((pingMessage) => {
                 pingMessage.delete().catch(console.error);
 
@@ -47,7 +47,7 @@ module.exports = {
                     );
 
                 interaction.reply({embeds: [pong], components: [row]});
-                log("append", interaction.guild.id, `└─Client latency: ${clientLatency}ms; WebSocket latency: ${webSocketLatency}ms;`, "INFO");
+                logger.append("notice", "STDOUT", `'/ping' > Client latency: ${clientLatency}ms, webSocket latency: ${webSocketLatency}ms`);
             });
     }
 };
