@@ -1,12 +1,32 @@
-const process = require("process");
-require("dotenv").config();
-const {Client, Intents, Collection} = require("discord.js");
+import process from "process";
+import {config} from "dotenv";
+config();
+import winston from "winston";
+import moment from "moment";
+import {Client, Intents, Collection} from "discord.js";
 
-const {getCommandFiles, log, startEventListeners} = require("./modules/JerryUtils.js");
+import {
+    getCommandFiles,
+    logger,
+    custom_logger_levels,
+    startEvents
+} from "./utils/jerryUtils.js";
+
+if (process.env.npm_lifecycle_event !== "main") {
+    logger.add(new winston.transports.Console({
+        format: winston.format.combine(
+            // colorizzing the level breaks the message when using level.toUpperCase(). See: https://github.com/winstonjs/winston/issues/1345
+            winston.format.colorize({message: true, colors: custom_logger_levels.colors}),
+            winston.format.printf(({level, message}) => {
+                return `[${moment().format("HH:mm:ss.SSS")}] [${level.toUpperCase()}/${message}`;
+            })
+        )
+    }));
+}
 
 
-console.log(`The bot was started (npm run ${process.env.npm_lifecycle_event})!`);
-log("append", "index.js", `The bot was started (npm run ${process.env.npm_lifecycle_event})!`, "DEBUG");
+console.log(`>>>>> The bot was started!${process.env.npm_lifecycle_event ? ` (npm run ${process.env.npm_lifecycle_event})` : ""}`);
+logger.append("info", "index.js", `>>>>> [Startup] The bot was started!${process.env.npm_lifecycle_event ? ` (npm run ${process.env.npm_lifecycle_event})` : ""}`);
 
 const client = new Client({
     intents: [
@@ -27,7 +47,7 @@ const client = new Client({
 (async () => {
     // Getting commands
     console.log("Getting command files...");
-    await log("append", "index.js", "Getting command files...", "DEBUG");
+    logger.append("debug", "index.js", "[Startup] Getting command files...");
 
     const suffix = ".js";
     const command_files = await getCommandFiles("./commands", suffix);
@@ -42,21 +62,25 @@ const client = new Client({
 
     client.commands = new Collection();
 
-    for(const file of command_files.commands) {
-        const command = require(file);
+    for (const file of command_files.commands) {
+        const module = await import(file);
+        const command = module.default;
+
         commands.commands.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     }
 
-    for(const file of command_files.exclusive) {
-        const command = require(file);
+    for (const file of command_files.exclusive) {
+        const module = await import(file);
+        const command = module.default;
+
         commands.exclusive.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     }
 
+
     // Getting events
-    await startEventListeners(client, commands);
+    await startEvents(client, commands);
+
+    client.login(process.env.DISCORD_BOT_TOKEN_JERRY);
 })();
-
-
-client.login(process.env.DISCORD_BOT_TOKEN_JERRY);

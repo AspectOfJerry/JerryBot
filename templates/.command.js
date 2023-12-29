@@ -1,13 +1,13 @@
-const {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} = require("discord.js");
-const {SlashCommandBuilder} = require("@discordjs/builders");
+import {Client, Collection, Intents, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
-const {log, permissionCheck, sleep} = require("../../modules/JerryUtils.js");
+import {logger, permissionCheck, sleep} from "../../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
-        .setName("CMD_NAME")
-        .setDescription("CMD_DESCRIPTION")
+        .setName("STRING")
+        .setDescription("STRING")
         // .addStringOption((options) =>
         //     options
         //         .setName("OPTION_NAME")
@@ -16,14 +16,14 @@ module.exports = {
     ,
     async execute(client, interaction) {
         // interaction.deferReply()
-        if(await permissionCheck(interaction, x) === false) {
+        if(await permissionCheck(interaction, INT) === false) {
             return;
         }
 
         // Declaring variables
         // const target = interaction.options.getUser("user") || interaction.user;
         // const memberTarget = interaction.guild.members.cache.get(target.id);
-        // await log("append", interaction.guild.id, `├─memberTarget: '@${memberTarget.user.tag}'`, "INFO");
+        // logger.append("info", "IN", `'/STRING' > memberTarget: '@${memberTarget.user.tag}'`);
 
         // Checks
 

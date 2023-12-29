@@ -1,10 +1,15 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
-
-module.exports = {
+export default {
     name: "debug",
     once: false,
     async execute(info) {
-        await log("append", "", `[0x444247] ${info}`, "DEBUG");
+        const latency = info.match(/\[WS => Shard \d+\] Heartbeat acknowledged, latency of (\d+)ms/)?.[1];
+
+        if (latency && parseInt(latency) <= 50 || info.startsWith("[WS => Shard 0] [HeartbeatTimer] Sending a heartbeat.")) {
+            return;
+        }
+
+        logger.append("debug", "DBG", info);
     }
 };

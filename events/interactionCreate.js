@@ -1,51 +1,54 @@
-const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {MessageActionRow, MessageButton, MessageEmbed} from "discord.js";
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "interactionCreate",
     once: false,
     async execute(interaction) {
-        // await log("append", 'interactionCreate', `An interaction was created.`, "DEBUG");
-        if(!interaction.isCommand()) {
+        if (!interaction.isCommand()) {
             return;
         }
 
         const command = interaction.client.commands.get(interaction.commandName);
 
-        if(!command) {
+        if (!command) {
             return;
         }
 
         try {
-            log("append", "", `[0x494352] '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`, "INFO");
+            logger.append("info", "ICR", `"${interaction.guild.name}" > '@${interaction.user.tag}' executed '/${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}' in "${interaction.guild.id}".`);
             await command.execute(interaction.client, interaction);
-        } catch(err) {
-            if(err) {
+        } catch (err) {
+            if (err) {
                 console.error(err);
                 const _err = ":\n```\n" + err + "\n```" || ". ```No further information is available.```";
                 const command_exec_failure_exception = new MessageEmbed()
-                    .setColor("FUCHSIA")
-                    .setTitle("CommandExecFailureException")
-                    .setDescription(`An error occured while executing the command${_err}`)
-                    .setFooter({text: `${interaction.createdAt}`});
+                .setColor("FUCHSIA")
+                .setTitle("CommandExecFailureException")
+                .setDescription(`An error occured while executing the command${_err}`)
+                .setFooter({text: `${interaction.createdAt}`});
 
                 const super_users = "";
 
                 const notify = new MessageEmbed()
-                    .setColor("FUCHSIA")
-                    .setTitle(":warning: CommandExecFailureException")
-                    .setDescription(`An error occured while executing the command${_err}`)
-                    .addFields(
-                        {name: "User", value: `<@${interaction.user.id}>`, inline: true},
-                        {name: "Command", value: `</${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}:${interaction.commandId}>`, inline: true},
-                        {name: "Location", value: `<#${interaction.channel.id}>`, inline: false},
-                    );
+                .setColor("FUCHSIA")
+                .setTitle(":warning: CommandExecFailureException")
+                .setDescription(`An error occured while executing the command${_err}`)
+                .addFields(
+                    {name: "User", value: `<@${interaction.user.id}>`, inline: true},
+                    {
+                        name: "Command",
+                        value: `</${interaction.commandName}${interaction.options.getSubcommand(false) ? " " + interaction.options.getSubcommand(false) : ""}:${interaction.commandId}>`,
+                        inline: true
+                    },
+                    {name: "Location", value: `<#${interaction.channel.id}>`, inline: false},
+                );
 
-                for(const user of super_users) {
+                for (const user of super_users) {
                     try {
                         interaction.client.users.resolve(user).send(user, {embeds: [notify]});
-                    } catch(err) {
+                    } catch (err) {
                         console.error(err);
                     }
                 }
@@ -60,7 +63,7 @@ module.exports = {
                             interaction.channel.send({embeds: [command_exec_failure_exception]});
                         } catch {
                             console.log("Failed to raise the exception (3 attempts).");
-                            log("append", "", "[0x494352] Failed to raise the exception (3 attempts).", "ERROR");
+                            logger.append("error", "Failed to raise the exception (3 attempts).");
                         }
                     }
                 }

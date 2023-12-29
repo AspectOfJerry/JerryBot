@@ -8,12 +8,11 @@ This Privacy Policy is meant to help you understand what information we collect,
 
 - (a) interactionCreate (when executing slash (/) commands)
 - (b) inviteCreate (when creating a new invite to this server)
-- (c) messageCreate (only for gpt commands)
-- (d) messageDelete
-- (e) messageUpdate (edits)
-- (f) presenceUpdate (user status/online presence)
-- (g) typingStart (when the typing indicator shows)
-- (h) voiceStateUpdate (when joining/leaving a voice channel)
+- (c) messageDelete
+- (d) messageUpdate (edits)
+- (e) presenceUpdate (user status/online presence)
+- (f) typingStart (when the typing indicator shows)
+- (g) voiceStateUpdate (when joining/leaving a voice channel)
 
 ## Data access
 

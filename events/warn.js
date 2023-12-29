@@ -1,10 +1,10 @@
-const {log, sleep} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "warn",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(info) {
-        await log("append", "", `[0x57524E] ${info}`, "WARN");
+        logger.append("warn", "WRN", ` ${info}`);
     }
 };

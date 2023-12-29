@@ -1,20 +1,20 @@
-const {MessageEmbed} = require("discord.js");
+import {MessageEmbed} from "discord.js";
 
-const {log} = require("../modules/JerryUtils.js");
+import {logger, sleep} from "../utils/jerryUtils.js";
 
 
-module.exports = {
+export default {
     name: "messageDelete",
-    once: false, // Whether or not this event should only be triggered once
+    once: false, // Whether this event should only be triggered once
     async execute(message) {
         // Check if .cleanContent is the same as .content
-        if(message.content === message.cleanContent) {
-            log("append", "", `[0x4D5344] A message sent by <@${message?.author.tag}> has been deleted:
-            message.content: "${message.content}".`, "WARN");
+        if (message.content === message.cleanContent) {
+            logger.append("notice", "MSD", `A message sent by <@${message?.author.tag}> has been deleted:
+            message.content: "${message.content}".`);
         } else {
-            log("append", "", `[0x4D5344] A message sent by <@${message?.author.tag}> has been deleted:
+            logger.append("notice", "MSD", `A message sent by <@${message?.author.tag}> has been deleted:
                 message.content: "${message.content}",
-                message.cleanContent: "${message.cleanContent}".`, "WARN");
+                message.cleanContent: "${message.cleanContent}".`);
         }
     }
 };
